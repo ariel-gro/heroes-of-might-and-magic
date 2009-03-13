@@ -16,7 +16,7 @@ public enum ResourceType {
 		this.perDay = perDay;
 	}
 
-	public String getType(){
+	public String getTypeName(){
 		return this.type;
 	}
 

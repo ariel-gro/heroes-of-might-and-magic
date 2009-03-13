@@ -88,7 +88,7 @@ public class Hero
 		this.yPos = y;
 		if (w.getResourcesGrid(x,y) != null)
 		{
-			w.getResourcesGrid(x,y).owner = this.player;
+			w.getResourcesGrid(x,y).setOwner(this.player);
 		}
 		w.setHerosGrid(this, x, y);
 	}
