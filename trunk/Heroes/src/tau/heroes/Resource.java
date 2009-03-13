@@ -22,12 +22,14 @@ public class Resource {
 			System.out.println("player "+this.owner.getName()+
 					" lost ownership over "+this.getType().getTypeName()+
 					" at place: ("+this.getXPos()+", "+this.getYPos()+")");
+			System.out.println();
 		}
 		this.owner = player;
 		player.incrementQuantity(this.getType().getTypeName());
 		System.out.println("player "+this.owner.getName()+
 				" took ownership over "+this.getType().getTypeName()+
 				" at place: ("+this.getXPos()+", "+this.getYPos()+")");
+		System.out.println();
 	}
 
 	public boolean checkOwner(Player player) {

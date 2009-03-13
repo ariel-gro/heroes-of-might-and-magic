@@ -5,15 +5,18 @@ import java.util.LinkedList;
 public class Player {
 	private final String playerName;
 	private HashMap<String, Integer> resources;
+	private HashMap<String, Integer> resourceAmount;
 	private LinkedList<Hero> heroList;
 
 	public Player (String name)
 	{
 		this.playerName = name;
 		resources = new HashMap<String, Integer>(ResourceType.values().length);
+		resourceAmount = new HashMap<String, Integer>(ResourceType.values().length);
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			resources.put(ResourceType.values()[i].getTypeName(), 0);
+			resourceAmount.put(ResourceType.values()[i].getTypeName(), 0);
 		}
 		heroList = new LinkedList<Hero>();
 	}
@@ -33,9 +36,68 @@ public class Player {
 		this.resources.put(type, this.resources.get(type) - 1);
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return this.playerName;
 	}
+
+	public int getCurrentAmount(String type)
+	{
+		return this.resourceAmount.get(type);
+	}
+
+	public void incrementAmount (String type, int amount)
+	{
+		this.resourceAmount.put(type, this.resourceAmount.get(type) + amount);
+	}
+	
+	public void decrementAmount (String type, int amount)
+	{
+		this.resourceAmount.put(type, this.resourceAmount.get(type) - amount);
+	}
+
+	public void endTurn()
+	{
+		ResourceType tempType;
+		int amount;
 		
+		for (int i = 0; i < ResourceType.values().length; i++)
+		{
+			tempType = ResourceType.values()[i];
+			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
+			this.incrementAmount(tempType.getTypeName(), amount);
+		}
+		System.out.println("Player"+this.playerName+" ended his turn");
+		System.out.println();
+	}
 		
+	public void displayResourcesAmounts()
+	{
+		String tempTypeName;
+		
+		System.out.println("Player "+this.playerName+" resource amounts list:");
+		System.out.println();
+		System.out.println("Resource \t Amount");
+		for (int i = 0; i < ResourceType.values().length; i++)
+		{
+			tempTypeName = ResourceType.values()[i].getTypeName();
+			System.out.println(tempTypeName+" \t\t "+this.resourceAmount.get(tempTypeName));
+		}
+		System.out.println();
+	}
+	
+	public void displayResources()
+	{
+		String tempTypeName;
+		
+		System.out.println("Player "+this.playerName+" resource mines list:");
+		System.out.println();
+		System.out.println("Resource \t Amount");
+		for (int i = 0; i < ResourceType.values().length; i++)
+		{
+			tempTypeName = ResourceType.values()[i].getTypeName();
+			System.out.println(tempTypeName+" \t\t "+this.resources.get(tempTypeName));
+		}
+		System.out.println();
+	}
 }
