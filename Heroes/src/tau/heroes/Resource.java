@@ -13,7 +13,6 @@ public class Resource {
 		this.owner = null;
 		this.xPos = 7;
 		this.yPos = 9;
-		this.perDay = 200;
 	}
 
 	public void setOwner(Player player) {
