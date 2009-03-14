@@ -67,7 +67,7 @@ public class Player {
 			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementAmount(tempType.getTypeName(), amount);
 		}
-		System.out.println("Player"+this.playerName+" ended his turn");
+		System.out.println("Player "+this.playerName+" ended his turn");
 		System.out.println();
 	}
 		
@@ -100,4 +100,15 @@ public class Player {
 		}
 		System.out.println();
 	}
+
+	public void setHero(Hero hero) {
+		this.heroList.add(hero);
+		
+	}
+	
+	public Hero getHero() {
+		return heroList.get(0);		
+	}
+	
+	
 }
