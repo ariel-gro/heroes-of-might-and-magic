@@ -65,6 +65,13 @@ public class Board
 		placeProperty(19, 0);
 		placeProperty(19, 19);
 	}
+	
+	public BoardState[][] getWorld()
+	{
+		return this.world;
+	}
+	
+	
 
 	public BoardState getBoardState(int x, int y)
 	{

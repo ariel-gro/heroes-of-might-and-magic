@@ -30,4 +30,9 @@ public class BoardState {
 	{
 		return property;
 	}
+
+	public boolean getIsEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

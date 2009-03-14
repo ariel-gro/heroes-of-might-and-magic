@@ -14,6 +14,7 @@ public class Resource {
 		this.yPos = yPos;
 	}
 
+
 	public void setOwner(Player player)
 	{
 		if (this.owner != null)

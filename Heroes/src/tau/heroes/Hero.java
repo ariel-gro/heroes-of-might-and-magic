@@ -23,6 +23,13 @@ public class Hero
 		this.player = player;
 	}
 
+	public Hero(Player player, Board theBoard, int X, int Y) {
+		this.player = player;
+		this.xPos  = X;
+		this.yPos = Y;
+		player.setHero(this);
+	}
+
 	//this will start a battle against h. (this - attacker, h - defender).
 	public void attack(Hero defender)
 	{
@@ -103,4 +110,15 @@ public class Hero
 	{
 		_alive = false;
 	}
+	
+	public int getXPos()
+	{
+		return this.xPos;
+	}
+	
+	public int getYPos()
+	{
+		return this.yPos;
+	}
+	
 }
