@@ -145,6 +145,7 @@ public class MainModule
 						}
 						String name = myPlayer.getName();
 						players.remove(player);
+						player--;
 						System.out.println(name + " is out of the game .");
 						theBoard.getBoardState(x, y).setHero(null);
 					}
