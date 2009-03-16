@@ -79,7 +79,7 @@ public class Player {
 			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementAmount(tempType.getTypeName(), amount);
 		}
-		System.out.println("Player"+this.playerName+" ended his turn");
+		System.out.println("Player "+this.playerName+" ended his turn");
 		System.out.println();
 	}
 		

@@ -87,9 +87,9 @@ public class MainModule
 
 		while (true)
 		{
+			CanAct.reset();
 			for (int player = 0; player < numOfPlayers;)
 			{
-				CanAct.reset();
 				int oldX = players.get(player).getHero().getXPos();
 				int oldY = players.get(player).getHero().getYPos();
 				String str = " You are at " + oldX + "," + oldY;
@@ -112,6 +112,7 @@ public class MainModule
 				{
 					players.get(player).endTurn();
 					player++;
+					CanAct.reset();
 					continue;
 				}
 				else if(userInput[0].equals(commands.help.toString()))
