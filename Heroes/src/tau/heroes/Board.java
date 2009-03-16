@@ -61,12 +61,12 @@ public class Board
 				else
 				{
 					objectName="";
-					if(theBoard[i][j-1].getHero() != null)
+					if(theBoard[j-1][i].getHero() != null)
 						objectName += "H";
-					if(theBoard[i][j-1].getCastle() != null)
+					if(theBoard[j-1][i].getCastle() != null)
 						objectName += "C";
-					if(theBoard[i][j-1].getResource() != null)
-						objectName += theBoard[i][j-1].getResource().getType().getTypeName().toUpperCase().charAt(0);
+					if(theBoard[j-1][i].getResource() != null)
+						objectName += theBoard[j-1][i].getResource().getType().getTypeName().toUpperCase().charAt(0);
 
 					if(objectName.length()==0)
 						System.out.print("  ");
