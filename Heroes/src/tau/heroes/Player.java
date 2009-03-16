@@ -2,11 +2,14 @@ package tau.heroes;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+
+import java.util.HashMap;
+
 public class Player {
 	private final String playerName;
+	private Hero hero;
 	private HashMap<String, Integer> resources;
 	private HashMap<String, Integer> resourceAmount;
-	private LinkedList<Hero> heroList;
 
 	public Player (String name)
 	{
@@ -18,9 +21,18 @@ public class Player {
 			resources.put(ResourceType.values()[i].getTypeName(), 0);
 			resourceAmount.put(ResourceType.values()[i].getTypeName(), 0);
 		}
-		heroList = new LinkedList<Hero>();
 	}
 
+	public void setHero(Hero theHero)
+	{
+		this.hero = theHero;
+	}
+	
+	public Hero getHero()
+	{
+		return hero;
+	}
+	
 	public int getQuantity (String type)
 	{
 		return (this.resources.get(type));
@@ -67,7 +79,7 @@ public class Player {
 			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementAmount(tempType.getTypeName(), amount);
 		}
-		System.out.println("Player "+this.playerName+" ended his turn");
+		System.out.println("Player"+this.playerName+" ended his turn");
 		System.out.println();
 	}
 		
@@ -100,15 +112,4 @@ public class Player {
 		}
 		System.out.println();
 	}
-
-	public void setHero(Hero hero) {
-		this.heroList.add(hero);
-		
-	}
-	
-	public Hero getHero() {
-		return heroList.get(0);		
-	}
-	
-	
 }

@@ -10,8 +10,9 @@ public class Hero
 	private int xPos;
 	private int yPos;
 	public Player player;
+	private int maxAllowedSteps = 5;
 
-	public Hero(int attack, int defense,Army a)
+	public Hero(int attack, int defense, Army a)
 	{
 		_army = a;
 		_alive = true;
@@ -19,15 +20,12 @@ public class Hero
 		_defenseSkill = defense;
 	}
 
-	public Hero(Player player) {
+	public Hero(Player player, Board theBoard, int x, int y) {
 		this.player = player;
-	}
-
-	public Hero(Player player, Board theBoard, int X, int Y) {
-		this.player = player;
-		this.xPos  = X;
-		this.yPos = Y;
-		player.setHero(this);
+		this.xPos = x;
+		this.yPos = y;
+		
+		theBoard.placeHero(this, x, y);
 	}
 
 	//this will start a battle against h. (this - attacker, h - defender).
@@ -89,17 +87,58 @@ public class Hero
 		}
 	}
 
-	public void moveTo(int x, int y, World w)
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param theBoard
+	 * @return
+	 */
+	public boolean moveTo(int x, int y, Board theBoard)
 	{
+		if(checkStepsAllowed(x, y, theBoard) == false)
+			return false;
+
+		if (theBoard.getBoardState(x, y).getResource() != null)
+		{
+			theBoard.getBoardState(x, y).getResource().setOwner(this.player);
+		}
+		theBoard.placeHero(this, x, y);
+		theBoard.removeHero(xPos, yPos);
+		
 		this.xPos = x;
 		this.yPos = y;
-		if (w.getResourcesGrid(x,y) != null)
-		{
-			w.getResourcesGrid(x,y).setOwner(this.player);
-		}
-		w.setHerosGrid(this, x, y);
+		
+		theBoard.printBoard();
+		
+		return true;
 	}
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param theBoard
+	 * @return
+	 */
+	private boolean checkStepsAllowed(int x, int y, Board theBoard)
+	{
+		if((Math.abs(xPos - x) +  Math.abs(yPos - y)) > maxAllowedSteps)
+		{
+			System.out.println("Move not legal. Hero can only move up to " + maxAllowedSteps + " steps !!!");
+			return false;
+		}
+		
+		if(x >= theBoard.getSize() || y >= theBoard.getSize())
+		{
+			System.out.println("Move not legal. Hero cannot move off map !!!");
+			return false;
+		}
+		
+		return true;	
+	}
+	
+	
 	public boolean alive()
 	{
 		if(_army == null || _army.getFirstCreature() == null)
@@ -110,15 +149,4 @@ public class Hero
 	{
 		_alive = false;
 	}
-	
-	public int getXPos()
-	{
-		return this.xPos;
-	}
-	
-	public int getYPos()
-	{
-		return this.yPos;
-	}
-	
 }

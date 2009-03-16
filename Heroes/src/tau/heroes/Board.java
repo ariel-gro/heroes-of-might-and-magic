@@ -1,80 +1,170 @@
 package tau.heroes;
+
 import java.util.*;
+
+
 
 public class Board
 {
 	private int size;
-	private BoardState[][] world;
-	private LinkedList<Hero> HeroesList = new LinkedList<Hero>();
-	private LinkedList<Property> propertyList = new LinkedList<Property>();
-
+	private BoardState[][] theBoard;
+	
+	/**
+	 * 
+	 * @param size
+	 */
 	public Board(int size)
 	{
-		world = new BoardState[size][size];
+		theBoard = new BoardState[size][size];
 		for (int i=0; i<size ; i++)
 		{
 			for (int j=0 ; j<size ; j++)
 			{
-				world[i][j]= new BoardState();
+				theBoard[i][j]= new BoardState();
 			}
 		}
 
 		this.size = size;
-
-		setWorld();
+	}
+	
+	/**
+	 * 
+	 */
+	public void printBoard()
+	{
+		String objectName;
+		
+		System.out.print(" ");
+		for (int i=0; i<size+1 ; i++)
+			if(i!=size)
+				System.out.print(i + ((i<10)?" ":""));
+		
+		System.out.println();
+		
+		for (int i=0; i<size+1 ; i++)
+			System.out.print("--");
+		
+		System.out.println();
+		
+		for (int i=0; i<size ; i++)
+		{
+			for (int j=0 ; j<size+2 ; j++)
+			{
+				if(j==0)
+				{
+					System.out.print("|");
+				}
+				else if (j==size+1)
+				{
+					System.out.print("|" + i);
+				}
+				else
+				{
+					objectName="";
+					if(theBoard[i][j-1].getHero() != null)
+						objectName += "H";
+					if(theBoard[i][j-1].getCastle() != null)
+						objectName += "C";
+					if(theBoard[i][j-1].getResource() != null)
+						objectName += theBoard[i][j-1].getResource().getType().getTypeName().toUpperCase().charAt(0);
+					
+					if(objectName.length()==0)
+						System.out.print("  ");
+					else if(objectName.length()==1)
+						System.out.print(objectName + " ");
+					else
+						System.out.print(objectName);
+				}				
+			}
+			System.out.println();
+		}
+		
+		for (int i=0; i<size+1 ; i++)
+			System.out.print("--");
+		
+		System.out.println();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getSize()
 	{
 		return size;
 	}
 
 	/**
-	 * @pre world[x][y].Hero == null
+	 * 
+	 * @param theHero
 	 * @param x
 	 * @param y
 	 */
-	public void placeHero(int x, int y)
+	public void placeHero(Hero theHero, int x, int y)
 	{
-		Hero h = new Hero(null);
-		HeroesList.addFirst(h);
-		world[x][y].setHero(h);
+		theBoard[x][y].setHero(theHero);
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void removeHero(int x, int y)
+	{
+		theBoard[x][y].setHero(null);
 	}
 
 	/**
-	 * @pre world[x][y].property == null
+	 * 
+	 * @param theResource
 	 * @param x
 	 * @param y
 	 */
-	public void placeProperty(int x, int y)
+	public void placeResource(Resource theResource, int x, int y)
 	{
-		Property property = new Property();
-		propertyList.add(property);
-		world[x][y].setProperty(property);
-	}
-
-	private void setWorld()
-	{
-		placeHero(0,0);
-		placeHero(0,19);
-		placeHero(19,0);
-		placeHero(19,19);
-
-		placeProperty(0, 0);
-		placeProperty(0, 19);
-		placeProperty(19, 0);
-		placeProperty(19, 19);
+		theBoard[x][y].setResource(theResource);
 	}
 	
-	public BoardState[][] getWorld()
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void removeResource(int x, int y)
 	{
-		return this.world;
+		theBoard[x][y].setResource(null);
 	}
 	
+	/**
+	 * 
+	 * @param theCastle
+	 * @param x
+	 * @param y
+	 */
+	public void placeCastle(Castle theCastle, int x, int y)
+	{
+		theBoard[x][y].setCastle(theCastle);
+	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void removeCastle(int x, int y)
+	{
+		theBoard[x][y].setCastle(null);
+	}
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public BoardState getBoardState(int x, int y)
 	{
-		return world[x][y];
+		return theBoard[x][y];
 	}
 }

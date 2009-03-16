@@ -1,4 +1,5 @@
 package tau.heroes;
+
 public enum AlignmentType
 {
 	KNIGHT,
@@ -6,3 +7,4 @@ public enum AlignmentType
 	SORCERESS,
 	WARLOCK
 }
+

@@ -1,5 +1,8 @@
 package tau.heroes;
 
+
+
+
 public abstract class Creature
 {
 	private AlignmentType _type;

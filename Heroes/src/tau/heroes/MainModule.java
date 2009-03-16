@@ -1,5 +1,10 @@
 package tau.heroes;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Vector;
+
 
 
 import java.io.BufferedReader;
@@ -56,7 +61,6 @@ public class MainModule
 
 		int boardSize = Integer.parseInt(getCommandAndParameters("Enter board size:")[0]);
 		Board theBoard = new Board(boardSize);
-		World theWorld = new World(boardSize, boardSize); 
 
 		for (int i = 0; i < numOfPlayers; i++)
 		{
@@ -73,21 +77,24 @@ public class MainModule
 			{
 				int randomX = (int) (Math.random() * (boardSize - 1));
 				int randomY = (int) (Math.random() * (boardSize - 1));
+
+				if (theBoard.getBoardState(randomX, randomY).getIsEmpty())
+					resources.add(new Resource(rt, theBoard, randomX, randomY));
 			}
 		}
 
-		
+		theBoard.printBoard();
+
 		
 		while (true)
 		{
 			for (int player = 0; player < numOfPlayers; player++)
 			{
-				String temp = players.get(player).getName() + " You are at " +  players.get(player).getHero().getXPos() + " "+ players.get(player).getHero().getYPos() + ", make your move:";
-				userInput = getCommandAndParameters(temp);
+				userInput = getCommandAndParameters(players.get(player).getName() + ", make your move:");
 				
 				if(userInput[0].equals(commands.move.toString()))
 				{
-					players.get(player).getHero().moveTo(Integer.parseInt(userInput[1]), Integer.parseInt(userInput[2]), theWorld);
+					players.get(player).getHero().moveTo(Integer.parseInt(userInput[1]), Integer.parseInt(userInput[2]), theBoard);
 				}
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
