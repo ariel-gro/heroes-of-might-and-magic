@@ -140,6 +140,7 @@ public class MainModule
 				else if(userInput[0].equals(commands.info.toString()))
 				{
 					players.get(player).displayResources();
+					players.get(player).displayResourcesAmounts();
 					if(h != null)
 					{
 						System.out.println("You have "+h.getDefenseSkill()+" defense skill and "+h.getAttackSkill()+" attack skill");
