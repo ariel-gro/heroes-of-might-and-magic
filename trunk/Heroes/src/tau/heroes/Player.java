@@ -2,10 +2,7 @@ package tau.heroes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-
-
 import java.util.HashMap;
-
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class Player {
@@ -14,6 +11,7 @@ public class Player {
 	private HashMap<String, Integer> resources;
 	private HashMap<String, Integer> resourceAmount;
 	private ArrayList<Castle> castles;
+	private int daysWithoutCastles;
 
 	public Player (String name)
 	{
@@ -21,6 +19,7 @@ public class Player {
 		resources = new HashMap<String, Integer>(ResourceType.values().length);
 		resourceAmount = new HashMap<String, Integer>(ResourceType.values().length);
 		castles = new ArrayList<Castle>();
+		daysWithoutCastles = 0;
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			resources.put(ResourceType.values()[i].getTypeName(), 0);
@@ -136,5 +135,22 @@ public class Player {
 			tempTypeName = ResourceType.values()[i].getTypeName();
 			System.out.println(tempTypeName+" \t\t "+this.resources.get(tempTypeName)+"\n");
 		}
+	}
+	
+	public boolean isAlive()
+	{
+		if (castles.isEmpty())
+		{
+			daysWithoutCastles++;
+			if (daysWithoutCastles == 7)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			daysWithoutCastles = 0;
+		}
+		return true;
 	}
 }
