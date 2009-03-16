@@ -1,5 +1,7 @@
 package tau.heroes;
 
+import java.io.IOException;
+
 public class Hero
 {
 	private boolean _alive;
@@ -12,6 +14,7 @@ public class Hero
 	public Player player;
 	private int maxAllowedSteps = 5;
 
+	//This is for testing... don't remove.
 	public Hero(int attack, int defense, Army a)
 	{
 		_army = a;
@@ -20,12 +23,20 @@ public class Hero
 		_defenseSkill = defense;
 	}
 
-	public Hero(Player player, Board theBoard, int x, int y) {
+	public Hero(Player player, Board theBoard, int X, int Y) {
 		this.player = player;
-		this.xPos = x;
-		this.yPos = y;
-		
-		theBoard.placeHero(this, x, y);
+		this.xPos  = X;
+		this.yPos = Y;
+		_alive = true;
+		//randomly select a number between 0 and 2.
+		_attackSkill = (int) (Math.random() * 3);
+		_defenseSkill = (int) (Math.random() * 3);
+		Creature[] c = new Creature[Army.MAX_CREATURES];
+		//random number between 1 - 10.
+		c[0] = new Soldier(1+ (int)(Math.random() * 10));
+		_army = new Army(c);
+
+		theBoard.placeHero(this, X, Y);
 	}
 
 	//this will start a battle against h. (this - attacker, h - defender).
@@ -59,7 +70,19 @@ public class Hero
 			Creature attackerCreature = _army.getCreature(i);
 			if(attackerCreature != null)
 			{
-				Creature defenderCreature = defender._army.getFirstCreature();
+				System.out.println("You are about to attack with creature number "+(i+1));
+				String[] s = MainModule.getCommandAndParameters("Please select the enemy creature you want to attack:");
+				Creature defenderCreature;
+				try
+				{
+					int defenderInt =  Integer.parseInt(s[0]) - 1;
+					defenderCreature = defender._army.getCreature(defenderInt);
+					defenderCreature.get_name();
+				}
+				catch(Exception e)
+				{
+					defenderCreature = defender._army.getFirstCreature();
+				}
 				if(defenderCreature != null)
 				{
 					int totalDefense = defenderCreature.get_defenseSkill() + defender._defenseSkill;
@@ -88,7 +111,7 @@ public class Hero
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -103,14 +126,9 @@ public class Hero
 		{
 			theBoard.getBoardState(x, y).getResource().setOwner(this.player);
 		}
-		
-		if (theBoard.getBoardState(x, y).getCastle() != null) {
-			theBoard.getBoardState(x, y).getCastle().enterHero(this);
-		}
-		
 		theBoard.placeHero(this, x, y);
 		theBoard.removeHero(xPos, yPos);
-		
+
 		this.xPos = x;
 		this.yPos = y;
 		
@@ -118,7 +136,7 @@ public class Hero
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -131,17 +149,29 @@ public class Hero
 			System.out.println("Move not legal. Hero can only move up to " + maxAllowedSteps + " steps !!!");
 			return false;
 		}
-		
+
 		if(x >= theBoard.getSize() || y >= theBoard.getSize())
 		{
 			System.out.println("Move not legal. Hero cannot move off map !!!");
 			return false;
 		}
-		
-		return true;	
+
+		return true;
 	}
-	
-	
+
+
+	public Army getArmy(){
+		return _army;
+	}
+	public int getAttackSkill()
+	{
+		return _attackSkill;
+	}
+	public int getDefenseSkill()
+	{
+		return _defenseSkill;
+	}
+
 	public boolean alive()
 	{
 		if(_army == null || _army.getFirstCreature() == null)
@@ -152,12 +182,12 @@ public class Hero
 	{
 		_alive = false;
 	}
-	
+
 	public int getXPos()
 	{
 		return this.xPos;
 	}
-	
+
 	public int getYPos()
 	{
 		return this.yPos;
