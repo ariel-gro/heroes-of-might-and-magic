@@ -109,7 +109,7 @@ public class MainModule
 				{
 					oldX = h.getXPos();
 					oldY = h.getYPos();
-					temp = players.get(player).getName() + " You are at (" + oldX + ", "+ oldY + "), make your move:";
+					temp = players.get(player).getName() + " You are at (" + oldX + ","+ oldY + "), make your move:";
 				}
 				userInput = getCommandAndParameters(temp);
 				if(userInput[0].equals(commands.move.toString()) && bCanMove)
