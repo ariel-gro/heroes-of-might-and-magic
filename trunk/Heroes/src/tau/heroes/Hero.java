@@ -103,6 +103,11 @@ public class Hero
 		{
 			theBoard.getBoardState(x, y).getResource().setOwner(this.player);
 		}
+		
+		if (theBoard.getBoardState(x, y).getCastle() != null) {
+			theBoard.getBoardState(x, y).getCastle().enterHero(this);
+		}
+		
 		theBoard.placeHero(this, x, y);
 		theBoard.removeHero(xPos, yPos);
 		
