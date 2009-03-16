@@ -114,8 +114,6 @@ public class Hero
 		this.xPos = x;
 		this.yPos = y;
 		
-		theBoard.printBoard();
-		
 		return true;
 	}
 

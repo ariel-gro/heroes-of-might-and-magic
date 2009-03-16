@@ -90,9 +90,10 @@ public class MainModule
 			CanAct.reset();
 			for (int player = 0; player < numOfPlayers;)
 			{
+				theBoard.printBoard();
 				int oldX = players.get(player).getHero().getXPos();
 				int oldY = players.get(player).getHero().getYPos();
-				String str = " You are at (" + oldX + "," + oldY + ")";
+				String str = " You are at (" + oldY + "," + oldX+ ")";
 				userInput = getCommandAndParameters(players.get(player).getName() + str + ". make your move:");
 				
 				if(userInput[0].equals(commands.move.toString()))
