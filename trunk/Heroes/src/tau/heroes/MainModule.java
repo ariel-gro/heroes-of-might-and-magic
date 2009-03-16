@@ -90,7 +90,7 @@ public class MainModule
 		while (true)
 		{
 			CanAct.reset();
-			for (int player = 0 ; player < numOfPlayers ;)
+			for (int player = 0 ; player < numOfPlayers ; )
 			{
 				Hero h = players.get(player).getHero();
 				boolean bCanMove = true;
@@ -128,9 +128,8 @@ public class MainModule
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
-					player++;
 					CanAct.reset();
-					if (!(players.get(player - 1).isAlive()))
+					if (!(players.get(player).isAlive()))
 					{
 						Player myPlayer = players.get(player);
 						int x = myPlayer.getHero().getXPos();
@@ -145,10 +144,11 @@ public class MainModule
 						}
 						String name = myPlayer.getName();
 						players.remove(player);
-						player--;
+						numOfPlayers--;
 						System.out.println(name + " is out of the game .");
 						theBoard.getBoardState(x, y).setHero(null);
 					}
+					player++;
 					continue;
 				}
 				else if(userInput[0].equals(commands.help.toString()))
