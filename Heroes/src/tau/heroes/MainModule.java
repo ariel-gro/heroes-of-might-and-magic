@@ -130,7 +130,7 @@ public class MainModule
 					players.get(player).endTurn();
 					player++;
 					CanAct.reset();
-					if (!(players.get(player).isAlive()))
+					if (!(players.get(player - 1).isAlive()))
 					{
 						Player myPlayer = players.get(player);
 						int x = myPlayer.getHero().getXPos();
@@ -138,12 +138,14 @@ public class MainModule
 						myPlayer.getHero().kill();
 						for (int k = 0 ; k < resources.size() ; k++)
 						{
-							if (resources.get(k).getOwner().equals(myPlayer))
+							if ((resources.get(k).getOwner() != null) && (resources.get(k).getOwner().equals(myPlayer)))
 							{
 								resources.get(k).setOwner(null);							
 							}
 						}
+						String name = myPlayer.getName();
 						players.remove(player);
+						System.out.println(name + " is out of the game .");
 						theBoard.getBoardState(x, y).setHero(null);
 					}
 					continue;
