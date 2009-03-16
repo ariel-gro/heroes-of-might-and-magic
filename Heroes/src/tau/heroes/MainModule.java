@@ -130,6 +130,22 @@ public class MainModule
 					players.get(player).endTurn();
 					player++;
 					CanAct.reset();
+					if (!(players.get(player).isAlive()))
+					{
+						Player myPlayer = players.get(player);
+						int x = myPlayer.getHero().getXPos();
+						int y = myPlayer.getHero().getYPos();
+						myPlayer.getHero().kill();
+						for (int k = 0 ; k < resources.size() ; k++)
+						{
+							if (resources.get(k).getOwner().equals(myPlayer))
+							{
+								resources.get(k).setOwner(null);							
+							}
+						}
+						players.remove(player);
+						theBoard.getBoardState(x, y).setHero(null);
+					}
 					continue;
 				}
 				else if(userInput[0].equals(commands.help.toString()))
