@@ -85,12 +85,12 @@ public class MainModule
 
 		theBoard.printBoard();
 
-		
 		while (true)
 		{
 			for (int player = 0; player < numOfPlayers; player++)
 			{
-				userInput = getCommandAndParameters(players.get(player).getName() + ", make your move:");
+				String str = " You are at " + players.get(player).getHero().getXPos() + "," + players.get(player).getHero().getYPos();
+				userInput = getCommandAndParameters(players.get(player).getName() + str + ". make your move:");
 				
 				if(userInput[0].equals(commands.move.toString()))
 				{
