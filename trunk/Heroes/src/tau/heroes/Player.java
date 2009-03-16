@@ -1,9 +1,6 @@
 package tau.heroes;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.HashMap;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class Player {
 	private final String playerName;
@@ -88,6 +85,10 @@ public class Player {
 			System.out.println(this.playerName + " lost the castle at (" + 
 					castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
+	}
+	
+	public ArrayList<Castle> getCastles() {
+		return this.castles;
 	}
 
 	public void endTurn()

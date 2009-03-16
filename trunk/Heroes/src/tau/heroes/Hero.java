@@ -1,14 +1,12 @@
 package tau.heroes;
 
-import java.io.IOException;
-
 public class Hero
 {
 	private boolean _alive;
 	private Army _army;
 	private int _attackSkill;
 	private int _defenseSkill;
-	private AlignmentType _type;
+	//private AlignmentType _type;
 	private int xPos;
 	private int yPos;
 	public Player player;

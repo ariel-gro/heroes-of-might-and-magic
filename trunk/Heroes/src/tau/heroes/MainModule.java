@@ -3,13 +3,7 @@ package tau.heroes;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Vector;
-
-
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class MainModule
@@ -18,6 +12,7 @@ public class MainModule
 
 		move("move hero to x,y on the map. Usage: move x y"),
 		endTurn("end the player turn. change turn to other player/s"),
+		castle("enter the castle menu"),
 		help("get help for the possible commands"),
 		info("get information about your player"),
 		quit("quit the game");
@@ -25,6 +20,24 @@ public class MainModule
 		private final String description;
 
 		private commands(String theDescription)
+		{
+			this.description = theDescription;
+		}
+
+		public String getDescription()
+		{
+			return this.description;
+		}
+	}
+	
+	public enum CastleCommands {
+		build("Build a creature factory. Usage: build [goblin|soldier]"),
+		help("Get help for the possible commands"),
+		exit("Exit castle menu");
+		
+		private final String description;
+
+		private CastleCommands(String theDescription)
 		{
 			this.description = theDescription;
 		}
@@ -128,6 +141,8 @@ public class MainModule
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
+					if (player == numOfPlayers)
+						player = 0;
 					CanAct.reset();
 					if (!(players.get(player).isAlive()))
 					{
@@ -150,6 +165,10 @@ public class MainModule
 					}
 					player++;
 					continue;
+				}
+				else if(userInput[0].equals(commands.castle.toString()))
+				{
+					castleMenu(player);
 				}
 				else if(userInput[0].equals(commands.help.toString()))
 				{
@@ -176,6 +195,87 @@ public class MainModule
 					System.out.println("Command not recognized !!!");
 				}
 			}
+		}
+	}
+
+	private static void castleMenu(int player_index) {
+		Player player = players.get(player_index);
+		ArrayList<Castle> playerCastles = player.getCastles();
+		
+		if (playerCastles.size() == 0) {
+			System.out.println("Sorry, you don't have any castles");
+			return;
+		}
+		
+		Castle theCastle = null;
+		
+		if (playerCastles.size() > 1) {
+			System.out.println("Please choose one castle:");
+			for (int i = 0; i < playerCastles.size(); i++)
+				System.out.println((i+1) + ". " + playerCastles.get(i).toLocationString());
+			String[] response = getCommandAndParameters("Enter castle number: ");
+			int index = Integer.parseInt(response[0]) - 1;
+			if (index < 0 || index >= playerCastles.size()) {
+				System.out.println("Sorry, bad input");
+				return;
+			}
+			theCastle = playerCastles.get(index);
+		}
+		else
+			theCastle = playerCastles.get(0);
+		
+		while (true) {
+			System.out.println("Castle menu of " + theCastle.toLocationString());
+			String[] response = getCommandAndParameters("Enter a command: ");
+			if (response.length > 0)
+				if (response[0].equals(CastleCommands.build.toString())) {
+					handleBuildCommand(player, theCastle, response);						
+				}
+				else if (response[0].equals(CastleCommands.help.toString())) {
+					for (CastleCommands cmd : CastleCommands.values())
+						System.out.println(cmd.toString() + " - " + cmd.getDescription());
+				}
+				else if (response[0].equals(CastleCommands.exit.toString())) {
+					return;
+				}
+				else
+					System.out.println("Unknown command");
+		}
+	}
+
+	private static void handleBuildCommand(Player player, Castle theCastle,	String[] response) {
+		if (response.length > 1) {
+			CreatureFactory factory = null;
+			if (response[1].equals("goblin"))
+				factory = new GoblinFactory();
+			else if (response[1].equals("soldier"))
+				factory = new SoldierFactory();
+			if (factory != null) {
+				if (theCastle.hasFactory(factory.getClass()))
+					System.out.println("There is already a factory of this type in this castle");
+				else {
+					Boolean hasEnough = true;
+					for (ResourceType rType : ResourceType.values()) {
+						int price = factory.getPrice(rType.getTypeName());
+						int amount = player.getCurrentAmount(rType.getTypeName());
+						if (price > amount) {
+							System.out.println("You don't have enough resources of type " +
+									rType.getTypeName() + ". You need " + price + 
+									" and you have only " + amount + ".");
+							hasEnough = false;
+						}
+					}
+					if (hasEnough) {
+						for (ResourceType rType : ResourceType.values()) {
+							int price = factory.getPrice(rType.getTypeName());
+							player.decrementAmount(rType.getTypeName(), price);
+						}
+						theCastle.addFactory(factory);
+					}
+				}
+			}
+			else
+				System.out.println("Unknown creature type");
 		}
 	}
 
