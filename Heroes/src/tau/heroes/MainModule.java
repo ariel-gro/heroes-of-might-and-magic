@@ -83,7 +83,6 @@ public class MainModule
 			}
 		}
 
-		theBoard.printBoard();
 
 		while (true)
 		{
