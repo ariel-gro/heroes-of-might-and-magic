@@ -85,19 +85,18 @@ public class MainModule
 			}
 		}
 
-
+		theBoard.printBoard();
+		
 		while (true)
 		{
 			CanAct.reset();
-			for (int player = 0; player < numOfPlayers;)
+			for (int player = 0 ; player < numOfPlayers ;)
 			{
-
 				Hero h = players.get(player).getHero();
 				boolean bCanMove = true;
 				String temp;
 				CanAct.reset();
 
-				theBoard.printBoard();
 				int oldX = 0;
 				int oldY = 0;
 				if(h == null)
@@ -119,6 +118,7 @@ public class MainModule
 					if (CanAct.moveUpdate(oldX, oldY, newX, newY))
 					{
 						players.get(player).getHero().moveTo(newX, newY, theBoard);
+						theBoard.printBoard();
 					}
 					else
 					{
