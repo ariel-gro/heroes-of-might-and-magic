@@ -57,6 +57,12 @@ public class CastleTest extends TestCase {
 		assertEquals(4, castle2.getXPos());
 		assertEquals(6, castle2.getYPos());
 		assertEquals(castle2, theBoard.getBoardState(4, 6).getCastle());
+		assertEquals(player1, castle1.getPlayer());
+		assertEquals(player2, castle2.getPlayer());
+		assertEquals(1, player1.getCastles().size());
+		assertEquals(1, player2.getCastles().size());
+		assertTrue(player1.getCastles().contains(castle1));
+		assertTrue(player2.getCastles().contains(castle2));
 	}
 	
 	/**
@@ -72,6 +78,12 @@ public class CastleTest extends TestCase {
 		assertEquals(6, castle1.getXPos());
 		assertEquals(6, castle1.getYPos());
 		assertEquals(castle1, theBoard.getBoardState(6, 6).getCastle());
+		assertEquals(player1, castle1.getPlayer());
+		assertEquals(player2, castle2.getPlayer());
+		assertEquals(1, player1.getCastles().size());
+		assertEquals(1, player2.getCastles().size());
+		assertTrue(player1.getCastles().contains(castle1));
+		assertTrue(player2.getCastles().contains(castle2));
 	}
 
 	public void testEnterHeroEmptyCastle() {
@@ -83,6 +95,12 @@ public class CastleTest extends TestCase {
 		assertEquals(4, castle2.getXPos());
 		assertEquals(6, castle2.getYPos());
 		assertEquals(castle2, theBoard.getBoardState(4, 6).getCastle());
+		assertEquals(player1, castle1.getPlayer());
+		assertEquals(player1, castle2.getPlayer());
+		assertEquals(2, player1.getCastles().size());
+		assertEquals(0, player2.getCastles().size());
+		assertTrue(player1.getCastles().contains(castle1));
+		assertTrue(player1.getCastles().contains(castle2));
 	}
 	
 	public void testAddRemoveFactory() {

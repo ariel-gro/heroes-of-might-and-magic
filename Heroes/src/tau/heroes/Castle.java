@@ -40,6 +40,10 @@ public class Castle
 		hero.player.addCastle(this);
 		this.player = hero.player;
 	}
+	
+	public Player getPlayer() {
+		return this.player;
+	}
 
 	public int getXPos() {
 		return this.xPos;
@@ -69,7 +73,7 @@ public class Castle
 		if (!this.hasFactory(factory.getClass())) {
 			this.factories.add(factory);
 			
-			//TODO: Print
+			System.out.println(this.toLocationString() + ": A new " + factory.getName() + " was added");
 		}
 	}
 	
@@ -77,7 +81,11 @@ public class Castle
 		if (this.hasFactory(factory.getClass())) {
 			this.factories.remove(factory);
 			
-			//TODO: Print
+			System.out.println(this.toLocationString() + ": A " + factory.getName() + " was removed");
 		}
+	}
+	
+	public String toLocationString() {
+		return "Castle at (" + xPos + ", " + this.yPos + ")";
 	}
 }

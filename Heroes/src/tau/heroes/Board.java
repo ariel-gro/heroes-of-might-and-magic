@@ -1,9 +1,5 @@
 package tau.heroes;
 
-import java.util.*;
-
-
-
 public class Board
 {
 	private int size;
