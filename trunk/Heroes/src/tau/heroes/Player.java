@@ -108,7 +108,7 @@ public class Player {
 		String tempTypeName;
 
 		System.out.println("Player "+this.playerName+" resource mines list:\n");
-		System.out.println("Resource \t Amount");
+		System.out.println("Resource \t Quantity");
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
