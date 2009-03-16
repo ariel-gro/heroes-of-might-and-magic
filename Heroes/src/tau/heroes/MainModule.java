@@ -87,18 +87,31 @@ public class MainModule
 
 		while (true)
 		{
-			for (int player = 0; player < numOfPlayers; player++)
+			for (int player = 0; player < numOfPlayers;)
 			{
-				String str = " You are at " + players.get(player).getHero().getXPos() + "," + players.get(player).getHero().getYPos();
+				CanAct.reset();
+				int oldX = players.get(player).getHero().getXPos();
+				int oldY = players.get(player).getHero().getYPos();
+				String str = " You are at " + oldX + "," + oldY;
 				userInput = getCommandAndParameters(players.get(player).getName() + str + ". make your move:");
 				
 				if(userInput[0].equals(commands.move.toString()))
 				{
-					players.get(player).getHero().moveTo(Integer.parseInt(userInput[1]), Integer.parseInt(userInput[2]), theBoard);
+					int newX = Integer.parseInt(userInput[1]);
+					int newY = Integer.parseInt(userInput[2]);
+						if (CanAct.moveUpdate(oldX, oldY, newX, newY))
+						{
+							players.get(player).getHero().moveTo(newX, newY, theBoard);
+						}
+						else
+						{
+							System.out.println("Illegal move ! You can only move " + CanAct.getMovesLeft() + " steps more .");
+						}
 				}
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
+					player++;
 					continue;
 				}
 				else if(userInput[0].equals(commands.help.toString()))
@@ -113,8 +126,7 @@ public class MainModule
 				else
 				{
 					System.out.println("Command not recognized !!!");
-				}
-					
+				}	
 			}
 		}
 	}
