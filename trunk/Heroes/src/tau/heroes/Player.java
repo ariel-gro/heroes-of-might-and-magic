@@ -1,4 +1,5 @@
 package tau.heroes;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -27,22 +28,22 @@ public class Player {
 	{
 		this.hero = theHero;
 	}
-	
+
 	public Hero getHero()
 	{
 		return hero;
 	}
-	
+
 	public int getQuantity (String type)
 	{
 		return (this.resources.get(type));
 	}
-	
+
 	public void incrementQuantity (String type)
 	{
 		this.resources.put(type, this.resources.get(type) + 1);
 	}
-	
+
 	public void decrementQuantity (String type)
 	{
 		this.resources.put(type, this.resources.get(type) - 1);
@@ -62,7 +63,7 @@ public class Player {
 	{
 		this.resourceAmount.put(type, this.resourceAmount.get(type) + amount);
 	}
-	
+
 	public void decrementAmount (String type, int amount)
 	{
 		this.resourceAmount.put(type, this.resourceAmount.get(type) - amount);
@@ -72,21 +73,28 @@ public class Player {
 	{
 		ResourceType tempType;
 		int amount;
-		
+
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempType = ResourceType.values()[i];
 			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementAmount(tempType.getTypeName(), amount);
 		}
-		System.out.println("Player "+this.playerName+" ended his turn");
+
+		if(hero != null && !hero.alive())
+		{
+			hero = null;
+		}
+
+		System.out.println("Player"+this.playerName+" ended his turn");
+
 		System.out.println();
 	}
-		
+
 	public void displayResourcesAmounts()
 	{
 		String tempTypeName;
-		
+
 		System.out.println("Player "+this.playerName+" resource amounts list:");
 		System.out.println();
 		System.out.println("Resource \t Amount");
@@ -97,11 +105,11 @@ public class Player {
 		}
 		System.out.println();
 	}
-	
+
 	public void displayResources()
 	{
 		String tempTypeName;
-		
+
 		System.out.println("Player "+this.playerName+" resource mines list:");
 		System.out.println();
 		System.out.println("Resource \t Amount");

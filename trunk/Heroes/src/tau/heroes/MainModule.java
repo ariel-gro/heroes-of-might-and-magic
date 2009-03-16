@@ -16,9 +16,10 @@ public class MainModule
 {
 	public enum commands {
 
-		move("move hero to x,y on the map. Usage: move x y"), 
-		endTurn("end the player turn. change turn to other player/s"), 
+		move("move hero to x,y on the map. Usage: move x y"),
+		endTurn("end the player turn. change turn to other player/s"),
 		help("get help for the possible commands"),
+		info("get information about your player"),
 		quit("quit the game");
 
 		private final String description;
@@ -42,10 +43,10 @@ public class MainModule
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main(String[] args)
-	{		
+	{
 		players = new Vector<Player>();
 		heroes = new Vector<Hero>();
 		castles = new Vector<Castle>();
@@ -66,7 +67,8 @@ public class MainModule
 		{
 			int randomX = (int) (Math.random() * (boardSize - 1));
 			int randomY = (int) (Math.random() * (boardSize - 1));
-			heroes.add(new Hero(players.get(i), theBoard, randomX, randomY));
+			Hero h = new Hero(players.get(i), theBoard, randomX, randomY);
+			heroes.add(h);
 			castles.add(new Castle(players.get(i), theBoard, randomX, randomY));
 			players.get(i).setHero(heroes.get(i));
 		}
@@ -89,24 +91,39 @@ public class MainModule
 			CanAct.reset();
 			for (int player = 0; player < numOfPlayers;)
 			{
+
+				Hero h = players.get(player).getHero();
+				boolean bCanMove = true;
+				String temp;
+				CanAct.reset();
+
 				theBoard.printBoard();
-				int oldX = players.get(player).getHero().getXPos();
-				int oldY = players.get(player).getHero().getYPos();
-				String str = " You are at (" + oldX + "," + oldY+ ")";
-				userInput = getCommandAndParameters(players.get(player).getName() + str + ". make your move:");
-				
-				if(userInput[0].equals(commands.move.toString()))
+				int oldX = 0;
+				int oldY = 0;
+				if(h == null)
+				{
+					temp = players.get(player).getName()+" You don't have any heroes to move with!  make your move:";
+					bCanMove = false;
+				}
+				else
+				{
+					oldX = h.getXPos();
+					oldY = h.getYPos();
+					temp = players.get(player).getName() + " You are at " + oldX + " "+ oldY + ", make your move:";
+				}
+				userInput = getCommandAndParameters(temp);
+				if(userInput[0].equals(commands.move.toString()) && bCanMove)
 				{
 					int newX = Integer.parseInt(userInput[1]);
 					int newY = Integer.parseInt(userInput[2]);
-						if (CanAct.moveUpdate(oldX, oldY, newX, newY))
-						{
-							players.get(player).getHero().moveTo(newX, newY, theBoard);
-						}
-						else
-						{
-							System.out.println("Illegal move ! You can only move " + CanAct.getMovesLeft() + " steps more .");
-						}
+					if (CanAct.moveUpdate(oldX, oldY, newX, newY))
+					{
+						players.get(player).getHero().moveTo(newX, newY, theBoard);
+					}
+					else
+					{
+						System.out.println("Illegal move ! You can only move " + CanAct.getMovesLeft() + " steps more .");
+					}
 				}
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
@@ -120,6 +137,16 @@ public class MainModule
 					for (commands cmd : commands.values())
 						System.out.println(cmd.toString() + " - " + cmd.description);
 				}
+				else if(userInput[0].equals(commands.info.toString()))
+				{
+					players.get(player).displayResources();
+					if(h != null)
+					{
+						System.out.println("You have "+h.getDefenseSkill()+" defense skill and "+h.getAttackSkill()+" attack skill");
+						System.out.println("You have an army:");
+						System.out.println(h.getArmy().toString());
+					}
+				}
 				else if(userInput[0].equals(commands.quit.toString()))
 				{
 					System.exit(0);
@@ -127,12 +154,12 @@ public class MainModule
 				else
 				{
 					System.out.println("Command not recognized !!!");
-				}	
+				}
 			}
 		}
 	}
 
-	static String[] getCommandAndParameters(String cliPrompt)
+	public static String[] getCommandAndParameters(String cliPrompt)
 	{
 		String userInput = null;
 
