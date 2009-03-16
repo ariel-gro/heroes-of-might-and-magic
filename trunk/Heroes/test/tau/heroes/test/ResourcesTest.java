@@ -93,4 +93,18 @@ public class ResourcesTest extends TestCase
 		assertEquals(1000, player2.getCurrentAmount("gold"));
 		assertEquals(0, player2.getCurrentAmount("stone"));
 	}
+	
+	public void testIncrementResources()
+	{
+		assertEquals(0, player1.getQuantity("wood"));
+		
+		r.setOwner(player1);
+		assertEquals(1, player1.getQuantity("wood"));
+		r.setOwner(player1);
+		assertEquals(1, player1.getQuantity("wood"));
+		r.setOwner(player1);
+		assertEquals(1, player1.getQuantity("wood"));
+		
+		
+	}
 }
