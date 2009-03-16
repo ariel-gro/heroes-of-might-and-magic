@@ -19,8 +19,10 @@ import tau.heroes.*;
 public class CastleTest extends TestCase {
 	Board theBoard;
 	Player player1;
+	Player player2;
 	Hero hero1;
 	Castle castle1;
+	Castle castle2;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -28,9 +30,11 @@ public class CastleTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		theBoard = new Board(10);
-		player1 = new Player("Player1");
+		player1 = new Player("Jay");
+		player2 = new Player("Silent Bob");
 		hero1 = new Hero(player1, theBoard, 4, 4);
 		castle1 = new Castle(player1, theBoard, 6, 6);
+		castle2 = new Castle(player2, theBoard, 4, 6);
 	}
 
 	/**
@@ -51,13 +55,16 @@ public class CastleTest extends TestCase {
 		assertEquals(6, castle1.getXPos());
 		assertEquals(6, castle1.getYPos());
 		assertEquals(castle1, theBoard.getBoardState(6, 6).getCastle());
+		assertEquals(4, castle2.getXPos());
+		assertEquals(6, castle2.getYPos());
+		assertEquals(castle2, theBoard.getBoardState(4, 6).getCastle());
 	}
 	
 	/**
 	 * Test method for {@link tau.heroes.Castle#enterHero(tau.heroes.Hero)}.
 	 */
 	@Test
-	public void testEnterHero() {
+	public void testEnterHeroOwnCastle() {
 		Boolean result = hero1.moveTo(6, 6, theBoard);
 		assertTrue(result);
 		assertEquals(6, hero1.getXPos());
@@ -68,4 +75,14 @@ public class CastleTest extends TestCase {
 		assertEquals(castle1, theBoard.getBoardState(6, 6).getCastle());
 	}
 
+	public void testEnterHeroEmptyCastle() {
+		Boolean result = hero1.moveTo(4, 6, theBoard);
+		assertTrue(result);
+		assertEquals(4, hero1.getXPos());
+		assertEquals(6, hero1.getYPos());
+		assertEquals(hero1, theBoard.getBoardState(4, 6).getHero());
+		assertEquals(4, castle2.getXPos());
+		assertEquals(6, castle2.getYPos());
+		assertEquals(castle2, theBoard.getBoardState(4, 6).getCastle());
+	}
 }

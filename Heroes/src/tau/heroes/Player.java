@@ -6,17 +6,21 @@ import java.util.LinkedList;
 
 import java.util.HashMap;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 public class Player {
 	private final String playerName;
 	private Hero hero;
 	private HashMap<String, Integer> resources;
 	private HashMap<String, Integer> resourceAmount;
+	private ArrayList<Castle> castles;
 
 	public Player (String name)
 	{
 		this.playerName = name;
 		resources = new HashMap<String, Integer>(ResourceType.values().length);
 		resourceAmount = new HashMap<String, Integer>(ResourceType.values().length);
+		castles = new ArrayList<Castle>();
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			resources.put(ResourceType.values()[i].getTypeName(), 0);
@@ -67,6 +71,24 @@ public class Player {
 	public void decrementAmount (String type, int amount)
 	{
 		this.resourceAmount.put(type, this.resourceAmount.get(type) - amount);
+	}
+	
+	public void addCastle(Castle castle) {
+		if (!this.castles.contains(castle)) {
+			this.castles.add(castle);
+			
+			System.out.println(this.playerName + " now has the castle at (" + 
+					castle.getXPos() + ", " + castle.getYPos() + ")");
+		}
+	}
+	
+	public void removeCastle(Castle castle) {
+		if (this.castles.contains(castle)) {
+			this.castles.remove(castle);
+			
+			System.out.println(this.playerName + " lost the castle at (" + 
+					castle.getXPos() + ", " + castle.getYPos() + ")");
+		}
 	}
 
 	public void endTurn()
