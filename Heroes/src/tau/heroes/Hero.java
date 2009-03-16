@@ -149,4 +149,14 @@ public class Hero
 	{
 		_alive = false;
 	}
+	
+	public int getXPos()
+	{
+		return this.xPos;
+	}
+	
+	public int getYPos()
+	{
+		return this.yPos;
+	}
 }
