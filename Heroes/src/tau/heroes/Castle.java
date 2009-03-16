@@ -1,10 +1,13 @@
 package tau.heroes;
 
+import java.util.ArrayList;
+
 public class Castle
 {
 	private Board board;
 	private Player player;
 	private Army army;
+	private ArrayList<CreatureFactory> factories;
 	private int xPos;
 	private int yPos;
 	
@@ -12,6 +15,7 @@ public class Castle
 		this.player = player;
 		this.board = board;
 		this.army = null;
+		this.factories = new ArrayList<CreatureFactory>();
 		this.xPos = x;
 		this.yPos = y;
 		
@@ -51,5 +55,29 @@ public class Castle
 	
 	public void setArmy(Army army) {
 		this.army = army;
+	}
+	
+	public Boolean hasFactory(Class<? extends CreatureFactory> factoryClass) {
+		for (CreatureFactory factory : this.factories)
+			if (factory.getClass().equals(factoryClass))
+				return true;
+		
+		return false;
+	}
+	
+	public void addFactory(CreatureFactory factory) {
+		if (!this.hasFactory(factory.getClass())) {
+			this.factories.add(factory);
+			
+			//TODO: Print
+		}
+	}
+	
+	public void removeFactory(CreatureFactory factory) {
+		if (this.hasFactory(factory.getClass())) {
+			this.factories.remove(factory);
+			
+			//TODO: Print
+		}
 	}
 }
