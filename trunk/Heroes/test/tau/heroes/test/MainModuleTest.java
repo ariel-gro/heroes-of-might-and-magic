@@ -15,9 +15,9 @@ import org.junit.Before;
  */
 public class MainModuleTest extends TestCase {
 	
-	public void testEmpty()
+	public void testMoveLimits()
 	{
-		
+				
 	}
 
 	/**
