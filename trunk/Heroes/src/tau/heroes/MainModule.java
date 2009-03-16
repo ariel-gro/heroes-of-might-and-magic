@@ -92,7 +92,7 @@ public class MainModule
 				theBoard.printBoard();
 				int oldX = players.get(player).getHero().getXPos();
 				int oldY = players.get(player).getHero().getYPos();
-				String str = " You are at (" + oldY + "," + oldX+ ")";
+				String str = " You are at (" + oldX + "," + oldY+ ")";
 				userInput = getCommandAndParameters(players.get(player).getName() + str + ". make your move:");
 				
 				if(userInput[0].equals(commands.move.toString()))
