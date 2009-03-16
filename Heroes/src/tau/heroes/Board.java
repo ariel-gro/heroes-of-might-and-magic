@@ -8,9 +8,9 @@ public class Board
 {
 	private int size;
 	private BoardState[][] theBoard;
-	
+
 	/**
-	 * 
+	 *
 	 * @param size
 	 */
 	public Board(int size)
@@ -26,26 +26,26 @@ public class Board
 
 		this.size = size;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void printBoard()
 	{
 		String objectName;
-		
+
 		System.out.print(" ");
 		for (int i=0; i<size+1 ; i++)
 			if(i!=size)
 				System.out.print(i + ((i<10)?" ":""));
-		
+
 		System.out.println();
-		
+
 		for (int i=0; i<size+1 ; i++)
 			System.out.print("--");
-		
+
 		System.out.println();
-		
+
 		for (int i=0; i<size ; i++)
 		{
 			for (int j=0 ; j<size+2 ; j++)
@@ -67,26 +67,26 @@ public class Board
 						objectName += "C";
 					if(theBoard[i][j-1].getResource() != null)
 						objectName += theBoard[i][j-1].getResource().getType().getTypeName().toUpperCase().charAt(0);
-					
+
 					if(objectName.length()==0)
 						System.out.print("  ");
 					else if(objectName.length()==1)
 						System.out.print(objectName + " ");
 					else
 						System.out.print(objectName);
-				}				
+				}
 			}
 			System.out.println();
 		}
-		
+
 		for (int i=0; i<size+1 ; i++)
 			System.out.print("--");
-		
+
 		System.out.println();
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public int getSize()
@@ -95,18 +95,26 @@ public class Board
 	}
 
 	/**
-	 * 
+	 *
 	 * @param theHero
 	 * @param x
 	 * @param y
 	 */
 	public void placeHero(Hero theHero, int x, int y)
 	{
-		theBoard[x][y].setHero(theHero);
+		if(     theBoard[x][y].getHero() != null &&
+				theBoard[x][y].getHero().alive() &&
+				!theBoard[x][y].getHero().equals(theHero))
+		{
+			System.out.println("ATTACK!!!");
+			theHero.attack(theBoard[x][y].getHero());
+		}
+		if(theHero.alive())
+			theBoard[x][y].setHero(theHero);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */
@@ -116,7 +124,7 @@ public class Board
 	}
 
 	/**
-	 * 
+	 *
 	 * @param theResource
 	 * @param x
 	 * @param y
@@ -125,9 +133,9 @@ public class Board
 	{
 		theBoard[x][y].setResource(theResource);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */
@@ -135,9 +143,9 @@ public class Board
 	{
 		theBoard[x][y].setResource(null);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param theCastle
 	 * @param x
 	 * @param y
@@ -146,9 +154,9 @@ public class Board
 	{
 		theBoard[x][y].setCastle(theCastle);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */
@@ -158,7 +166,7 @@ public class Board
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @return
