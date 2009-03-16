@@ -14,6 +14,11 @@ import org.junit.Before;
  *
  */
 public class MainModuleTest extends TestCase {
+	
+	public void testEmpty()
+	{
+		
+	}
 
 	/**
 	 * @throws java.lang.Exception
