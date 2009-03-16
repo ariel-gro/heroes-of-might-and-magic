@@ -84,4 +84,35 @@ public class CastleTest extends TestCase {
 		assertEquals(6, castle2.getYPos());
 		assertEquals(castle2, theBoard.getBoardState(4, 6).getCastle());
 	}
+	
+	public void testAddRemoveFactory() {
+		SoldierFactory sFactory = new SoldierFactory();
+		GoblinFactory gFactory = new GoblinFactory();
+		
+		Class<? extends CreatureFactory> sFactoryClass = sFactory.getClass();
+		Class<? extends CreatureFactory> gFactoryClass = gFactory.getClass();
+		
+		assertTrue(!castle1.hasFactory(sFactoryClass));
+		assertTrue(!castle1.hasFactory(gFactoryClass));
+		
+		castle1.addFactory(sFactory);
+		
+		assertTrue(castle1.hasFactory(sFactoryClass));
+		assertTrue(!castle1.hasFactory(gFactoryClass));
+		
+		castle1.addFactory(gFactory);
+		
+		assertTrue(castle1.hasFactory(sFactoryClass));
+		assertTrue(castle1.hasFactory(gFactoryClass));
+		
+		castle1.removeFactory(sFactory);
+		
+		assertTrue(!castle1.hasFactory(sFactoryClass));
+		assertTrue(castle1.hasFactory(gFactoryClass));
+		
+		castle1.removeFactory(gFactory);
+		
+		assertTrue(!castle1.hasFactory(sFactoryClass));
+		assertTrue(!castle1.hasFactory(gFactoryClass));
+	}
 }
