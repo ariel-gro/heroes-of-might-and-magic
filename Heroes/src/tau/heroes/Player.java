@@ -86,7 +86,7 @@ public class Player {
 			hero = null;
 		}
 
-		System.out.println("Player"+this.playerName+" ended his turn");
+		System.out.println("Player "+this.playerName+" ended his turn");
 
 		System.out.println();
 	}
