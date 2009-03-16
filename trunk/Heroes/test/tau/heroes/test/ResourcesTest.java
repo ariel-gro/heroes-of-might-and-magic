@@ -6,10 +6,11 @@ public class ResourcesTest extends TestCase
 {
 	Player player1 = new Player("Ariel");
 	Player player2 = new Player("Ido");
-	Resource r = new Resource(ResourceType.WOOD, 7, 9);
-	Hero h1 = new Hero(player2);
-	Hero h2 = new Hero(player2);
-	Hero h3 = new Hero(player1);
+	Board board = new Board(20);
+	Resource r = new Resource(ResourceType.WOOD, board, 7, 9);
+	Hero h1 = new Hero(player2, board, 1, 1);
+	Hero h2 = new Hero(player2, board, 1, 2);
+	Hero h3 = new Hero(player1, board, 1, 3);
 
 	public void testOwnership()
 	{
@@ -33,7 +34,7 @@ public class ResourcesTest extends TestCase
 	
 	public void testPlayerResources()
 	{
-		Resource r2 = new Resource(ResourceType.GOLD, 5, 5);
+		Resource r2 = new Resource(ResourceType.GOLD, board, 5, 5);
 		
 		player1.displayResourcesAmounts();
 		player1.displayResources();
@@ -45,7 +46,6 @@ public class ResourcesTest extends TestCase
 		assertEquals(1, player1.getQuantity("wood"));
 		assertEquals(0, player1.getCurrentAmount("wood"));
 		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("gems"));
 		assertEquals(0, player1.getCurrentAmount("stone"));
 		
 		player1.incrementAmount("wood", 5);
@@ -55,7 +55,6 @@ public class ResourcesTest extends TestCase
 		
 		assertEquals(5, player1.getCurrentAmount("wood"));
 		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("gems"));
 		assertEquals(0, player1.getCurrentAmount("stone"));
 		
 		player1.endTurn();
@@ -65,12 +64,10 @@ public class ResourcesTest extends TestCase
 		
 		assertEquals(7, player1.getCurrentAmount("wood"));
 		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("gems"));
 		assertEquals(0, player1.getCurrentAmount("stone"));
 		
 		assertEquals(0, player2.getCurrentAmount("wood"));
 		assertEquals(0, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("gems"));
 		assertEquals(0, player2.getCurrentAmount("stone"));
 		
 		player2.endTurn();
@@ -80,7 +77,6 @@ public class ResourcesTest extends TestCase
 		
 		assertEquals(0, player2.getCurrentAmount("wood"));
 		assertEquals(0, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("gems"));
 		assertEquals(0, player2.getCurrentAmount("stone"));
 		
 		r2.setOwner(player2);
@@ -95,7 +91,6 @@ public class ResourcesTest extends TestCase
 		
 		assertEquals(0, player2.getCurrentAmount("wood"));
 		assertEquals(1000, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("gems"));
 		assertEquals(0, player2.getCurrentAmount("stone"));
 	}
 }

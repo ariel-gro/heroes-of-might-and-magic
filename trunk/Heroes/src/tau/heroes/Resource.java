@@ -7,13 +7,14 @@ public class Resource {
 	private final int yPos;
 	private final ResourceType type;
 
-	public Resource (ResourceType type, int xPos, int yPos){
+	public Resource (ResourceType type, Board theBoard, int xPos, int yPos){
 		this.type = type;
 		this.owner = null;
 		this.xPos = xPos;
-		this.yPos = yPos;
+		this.yPos = xPos;
+		
+		theBoard.placeResource(this, xPos, yPos);
 	}
-
 
 	public void setOwner(Player player)
 	{

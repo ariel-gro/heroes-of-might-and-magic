@@ -1,38 +1,57 @@
 package tau.heroes;
 
+
+
 public class BoardState {
 
-	private Hero _hero;
-	private Property property;
+	private Hero hero;
+	private Resource resource;
+	private Castle castle;
+	private boolean isEmpty;
 
 	public BoardState()
 	{
-		_hero =  null;
-		property = null;
+		hero =  null;
+		resource = null;
+		castle = null;
+		isEmpty = true;
 	}
 
-	public void setHero(Hero hero)
+	public void setHero(Hero theHero)
 	{
-		this._hero = hero;
+		this.hero = theHero;
+		isEmpty = false;
 	}
 
-	public void setProperty(Property property)
+	public void setResource(Resource theResource)
 	{
-		this.property = property;
+		this.resource = theResource;
+		isEmpty = false;
+	}
+	
+	public void setCastle(Castle theCastle)
+	{
+		this.castle = theCastle;
+		isEmpty = false;
 	}
 
 	public Hero getHero()
 	{
-		return _hero;
+		return hero;
 	}
 
-	public Property getProperty()
+	public Resource getResource()
 	{
-		return property;
+		return resource;
 	}
-
-	public boolean getIsEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public Castle getCastle()
+	{
+		return castle;
+	}
+	
+	public boolean getIsEmpty()
+	{
+		return isEmpty;
 	}
 }
