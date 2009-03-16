@@ -86,9 +86,7 @@ public class Player {
 			hero = null;
 		}
 
-		System.out.println("Player "+this.playerName+" ended his turn");
-
-		System.out.println();
+		System.out.println("Player"+this.playerName+" ended his turn\n");
 	}
 
 	public void displayResourcesAmounts()
@@ -101,23 +99,20 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.resourceAmount.get(tempTypeName));
+			System.out.println(tempTypeName+" \t\t "+this.resourceAmount.get(tempTypeName)+"\n");
 		}
-		System.out.println();
 	}
 
 	public void displayResources()
 	{
 		String tempTypeName;
 
-		System.out.println("Player "+this.playerName+" resource mines list:");
-		System.out.println();
+		System.out.println("Player "+this.playerName+" resource mines list:\n");
 		System.out.println("Resource \t Amount");
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.resources.get(tempTypeName));
+			System.out.println(tempTypeName+" \t\t "+this.resources.get(tempTypeName)+"\n");
 		}
-		System.out.println();
 	}
 }
