@@ -7,31 +7,34 @@ public class Resource {
 	private final int yPos;
 	private final ResourceType type;
 
-	public Resource (ResourceType type, Board theBoard, int xPos, int yPos){
+	public Resource(ResourceType type, Board theBoard, int xPos, int yPos) {
 		this.type = type;
 		this.owner = null;
 		this.xPos = xPos;
-		this.yPos = xPos;
-		
+		this.yPos = yPos;
+
 		theBoard.placeResource(this, xPos, yPos);
 	}
 
-	public void setOwner(Player player)
-	{
-		if (this.owner != null)
-		{
-			this.owner.decrementQuantity(this.getType().getTypeName());
-			System.out.println("player "+this.owner.getName()+
-					" lost ownership over "+this.getType().getTypeName()+
-					" at place: ("+this.getXPos()+", "+this.getYPos()+")");
-			System.out.println();
+	public void setOwner(Player player) {
+		if (this.owner != null) {
+			if (!this.owner.equals(player)) {
+				this.owner.decrementQuantity(this.getType().getTypeName());
+				System.out.println("player " + this.owner.getName()
+						+ " lost ownership over "
+						+ this.getType().getTypeName() + " at place: ("
+						+ this.getXPos() + ", " + this.getYPos() + ")\n");
+			} else {
+				System.out.println("this resource is already yours!");
+				return;
+			}
 		}
 		this.owner = player;
 		player.incrementQuantity(this.getType().getTypeName());
-		System.out.println("player "+this.owner.getName()+
-				" took ownership over "+this.getType().getTypeName()+
-				" at place: ("+this.getXPos()+", "+this.getYPos()+")");
-		System.out.println();
+		System.out.println("player " + this.owner.getName()
+				+ " took ownership over " + this.getType().getTypeName()
+				+ " at place: (" + this.getXPos() + ", " + this.getYPos()
+				+ ")\n");
 	}
 
 	public boolean checkOwner(Player player) {
@@ -53,6 +56,5 @@ public class Resource {
 	public ResourceType getType() {
 		return type;
 	}
-
 
 }
