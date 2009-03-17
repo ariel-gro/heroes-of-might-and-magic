@@ -3,6 +3,7 @@ package tau.heroes;
 public class Hero
 {
 	private boolean _alive;
+	private boolean _autoFight;
 	private Army _army;
 	private int _attackSkill;
 	private int _defenseSkill;
@@ -19,6 +20,7 @@ public class Hero
 		_alive = true;
 		_attackSkill = attack;
 		_defenseSkill = defense;
+		_autoFight = false;
 	}
 
 	public Hero(Player player, Board theBoard, int X, int Y) {
@@ -26,6 +28,7 @@ public class Hero
 		this.xPos  = X;
 		this.yPos = Y;
 		_alive = true;
+		_autoFight = false;
 		//randomly select a number between 0 and 2.
 		_attackSkill = (int) (Math.random() * 3);
 		_defenseSkill = (int) (Math.random() * 3);
@@ -68,11 +71,18 @@ public class Hero
 			Creature attackerCreature = _army.getCreature(i);
 			if(attackerCreature != null)
 			{
-				System.out.println("You are about to attack with creature number "+(i+1));
-				String[] s = MainModule.getCommandAndParameters("Please select the enemy creature you want to attack:");
 				Creature defenderCreature;
 				try
 				{
+					//if we are during auto fight get the first creature (in the catch).
+					if(_autoFight)
+					{
+						throw new Exception();
+					}
+
+					System.out.println("You are about to attack with creature number "+(i+1));
+					String[] s = MainModule.getCommandAndParameters("Please select the enemy creature you want to attack:");
+
 					int defenderInt =  Integer.parseInt(s[0]) - 1;
 					defenderCreature = defender._army.getCreature(defenderInt);
 					defenderCreature.get_name();
@@ -124,17 +134,17 @@ public class Hero
 		{
 			theBoard.getBoardState(x, y).getResource().setOwner(this.player);
 		}
-				
+
 		theBoard.placeHero(this, x, y);
 		theBoard.removeHero(xPos, yPos);
 
 		if (theBoard.getBoardState(x, y).getCastle() != null) {
 			theBoard.getBoardState(x, y).getCastle().enterHero(this);
 		}
-		
+
 		this.xPos = x;
 		this.yPos = y;
-		
+
 		return true;
 	}
 
@@ -194,5 +204,10 @@ public class Hero
 	public int getYPos()
 	{
 		return this.yPos;
+	}
+	//For tests only
+	public void setAutoFight(boolean bAuto)
+	{
+		_autoFight = bAuto;
 	}
 }

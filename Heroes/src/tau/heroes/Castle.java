@@ -10,7 +10,7 @@ public class Castle
 	private ArrayList<CreatureFactory> factories;
 	private int xPos;
 	private int yPos;
-	
+
 	public Castle(Player player, Board board, int x, int y) {
 		this.player = player;
 		this.board = board;
@@ -18,29 +18,55 @@ public class Castle
 		this.factories = new ArrayList<CreatureFactory>();
 		this.xPos = x;
 		this.yPos = y;
-		
+
 		this.board.placeCastle(this, x, y);
 		player.addCastle(this);
 	}
-	
+
 	public void enterHero(Hero hero) {
 		if (hero.player == this.player)
 			enterHeroIntoOwnCastle(hero);
 		else
-			if (this.army == null)
+		{
+			boolean bIsHeroInCastle = false;
+			if(player.getHero() != null)
+			{
+				bIsHeroInCastle = this.player.getHero().getXPos() == xPos &&
+									  this.player.getHero().getYPos() == yPos;
+			}
+			if (this.army == null && !bIsHeroInCastle)
 				enterHeroIntoEmptyCastle(hero);
+			else
+				enterHeroIntoOccupiedCastle(hero,bIsHeroInCastle);
+		}
 	}
-	
+
 	private void enterHeroIntoOwnCastle(Hero hero) {
 		System.out.println(hero.player.getName() + "'s hero has entered his own castle.");
 	}
+	private void enterHeroIntoOccupiedCastle(Hero hero,boolean bIsHeroInCastle) {
+		System.out.println(hero.player.getName() + "'s hero has entered "+this.player.getName()+" castle.");
+		//an attack is between two hero (and now there is no hero) make a dummy hero...
+		Hero dummy = new Hero(0,0,army);
+		if(bIsHeroInCastle)
+		{
+			dummy = this.player.getHero();
+		}
+		hero.attack(dummy);
+		if(hero.alive())
+		{
+			army = null;
+			enterHeroIntoEmptyCastle(hero);
+		}
+		//dummy is dead when we leave this function - no one will point to him.
 
+	}
 	private void enterHeroIntoEmptyCastle(Hero hero) {
 		this.player.removeCastle(this);
 		hero.player.addCastle(this);
 		this.player = hero.player;
 	}
-	
+
 	public Player getPlayer() {
 		return this.player;
 	}
@@ -52,39 +78,39 @@ public class Castle
 	public int getYPos() {
 		return this.yPos;
 	}
-	
+
 	public Army getArmy() {
 		return this.army;
 	}
-	
+
 	public void setArmy(Army army) {
 		this.army = army;
 	}
-	
+
 	public Boolean hasFactory(Class<? extends CreatureFactory> factoryClass) {
 		for (CreatureFactory factory : this.factories)
 			if (factory.getClass().equals(factoryClass))
 				return true;
-		
+
 		return false;
 	}
-	
+
 	public void addFactory(CreatureFactory factory) {
 		if (!this.hasFactory(factory.getClass())) {
 			this.factories.add(factory);
-			
+
 			System.out.println(this.toLocationString() + ": A new " + factory.getName() + " was added");
 		}
 	}
-	
+
 	public void removeFactory(CreatureFactory factory) {
 		if (this.hasFactory(factory.getClass())) {
 			this.factories.remove(factory);
-			
+
 			System.out.println(this.toLocationString() + ": A " + factory.getName() + " was removed");
 		}
 	}
-	
+
 	public String toLocationString() {
 		return "Castle at (" + xPos + ", " + this.yPos + ")";
 	}

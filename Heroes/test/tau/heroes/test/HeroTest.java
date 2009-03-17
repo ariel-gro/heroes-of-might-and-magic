@@ -58,6 +58,8 @@ public class HeroTest extends TestCase {
 
 		Hero h1 = new Hero(0,0,a1);//few of creatures
 		Hero h2 = new Hero(0,0,a2);//lots of creatures
+		h1.setAutoFight(true);
+		h2.setAutoFight(true);
 		h1.attack(h2);
 		assertEquals(h1.alive(),false);
 		assertEquals(h2.alive(),true);
@@ -76,6 +78,8 @@ public class HeroTest extends TestCase {
 
 		Hero h1 = new Hero(5,5,a1);//few of creatures stronger hero
 		Hero h2 = new Hero(3,3,a2);//more creatures weaker hero.
+		h1.setAutoFight(true);
+		h2.setAutoFight(true);
 		h1.attack(h2);
 		assertEquals(h1.alive(),true);
 		assertEquals(h2.alive(),false);
@@ -92,6 +96,8 @@ public class HeroTest extends TestCase {
 		//different types of creatures.
 		Hero h1 = new Hero(3,3,a1);
 		Hero h2 = new Hero(3,3,a2);
+		h1.setAutoFight(true);
+		h2.setAutoFight(true);
 		//fight:
 		h1.attack(h2);
 		//test:
