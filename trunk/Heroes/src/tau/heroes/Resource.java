@@ -19,7 +19,7 @@ public class Resource {
 	public void setOwner(Player player) {
 		if (this.owner != null) {
 			if (!this.owner.equals(player)) {
-				this.owner.decrementQuantity(this.getType().getTypeName());
+				this.owner.decrementMineQuantity(this.getType().getTypeName());
 				System.out.println("player " + this.owner.getName()
 						+ " lost ownership over "
 						+ this.getType().getTypeName() + " at place: ("
@@ -30,7 +30,7 @@ public class Resource {
 			}
 		}
 		this.owner = player;
-		player.incrementQuantity(this.getType().getTypeName());
+		player.incrementMineQuantity(this.getType().getTypeName());
 		System.out.println("player " + this.owner.getName()
 				+ " took ownership over " + this.getType().getTypeName()
 				+ " at place: (" + this.getXPos() + ", " + this.getYPos()

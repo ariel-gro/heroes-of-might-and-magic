@@ -20,7 +20,7 @@ public class ResourcesTest extends TestCase
 		r.setOwner(h1.player);
 		player1.displayResources();
 		player2.displayResources();
-		assertEquals(1, player2.getQuantity("wood"));
+		assertEquals(1, player2.getMineQuantity("wood"));
 		assertEquals(h1.player, r.getOwner());
 		assertEquals(true, r.checkOwner(h2.player));
 		assertEquals(false, r.checkOwner(h3.player));		
@@ -28,8 +28,8 @@ public class ResourcesTest extends TestCase
 		player1.displayResources();
 		player2.displayResources();
 		assertEquals(true, r.checkOwner(h3.player));
-		assertEquals(1, player1.getQuantity("wood"));
-		assertEquals(0, player2.getQuantity("wood"));
+		assertEquals(1, player1.getMineQuantity("wood"));
+		assertEquals(0, player2.getMineQuantity("wood"));
 	}
 	
 	public void testPlayerResources()
@@ -43,41 +43,41 @@ public class ResourcesTest extends TestCase
 		
 		r.setOwner(player1);
 		
-		assertEquals(1, player1.getQuantity("wood"));
-		assertEquals(0, player1.getCurrentAmount("wood"));
-		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("stone"));
+		assertEquals(1, player1.getMineQuantity("wood"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("wood"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("stone"));
 		
-		player1.incrementAmount("wood", 5);
+		player1.incrementTreasury("wood", 5);
 		
 		player1.displayResourcesAmounts();
 		player2.displayResourcesAmounts();
 		
-		assertEquals(5, player1.getCurrentAmount("wood"));
-		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("stone"));
+		assertEquals(5, player1.getCurrentTreasuryAmount("wood"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("stone"));
 		
 		player1.endTurn();
 		
 		player1.displayResourcesAmounts();
 		player2.displayResourcesAmounts();
 		
-		assertEquals(7, player1.getCurrentAmount("wood"));
-		assertEquals(0, player1.getCurrentAmount("gold"));
-		assertEquals(0, player1.getCurrentAmount("stone"));
+		assertEquals(7, player1.getCurrentTreasuryAmount("wood"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player1.getCurrentTreasuryAmount("stone"));
 		
-		assertEquals(0, player2.getCurrentAmount("wood"));
-		assertEquals(0, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("stone"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("wood"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("stone"));
 		
 		player2.endTurn();
 		
 		player1.displayResourcesAmounts();
 		player2.displayResourcesAmounts();
 		
-		assertEquals(0, player2.getCurrentAmount("wood"));
-		assertEquals(0, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("stone"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("wood"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("stone"));
 		
 		r2.setOwner(player2);
 		
@@ -89,21 +89,21 @@ public class ResourcesTest extends TestCase
 		player1.displayResourcesAmounts();
 		player2.displayResourcesAmounts();
 		
-		assertEquals(0, player2.getCurrentAmount("wood"));
-		assertEquals(1000, player2.getCurrentAmount("gold"));
-		assertEquals(0, player2.getCurrentAmount("stone"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("wood"));
+		assertEquals(1000, player2.getCurrentTreasuryAmount("gold"));
+		assertEquals(0, player2.getCurrentTreasuryAmount("stone"));
 	}
 	
 	public void testIncrementResources()
 	{
-		assertEquals(0, player1.getQuantity("wood"));
+		assertEquals(0, player1.getMineQuantity("wood"));
 		
 		r.setOwner(player1);
-		assertEquals(1, player1.getQuantity("wood"));
+		assertEquals(1, player1.getMineQuantity("wood"));
 		r.setOwner(player1);
-		assertEquals(1, player1.getQuantity("wood"));
+		assertEquals(1, player1.getMineQuantity("wood"));
 		r.setOwner(player1);
-		assertEquals(1, player1.getQuantity("wood"));
+		assertEquals(1, player1.getMineQuantity("wood"));
 		
 		
 	}

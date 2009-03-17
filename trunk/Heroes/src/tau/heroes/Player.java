@@ -5,22 +5,22 @@ import java.util.HashMap;
 public class Player {
 	private final String playerName;
 	private Hero hero;
-	private HashMap<String, Integer> resources;
-	private HashMap<String, Integer> resourceAmount;
+	private HashMap<String, Integer> mines;
+	private HashMap<String, Integer> treasury;
 	private ArrayList<Castle> castles;
 	private int daysWithoutCastles;
 
 	public Player (String name)
 	{
 		this.playerName = name;
-		resources = new HashMap<String, Integer>(ResourceType.values().length);
-		resourceAmount = new HashMap<String, Integer>(ResourceType.values().length);
+		mines = new HashMap<String, Integer>(ResourceType.values().length);
+		treasury = new HashMap<String, Integer>(ResourceType.values().length);
 		castles = new ArrayList<Castle>();
 		daysWithoutCastles = 0;
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
-			resources.put(ResourceType.values()[i].getTypeName(), 0);
-			resourceAmount.put(ResourceType.values()[i].getTypeName(), 0);
+			mines.put(ResourceType.values()[i].getTypeName(), 0);
+			treasury.put(ResourceType.values()[i].getTypeName(), 0);
 		}
 	}
 
@@ -34,19 +34,19 @@ public class Player {
 		return hero;
 	}
 
-	public int getQuantity (String type)
+	public int getMineQuantity (String type)
 	{
-		return (this.resources.get(type));
+		return (this.mines.get(type));
 	}
 
-	public void incrementQuantity (String type)
+	public void incrementMineQuantity (String type)
 	{
-		this.resources.put(type, this.resources.get(type) + 1);
+		this.mines.put(type, this.mines.get(type) + 1);
 	}
 
-	public void decrementQuantity (String type)
+	public void decrementMineQuantity (String type)
 	{
-		this.resources.put(type, this.resources.get(type) - 1);
+		this.mines.put(type, this.mines.get(type) - 1);
 	}
 
 	public String getName()
@@ -54,19 +54,19 @@ public class Player {
 		return this.playerName;
 	}
 
-	public int getCurrentAmount(String type)
+	public int getCurrentTreasuryAmount(String type)
 	{
-		return this.resourceAmount.get(type);
+		return this.treasury.get(type);
 	}
 
-	public void incrementAmount (String type, int amount)
+	public void incrementTreasury (String type, int amount)
 	{
-		this.resourceAmount.put(type, this.resourceAmount.get(type) + amount);
+		this.treasury.put(type, this.treasury.get(type) + amount);
 	}
 
-	public void decrementAmount (String type, int amount)
+	public void decrementTreasury (String type, int amount)
 	{
-		this.resourceAmount.put(type, this.resourceAmount.get(type) - amount);
+		this.treasury.put(type, this.treasury.get(type) - amount);
 	}
 	
 	public void addCastle(Castle castle) {
@@ -99,8 +99,8 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempType = ResourceType.values()[i];
-			amount = (this.resources.get(tempType.getTypeName()))*tempType.getPerDay();
-			this.incrementAmount(tempType.getTypeName(), amount);
+			amount = (this.mines.get(tempType.getTypeName()))*tempType.getPerDay();
+			this.incrementTreasury(tempType.getTypeName(), amount);
 		}
 
 		if(hero != null && !hero.alive())
@@ -121,7 +121,7 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.resourceAmount.get(tempTypeName)+"\n");
+			System.out.println(tempTypeName+" \t\t "+this.treasury.get(tempTypeName)+"\n");
 		}
 	}
 
@@ -134,7 +134,7 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.resources.get(tempTypeName)+"\n");
+			System.out.println(tempTypeName+" \t\t "+this.mines.get(tempTypeName)+"\n");
 		}
 	}
 	
