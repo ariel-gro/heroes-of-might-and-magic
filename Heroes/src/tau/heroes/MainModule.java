@@ -257,7 +257,7 @@ public class MainModule
 					Boolean hasEnough = true;
 					for (ResourceType rType : ResourceType.values()) {
 						int price = factory.getPrice(rType.getTypeName());
-						int amount = player.getCurrentAmount(rType.getTypeName());
+						int amount = player.getCurrentTreasuryAmount(rType.getTypeName());
 						if (price > amount) {
 							System.out.println("You don't have enough resources of type " +
 									rType.getTypeName() + ". You need " + price + 
@@ -268,7 +268,7 @@ public class MainModule
 					if (hasEnough) {
 						for (ResourceType rType : ResourceType.values()) {
 							int price = factory.getPrice(rType.getTypeName());
-							player.decrementAmount(rType.getTypeName(), price);
+							player.decrementTreasury(rType.getTypeName(), price);
 						}
 						theCastle.addFactory(factory);
 					}
