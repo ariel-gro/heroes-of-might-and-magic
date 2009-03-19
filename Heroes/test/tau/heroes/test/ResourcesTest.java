@@ -105,6 +105,5 @@ public class ResourcesTest extends TestCase
 		r.setOwner(player1);
 		assertEquals(1, player1.getMineQuantity("wood"));
 		
-		
 	}
 }
