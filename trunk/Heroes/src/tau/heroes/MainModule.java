@@ -33,6 +33,7 @@ public class MainModule
 	
 	public enum CastleCommands {
 		build("Build a creature factory. Usage: build [goblin|soldier]"),
+		make("Make a new creature. Usage: make [goblin|soldier]"),
 		help("Get help for the possible commands"),
 		exit("Exit castle menu");
 		
@@ -226,6 +227,9 @@ public class MainModule
 				if (response[0].equals(CastleCommands.build.toString())) {
 					handleBuildCommand(player, theCastle, response);						
 				}
+				else if (response[0].equals(CastleCommands.make.toString())) {
+					handleMakeCommand(player, theCastle, response);						
+				}
 				else if (response[0].equals(CastleCommands.help.toString())) {
 					for (CastleCommands cmd : CastleCommands.values())
 						System.out.println(cmd.toString() + " - " + cmd.getDescription());
@@ -258,6 +262,41 @@ public class MainModule
 			}
 			else
 				System.out.println("Unknown creature type");
+		}
+	}
+	
+	private static void handleMakeCommand(Player player, Castle theCastle, String[] response) {
+		if (response.length > 1) {
+			Class<? extends Creature> creatureClass = null;
+			
+			if (response[1].equals("goblin"))
+				creatureClass = Goblin.class;
+			else if (response[1].equals("soldier"))
+				creatureClass = Soldier.class;
+			
+			if (creatureClass != null) {
+				int maxUnits = theCastle.getAvailableUnits(creatureClass);
+				
+				if (maxUnits > 0) {
+					String[] numOfUnitsResponse = getCommandAndParameters("Enter desired number of units (1-" +
+							maxUnits + "): ");
+					
+					if (numOfUnitsResponse.length > 0) {
+						int numberOfUnits = Integer.parseInt(numOfUnitsResponse[0]);
+						if (numberOfUnits > 0 && numberOfUnits <= maxUnits) {
+							theCastle.makeUnits(creatureClass, numberOfUnits);
+						}
+						else
+							System.out.println("Number of units is our of range.");
+					}
+					else
+						System.out.println("Bad input.");
+				}
+				else
+					System.out.println("Sorry, but you can't build units.");
+			}
+			else
+				System.out.println("Unknown creature type.");
 		}
 	}
 

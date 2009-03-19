@@ -167,7 +167,7 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.treasury.get(tempTypeName)+"\n");
+			System.out.println(tempTypeName+" \t\t "+this.treasury.get(tempTypeName));
 		}
 	}
 
@@ -180,7 +180,7 @@ public class Player {
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
-			System.out.println(tempTypeName+" \t\t "+this.mines.get(tempTypeName)+"\n");
+			System.out.println(tempTypeName+" \t\t "+this.mines.get(tempTypeName));
 		}
 	}
 	
