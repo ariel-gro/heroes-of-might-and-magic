@@ -82,7 +82,7 @@ public class ArmyTest extends TestCase{
 	@Test
 	public void testToString() {
 		String s = "creature number 1: is 10 creatures of Soldier\n"+
-		"creature number 2: is 10 creatures of Soldier\n" +
+		"creature number 2: is 10 creatures of Goblin\n" +
 		"creature number 3: is empty\n"+
 		"creature number 4: is empty\n"+
 		"creature number 5: is empty\n";

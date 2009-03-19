@@ -11,9 +11,9 @@ public class Soldier extends Creature
 	 * hit points = 10
 	 * damage = 3
 	 * name = "Soldier"
-	 * @param numOfUnits
+	 * @param numberOfUnits
 	 */
-	public Soldier(int numOfUnits) {
-		super(AlignmentType.KNIGHT,3, 0, 7, 7, 10,3, "Soldier",numOfUnits);
+	public Soldier(int numberOfUnits) {
+		super(AlignmentType.KNIGHT, 3, 0, 7, 7, 10, 3, "Soldier", numberOfUnits);
 	}
 }
