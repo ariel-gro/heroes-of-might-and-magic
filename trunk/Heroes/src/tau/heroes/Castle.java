@@ -20,7 +20,7 @@ public class Castle
 		this.yPos = y;
 
 		this.board.placeCastle(this, x, y);
-		player.addCastle(this);
+		this.player.addCastle(this);
 	}
 
 	public void enterHero(Hero hero) {
@@ -29,11 +29,11 @@ public class Castle
 		else
 		{
 			boolean bIsHeroInCastle = false;
-			if(player.getHero() != null)
-			{
-				bIsHeroInCastle = this.player.getHero().getXPos() == xPos &&
-									  this.player.getHero().getYPos() == yPos;
-			}
+			
+			if(this.player.getHero() != null)
+				bIsHeroInCastle = (this.player.getHero().getXPos() == this.xPos && 
+								   this.player.getHero().getYPos() == this.yPos);
+			
 			if (this.army == null && !bIsHeroInCastle)
 				enterHeroIntoEmptyCastle(hero);
 			else
@@ -44,23 +44,29 @@ public class Castle
 	private void enterHeroIntoOwnCastle(Hero hero) {
 		System.out.println(hero.player.getName() + "'s hero has entered his own castle.");
 	}
-	private void enterHeroIntoOccupiedCastle(Hero hero,boolean bIsHeroInCastle) {
-		System.out.println(hero.player.getName() + "'s hero has entered "+this.player.getName()+" castle.");
-		//an attack is between two hero (and now there is no hero) make a dummy hero...
-		Hero dummy = new Hero(0,0,army);
+	
+	private void enterHeroIntoOccupiedCastle(Hero hero, boolean bIsHeroInCastle) {
+		System.out.println(hero.player.getName() + "'s hero has entered "
+				+ this.player.getName() + "'s castle.");
+		
+		Hero defendingHero;
+		
+		// An attack is between two heroes
+		// If the castle doesn't have one make a dummy hero...
 		if(bIsHeroInCastle)
-		{
-			dummy = this.player.getHero();
-		}
-		hero.attack(dummy);
+			defendingHero = this.player.getHero();
+		else
+			defendingHero = new Hero(0,0,army);
+		
+		hero.attack(defendingHero);
 		if(hero.alive())
 		{
 			army = null;
 			enterHeroIntoEmptyCastle(hero);
 		}
-		//dummy is dead when we leave this function - no one will point to him.
-
+		// Dummy hero is dead when we leave this function - no one will point to him.
 	}
+	
 	private void enterHeroIntoEmptyCastle(Hero hero) {
 		this.player.removeCastle(this);
 		hero.player.addCastle(this);
