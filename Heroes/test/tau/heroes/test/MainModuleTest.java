@@ -9,8 +9,6 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
 import tau.heroes.Board;
 import tau.heroes.Hero;
 import tau.heroes.Move;
