@@ -64,11 +64,25 @@ public class Player {
 		this.treasury.put(type, this.treasury.get(type) + amount);
 	}
 
+	public void incrementTreasury(HashMap<String, Integer> neededResources) {
+		for (ResourceType rType : ResourceType.values()) {
+			int price = neededResources.get(rType.getTypeName());
+			this.incrementTreasury(rType.getTypeName(), price);
+		}
+	}
+	
 	public void decrementTreasury (String type, int amount)
 	{
 		this.treasury.put(type, this.treasury.get(type) - amount);
 	}
 	
+	public void decrementTreasury(HashMap<String, Integer> neededResources) {
+		for (ResourceType rType : ResourceType.values()) {
+			int price = neededResources.get(rType.getTypeName());
+			this.decrementTreasury(rType.getTypeName(), price);
+		}
+	}
+		
 	public void addCastle(Castle castle) {
 		if (!this.castles.contains(castle)) {
 			this.castles.add(castle);
@@ -87,6 +101,38 @@ public class Player {
 		}
 	}
 	
+	public boolean hasEnoughResources(HashMap<String, Integer> neededResources) {
+		boolean hasEnough = true;
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = neededResources.get(rType.getTypeName());
+			int amount = this.getCurrentTreasuryAmount(rType.getTypeName());
+			if (price > amount) {
+				System.out.println(this.getName() + " doesn't have enough resources of type " +
+						rType.getTypeName() + ". Needs " + price + 
+						" and has only " + amount + ".");
+				hasEnough = false;
+			}
+		}
+		
+		return hasEnough;
+	}
+	
+	public int getMaxUnits(HashMap<String, Integer> neededResources) {
+		int maxUnits = Integer.MAX_VALUE;
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = neededResources.get(rType.getTypeName());
+			int amount = this.getCurrentTreasuryAmount(rType.getTypeName());
+			if (price > 0) {
+				int units = amount / price;
+				maxUnits = Math.min(maxUnits, units);
+			}
+		}
+		
+		return maxUnits;
+	}
+		
 	public ArrayList<Castle> getCastles() {
 		return this.castles;
 	}

@@ -92,13 +92,17 @@ public class Castle
 	public void setArmy(Army army) {
 		this.army = army;
 	}
-
-	public Boolean hasFactory(Class<? extends CreatureFactory> factoryClass) {
+	
+	public CreatureFactory getFactory(Class<? extends CreatureFactory> factoryClass) {
 		for (CreatureFactory factory : this.factories)
 			if (factory.getClass().equals(factoryClass))
-				return true;
+				return factory;
+		
+		return null;
+	}
 
-		return false;
+	public Boolean hasFactory(Class<? extends CreatureFactory> factoryClass) {
+		return (this.getFactory(factoryClass) != null);
 	}
 
 	public void addFactory(CreatureFactory factory) {
@@ -118,7 +122,6 @@ public class Castle
 	}
 	
 	public boolean canBuildFactory(Class<? extends CreatureFactory> factoryClass) {
-		Boolean hasEnough = true;
 		CreatureFactory factory;
 		
 		try {
@@ -130,19 +133,8 @@ public class Castle
 		catch (IllegalAccessException e) {
 			return false;
 		}
-		
-		for (ResourceType rType : ResourceType.values()) {
-			int price = factory.getPrice(rType.getTypeName());
-			int amount = this.player.getCurrentTreasuryAmount(rType.getTypeName());
-			if (price > amount) {
-				System.out.println(this.player.getName() + " doesn't have enough resources of type " +
-						rType.getTypeName() + ". Needs " + price + 
-						" and has only " + amount + ".");
-				hasEnough = false;
-			}
-		}
-		
-		return hasEnough;
+				
+		return this.player.hasEnoughResources(factory.getPrices());
 	}
 	
 	public CreatureFactory buildFactory(Class<? extends CreatureFactory> factoryClass) {
@@ -165,8 +157,69 @@ public class Castle
 		
 		return factory;
 	}
+	
+	public int getAvailableUnits(Class<? extends Creature> creatureClass) {
+		Class<? extends CreatureFactory> factoryClass =
+			CreatureFactory.getCreatureFactoryClass(creatureClass);
+		
+		CreatureFactory factory = this.getFactory(factoryClass);
+		
+		if (factory == null) {
+			System.out.println(this.player.getName() + " doesn't have an appropriate factory.");
+			return 0;
+		}
+		
+		int unitsLeft = factory.getUnitsLeftToday();
+		int unitsCanBuy = player.getMaxUnits(factory.getPricesPerUnit());
+		
+		if (this.army != null) {
+			for (int i = 0; i < Army.MAX_CREATURES; i++)
+				if (this.army.getCreature(i) == null || 
+						this.army.getCreature(i).getClass().equals(creatureClass))
+					return Math.min(unitsLeft, unitsCanBuy);
+			
+			return 0;
+		}
+		else
+			return Math.min(unitsLeft, unitsCanBuy);
+	}
 
 	public String toLocationString() {
-		return "Castle at (" + xPos + ", " + this.yPos + ")";
+		return "Castle at (" + this.xPos + ", " + this.yPos + ")";
 	}
+	
+	public void makeUnits(Class<? extends Creature> creatureClass, int numberOfUnits) {
+		Class<? extends CreatureFactory> factoryClass =
+			CreatureFactory.getCreatureFactoryClass(creatureClass);
+		
+		CreatureFactory factory = this.getFactory(factoryClass);
+		
+		for (int i = 0; i < numberOfUnits; i++)
+			this.player.decrementTreasury(factory.getPricesPerUnit());
+		Creature creature = factory.buildCreature(numberOfUnits);
+		
+		this.addToArmy(creature);
+	}
+
+	private void addToArmy(Creature creature) {
+		if (this.army == null) {
+			Creature[] creatures = new Creature[] { creature };
+			this.army = new Army(creatures);
+		}
+		else {
+			for (int i = 0; i < Army.MAX_CREATURES; i++)
+				if (this.army.getCreature(i) != null && 
+						this.army.getCreature(i).getClass().equals(creature.getClass())) {
+					Creature existingCreature = this.army.getCreature(i);
+					existingCreature.addUnits(creature.get_numberOfUnits());
+					return;
+				}
+			
+			for (int i = 0; i < Army.MAX_CREATURES; i++)
+				if (this.army.getCreature(i) == null) {
+					this.army.setCreature(i, creature);
+					return;
+				}
+		}
+	}	
 }

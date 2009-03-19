@@ -175,4 +175,115 @@ public class CastleTest extends TestCase {
 		for (ResourceType rType : ResourceType.values())
 			assertEquals(0, player2.getCurrentTreasuryAmount(rType.getTypeName()));
 	}
+	
+	public void testGetAvailableUnits() {
+		for (ResourceType rType : ResourceType.values()) {
+			int price = sFactory.getPrice(rType.getTypeName());
+			player1.incrementTreasury(rType.getTypeName(), price);
+		}
+		
+		assertTrue(castle1.canBuildFactory(sFactoryClass));
+		CreatureFactory newFactory = castle1.buildFactory(sFactoryClass);
+		castle1.addFactory(newFactory);
+		assertNotNull(newFactory);
+		assertEquals(sFactoryClass, newFactory.getClass());
+		for (ResourceType rType : ResourceType.values())
+			assertEquals(0, player1.getCurrentTreasuryAmount(rType.getTypeName()));
+		
+		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+		assertEquals(0, castle2.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle2.getAvailableUnits(Goblin.class));
+		
+		for (int i = 0; i < 8; i++)
+			player1.incrementTreasury(sFactory.getPricesPerUnit());
+		
+		assertEquals(8, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+		
+		for (int i = 0; i < 2; i++)
+			player1.incrementTreasury(sFactory.getPricesPerUnit());
+		
+		assertEquals(10, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+		
+		Creature[] creatures = new Creature[Army.MAX_CREATURES];
+		for (int i = 0; i < Army.MAX_CREATURES; i++)
+			creatures[i] = new Goblin(5);
+		
+		castle1.setArmy(new Army(creatures));
+		
+		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+		
+		castle1.addFactory(new GoblinFactory());
+		
+		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
+	}
+	
+	public void testMakeUnits() {
+		castle1.addFactory(sFactory);
+		castle1.addFactory(gFactory);
+		
+		for (int i = 0; i < 10; i++)
+			player1.incrementTreasury(sFactory.getPricesPerUnit());
+		for (int i = 0; i < 5; i++)
+			player1.incrementTreasury(gFactory.getPricesPerUnit());
+		
+		assertNull(castle1.getArmy());
+		assertEquals(10, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(5, castle1.getAvailableUnits(Goblin.class));
+		
+		castle1.makeUnits(Soldier.class, 4);
+		assertNotNull(castle1.getArmy());
+		assertNotNull(castle1.getArmy().getCreature(0));
+		assertNull(castle1.getArmy().getCreature(1));
+		assertNull(castle1.getArmy().getCreature(2));
+		assertNull(castle1.getArmy().getCreature(3));
+		assertNull(castle1.getArmy().getCreature(4));
+		assertEquals(Soldier.class, castle1.getArmy().getCreature(0).getClass());
+		assertEquals(4, castle1.getArmy().getCreature(0).get_numberOfUnits());
+		assertEquals(6, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(5, castle1.getAvailableUnits(Goblin.class));
+		
+		castle1.makeUnits(Goblin.class, 3);
+		assertNotNull(castle1.getArmy());
+		assertNotNull(castle1.getArmy().getCreature(0));
+		assertNotNull(castle1.getArmy().getCreature(1));
+		assertNull(castle1.getArmy().getCreature(2));
+		assertNull(castle1.getArmy().getCreature(3));
+		assertNull(castle1.getArmy().getCreature(4));
+		assertEquals(Soldier.class, castle1.getArmy().getCreature(0).getClass());
+		assertEquals(Goblin.class, castle1.getArmy().getCreature(1).getClass());
+		assertEquals(4, castle1.getArmy().getCreature(0).get_numberOfUnits());
+		assertEquals(3, castle1.getArmy().getCreature(1).get_numberOfUnits());
+		assertEquals(6, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(2, castle1.getAvailableUnits(Goblin.class));
+		
+		castle1.makeUnits(Soldier.class, 6);
+		castle1.makeUnits(Goblin.class, 2);
+		assertNotNull(castle1.getArmy());
+		assertNotNull(castle1.getArmy().getCreature(0));
+		assertNotNull(castle1.getArmy().getCreature(1));
+		assertNull(castle1.getArmy().getCreature(2));
+		assertNull(castle1.getArmy().getCreature(3));
+		assertNull(castle1.getArmy().getCreature(4));
+		assertEquals(Soldier.class, castle1.getArmy().getCreature(0).getClass());
+		assertEquals(Goblin.class, castle1.getArmy().getCreature(1).getClass());
+		assertEquals(10, castle1.getArmy().getCreature(0).get_numberOfUnits());
+		assertEquals(5, castle1.getArmy().getCreature(1).get_numberOfUnits());
+		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+		
+		for (ResourceType rType : ResourceType.values())
+			assertEquals(0, player1.getCurrentTreasuryAmount(rType.getTypeName()));
+		
+		for (int i = 0; i < 10; i++)
+			player1.incrementTreasury(sFactory.getPricesPerUnit());
+		for (int i = 0; i < 5; i++)
+			player1.incrementTreasury(gFactory.getPricesPerUnit());
+		
+		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+	}
 }
