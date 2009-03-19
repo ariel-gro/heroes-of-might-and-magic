@@ -22,6 +22,10 @@ public class CastleTest extends TestCase {
 	Hero hero1;
 	Castle castle1;
 	Castle castle2;
+	SoldierFactory sFactory;
+	GoblinFactory gFactory;
+	Class<? extends CreatureFactory> sFactoryClass;
+	Class<? extends CreatureFactory> gFactoryClass;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -34,6 +38,10 @@ public class CastleTest extends TestCase {
 		hero1 = new Hero(player1, theBoard, 4, 4);
 		castle1 = new Castle(player1, theBoard, 6, 6);
 		castle2 = new Castle(player2, theBoard, 4, 6);
+		sFactory = new SoldierFactory();
+		gFactory = new GoblinFactory();
+		sFactoryClass = sFactory.getClass();
+		gFactoryClass = gFactory.getClass();
 	}
 
 	/**
@@ -104,12 +112,6 @@ public class CastleTest extends TestCase {
 	}
 	
 	public void testAddRemoveFactory() {
-		SoldierFactory sFactory = new SoldierFactory();
-		GoblinFactory gFactory = new GoblinFactory();
-		
-		Class<? extends CreatureFactory> sFactoryClass = sFactory.getClass();
-		Class<? extends CreatureFactory> gFactoryClass = gFactory.getClass();
-		
 		assertTrue(!castle1.hasFactory(sFactoryClass));
 		assertTrue(!castle1.hasFactory(gFactoryClass));
 		
@@ -132,5 +134,45 @@ public class CastleTest extends TestCase {
 		
 		assertTrue(!castle1.hasFactory(sFactoryClass));
 		assertTrue(!castle1.hasFactory(gFactoryClass));
+	}
+	
+	public void testCanBuildFactory() {
+		assertTrue(!castle1.canBuildFactory(sFactoryClass));
+		assertTrue(!castle1.canBuildFactory(gFactoryClass));
+		assertTrue(!castle2.canBuildFactory(sFactoryClass));
+		assertTrue(!castle2.canBuildFactory(gFactoryClass));
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = sFactory.getPrice(rType.getTypeName());
+			player1.incrementTreasury(rType.getTypeName(), price);
+		}
+		
+		assertTrue(castle1.canBuildFactory(sFactoryClass));
+	}
+	
+	public void testBuildFactory() {
+		for (ResourceType rType : ResourceType.values()) {
+			int price = sFactory.getPrice(rType.getTypeName());
+			player1.incrementTreasury(rType.getTypeName(), price);
+		}
+		
+		assertTrue(castle1.canBuildFactory(sFactoryClass));
+		CreatureFactory newFactory = castle1.buildFactory(sFactoryClass);
+		assertNotNull(newFactory);
+		assertEquals(sFactoryClass, newFactory.getClass());
+		for (ResourceType rType : ResourceType.values())
+			assertEquals(0, player1.getCurrentTreasuryAmount(rType.getTypeName()));
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = gFactory.getPrice(rType.getTypeName());
+			player2.incrementTreasury(rType.getTypeName(), price);
+		}
+		
+		assertTrue(castle2.canBuildFactory(gFactoryClass));
+		newFactory = castle2.buildFactory(gFactoryClass);
+		assertNotNull(newFactory);
+		assertEquals(gFactoryClass, newFactory.getClass());
+		for (ResourceType rType : ResourceType.values())
+			assertEquals(0, player2.getCurrentTreasuryAmount(rType.getTypeName()));
 	}
 }

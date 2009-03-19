@@ -246,33 +246,20 @@ public class MainModule
 	private static void handleBuildCommand(Player player, Castle theCastle,	String[] response) {
 		if (response.length > 1) {
 			CreatureFactory factory = null;
+			
 			if (response[1].equals("goblin"))
 				factory = new GoblinFactory();
 			else if (response[1].equals("soldier"))
 				factory = new SoldierFactory();
+									
 			if (factory != null) {
-				if (theCastle.hasFactory(factory.getClass()))
+				Class<? extends CreatureFactory> factoryClass = factory.getClass();
+				
+				if (theCastle.hasFactory(factoryClass))
 					System.out.println("There is already a factory of this type in this castle");
-				else {
-					Boolean hasEnough = true;
-					for (ResourceType rType : ResourceType.values()) {
-						int price = factory.getPrice(rType.getTypeName());
-						int amount = player.getCurrentTreasuryAmount(rType.getTypeName());
-						if (price > amount) {
-							System.out.println("You don't have enough resources of type " +
-									rType.getTypeName() + ". You need " + price + 
-									" and you have only " + amount + ".");
-							hasEnough = false;
-						}
-					}
-					if (hasEnough) {
-						for (ResourceType rType : ResourceType.values()) {
-							int price = factory.getPrice(rType.getTypeName());
-							player.decrementTreasury(rType.getTypeName(), price);
-						}
-						theCastle.addFactory(factory);
-					}
-				}
+				else
+					if (theCastle.canBuildFactory(factoryClass))
+						theCastle.addFactory(theCastle.buildFactory(factoryClass));
 			}
 			else
 				System.out.println("Unknown creature type");

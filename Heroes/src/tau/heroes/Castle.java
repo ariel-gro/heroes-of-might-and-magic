@@ -116,6 +116,55 @@ public class Castle
 			System.out.println(this.toLocationString() + ": A " + factory.getName() + " was removed");
 		}
 	}
+	
+	public boolean canBuildFactory(Class<? extends CreatureFactory> factoryClass) {
+		Boolean hasEnough = true;
+		CreatureFactory factory;
+		
+		try {
+			factory = factoryClass.newInstance();
+		} 
+		catch (InstantiationException e) {
+			return false;
+		} 
+		catch (IllegalAccessException e) {
+			return false;
+		}
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = factory.getPrice(rType.getTypeName());
+			int amount = this.player.getCurrentTreasuryAmount(rType.getTypeName());
+			if (price > amount) {
+				System.out.println(this.player.getName() + " doesn't have enough resources of type " +
+						rType.getTypeName() + ". Needs " + price + 
+						" and has only " + amount + ".");
+				hasEnough = false;
+			}
+		}
+		
+		return hasEnough;
+	}
+	
+	public CreatureFactory buildFactory(Class<? extends CreatureFactory> factoryClass) {
+		CreatureFactory factory;
+		
+		try {
+			factory = factoryClass.newInstance();
+		} 
+		catch (InstantiationException e) {
+			return null;
+		} 
+		catch (IllegalAccessException e) {
+			return null;
+		}
+		
+		for (ResourceType rType : ResourceType.values()) {
+			int price = factory.getPrice(rType.getTypeName());
+			this.player.decrementTreasury(rType.getTypeName(), price);
+		}
+		
+		return factory;
+	}
 
 	public String toLocationString() {
 		return "Castle at (" + xPos + ", " + this.yPos + ")";
