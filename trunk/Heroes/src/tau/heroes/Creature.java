@@ -97,5 +97,8 @@ public abstract class Creature
 	public int get_lastUnitHitPoints() {
 		return _lastUnitHitPoints;
 	}
-
+	
+	public void addUnits(int numberOfUnits) {
+		this._numberOfUnits += numberOfUnits;
+	}
 }
