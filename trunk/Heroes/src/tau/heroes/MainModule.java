@@ -15,6 +15,7 @@ public class MainModule
 		castle("enter the castle menu"),
 		help("get help for the possible commands"),
 		info("get information about your player"),
+		legend("prints the map legend"),
 		quit("quit the game");
 
 		private final String description;
@@ -174,6 +175,10 @@ public class MainModule
 				{
 					for (commands cmd : commands.values())
 						System.out.println(cmd.toString() + " - " + cmd.description);
+				}
+				else if(userInput[0].equals(commands.legend.toString()))
+				{
+					theBoard.printLegend();
 				}
 				else if(userInput[0].equals(commands.info.toString()))
 				{

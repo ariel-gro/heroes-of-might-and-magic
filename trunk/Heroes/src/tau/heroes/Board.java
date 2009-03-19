@@ -171,4 +171,12 @@ public class Board
 	{
 		return theBoard[x][y];
 	}
+
+	public void printLegend() {
+		System.out.println("H - Hero\n" + 
+							"C - castle\n" + 
+							"G - Gold mine\n" + 
+							"W - Wood saw-mill\n" + 
+							"S - Stone quarry\n");
+	}
 }
