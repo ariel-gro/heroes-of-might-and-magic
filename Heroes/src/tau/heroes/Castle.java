@@ -178,6 +178,7 @@ public class Castle
 						this.army.getCreature(i).getClass().equals(creatureClass))
 					return Math.min(unitsLeft, unitsCanBuy);
 			
+			System.out.println("Army in " + this.toLocationString() + " is full.");
 			return 0;
 		}
 		else
