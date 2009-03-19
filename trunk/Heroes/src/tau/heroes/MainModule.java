@@ -101,16 +101,16 @@ public class MainModule
 
 		theBoard.printBoard();
 		
+		Move.reset();
 		while (true)
 		{
-			CanAct.reset();
+			
 			for (int player = 0 ; player < numOfPlayers ; )
 			{
 				Hero h = players.get(player).getHero();
 				boolean bCanMove = true;
 				String temp;
-				CanAct.reset();
-
+				
 				int oldX = 0;
 				int oldY = 0;
 				if(h == null)
@@ -127,24 +127,14 @@ public class MainModule
 				userInput = getCommandAndParameters(temp);
 				if(userInput[0].equals(commands.move.toString()) && bCanMove)
 				{
-					int newX = Integer.parseInt(userInput[1]);
-					int newY = Integer.parseInt(userInput[2]);
-					if (CanAct.moveUpdate(oldX, oldY, newX, newY))
-					{
-						players.get(player).getHero().moveTo(newX, newY, theBoard);
-						theBoard.printBoard();
-					}
-					else
-					{
-						System.out.println("Illegal move ! You can only move " + CanAct.getMovesLeft() + " steps more .");
-					}
+					Move.makeMove(userInput, players.get(player).getHero(), theBoard);
 				}
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
 					if (player == numOfPlayers)
 						player = 0;
-					CanAct.reset();
+					Move.reset();
 					if (!(players.get(player).isAlive()))
 					{
 						Player myPlayer = players.get(player);

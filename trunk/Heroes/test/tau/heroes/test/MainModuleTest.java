@@ -9,9 +9,11 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import tau.heroes.Board;
-import tau.heroes.CanAct;
 import tau.heroes.Hero;
+import tau.heroes.Move;
 import tau.heroes.Player;
 
 /**
@@ -26,12 +28,13 @@ public class MainModuleTest extends TestCase {
 		Player player1 = new Player("Liron");
 		Hero h1 = new Hero(player1, board, 0, 0);	
 		h1.moveTo(3, 1, board);
-		CanAct.reset();
-		assertTrue(CanAct.moveUpdate(0, 0, 3, 1));
-		CanAct.reset();
-		assertFalse(CanAct.moveUpdate(0, 0, 6, 2));
+		Move.reset();
+		assertTrue(Move.moveUpdate(0, 0, 3, 1));
+		Move.reset();
+		assertFalse(Move.moveUpdate(0, 0, 6, 2));
 	}
 
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
