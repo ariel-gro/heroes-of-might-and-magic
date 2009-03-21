@@ -101,7 +101,7 @@ public class MainModule
 			}
 		}
 
-		theBoard.printBoard(new boolean[40][40]);
+
 		while (true)
 		{
 
