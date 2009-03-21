@@ -99,6 +99,12 @@ public class Hero
 					//for now we do:
 					int addToDamage = totalAttack - totalDefense;
 					addToDamage = (addToDamage >= 0) ? addToDamage : 0;
+					if(!_autoFight)
+					{//add a random effect to the fight: (value between -1 and 1) only when manual fight is ser
+						int randomDamage = (int)((Math.random() * 3)) - 1;
+						System.out.println(randomDamage);
+						addToDamage += randomDamage;
+					}
 
 					System.out.print("Attacker "+this.toString()+": "+"with addToDamage = "+addToDamage+". ");
 					int totalDamage = attackerCreature.get_numberOfUnits()*(attackerCreature.get_damage()+addToDamage);
