@@ -11,6 +11,8 @@ public class Player {
 	private int daysWithoutCastles;
 	private final static int MAX_MOVES_ALLOWED = 5;
 	private static int movesLeft;
+	private boolean[][] visibleBoard;
+
 
 
 	public Player (String name)
@@ -21,6 +23,9 @@ public class Player {
 		castles = new ArrayList<Castle>();
 		daysWithoutCastles = 0;
 		movesLeft = MAX_MOVES_ALLOWED;
+		//init to false:
+		visibleBoard = new boolean[40][40];
+
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			mines.put(ResourceType.values()[i].getTypeName(), 0);
@@ -31,10 +36,16 @@ public class Player {
 	public void setHero(Hero theHero)
 	{
 		this.hero = theHero;
+		if(hero != null)
+			setVisibleBoard(hero.getXPos(),hero.getYPos(),1);
 	}
 
 	public Hero getHero()
 	{
+		if(hero != null && !hero.alive())
+		{
+			hero = null;
+		}
 		return hero;
 	}
 
@@ -51,6 +62,13 @@ public class Player {
 	public void decrementMineQuantity (String type)
 	{
 		this.mines.put(type, this.mines.get(type) - 1);
+	}
+
+	public int getMovesLeft()
+	{
+		if(hero == null)
+			return 0;
+		return movesLeft;
 	}
 
 	public String getName()
@@ -153,11 +171,8 @@ public class Player {
 			amount = (this.mines.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementTreasury(tempType.getTypeName(), amount);
 		}
-
-		if(hero != null && !hero.alive())
-		{
-			hero = null;
-		}
+		//will make sure that the hero is alive, if not then null the hero.
+		getHero();
 
 		System.out.println("Player "+this.playerName+" ended his turn\n");
 	}
@@ -218,14 +233,52 @@ public class Player {
 		{
 			return false;
 		}
-		movesLeft -= counter;
-		hero.moveTo(x, y, board);
-		return true;
+
+		boolean retVal = hero.moveTo(x, y, board);
+		if(retVal)
+		{
+			movesLeft -= counter;
+			setVisiblePath(oldX , oldY , x , y);
+		}
+		return retVal;
 	}
-	public int getMovesLeft()
+	private void setVisiblePath(int xSource,int ySource,int xDest,int yDest)
 	{
-		if(hero == null)
-			return 0;
-		return movesLeft;
+		int bigX = Math.max(xSource, xDest);
+		int smallX = Math.min(xSource, xDest);
+		int BigY= Math.max(ySource, yDest);
+		int smallY = Math.min(ySource, yDest);
+
+		//start walking on the axes first go on the horizontal
+		for(int i =smallX ;i<=bigX;i++)
+		{
+			setVisibleBoard(i, ySource, 1);
+		}
+		//then on the vertical:
+		for(int i =smallY ;i<=BigY;i++)
+		{
+			setVisibleBoard(xDest,i , 1);
+		}
+	}
+	private void setVisibleBoard(int x,int y,int radius)
+	{
+		for(int i = x-radius;i<=x+radius;i++)
+		{
+			for(int j = y-radius;j<=y+radius;j++)
+			{
+				try
+				{
+					visibleBoard[i][j] = true;
+				}
+				catch(IndexOutOfBoundsException iobe)
+				{
+					//This means we are on the edge of the board...
+				}
+			}
+		}
+	}
+	public boolean[][] getVisibleBoard()
+	{
+		return visibleBoard;
 	}
 }

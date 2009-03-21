@@ -15,6 +15,7 @@ public class MainModule
 		castle("enter the castle menu"),
 		help("get help for the possible commands"),
 		info("get information about your player"),
+		map("prints the map visible to you"),
 		legend("prints the map legend"),
 		quit("quit the game");
 
@@ -100,14 +101,13 @@ public class MainModule
 			}
 		}
 
-		theBoard.printBoard();
+		theBoard.printBoard(new boolean[40][40]);
 		while (true)
 		{
 
 			for (int player = 0 ; player < numOfPlayers ; )
 			{
 				Hero h = players.get(player).getHero();
-				boolean bCanMove = true;
 				String temp;
 
 				int oldX = 0;
@@ -115,7 +115,6 @@ public class MainModule
 				if(h == null)
 				{
 					temp = players.get(player).getName()+" You don't have any heroes to move with!  make your move:";
-					bCanMove = false;
 				}
 				else
 				{
@@ -124,7 +123,7 @@ public class MainModule
 					temp = players.get(player).getName() + " You are at (" + oldX + ","+ oldY + "), make your move .";
 				}
 				userInput = getCommandAndParameters(temp);
-				if(userInput[0].equals(commands.move.toString()) && bCanMove)
+				if(userInput[0].equals(commands.move.toString()))
 				{
 					int newX,newY;
 					try
@@ -139,7 +138,7 @@ public class MainModule
 					}
 					if(players.get(player).move(newX,newY, theBoard))
 					{
-						theBoard.printBoard();
+						theBoard.printBoard(players.get(player).getVisibleBoard());
 					}
 					else
 					{
@@ -182,6 +181,10 @@ public class MainModule
 				{
 					for (commands cmd : commands.values())
 						System.out.println(cmd.toString() + " - " + cmd.description);
+				}
+				else if(userInput[0].equals(commands.map.toString()))
+				{
+					theBoard.printBoard(players.get(player).getVisibleBoard());
 				}
 				else if(userInput[0].equals(commands.legend.toString()))
 				{
