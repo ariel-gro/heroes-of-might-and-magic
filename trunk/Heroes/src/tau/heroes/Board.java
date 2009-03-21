@@ -26,7 +26,7 @@ public class Board
 	/**
 	 *
 	 */
-	public void printBoard()
+	public void printBoard(boolean[][] visible)
 	{
 		String objectName;
 
@@ -63,7 +63,9 @@ public class Board
 						objectName += "C";
 					if(theBoard[j-1][i].getResource() != null)
 						objectName += theBoard[j-1][i].getResource().getType().getTypeName().toUpperCase().charAt(0);
-
+					//mask the board with * - when the player cannot see this part:
+					if(!visible[j-1][i])
+						objectName = "* ";
 					if(objectName.length()==0)
 						System.out.print("  ");
 					else if(objectName.length()==1)
@@ -173,10 +175,10 @@ public class Board
 	}
 
 	public void printLegend() {
-		System.out.println("H - Hero\n" + 
-							"C - castle\n" + 
-							"G - Gold mine\n" + 
-							"W - Wood saw-mill\n" + 
+		System.out.println("H - Hero\n" +
+							"C - castle\n" +
+							"G - Gold mine\n" +
+							"W - Wood saw-mill\n" +
 							"S - Stone quarry\n");
 	}
 }
