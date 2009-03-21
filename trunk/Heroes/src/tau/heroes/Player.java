@@ -9,6 +9,9 @@ public class Player {
 	private HashMap<String, Integer> treasury;
 	private ArrayList<Castle> castles;
 	private int daysWithoutCastles;
+	private final static int MAX_MOVES_ALLOWED = 5;
+	private static int movesLeft;
+
 
 	public Player (String name)
 	{
@@ -17,6 +20,7 @@ public class Player {
 		treasury = new HashMap<String, Integer>(ResourceType.values().length);
 		castles = new ArrayList<Castle>();
 		daysWithoutCastles = 0;
+		movesLeft = MAX_MOVES_ALLOWED;
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			mines.put(ResourceType.values()[i].getTypeName(), 0);
@@ -70,57 +74,57 @@ public class Player {
 			this.incrementTreasury(rType.getTypeName(), price);
 		}
 	}
-	
+
 	public void decrementTreasury (String type, int amount)
 	{
 		this.treasury.put(type, this.treasury.get(type) - amount);
 	}
-	
+
 	public void decrementTreasury(HashMap<String, Integer> neededResources) {
 		for (ResourceType rType : ResourceType.values()) {
 			int price = neededResources.get(rType.getTypeName());
 			this.decrementTreasury(rType.getTypeName(), price);
 		}
 	}
-		
+
 	public void addCastle(Castle castle) {
 		if (!this.castles.contains(castle)) {
 			this.castles.add(castle);
-			
-			System.out.println(this.playerName + " now has the castle at (" + 
+
+			System.out.println(this.playerName + " now has the castle at (" +
 					castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
 	}
-	
+
 	public void removeCastle(Castle castle) {
 		if (this.castles.contains(castle)) {
 			this.castles.remove(castle);
-			
-			System.out.println(this.playerName + " lost the castle at (" + 
+
+			System.out.println(this.playerName + " lost the castle at (" +
 					castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
 	}
-	
+
 	public boolean hasEnoughResources(HashMap<String, Integer> neededResources) {
 		boolean hasEnough = true;
-		
+
 		for (ResourceType rType : ResourceType.values()) {
 			int price = neededResources.get(rType.getTypeName());
 			int amount = this.getCurrentTreasuryAmount(rType.getTypeName());
 			if (price > amount) {
 				System.out.println(this.getName() + " doesn't have enough resources of type " +
-						rType.getTypeName() + ". Needs " + price + 
+						rType.getTypeName() + ". Needs " + price +
 						" and has only " + amount + ".");
 				hasEnough = false;
 			}
 		}
-		
+
 		return hasEnough;
 	}
-	
+
 	public int getMaxUnits(HashMap<String, Integer> neededResources) {
 		int maxUnits = Integer.MAX_VALUE;
-		
+
 		for (ResourceType rType : ResourceType.values()) {
 			int price = neededResources.get(rType.getTypeName());
 			int amount = this.getCurrentTreasuryAmount(rType.getTypeName());
@@ -129,10 +133,10 @@ public class Player {
 				maxUnits = Math.min(maxUnits, units);
 			}
 		}
-		
+
 		return maxUnits;
 	}
-		
+
 	public ArrayList<Castle> getCastles() {
 		return this.castles;
 	}
@@ -141,6 +145,7 @@ public class Player {
 	{
 		ResourceType tempType;
 		int amount;
+		movesLeft = MAX_MOVES_ALLOWED;
 
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
@@ -183,7 +188,7 @@ public class Player {
 			System.out.println(tempTypeName+" \t\t "+this.mines.get(tempTypeName));
 		}
 	}
-	
+
 	public boolean isAlive()
 	{
 		if (castles.isEmpty())
@@ -199,5 +204,28 @@ public class Player {
 			daysWithoutCastles = 0;
 		}
 		return true;
+	}
+	public boolean move(int x,int y, Board board)
+	{
+		if(hero == null)
+			return false;
+
+		int oldX = hero.getXPos();
+		int oldY = hero.getYPos();
+
+		int counter = Math.abs(oldX - x)+Math.abs(oldY-y);
+		if (counter > movesLeft)
+		{
+			return false;
+		}
+		movesLeft -= counter;
+		hero.moveTo(x, y, board);
+		return true;
+	}
+	public int getMovesLeft()
+	{
+		if(hero == null)
+			return 0;
+		return movesLeft;
 	}
 }
