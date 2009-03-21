@@ -30,13 +30,13 @@ public class MainModule
 			return this.description;
 		}
 	}
-	
+
 	public enum CastleCommands {
 		build("Build a creature factory. Usage: build [goblin|soldier]"),
 		make("Make a new creature. Usage: make [goblin|soldier]"),
 		help("Get help for the possible commands"),
 		exit("Exit castle menu");
-		
+
 		private final String description;
 
 		private CastleCommands(String theDescription)
@@ -101,17 +101,15 @@ public class MainModule
 		}
 
 		theBoard.printBoard();
-		
-		Move.reset();
 		while (true)
 		{
-			
+
 			for (int player = 0 ; player < numOfPlayers ; )
 			{
 				Hero h = players.get(player).getHero();
 				boolean bCanMove = true;
 				String temp;
-				
+
 				int oldX = 0;
 				int oldY = 0;
 				if(h == null)
@@ -128,14 +126,32 @@ public class MainModule
 				userInput = getCommandAndParameters(temp);
 				if(userInput[0].equals(commands.move.toString()) && bCanMove)
 				{
-					Move.makeMove(userInput, players.get(player).getHero(), theBoard);
+					int newX,newY;
+					try
+					{
+						newX = Integer.parseInt(userInput[1]);
+						newY = Integer.parseInt(userInput[2]);
+					}
+					catch(Exception ex)
+					{
+						System.out.println("Wrong parameters, command not recognized !!!");
+						continue;
+					}
+					if(players.get(player).move(newX,newY, theBoard))
+					{
+						theBoard.printBoard();
+					}
+					else
+					{
+						System.out.println("Illegal move ! You can only move " + players.get(player).getMovesLeft() + " steps more .");
+					}
 				}
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
 					if (player == numOfPlayers)
 						player = 0;
-					Move.reset();
+
 					if (!(players.get(player).isAlive()))
 					{
 						Player myPlayer = players.get(player);
@@ -146,7 +162,7 @@ public class MainModule
 						{
 							if ((resources.get(k).getOwner() != null) && (resources.get(k).getOwner().equals(myPlayer)))
 							{
-								resources.get(k).setOwner(null);							
+								resources.get(k).setOwner(null);
 							}
 						}
 						String name = myPlayer.getName();
@@ -197,14 +213,14 @@ public class MainModule
 	private static void castleMenu(int player_index) {
 		Player player = players.get(player_index);
 		ArrayList<Castle> playerCastles = player.getCastles();
-		
+
 		if (playerCastles.size() == 0) {
 			System.out.println("Sorry, you don't have any castles");
 			return;
 		}
-		
+
 		Castle theCastle = null;
-		
+
 		if (playerCastles.size() > 1) {
 			System.out.println("Please choose one castle:");
 			for (int i = 0; i < playerCastles.size(); i++)
@@ -219,16 +235,16 @@ public class MainModule
 		}
 		else
 			theCastle = playerCastles.get(0);
-		
+
 		while (true) {
 			System.out.println("Castle menu of " + theCastle.toLocationString());
 			String[] response = getCommandAndParameters("Enter a command: ");
 			if (response.length > 0)
 				if (response[0].equals(CastleCommands.build.toString())) {
-					handleBuildCommand(player, theCastle, response);						
+					handleBuildCommand(player, theCastle, response);
 				}
 				else if (response[0].equals(CastleCommands.make.toString())) {
-					handleMakeCommand(player, theCastle, response);						
+					handleMakeCommand(player, theCastle, response);
 				}
 				else if (response[0].equals(CastleCommands.help.toString())) {
 					for (CastleCommands cmd : CastleCommands.values())
@@ -245,15 +261,15 @@ public class MainModule
 	private static void handleBuildCommand(Player player, Castle theCastle,	String[] response) {
 		if (response.length > 1) {
 			CreatureFactory factory = null;
-			
+
 			if (response[1].equals("goblin"))
 				factory = new GoblinFactory();
 			else if (response[1].equals("soldier"))
 				factory = new SoldierFactory();
-									
+
 			if (factory != null) {
 				Class<? extends CreatureFactory> factoryClass = factory.getClass();
-				
+
 				if (theCastle.hasFactory(factoryClass))
 					System.out.println("There is already a factory of this type in this castle");
 				else
@@ -264,23 +280,23 @@ public class MainModule
 				System.out.println("Unknown creature type");
 		}
 	}
-	
+
 	private static void handleMakeCommand(Player player, Castle theCastle, String[] response) {
 		if (response.length > 1) {
 			Class<? extends Creature> creatureClass = null;
-			
+
 			if (response[1].equals("goblin"))
 				creatureClass = Goblin.class;
 			else if (response[1].equals("soldier"))
 				creatureClass = Soldier.class;
-			
+
 			if (creatureClass != null) {
 				int maxUnits = theCastle.getAvailableUnits(creatureClass);
-				
+
 				if (maxUnits > 0) {
 					String[] numOfUnitsResponse = getCommandAndParameters("Enter desired number of units (1-" +
 							maxUnits + "): ");
-					
+
 					if (numOfUnitsResponse.length > 0) {
 						int numberOfUnits = Integer.parseInt(numOfUnitsResponse[0]);
 						if (numberOfUnits > 0 && numberOfUnits <= maxUnits) {
@@ -311,7 +327,8 @@ public class MainModule
 		try
 		{
 			userInput = br.readLine();
-		} catch (IOException ioe)
+		}
+		catch (IOException ioe)
 		{
 			System.out.println("IO error trying to read user input !");
 			ioe.printStackTrace();
