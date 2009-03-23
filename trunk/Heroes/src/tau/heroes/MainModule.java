@@ -10,9 +10,10 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.SortedMap;
 import java.util.Vector;
 
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class MainModule
 {
@@ -68,16 +69,17 @@ public class MainModule
 	static Vector<Castle> castles;
 	static Vector<Resource> resources;
 
+	static final int BOARD_SIZE = 40;
 	/**
 	 * @param args
 	 * @throws IOException
 	 */
-	
+
 	public static void save(String fileName, Vector<Player> players, Vector<Hero> heroes, Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
 	{
 		//GameState gameState = new GameState(players, heroes, castles, resources, theBoard);
-		
-		try 
+
+		try
 		{
 			File saveFile = new File(fileName);
 			saveFile.createNewFile();
@@ -87,52 +89,76 @@ public class MainModule
 			out.close();
 			fileOut.close();
 		}
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
+		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
-	}	
-	
-	
-	public static GameState load(String fileName) 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+	public static GameState load(String fileName)
 	{
 		try
 		{
 			FileInputStream fileIn = new FileInputStream(fileName);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			GameState gameState = (GameState)in.readObject();			
+			GameState gameState = (GameState)in.readObject();
 			in.close();
 			fileIn.close();
-			return gameState;			
-		} 
-		catch (FileNotFoundException e) 
+			return gameState;
+		}
+		catch (FileNotFoundException e)
 		{
 			System.out.println("Can't find your file!");
 			e.printStackTrace();
 		}
-		catch (IOException e) 
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		catch (ClassNotFoundException e) 
+		catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
 	public static void main(String[] args)
 	{
 		players = new Vector<Player>();
 		heroes = new Vector<Hero>();
 		castles = new Vector<Castle>();
 		resources = new Vector<Resource>();
+		String viewSelection = (getCommandAndParameters("Enter visual display method (g for graphical or c for consol):")[0]);
+		if(viewSelection.startsWith("g"))
+		{
+			runGraphicalView();
+			return;
+		}
+		else
+		{
+			System.out.println("defualt is consol view, enjoy :) ");
+		}
+		runConsoleView();
+	}
 
+	private static void runGraphicalView() {
+		Display d = new Display();
+		HeroesGui application = new HeroesGui(d);
+		Shell shell = application.open();
+		while (!shell.isDisposed())
+		{
+			if (!d.readAndDispatch())
+				d.sleep();
+		}
+		d.dispose();
+	}
+
+	private static void runConsoleView() {
 		int numOfPlayers = Integer.parseInt(getCommandAndParameters("Enter number of players:")[0]);
 
 		for (int i = 0; i < numOfPlayers; i++)
@@ -141,13 +167,12 @@ public class MainModule
 			players.add(new Player(userInput[0]));
 		}
 
-		int boardSize = Integer.parseInt(getCommandAndParameters("Enter board size:")[0]);
-		Board theBoard = new Board(boardSize);
+		Board theBoard = new Board(BOARD_SIZE);
 
 		for (int i = 0; i < numOfPlayers; i++)
 		{
-			int randomX = (int) (Math.random() * (boardSize - 1));
-			int randomY = (int) (Math.random() * (boardSize - 1));
+			int randomX = (int) (Math.random() * (BOARD_SIZE - 1));
+			int randomY = (int) (Math.random() * (BOARD_SIZE - 1));
 			Hero h = new Hero(players.get(i), theBoard, randomX, randomY);
 			heroes.add(h);
 			castles.add(new Castle(players.get(i), theBoard, randomX, randomY));
@@ -158,8 +183,8 @@ public class MainModule
 		{
 			for (ResourceType rt : ResourceType.values())
 			{
-				int randomX = (int) (Math.random() * (boardSize - 1));
-				int randomY = (int) (Math.random() * (boardSize - 1));
+				int randomX = (int) (Math.random() * (BOARD_SIZE - 1));
+				int randomY = (int) (Math.random() * (BOARD_SIZE - 1));
 
 				if (theBoard.getBoardState(randomX, randomY).getIsEmpty())
 					resources.add(new Resource(rt, theBoard, randomX, randomY));
@@ -221,7 +246,7 @@ public class MainModule
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
-				
+
 					removeDeadPlayers(theBoard);
 					if (isThereAWinner() != null)
 						endGame(isThereAWinner());
@@ -276,7 +301,6 @@ public class MainModule
 					resources = gameState.getResources();
 					theBoard = gameState.getBoard();
 					numOfPlayers = players.size();
-					boardSize = theBoard.getSize();
 				}
 				else
 				{
@@ -286,7 +310,7 @@ public class MainModule
 		}
 	}
 
-	private static void castleMenu(int player_index) 
+	private static void castleMenu(int player_index)
 	{
 		Player player = players.get(player_index);
 		ArrayList<Castle> playerCastles = player.getCastles();
@@ -361,23 +385,23 @@ public class MainModule
 				System.out.println("Unknown creature type");
 		}
 	}
-	
-	
-	private static void handleSplitCommand(Player player, Castle theCastle, String[] response) 
+
+
+	private static void handleSplitCommand(Player player, Castle theCastle, String[] response)
 	{
 		Creature creature = null;
-		
-		if (response.length == 3) 
+
+		if (response.length == 3)
 		{
 			Hero hero = player.getHero();
 			int numOfUnits = Integer.parseInt(response[2]);
-			
+
 			if ((hero.getXPos() != theCastle.getXPos()) || (hero.getYPos() != theCastle.getYPos()))
 			{
 				System.out.println("You must be in the castle in order to split units !");
 				return;
 			}
-			
+
 			if (response[1].equals("goblin"))
 			{
 				creature = new Goblin(numOfUnits);
@@ -400,8 +424,8 @@ public class MainModule
 		}
 		System.out.println("Illegal move !");
 	}
-		
-	
+
+
 
 	private static void handleMakeCommand(Player player, Castle theCastle, String[] response) {
 		if (response.length > 1) {
@@ -459,7 +483,7 @@ public class MainModule
 
 		return userInput.split(" ");
 	}
-	
+
 	/* removes dead players from game and return all of their belongings to the board */
 	/* side effect: if only one player is left playing - ends the game */
 	private static void removeDeadPlayers(Board theBoard)
@@ -476,7 +500,7 @@ public class MainModule
 					theBoard.getBoardState(x, y).setHero(null);
 					myPlayer.getHero().kill();
 				}
-				
+
 				for (int k = 0 ; k < resources.size() ; k++)
 					if ((resources.get(k).getOwner() != null) && (resources.get(k).getOwner().equals(myPlayer)))
 						resources.get(k).setOwner(null);
@@ -498,7 +522,7 @@ public class MainModule
 		System.out.println("quitting game");
 		System.exit(0);
 	}
-	
+
 
 	private static Player isThereAWinner()
 	{
