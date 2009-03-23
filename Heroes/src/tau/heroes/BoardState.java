@@ -1,9 +1,16 @@
 package tau.heroes;
 
+import java.io.Serializable;
 
 
-public class BoardState {
 
+public class BoardState implements Serializable
+{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hero hero;
 	private Resource resource;
 	private Castle castle;

@@ -1,10 +1,18 @@
 package tau.heroes;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.SortedMap;
 import java.util.Vector;
+
 
 public class MainModule
 {
@@ -17,6 +25,8 @@ public class MainModule
 		info("get information about your player"),
 		map("prints the map visible to you"),
 		legend("prints the map legend"),
+		save("save the current game. Usage: save gameName"),
+		load("loads a saved game. Usage: load gameName"),
 		quit("quit the game");
 
 		private final String description;
@@ -61,6 +71,60 @@ public class MainModule
 	 * @param args
 	 * @throws IOException
 	 */
+	
+	public static void save(String fileName, Vector<Player> players, Vector<Hero> heroes, Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
+	{
+		//GameState gameState = new GameState(players, heroes, castles, resources, theBoard);
+		
+		try 
+		{
+			File saveFile = new File(fileName);
+			saveFile.createNewFile();
+			FileOutputStream fileOut = new FileOutputStream(saveFile);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(new GameState(players, heroes, castles, resources, theBoard));
+			out.close();
+			fileOut.close();
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}	
+	
+	
+	public static GameState load(String fileName) 
+	{
+		try
+		{
+			FileInputStream fileIn = new FileInputStream(fileName);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			GameState gameState = (GameState)in.readObject();			
+			in.close();
+			fileIn.close();
+			return gameState;			
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.out.println("Can't find your file!");
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	public static void main(String[] args)
 	{
 		players = new Vector<Player>();
@@ -204,6 +268,23 @@ public class MainModule
 				else if(userInput[0].equals(commands.quit.toString()))
 				{
 					System.exit(0);
+				}
+				else if(userInput[0].equals(commands.save.toString()))
+				{
+					String fileName = userInput[1];
+					save(fileName, players, heroes, castles, resources, theBoard);
+				}
+				else if(userInput[0].equals(commands.load.toString()))
+				{
+					String fileName = userInput[1];
+					GameState gameState = load(fileName);
+					players = gameState.getPlayers();
+					heroes = gameState.getHeroes();
+					castles = gameState.getCastles();
+					resources = gameState.getResources();
+					theBoard = gameState.getBoard();
+					numOfPlayers = players.size();
+					boardSize = theBoard.getSize();
 				}
 				else
 				{

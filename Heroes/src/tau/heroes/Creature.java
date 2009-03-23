@@ -1,10 +1,16 @@
 package tau.heroes;
 
+import java.io.Serializable;
 
 
 
-public abstract class Creature
+
+public abstract class Creature implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private AlignmentType _type;
 	private int _speed;
 	private int _shoots;

@@ -1,10 +1,13 @@
 package tau.heroes;
 
+import java.io.Serializable;
 
 
 
 
-public enum ResourceType {
+
+public enum ResourceType implements Serializable
+{
 
 	WOOD("wood", 2),
 	GOLD("gold", 1000),

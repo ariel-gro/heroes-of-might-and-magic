@@ -1,9 +1,15 @@
 package tau.heroes;
 
+import java.io.Serializable;
 
-public class Army
+
+public class Army implements Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int MAX_CREATURES = 5;
 	private Creature[] _creatures = new Creature[MAX_CREATURES];
 

@@ -1,7 +1,14 @@
 package tau.heroes;
 
-public class Resource {
+import java.io.Serializable;
 
+public class Resource implements Serializable
+{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Player owner;
 	private final int xPos;
 	private final int yPos;
