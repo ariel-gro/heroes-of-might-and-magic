@@ -173,6 +173,8 @@ public class MainModule
 			for (int player = 0 ; player < numOfPlayers ; )
 			{
 				removeDeadPlayers(theBoard);
+				if (isThereAWinner() != null)
+					endGame(isThereAWinner());
 				numOfPlayers = players.size();
 				Hero h = players.get(player).getHero();
 				String temp;
@@ -206,6 +208,8 @@ public class MainModule
 					if(players.get(player).move(newX,newY, theBoard))
 					{
 						removeDeadPlayers(theBoard);
+						if (isThereAWinner() != null)
+							endGame(isThereAWinner());
 						numOfPlayers = players.size();
 						theBoard.printBoard(players.get(player).getVisibleBoard());
 					}
@@ -219,6 +223,8 @@ public class MainModule
 					players.get(player).endTurn();
 				
 					removeDeadPlayers(theBoard);
+					if (isThereAWinner() != null)
+						endGame(isThereAWinner());
 					numOfPlayers = players.size();
 					player = (player + 1)%numOfPlayers;
 					continue;
@@ -478,20 +484,27 @@ public class MainModule
 				String name = myPlayer.getName();
 				players.remove(player);
 				System.out.println(name + " is out of the game .");
-				if (players.size() == 1)
-					endGame();
 			}
 		}
 	}
 
 
-	private static void endGame()
+	private static void endGame(Player winner)
 	{
 		System.out.println("game ended.");
-		System.out.println("winner is: "+players.firstElement().getName());
+		System.out.println("winner is: "+winner.getName());
 		//TODO: after implementing score, display player's game score
 		//and update leader score board if needed
 		System.out.println("quitting game");
 		System.exit(0);
+	}
+	
+
+	private static Player isThereAWinner()
+	{
+		if (players.size() == 1)
+			return players.firstElement();
+		else
+			return null;
 	}
 }
