@@ -213,13 +213,16 @@ public class Player implements Serializable
 	public boolean isAlive()
 	{
 		if (castles.isEmpty())
-		{
-			daysWithoutCastles++;
-			if (daysWithoutCastles == 7)
-			{
+			if (hero == null) /* a player with no castles and no heroes can't play */
 				return false;
+			else /* player has no castles but has heroes that can obtain castles */
+			{
+				daysWithoutCastles++;
+				if (daysWithoutCastles == 7)
+				{
+					return false;
+				}
 			}
-		}
 		else
 		{
 			daysWithoutCastles = 0;

@@ -88,6 +88,11 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testIsAlive() {
+		//the player has no castle and no heroes - so it dies
+		assertEquals(false, p.isAlive());
+		
+		//now we give the player a dummy hero
+		p.setHero(h);
 		//for the first six days the hero is alive
 		for(int i = 0; i< 6;i++)
 			assertEquals(true,p.isAlive());
