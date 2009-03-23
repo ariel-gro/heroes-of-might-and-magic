@@ -1,9 +1,14 @@
 package tau.heroes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Castle
+public class Castle implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Board board;
 	private Player player;
 	private Army army;

@@ -1,8 +1,14 @@
 package tau.heroes;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Player {
+public class Player implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String playerName;
 	private Hero hero;
 	private HashMap<String, Integer> mines;

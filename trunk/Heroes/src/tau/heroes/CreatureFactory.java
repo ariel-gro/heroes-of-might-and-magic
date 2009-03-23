@@ -3,13 +3,19 @@
  */
 package tau.heroes;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * @author yuval eitan
  *
  */
-public abstract class CreatureFactory {
+public abstract class CreatureFactory implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static HashMap<Class<? extends Creature>, Class<? extends CreatureFactory>> factoryMap;
 	private HashMap<String, Integer> prices;
 	private HashMap<String, Integer> pricesPerUnit;

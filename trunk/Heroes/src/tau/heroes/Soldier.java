@@ -1,7 +1,12 @@
 package tau.heroes;
 
-public class Soldier extends Creature
+public class Soldier extends Creature 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Soldier is a creature with the following parameters:
 	 * speed = 3

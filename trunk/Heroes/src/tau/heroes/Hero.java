@@ -1,7 +1,13 @@
 package tau.heroes;
 
-public class Hero
+import java.io.Serializable;
+
+public class Hero implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean _alive;
 	private boolean _autoFight;
 	private Army _army;

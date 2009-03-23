@@ -1,6 +1,8 @@
 package tau.heroes;
 
-public enum AlignmentType
+import java.io.Serializable;
+
+public enum AlignmentType implements Serializable
 {
 	KNIGHT,
 	BARBARIAN,
