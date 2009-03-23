@@ -22,7 +22,8 @@ public abstract class CreatureFactory implements Serializable
 	private final int maxUnitsPerDay;
 	private int unitsBuiltToday;
 	
-	static {
+	static 
+	{
 		factoryMap = new HashMap<Class<? extends Creature>, Class<? extends CreatureFactory>>();
 		factoryMap.put(Goblin.class, GoblinFactory.class);
 		factoryMap.put(Soldier.class, SoldierFactory.class);

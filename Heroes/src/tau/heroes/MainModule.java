@@ -45,6 +45,7 @@ public class MainModule
 	public enum CastleCommands {
 		build("Build a creature factory. Usage: build [goblin|soldier]"),
 		make("Make a new creature. Usage: make [goblin|soldier]"),
+		split("Split units from the hero to the castle's army. Usage: split[goblin|soldier, numOfUnits]"),
 		help("Get help for the possible commands"),
 		exit("Exit castle menu");
 
@@ -294,7 +295,8 @@ public class MainModule
 		}
 	}
 
-	private static void castleMenu(int player_index) {
+	private static void castleMenu(int player_index) 
+	{
 		Player player = players.get(player_index);
 		ArrayList<Castle> playerCastles = player.getCastles();
 
@@ -334,6 +336,10 @@ public class MainModule
 					for (CastleCommands cmd : CastleCommands.values())
 						System.out.println(cmd.toString() + " - " + cmd.getDescription());
 				}
+				else if (response[0].equals(CastleCommands.split.toString()))
+				{
+					handleSplitCommand(player, theCastle, response);
+				}
 				else if (response[0].equals(CastleCommands.exit.toString())) {
 					return;
 				}
@@ -364,6 +370,47 @@ public class MainModule
 				System.out.println("Unknown creature type");
 		}
 	}
+	
+	
+	private static void handleSplitCommand(Player player, Castle theCastle, String[] response) 
+	{
+		Creature creature = null;
+		
+		if (response.length == 3) 
+		{
+			Hero hero = player.getHero();
+			int numOfUnits = Integer.parseInt(response[2]);
+			
+			if ((hero.getXPos() != theCastle.getXPos()) || (hero.getYPos() != theCastle.getYPos()))
+			{
+				System.out.println("You must be in the castle in order to split units !");
+				return;
+			}
+			
+			if (response[1].equals("goblin"))
+			{
+				creature = new Goblin(numOfUnits);
+			}
+			else if (response[1].equals("soldier"))
+			{
+				creature = new Soldier(numOfUnits);
+			}
+			else
+			{
+				System.out.println("Illegal move !");
+				return;
+			}
+			if (!(hero.removeFromArmy(creature)))
+			{
+				System.out.println("You dont have enough units to split");
+			}
+			theCastle.addToArmy(creature);
+			return;
+		}
+		System.out.println("Illegal move !");
+	}
+		
+	
 
 	private static void handleMakeCommand(Player player, Castle theCastle, String[] response) {
 		if (response.length > 1) {

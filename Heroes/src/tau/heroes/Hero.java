@@ -222,4 +222,24 @@ public class Hero implements Serializable
 	{
 		_autoFight = bAuto;
 	}
+	
+	public boolean removeFromArmy(Creature creature)
+	{
+		int numOfUnitsToRemove = creature.get_numberOfUnits();
+		if (_army == null)
+		{
+			return false;
+		}
+		for (int i = 0 ; i < Army.MAX_CREATURES ; i++)
+		{
+			Creature armyCreature = _army.getCreature(i);
+			int numOfUnits = armyCreature.get_numberOfUnits();
+			if (armyCreature != null && armyCreature.getClass().equals(creature.getClass()) && numOfUnits >= numOfUnitsToRemove)
+			{
+				armyCreature.set_numberOfUnits(numOfUnits - numOfUnitsToRemove);
+				return true;
+			}	
+		}
+		return false;
+	}
 }

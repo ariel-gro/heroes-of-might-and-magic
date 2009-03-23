@@ -207,7 +207,7 @@ public class Castle implements Serializable
 		this.addToArmy(creature);
 	}
 
-	private void addToArmy(Creature creature) {
+	public void addToArmy(Creature creature) {
 		if (this.army == null) {
 			Creature[] creatures = new Creature[] { creature };
 			this.army = new Army(creatures);
