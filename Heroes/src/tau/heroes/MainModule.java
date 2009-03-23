@@ -172,6 +172,8 @@ public class MainModule
 
 			for (int player = 0 ; player < numOfPlayers ; )
 			{
+				removeDeadPlayers(theBoard);
+				numOfPlayers = players.size();
 				Hero h = players.get(player).getHero();
 				String temp;
 
@@ -203,6 +205,8 @@ public class MainModule
 					}
 					if(players.get(player).move(newX,newY, theBoard))
 					{
+						removeDeadPlayers(theBoard);
+						numOfPlayers = players.size();
 						theBoard.printBoard(players.get(player).getVisibleBoard());
 					}
 					else
@@ -213,29 +217,10 @@ public class MainModule
 				else if(userInput[0].equals(commands.endTurn.toString()))
 				{
 					players.get(player).endTurn();
-					if (player == numOfPlayers)
-						player = 0;
-
-					if (!(players.get(player).isAlive()))
-					{
-						Player myPlayer = players.get(player);
-						int x = myPlayer.getHero().getXPos();
-						int y = myPlayer.getHero().getYPos();
-						myPlayer.getHero().kill();
-						for (int k = 0 ; k < resources.size() ; k++)
-						{
-							if ((resources.get(k).getOwner() != null) && (resources.get(k).getOwner().equals(myPlayer)))
-							{
-								resources.get(k).setOwner(null);
-							}
-						}
-						String name = myPlayer.getName();
-						players.remove(player);
-						numOfPlayers--;
-						System.out.println(name + " is out of the game .");
-						theBoard.getBoardState(x, y).setHero(null);
-					}
-					player++;
+				
+					removeDeadPlayers(theBoard);
+					numOfPlayers = players.size();
+					player = (player + 1)%numOfPlayers;
 					continue;
 				}
 				else if(userInput[0].equals(commands.castle.toString()))
@@ -467,5 +452,46 @@ public class MainModule
 		}
 
 		return userInput.split(" ");
+	}
+	
+	/* removes dead players from game and return all of their belongings to the board */
+	/* side effect: if only one player is left playing - ends the game */
+	private static void removeDeadPlayers(Board theBoard)
+	{
+		for (int player = 0; player < players.size(); player++)
+		{
+			if (!(players.get(player).isAlive()))
+			{
+				Player myPlayer = players.get(player);
+				if (myPlayer.getHero() != null)
+				{
+					int x = myPlayer.getHero().getXPos();
+					int y = myPlayer.getHero().getYPos();
+					theBoard.getBoardState(x, y).setHero(null);
+					myPlayer.getHero().kill();
+				}
+				
+				for (int k = 0 ; k < resources.size() ; k++)
+					if ((resources.get(k).getOwner() != null) && (resources.get(k).getOwner().equals(myPlayer)))
+						resources.get(k).setOwner(null);
+
+				String name = myPlayer.getName();
+				players.remove(player);
+				System.out.println(name + " is out of the game .");
+				if (players.size() == 1)
+					endGame();
+			}
+		}
+	}
+
+
+	private static void endGame()
+	{
+		System.out.println("game ended.");
+		System.out.println("winner is: "+players.firstElement().getName());
+		//TODO: after implementing score, display player's game score
+		//and update leader score board if needed
+		System.out.println("quitting game");
+		System.exit(0);
 	}
 }
