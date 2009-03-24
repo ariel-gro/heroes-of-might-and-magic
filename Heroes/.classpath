@@ -4,10 +4,9 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/org.eclipse.swt/swt.jar" sourcepath="/org.eclipse.swt/src.zip">
-		<attributes>
-			<attribute name="javadoc_location" value="http://help.eclipse.org/help31/nftopic/org.eclipse.platform.doc.isv/reference/api/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="lib" path="C:/workspace/GUI/JARs/org.eclipse.jface_3.4.1.M20080827-2000.jar"/>
+	<classpathentry kind="lib" path="C:/workspace/GUI/JARs/org.eclipse.swt.win32.win32.x86_3.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/workspace/GUI/JARs/org.eclipse.swt_3.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
