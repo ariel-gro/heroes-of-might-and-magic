@@ -82,8 +82,8 @@ public class HeroesGui
 	{
 		shell = new Shell(display, SWT.ON_TOP);
 		shell.setLayout(new FillLayout());
-		Image shellImage = new Image(display, System.getProperty("user.dir") + "/icons/Heroes-icon.jpg");
-		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
+		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/icons/Heroes-icon.jpg");
+		Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
 		shell.setImage(shellImage);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
