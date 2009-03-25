@@ -143,4 +143,48 @@ public class HeroTest extends TestCase {
 		Army a2 = new Army(c1);
 		assertEquals(a2.getFirstCreature(),c1[2]);
 	}
+	
+	public void testRemoveFromArmy()
+	{
+		Player player = new Player("Test");
+		Board board = new Board(10);
+		Hero hero = new Hero(player, board, 4, 6);
+		Army army = hero.getArmy();
+
+		//override random - set 10 units
+		assertNotNull(army);
+		assertNotNull(army.getCreature(0));
+		assertEquals(Soldier.class, army.getCreature(0).getClass());
+		for (int i = 1; i < Army.MAX_CREATURES; i++)
+			assertNull(army.getCreature(i));
+		army.getCreature(0).set_numberOfUnits(10);
+		assertEquals(10, army.getCreature(0).get_numberOfUnits());
+		
+		//remove 6 units - should succeed 
+		Soldier soldiersToRemove = new Soldier(6);
+		assertTrue(hero.removeFromArmy(soldiersToRemove));
+		
+		assertNotNull(army.getCreature(0));
+		assertEquals(Soldier.class, army.getCreature(0).getClass());
+		for (int i = 1; i < Army.MAX_CREATURES; i++)
+			assertNull(army.getCreature(i));
+		assertEquals(4, army.getCreature(0).get_numberOfUnits());
+		
+		//remove another 6 units - should return false
+		soldiersToRemove = new Soldier(6);
+		assertTrue(!hero.removeFromArmy(soldiersToRemove));
+		
+		assertNotNull(army.getCreature(0));
+		assertEquals(Soldier.class, army.getCreature(0).getClass());
+		for (int i = 1; i < Army.MAX_CREATURES; i++)
+			assertNull(army.getCreature(i));
+		assertEquals(4, army.getCreature(0).get_numberOfUnits());
+		
+		//remove last 4 units - should return true
+		soldiersToRemove = new Soldier(4);
+		assertTrue(hero.removeFromArmy(soldiersToRemove));
+		//not all creatures were removed...
+		for (int i = 0; i < Army.MAX_CREATURES; i++)
+			assertNull(army.getCreature(i));
+	}
 }
