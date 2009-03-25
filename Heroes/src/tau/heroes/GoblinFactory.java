@@ -3,14 +3,13 @@
  */
 package tau.heroes;
 
-import java.io.Serializable;
-
 /**
  * @author yuval eitan
  *
  */
 public class GoblinFactory extends CreatureFactory 
 {
+	private static final long serialVersionUID = 1L;
 	private final static String name = "Goblin Factory";
 	public final static int MAX_UNITS_PER_DAY = 5;
 	
