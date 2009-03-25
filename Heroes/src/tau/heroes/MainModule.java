@@ -147,7 +147,7 @@ public class MainModule
 		runConsoleView();
 	}
 
-	private static void runGraphicalView(GameState gs) 
+	protected static void runGraphicalView(GameState gs) 
 	{
 		Display d = new Display();
 		HeroesGui application = new HeroesGui(d, gs);
@@ -192,8 +192,7 @@ public class MainModule
 				if (theBoard.getBoardState(randomX, randomY).getIsEmpty())
 					resources.add(new Resource(rt, theBoard, randomX, randomY));
 			}
-		}
-		
+		}		
 		
 		String viewSelection = (getCommandAndParameters("Whould you like to play in graphical mode or consol mode(g for graphical or c for consol):")[0]);
 		if(viewSelection.startsWith("g"))
