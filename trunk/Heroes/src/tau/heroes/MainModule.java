@@ -311,11 +311,13 @@ public class MainModule
 				else if (userInput[0].equals(commands.save.toString()))
 				{
 					String fileName = userInput[1];
+					System.out.println("Game has been save on '" + fileName + "'.");
 					save(fileName, players, heroes, castles, resources, theBoard);
 				}
 				else if (userInput[0].equals(commands.load.toString()))
 				{
 					String fileName = userInput[1];
+					System.out.println("Game has been load from '" + fileName + "'.");
 					GameState gameState = load(fileName);
 					players = gameState.getPlayers();
 					heroes = gameState.getHeroes();
