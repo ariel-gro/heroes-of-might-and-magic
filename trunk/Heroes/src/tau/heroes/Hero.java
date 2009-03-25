@@ -233,12 +233,18 @@ public class Hero implements Serializable
 		for (int i = 0 ; i < Army.MAX_CREATURES ; i++)
 		{
 			Creature armyCreature = _army.getCreature(i);
-			int numOfUnits = armyCreature.get_numberOfUnits();
-			if (armyCreature != null && armyCreature.getClass().equals(creature.getClass()) && numOfUnits >= numOfUnitsToRemove)
-			{
-				armyCreature.set_numberOfUnits(numOfUnits - numOfUnitsToRemove);
-				return true;
-			}	
+			if (armyCreature != null) {
+				int numOfUnits = armyCreature.get_numberOfUnits();
+				if (armyCreature.getClass().equals(creature.getClass()) && 
+						numOfUnits >= numOfUnitsToRemove)
+				{
+					armyCreature.set_numberOfUnits(numOfUnits - numOfUnitsToRemove);
+					// If creature has no units left remove it from the army
+					if (armyCreature.get_numberOfUnits() == 0)
+						_army.setCreature(i, null);
+					return true;
+				}	
+			}
 		}
 		return false;
 	}
