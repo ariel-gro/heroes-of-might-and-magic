@@ -107,4 +107,8 @@ public abstract class Creature implements Serializable
 	public void addUnits(int numberOfUnits) {
 		this._numberOfUnits += numberOfUnits;
 	}
+	
+	public void removeUnits(int numberOfUnits) {
+		this._numberOfUnits -= numberOfUnits;
+	}
 }
