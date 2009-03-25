@@ -173,18 +173,19 @@ public class HeroTest extends TestCase {
 		//remove another 6 units - should return false
 		soldiersToRemove = new Soldier(6);
 		assertTrue(!hero.removeFromArmy(soldiersToRemove));
-		
 		assertNotNull(army.getCreature(0));
 		assertEquals(Soldier.class, army.getCreature(0).getClass());
 		for (int i = 1; i < Army.MAX_CREATURES; i++)
 			assertNull(army.getCreature(i));
 		assertEquals(4, army.getCreature(0).get_numberOfUnits());
 		
-		//remove last 4 units - should return true
+		//remove last 4 units - should return false (can't remove all the army from hero)
 		soldiersToRemove = new Soldier(4);
-		assertTrue(hero.removeFromArmy(soldiersToRemove));
-		//not all creatures were removed...
-		for (int i = 0; i < Army.MAX_CREATURES; i++)
+		assertTrue(!hero.removeFromArmy(soldiersToRemove));
+		assertNotNull(army.getCreature(0));
+		assertEquals(Soldier.class, army.getCreature(0).getClass());
+		for (int i = 1; i < Army.MAX_CREATURES; i++)
 			assertNull(army.getCreature(i));
+		assertEquals(4, army.getCreature(0).get_numberOfUnits());		
 	}
 }
