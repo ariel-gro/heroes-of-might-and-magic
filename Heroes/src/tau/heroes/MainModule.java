@@ -77,8 +77,6 @@ public class MainModule
 
 	public static void save(String fileName, Vector<Player> players, Vector<Hero> heroes, Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
 	{
-		//GameState gameState = new GameState(players, heroes, castles, resources, theBoard);
-
 		try
 		{
 			File saveFile = new File(fileName);
@@ -133,22 +131,22 @@ public class MainModule
 		heroes = new Vector<Hero>();
 		castles = new Vector<Castle>();
 		resources = new Vector<Resource>();
-		String viewSelection = (getCommandAndParameters("Enter visual display method (g for graphical or c for consol):")[0]);
-		if(viewSelection.startsWith("g"))
-		{
-			runGraphicalView();
-			return;
-		}
-		else
-		{
-			System.out.println("defualt is consol view, enjoy :) ");
-		}
+		//if(viewSelection.startsWith("g"))
+		//{
+		//	runGraphicalView();
+		//	return;
+		//}
+		//else
+		//{
+		//	System.out.println("defualt is consol view, enjoy :) ");
+		//}
 		runConsoleView();
 	}
 
-	private static void runGraphicalView() {
+	private static void runGraphicalView(GameState gs) 
+	{
 		Display d = new Display();
-		HeroesGui application = new HeroesGui(d);
+		HeroesGui application = new HeroesGui(d, gs);
 		Shell shell = application.open();
 		while (!shell.isDisposed())
 		{
@@ -190,8 +188,23 @@ public class MainModule
 					resources.add(new Resource(rt, theBoard, randomX, randomY));
 			}
 		}
+		
+		
+		String viewSelection = (getCommandAndParameters("Whould you like to play in graphical mode or consol mode(g for graphical or c for consol):")[0]);
+		if(viewSelection.startsWith("g"))
+		{
+			GameState gs = new GameState(players, heroes, castles, resources, theBoard);
+			runGraphicalView(gs);
+			return;
+		}
+		else
+		{
+			System.out.println("defualt is consol view, enjoy :) ");
+		}
 
-
+		
+		
+		
 		while (true)
 		{
 

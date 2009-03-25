@@ -30,5 +30,4 @@ public enum ResourceType implements Serializable
 	public int getPerDay() {
 		return perDay;
 	}
-
 }

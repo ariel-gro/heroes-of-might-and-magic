@@ -45,21 +45,28 @@ public class HeroesGui
 
 	private static IconCache iconCache = new IconCache();
 
-	final int numOfCells = 40;
+	final int numOfCells;
 
 	private Color black;
 
 	private Color green;
+	
+	private Color white;
 
 	private Display display;
+	
+	private GameState gameState;
+	
 	public Display getDisplay()
 	{
 		return display;
 	}
 
-	public HeroesGui(Display d)
+	public HeroesGui(Display d, GameState gs)
 	{
 		this.display = d;
+		this.gameState = gs;
+		this.numOfCells = gs.getBoard().getSize();
 		iconCache.initResources(display);
 	}
 
@@ -72,6 +79,7 @@ public class HeroesGui
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		green = display.getSystemColor(SWT.COLOR_GREEN);
+		white = display.getSystemColor(SWT.COLOR_WHITE);
 		shell.setBackground(black);
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
@@ -97,7 +105,7 @@ public class HeroesGui
 		final ScrolledComposite sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		Composite boardComposite = new Composite(sc, SWT.NONE);
-		boardComposite.setBackground(green);
+		boardComposite.setBackground(white);
 		final Composite statusComposite = new Composite(sash, SWT.BORDER);
 		statusComposite.setBackground(black);
 		GridData d1 = new GridData(GridData.FILL_BOTH);
@@ -142,6 +150,36 @@ public class HeroesGui
 		return true;
 	}
 
+	
+	private int fromBoardToDisplay(int i)
+	{
+		int x = i % numOfCells;
+		int y = i / numOfCells;
+		BoardState bs = gameState.getBoard().getBoardState(x, y);
+		if ((bs.getCastle()) != null)
+		{
+			return iconCache.castleIcon;
+		}
+		else if ((bs.getResource()) != null)
+		{
+			if (bs.getResource().getType().getTypeName().equals("wood"))
+			{
+				return iconCache.woodIcon;			
+			}
+			else if (bs.getResource().getType().getTypeName().equals("gold"))
+			{
+				return iconCache.goldMineIcon;			
+			}
+			else if (bs.getResource().getType().getTypeName().equals("stone"))
+			{
+				return iconCache.stoneIcon;			
+			}
+		}
+		
+		return iconCache.grassIcon;
+	}
+	
+	
 	private void createBoardWindow(Composite boardComposite, final ScrolledComposite sc)
 	{
 		GridLayout tableLayout = new GridLayout();
@@ -150,13 +188,17 @@ public class HeroesGui
 		tableLayout.horizontalSpacing = 0;
 		tableLayout.verticalSpacing = 0;
 		boardComposite.setLayout(tableLayout);
+		
 
 		for (int i = 0; i < numOfCells * numOfCells; i++)
 		{
 			Label b = new Label(boardComposite, SWT.NONE);
-			b.setImage(iconCache.stockImages[iconCache.grassIcon]);
+			int t = fromBoardToDisplay(i);
+			b.setImage(iconCache.stockImages[t]);
 			b.setBackground(green);
 		}
+		
+		
 
 		sc.setContent(boardComposite);
 		sc.setExpandHorizontal(true);
@@ -544,9 +586,9 @@ public class HeroesGui
 class IconCache
 {
 	// Stock images
-	public final int shellIcon = 0, grassIcon = 1, snakeOnGrassIcon = 2;
+	public final int shellIcon = 0, grassIcon = 1, snakeOnGrassIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6;
 
-	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg" };
+	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
 
 	public Image stockImages[];
 
