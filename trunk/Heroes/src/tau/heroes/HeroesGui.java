@@ -39,7 +39,7 @@ public class HeroesGui
 {
 	private Shell shell;
 
-	private File file = null;
+	private String file = null;
 
 	private boolean isModified = false;
 
@@ -55,7 +55,15 @@ public class HeroesGui
 
 	private Display display;
 	
+	static Control currentChild = null;
+	
 	private GameState gameState;
+	
+	private Composite boardComposite;
+	
+	private Composite statusComposite;
+	
+	private ScrolledComposite sc;
 	
 	public Display getDisplay()
 	{
@@ -72,9 +80,11 @@ public class HeroesGui
 
 	public Shell open()
 	{
-		shell = new Shell(display);
+		shell = new Shell(display, SWT.ON_TOP);
 		shell.setLayout(new FillLayout());
-		shell.setImage(iconCache.stockImages[iconCache.shellIcon]);
+		Image shellImage = new Image(display, System.getProperty("user.dir") + "/icons/Heroes-icon.jpg");
+		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
+		shell.setImage(shellImage);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
@@ -102,27 +112,64 @@ public class HeroesGui
 		sash.setOrientation(SWT.HORIZONTAL);
 		sash.setLayoutData(sashData);
 
-		final ScrolledComposite sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		Composite boardComposite = new Composite(sc, SWT.NONE);
-		boardComposite.setBackground(white);
-		final Composite statusComposite = new Composite(sash, SWT.BORDER);
-		statusComposite.setBackground(black);
-		GridData d1 = new GridData(GridData.FILL_BOTH);
-		GridData d2 = new GridData(GridData.FILL_BOTH);
-		boardComposite.setLayoutData(d1);
-		statusComposite.setLayoutData(d2);
 
+		createBoardWindow();
+
+		createStatusWindow(sash);
+		
 		sash.setWeights(new int[] { 85, 15 });
-
-		createBoardWindow(boardComposite, sc);
-
-		createStatusWindow(statusComposite);
-
-
+		
+		addMovementListeners();
 
 		shell.open();
 		return shell;
+	}
+
+	private void addMovementListeners()
+	{
+		Listener moveListener = new Listener() {
+			public void handleEvent(Event event)
+			{
+				Control[] children;
+				switch (event.type)
+				{
+				case SWT.MouseDown:
+					children = boardComposite.getChildren();
+					for (int i = 0; i < children.length; i++)
+					{
+						Rectangle rect = children[i].getBounds();
+						if (rect.contains(event.x, event.y))
+						{
+							currentChild = children[i];
+						}
+					}
+					break;
+				case SWT.MouseMove:
+					if (currentChild != null)
+					{
+						children = boardComposite.getChildren();
+						for (int i = 0; i < children.length; i++)
+						{
+							Rectangle rect = children[i].getBounds();
+							if (rect.contains(event.x, event.y) && currentChild != children[i])
+							{
+								currentChild.moveAbove(children[i]);
+								sc.layout(new Control[] { currentChild });
+							}
+						}
+					}
+					break;
+				case SWT.MouseUp:
+					currentChild = null;
+					break;
+				}
+			}
+		};
+		sc.addListener(SWT.MouseDown, moveListener);
+		sc.addListener(SWT.MouseUp, moveListener);
+		sc.addListener(SWT.MouseMove, moveListener);
 	}
 
 	private boolean close()
@@ -180,8 +227,21 @@ public class HeroesGui
 	}
 	
 	
-	private void createBoardWindow(Composite boardComposite, final ScrolledComposite sc)
+	private void createBoardWindow()
 	{
+		if(boardComposite != null && boardComposite.isDisposed() == false)
+		{
+			boardComposite.dispose();
+			iconCache.freeResources();
+			iconCache.initResources(display);
+		}
+		
+		boardComposite = new Composite(sc, SWT.NONE);
+		boardComposite.setEnabled(false);
+		boardComposite.setBackground(white);
+		GridData d = new GridData(GridData.FILL_BOTH);
+		boardComposite.setLayoutData(d);
+		
 		GridLayout tableLayout = new GridLayout();
 		tableLayout.numColumns = numOfCells;
 		tableLayout.makeColumnsEqualWidth = true;
@@ -197,8 +257,6 @@ public class HeroesGui
 			b.setImage(iconCache.stockImages[t]);
 			b.setBackground(green);
 		}
-		
-		
 
 		sc.setContent(boardComposite);
 		sc.setExpandHorizontal(true);
@@ -228,7 +286,7 @@ public class HeroesGui
 		{
 			controls[i].addListener(SWT.Activate, listener);
 		}
-
+		
 		/*	Option 1 - Labels
 		GridLayout tableLayout = new GridLayout();
 		tableLayout.numColumns = 50;
@@ -300,8 +358,13 @@ public class HeroesGui
 		*/
 	}
 
-	private void createStatusWindow(Composite statusComposite)
+	private void createStatusWindow(Composite parent)
 	{
+		statusComposite = new Composite(parent, SWT.BORDER);
+		statusComposite.setBackground(black);
+		GridData d = new GridData(GridData.FILL_BOTH);
+		statusComposite.setLayoutData(d);
+		
 		Label tempLabel = new Label(statusComposite, SWT.NONE);
 		tempLabel.setText("THIS IS WHERE ALL \n THE STATUS WILL BE");
 		tempLabel.setBackground(green);
@@ -347,14 +410,20 @@ public class HeroesGui
 		File file = new File(name);
 		if (!file.exists())
 		{
-			displayError("File" + file.getName() + " " + "Does_not_exist");
+			displayError("File " + file.getName() + " " + "Does_not_exist");
 			return;
 		}
 
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
 
-		//////////////// ************* TBD Open File ************** ///////////////////
+		gameState = MainModule.load(name);
+		MainModule.players = gameState.getPlayers();
+		MainModule.heroes = gameState.getHeroes();
+		MainModule.castles = gameState.getCastles();
+		MainModule.resources = gameState.getResources();
+		
+		createBoardWindow();
 
 		shell.setCursor(null);
 		waitCursor.dispose();
@@ -369,11 +438,12 @@ public class HeroesGui
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
 
-		////////////////************* TBD Save File ************** ///////////////////
+		System.out.println("Saving game to: " + file);
+		MainModule.save(file, gameState.getPlayers(), gameState.getHeroes(), gameState.getCastles(), gameState.getResources(), gameState.getBoard());
 
 		shell.setCursor(null);
 		waitCursor.dispose();
-
+		
 		return true;
 	}
 
@@ -395,12 +465,12 @@ public class HeroesGui
 			name += ".sav";
 		}
 
-		File file = new File(saveDialog.getFilterPath(), name);
-		if (file.exists())
+		String file = saveDialog.getFilterPath() + "\\" + name;
+		if (new File(file).exists())
 		{
 			MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			box.setText("Save_as_title");
-			box.setMessage("File" + file.getName() + " " + "Query_overwrite");
+			box.setText("Overite Existing File");
+			box.setMessage("File " + name + " " + "Already exists, would you like to overwrite?");
 			if (box.open() != SWT.YES)
 			{
 				return false;
@@ -586,9 +656,9 @@ public class HeroesGui
 class IconCache
 {
 	// Stock images
-	public final int shellIcon = 0, grassIcon = 1, snakeOnGrassIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6;
+	public final int grassIcon = 0, castleIcon = 1, goldMineIcon = 2, stoneIcon = 3, woodIcon = 4;
 
-	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
+	public final String[] stockImageLocations = { "/icons/Grass3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
 
 	public Image stockImages[];
 
