@@ -80,7 +80,7 @@ public class HeroesGui
 
 	public Shell open()
 	{
-		shell = new Shell(display, SWT.ON_TOP);
+		shell = new Shell(display, SWT.APPLICATION_MODAL);
 		shell.setLayout(new FillLayout());
 		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/icons/Heroes-icon.jpg");
 		Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
@@ -121,13 +121,13 @@ public class HeroesGui
 		
 		sash.setWeights(new int[] { 85, 15 });
 		
-		addMovementListeners();
+		//addMovementListeners();
 
 		shell.open();
 		return shell;
 	}
 
-	private void addMovementListeners()
+/*	private void addMovementListeners()
 	{
 		Listener moveListener = new Listener() {
 			public void handleEvent(Event event)
@@ -171,7 +171,7 @@ public class HeroesGui
 		sc.addListener(SWT.MouseUp, moveListener);
 		sc.addListener(SWT.MouseMove, moveListener);
 	}
-
+*/
 	private boolean close()
 	{
 		if (isModified)
@@ -198,12 +198,17 @@ public class HeroesGui
 	}
 
 	
-	private int fromBoardToDisplay(int i)
+	private int fromBoardToDisplayIcons(int i)
 	{
 		int x = i / numOfCells;
 		int y = i % numOfCells;
 		BoardState bs = gameState.getBoard().getBoardState(x, y);
-		if ((bs.getCastle()) != null)
+		
+		if ((bs.getHero()) != null)
+		{
+			return iconCache.heroIcon;
+		}
+		else if ((bs.getCastle()) != null)
 		{
 			return iconCache.castleIcon;
 		}
@@ -226,6 +231,39 @@ public class HeroesGui
 		return iconCache.grassIcon;
 	}
 	
+	private String fromBoardToDisplayDecription(int i)
+	{
+		int x = i / numOfCells;
+		int y = i % numOfCells;
+		BoardState bs = gameState.getBoard().getBoardState(x, y);
+		
+		if ((bs.getHero()) != null)
+		{
+			return bs.getHero().player.getName() + "'s Hero";
+		}
+		else if ((bs.getCastle()) != null)
+		{
+			return bs.getCastle().getPlayer().getName() + "'s Castle";
+		}
+		else if ((bs.getResource()) != null)
+		{
+			if (bs.getResource().getType().getTypeName().equals("wood"))
+			{
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
+			}
+			else if (bs.getResource().getType().getTypeName().equals("gold"))
+			{
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());			
+			}
+			else if (bs.getResource().getType().getTypeName().equals("stone"))
+			{
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());			
+			}
+		}
+		
+		return "";
+	}
+	
 	
 	private void createBoardWindow()
 	{
@@ -237,7 +275,7 @@ public class HeroesGui
 		}
 		
 		boardComposite = new Composite(sc, SWT.NONE);
-		boardComposite.setEnabled(false);
+		//boardComposite.setEnabled(false);
 		boardComposite.setBackground(white);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
@@ -249,13 +287,26 @@ public class HeroesGui
 		tableLayout.verticalSpacing = 0;
 		boardComposite.setLayout(tableLayout);
 		
-
 		for (int i = 0; i < numOfCells * numOfCells; i++)
 		{
 			Label b = new Label(boardComposite, SWT.NONE);
-			int t = fromBoardToDisplay(i);
+			int t = fromBoardToDisplayIcons(i);
 			b.setImage(iconCache.stockImages[t]);
 			b.setBackground(green);
+			
+			String description;
+			if(t != iconCache.grassIcon)
+			{
+				description = fromBoardToDisplayDecription(i);
+				b.setToolTipText(description);
+			}
+			
+			if(t == iconCache.heroIcon)
+				b.setMenu(createHeroPopUpMenu());
+			
+			if(t == iconCache.castleIcon)
+				b.setMenu(createCastlePopUpMenu());
+				
 		}
 
 		sc.setContent(boardComposite);
@@ -286,76 +337,6 @@ public class HeroesGui
 		{
 			controls[i].addListener(SWT.Activate, listener);
 		}
-		
-		/*	Option 1 - Labels
-		GridLayout tableLayout = new GridLayout();
-		tableLayout.numColumns = 50;
-		tableLayout.makeColumnsEqualWidth = true;
-		tableLayout.horizontalSpacing = 0;
-		tableLayout.verticalSpacing = 0;
-		c1.setLayout(tableLayout);
-		for (int i = 0; i < 2500; i++)
-		{
-			Label b = new Label(c1, SWT.NONE);
-			b.setImage(iconCache.stockImages[iconCache.grassIcon]);
-			b.setBackground(green);
-		}*/
-
-		/*	Option 1 - Buttons
-		GridLayout tableLayout = new GridLayout();
-		tableLayout.numColumns = 50;
-		tableLayout.makeColumnsEqualWidth = true;
-		tableLayout.horizontalSpacing = 0;
-		tableLayout.verticalSpacing = 0;
-		c1.setLayout(tableLayout);
-		for (int i = 0; i < 2500; i++)
-		{
-			Button b = new Button(c1, SWT.PUSH);
-			b.setImage(iconCache.stockImages[iconCache.grassIcon]);
-			b.setBackground(green);
-		}*/
-
-		/* Option 3 - no squares
-		final Composite composite = new Composite(c1, SWT.NONE);
-		composite.setEnabled(false);
-		composite.setLayout(new FillLayout());
-		Button button = new Button(composite, SWT.PUSH);
-		button.setText("Button");
-		composite.pack();
-		composite.setLocation(50, 50);
-
-		final Point[] offset = new Point[1];
-		Listener listener = new Listener() {
-			public void handleEvent(Event event)
-			{
-				switch (event.type)
-				{
-				case SWT.MouseDown:
-					Rectangle rect = composite.getBounds();
-					if (rect.contains(event.x, event.y))
-					{
-						Point pt1 = composite.toDisplay(0, 0);
-						Point pt2 = c1.toDisplay(event.x, event.y);
-						offset[0] = new Point(pt2.x - pt1.x, pt2.y - pt1.y);
-					}
-					break;
-				case SWT.MouseMove:
-					if (offset[0] != null)
-					{
-						Point pt = offset[0];
-						composite.setLocation(event.x - pt.x, event.y - pt.y);
-					}
-					break;
-				case SWT.MouseUp:
-					offset[0] = null;
-					break;
-				}
-			}
-		};
-		c1.addListener(SWT.MouseDown, listener);
-		c1.addListener(SWT.MouseUp, listener);
-		c1.addListener(SWT.MouseMove, listener);
-		*/
 	}
 
 	private void createStatusWindow(Composite parent)
@@ -570,53 +551,104 @@ public class HeroesGui
 	}
 
 	/**
-	 * Creates all items located in the popup menu and associates all the menu
-	 * items with their appropriate functions.
-	 *
-	 * @return Menu The created popup menu.
-	 */
-	private Menu createPopUpMenu()
-	{
-		Menu popUpMenu = new Menu(shell, SWT.POP_UP);
+	   * Creates all items located in the popup menu and associates all the menu
+	   * items with their appropriate functions.
+	   * 
+	   * @return Menu The created popup menu.
+	   */
+	  private Menu createHeroPopUpMenu() {
+	    Menu popUpMenu = new Menu(shell, SWT.POP_UP);
 
-		/**
-		 * Adds a listener to handle enabling and disabling some items in the
-		 * Edit submenu.
-		 */
-		popUpMenu.addMenuListener(new MenuAdapter() {
-			public void menuShown(MenuEvent e)
-			{
-				Menu menu = (Menu) e.widget;
-				MenuItem[] items = menu.getItems();
+	    /**
+	     * Adds a listener to handle enabling and disabling some items in the
+	     * Edit submenu.
+	     */
+	    popUpMenu.addMenuListener(new MenuAdapter() {
+	      public void menuShown(MenuEvent e) {
+	        Menu menu = (Menu) e.widget;
+	        MenuItem[] items = menu.getItems();
+	        //int count = table.getSelectionCount();
+	       
+	      }
+	    });
 
-				///////////// ********* TBD Pop Up Menu ************** /////////////
-			}
-		});
+	    MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("Move");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	    	  
+	      }
+	    });
 
-		// New
-		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Eat");
-		item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				//newEntry();
-			}
-		});
+	    //new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		new MenuItem(popUpMenu, SWT.SEPARATOR);
+	    item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("End Turn");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	       
+	      }
+	    });
 
-		// Edit
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");
-		item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
+	    return popUpMenu;
+	  }
+	  
+	  /**
+	   * Creates all items located in the popup menu and associates all the menu
+	   * items with their appropriate functions.
+	   * 
+	   * @return Menu The created popup menu.
+	   */
+	  private Menu createCastlePopUpMenu() {
+	    Menu popUpMenu = new Menu(shell, SWT.POP_UP);
 
-			}
-		});
+	    /**
+	     * Adds a listener to handle enabling and disabling some items in the
+	     * Edit submenu.
+	     */
+	    popUpMenu.addMenuListener(new MenuAdapter() {
+	      public void menuShown(MenuEvent e) {
+	        Menu menu = (Menu) e.widget;
+	        MenuItem[] items = menu.getItems();
+	        //int count = table.getSelectionCount();
+	       
+	      }
+	    });
 
-		return popUpMenu;
-	}
+	    MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("Build");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	    	  
+	      }
+	    });
+
+	    item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("Make");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	       
+	      }
+	    });
+	    
+	    item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("Split");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	       
+	      }
+	    });
+	    
+	    item = new MenuItem(popUpMenu, SWT.CASCADE);
+	    item.setText("Join");
+	    item.addSelectionListener(new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	       
+	      }
+	    });
+
+	    return popUpMenu;
+	  }
 
 	/**
 	 * Creates all the items located in the Help submenu and associate all the
@@ -656,9 +688,9 @@ public class HeroesGui
 class IconCache
 {
 	// Stock images
-	public final int grassIcon = 0, castleIcon = 1, goldMineIcon = 2, stoneIcon = 3, woodIcon = 4;
+	public final int grassIcon = 0, heroIcon = 1, castleIcon = 2, goldMineIcon = 3, stoneIcon = 4, woodIcon = 5;
 
-	public final String[] stockImageLocations = { "/icons/Grass3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
+	public final String[] stockImageLocations = { "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
 
 	public Image stockImages[];
 

@@ -178,7 +178,7 @@ public class MainModule
 			int randomY = (int) (Math.random() * (BOARD_SIZE - 1));
 			Hero h = new Hero(players.get(i), theBoard, randomX, randomY);
 			heroes.add(h);
-			castles.add(new Castle(players.get(i), theBoard, randomX, randomY));
+			castles.add(new Castle(players.get(i), theBoard, randomX+1, randomY));
 			players.get(i).setHero(heroes.get(i));
 		}
 
