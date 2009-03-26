@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -46,8 +47,7 @@ public class GameScoreBoard implements Serializable
 	public GameScoreBoard ()
 	{
 		this.scoreBoard = new Vector<Scores>(11);
-		for (int i = 0; i < 11; i++)
-			this.scoreBoard.insertElementAt(new Scores(), i);
+		this.clearScoreBoard();
 	}
 	
 	public void addToScoreBoard (Player player, int score)
@@ -85,7 +85,7 @@ public class GameScoreBoard implements Serializable
 	public void save() {
 		try
 		{
-			File saveFile = new File("/scoreBoard.tbl");
+			File saveFile = new File("scoreBoard.tbl");
 			FileOutputStream fileOut = new FileOutputStream(saveFile);
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			
@@ -109,8 +109,8 @@ public class GameScoreBoard implements Serializable
 
 	public void load() {
 		try
-		{
-			FileInputStream fileIn = new FileInputStream("/scoreBoard.tbl");
+		{	
+			FileInputStream fileIn = new FileInputStream("scoreBoard.tbl");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			this.scoreBoard =  (Vector<Scores>) in.readObject();
 			in.close();
@@ -118,12 +118,12 @@ public class GameScoreBoard implements Serializable
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println("Can't find score board file!");
+			this.clearScoreBoard();
 			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			//do nothing, corrupt file. file will be saved later
 		}
 		catch (ClassNotFoundException e)
 		{
