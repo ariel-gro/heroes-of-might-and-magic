@@ -263,4 +263,22 @@ public class Castle implements Serializable
 	{
 		this.army.remove(creature);
 	}
+	
+	public String toInfoString()
+	{
+		String s = this.toLocationString() + ":\n";
+		if (this.factories.size() > 0)
+			for (CreatureFactory factory : this.factories)
+				s += factory.toString() + "\n";
+		else
+			s += "No factories.\n";
+		s += "\n";
+		s += "Castle's Army: \n";
+		if (army != null)
+			s += this.army.toString();
+		else
+			s += "No army.";
+		
+		return s;
+	}	
 }
