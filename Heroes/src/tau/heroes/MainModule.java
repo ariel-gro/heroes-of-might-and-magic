@@ -81,7 +81,6 @@ public class MainModule
 	public static void save(String fileName, Vector<Player> players, Vector<Hero> heroes,
 		Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
 	{
-
 		try
 		{
 			File saveFile = new File(fileName);
@@ -310,13 +309,12 @@ public class MainModule
 				else if (userInput[0].equals(commands.save.toString()))
 				{
 					String fileName = userInput[1];
-					System.out.println("Game has been save on '" + fileName + "'.");
 					save(fileName, players, heroes, castles, resources, theBoard);
+					System.out.println("Game has been save on '" + fileName + "'.");
 				}
 				else if (userInput[0].equals(commands.load.toString()))
 				{
 					String fileName = userInput[1];
-					System.out.println("Game has been load from '" + fileName + "'.");
 					GameState gameState = load(fileName);
 					players = gameState.getPlayers();
 					heroes = gameState.getHeroes();
@@ -324,6 +322,7 @@ public class MainModule
 					resources = gameState.getResources();
 					theBoard = gameState.getBoard();
 					numOfPlayers = players.size();
+					System.out.println("Game has been load from '" + fileName + "'.");
 				}
 				else
 				{
