@@ -93,11 +93,13 @@ public class MainModule
 		}
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Not enough disk space ! \nCant save the game");
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Illegal file name ! \nPlease give another name");
 		}
 		return true;
 	}
@@ -115,12 +117,13 @@ public class MainModule
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println("Can't find your file!");
-			e.printStackTrace();
+			System.out.println("Can't find the requested file !");
+			//e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Illegal file name ! \nPlease give another name");
 		}
 		catch (ClassNotFoundException e)
 		{
