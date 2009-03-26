@@ -78,7 +78,7 @@ public class MainModule
 	 * @throws IOException
 	 */
 
-	public static void save(String fileName, Vector<Player> players, Vector<Hero> heroes,
+	public static boolean save(String fileName, Vector<Player> players, Vector<Hero> heroes,
 		Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
 	{
 		try
@@ -99,6 +99,7 @@ public class MainModule
 		{
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 	public static GameState load(String fileName)
@@ -309,8 +310,10 @@ public class MainModule
 				else if (userInput[0].equals(commands.save.toString()))
 				{
 					String fileName = userInput[1];
-					save(fileName, players, heroes, castles, resources, theBoard);
-					System.out.println("Game has been save on '" + fileName + "'.");
+					if (save(fileName, players, heroes, castles, resources, theBoard) == true)
+					{
+						System.out.println("Game has been save on '" + fileName + "'.");
+					}
 				}
 				else if (userInput[0].equals(commands.load.toString()))
 				{
