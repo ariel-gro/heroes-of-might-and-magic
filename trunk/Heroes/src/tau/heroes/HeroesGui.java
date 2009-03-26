@@ -200,8 +200,8 @@ public class HeroesGui
 	
 	private int fromBoardToDisplayIcons(int i)
 	{
-		int x = i / numOfCells;
-		int y = i % numOfCells;
+		int x = i % numOfCells;
+		int y = i / numOfCells;
 		BoardState bs = gameState.getBoard().getBoardState(x, y);
 		
 		if ((bs.getHero()) != null)
@@ -233,8 +233,8 @@ public class HeroesGui
 	
 	private String fromBoardToDisplayDecription(int i)
 	{
-		int x = i / numOfCells;
-		int y = i % numOfCells;
+		int x = i % numOfCells;
+		int y = i / numOfCells;
 		BoardState bs = gameState.getBoard().getBoardState(x, y);
 		
 		if ((bs.getHero()) != null)
