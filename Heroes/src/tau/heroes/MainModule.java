@@ -301,6 +301,8 @@ public class MainModule
 							+ " defense skill and " + h.getAttackSkill() + " attack skill");
 						System.out.println("You have an army:");
 						System.out.println(h.getArmy().toString());
+						for (int i = 0; i < players.get(player).getCastles().size(); i++)
+							System.out.println(players.get(player).getCastles().get(i).toInfoString());
 					}
 				}
 				else if (userInput[0].equals(commands.quit.toString()))
