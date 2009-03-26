@@ -15,8 +15,6 @@ import java.util.Vector;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import tau.heroes.test.ScoreBoardTest;
-
 public class MainModule
 {
 	public enum commands

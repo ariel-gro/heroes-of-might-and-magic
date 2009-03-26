@@ -82,9 +82,9 @@ public class HeroesGui
 	{
 		shell = new Shell(display, SWT.APPLICATION_MODAL);
 		shell.setLayout(new FillLayout());
-		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/icons/Heroes-icon.jpg");
-		Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
-		shell.setImage(shellImage);
+		//Image shellImage = new Image(display, "/icons/Heroes-icon.jpg");
+		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
+		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
@@ -688,9 +688,9 @@ public class HeroesGui
 class IconCache
 {
 	// Stock images
-	public final int grassIcon = 0, heroIcon = 1, castleIcon = 2, goldMineIcon = 3, stoneIcon = 4, woodIcon = 5;
+	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6;
 
-	public final String[] stockImageLocations = { "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
+	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
 
 	public Image stockImages[];
 
