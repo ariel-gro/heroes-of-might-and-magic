@@ -4,15 +4,20 @@
 package tau.heroes.test;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import tau.heroes.Board;
 import tau.heroes.Castle;
+import tau.heroes.GameScoreBoard;
 import tau.heroes.GameState;
 import tau.heroes.Hero;
 import tau.heroes.MainModule;
@@ -112,6 +117,45 @@ public class MainModuleTest extends TestCase {
 		assertEquals(y0, newHero0.getYPos());
 		assertEquals(x1, newHero1.getXPos());
 		assertEquals(y1, newHero1.getYPos());
+	}
+	
+	@Test
+	public void testWin() 
+	{
+		Board theBoard;
+		Player player1;
+		Player player2;
+		Hero hero1;
+		Castle castle1;
+		Castle castle2;
+		
+		theBoard = new Board(10);
+		player1 = new Player("Jay");
+		player2 = new Player("Silent Bob");
+		hero1 = new Hero(player1, theBoard, 4, 4);
+		castle1 = new Castle(player1, theBoard, 6, 6);
+		castle2 = new Castle(player2, theBoard, 4, 6);
+		
+		GameScoreBoard score = new GameScoreBoard();
+		player1.setHero(hero1);
+		hero1.player = player1;
+		player1.addCastle(castle1);
+		player2.addCastle(castle2);
+		int armyCount;
+		player1.incrementMineQuantity("wood");
+		player1.incrementMineQuantity("gold");
+		assertEquals(true, player1.isAlive());
+		assertEquals(true, player2.isAlive());
+		armyCount = player1.getHero().getArmy().getTotalNumberOfUnits();
+		
+		player1.endTurn();
+		player2.endTurn();
+		
+		hero1.moveTo(4, 6, theBoard);
+		assertEquals(player1, castle2.getPlayer());
+		assertEquals(true, player1.isAlive());
+		assertEquals(false, player2.isAlive());
+		assertEquals(null, score.getPlayerAt(0));
 	}
 		
 

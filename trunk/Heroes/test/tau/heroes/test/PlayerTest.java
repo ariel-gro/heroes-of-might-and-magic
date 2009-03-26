@@ -157,5 +157,4 @@ public class PlayerTest {
 		assertFalse(b[3][2]);
 		assertFalse(b[3][3]);
 	}
-
 }

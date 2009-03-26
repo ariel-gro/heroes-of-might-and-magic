@@ -183,11 +183,11 @@ public class Player implements Serializable
 		System.out.println("Player "+this.playerName+" ended his turn\n");
 	}
 
-	public void displayResourcesAmounts()
+	public void displayTreasury()
 	{
 		String tempTypeName;
 
-		System.out.println("Player "+this.playerName+" resource amounts list:");
+		System.out.println("Player "+this.playerName+" treasury list:");
 		System.out.println();
 		System.out.println("Resource \t Amount");
 		for (int i = 0; i < ResourceType.values().length; i++)
@@ -197,12 +197,12 @@ public class Player implements Serializable
 		}
 	}
 
-	public void displayResources()
+	public void displayMines()
 	{
 		String tempTypeName;
 
-		System.out.println("Player "+this.playerName+" resource mines list:\n");
-		System.out.println("Resource \t Quantity");
+		System.out.println("Player "+this.playerName+" mines list:\n");
+		System.out.println("Mine \t Quantity");
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			tempTypeName = ResourceType.values()[i].getTypeName();
@@ -289,5 +289,28 @@ public class Player implements Serializable
 	public boolean[][] getVisibleBoard()
 	{
 		return visibleBoard;
+	}
+
+	public int finalScore()
+	{
+		int ret = 0;
+		Army army;
+		
+		for (int i = 0; i < ResourceType.values().length; i++)
+		{
+			ret += this.getMineQuantity(ResourceType.values()[i].getTypeName());
+			ret += this.getCurrentTreasuryAmount(ResourceType.values()[i].getTypeName());
+		}
+		
+		army = this.hero.getArmy();
+		ret += army.getTotalNumberOfUnits();
+		
+		for (int i = 0; i< this.castles.size()-1; i++)
+		{
+			army = this.castles.get(i).getArmy();
+			if (army != null)
+				ret += army.getTotalNumberOfUnits();
+		}
+		return ret;
 	}
 }
