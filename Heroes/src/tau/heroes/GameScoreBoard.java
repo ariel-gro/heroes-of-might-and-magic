@@ -119,11 +119,12 @@ public class GameScoreBoard implements Serializable
 		catch (FileNotFoundException e)
 		{
 			this.clearScoreBoard();
-			e.printStackTrace();
+			//no file. file will be created later
 		}
 		catch (IOException e)
 		{
-			//do nothing, corrupt file. file will be saved later
+			this.clearScoreBoard();
+			//corrupt file. file will be saved later
 		}
 		catch (ClassNotFoundException e)
 		{
