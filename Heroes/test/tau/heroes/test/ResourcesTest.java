@@ -15,18 +15,18 @@ public class ResourcesTest extends TestCase
 	public void testOwnership()
 	{
 		assertEquals(null, r.getOwner());
-		player1.displayResources();
-		player2.displayResources();
+		player1.displayMines();
+		player2.displayMines();
 		r.setOwner(h1.player);
-		player1.displayResources();
-		player2.displayResources();
+		player1.displayMines();
+		player2.displayMines();
 		assertEquals(1, player2.getMineQuantity("wood"));
 		assertEquals(h1.player, r.getOwner());
 		assertEquals(true, r.checkOwner(h2.player));
 		assertEquals(false, r.checkOwner(h3.player));		
 		r.setOwner(h3.player);
-		player1.displayResources();
-		player2.displayResources();
+		player1.displayMines();
+		player2.displayMines();
 		assertEquals(true, r.checkOwner(h3.player));
 		assertEquals(1, player1.getMineQuantity("wood"));
 		assertEquals(0, player2.getMineQuantity("wood"));
@@ -36,10 +36,10 @@ public class ResourcesTest extends TestCase
 	{
 		Resource r2 = new Resource(ResourceType.GOLD, board, 5, 5);
 		
-		player1.displayResourcesAmounts();
-		player1.displayResources();
-		player2.displayResourcesAmounts();
-		player2.displayResources();
+		player1.displayTreasury();
+		player1.displayMines();
+		player2.displayTreasury();
+		player2.displayMines();
 		
 		r.setOwner(player1);
 		
@@ -50,8 +50,8 @@ public class ResourcesTest extends TestCase
 		
 		player1.incrementTreasury("wood", 5);
 		
-		player1.displayResourcesAmounts();
-		player2.displayResourcesAmounts();
+		player1.displayTreasury();
+		player2.displayTreasury();
 		
 		assertEquals(5, player1.getCurrentTreasuryAmount("wood"));
 		assertEquals(0, player1.getCurrentTreasuryAmount("gold"));
@@ -59,8 +59,8 @@ public class ResourcesTest extends TestCase
 		
 		player1.endTurn();
 		
-		player1.displayResourcesAmounts();
-		player2.displayResourcesAmounts();
+		player1.displayTreasury();
+		player2.displayTreasury();
 		
 		assertEquals(7, player1.getCurrentTreasuryAmount("wood"));
 		assertEquals(0, player1.getCurrentTreasuryAmount("gold"));
@@ -72,8 +72,8 @@ public class ResourcesTest extends TestCase
 		
 		player2.endTurn();
 		
-		player1.displayResourcesAmounts();
-		player2.displayResourcesAmounts();
+		player1.displayTreasury();
+		player2.displayTreasury();
 		
 		assertEquals(0, player2.getCurrentTreasuryAmount("wood"));
 		assertEquals(0, player2.getCurrentTreasuryAmount("gold"));
@@ -81,13 +81,13 @@ public class ResourcesTest extends TestCase
 		
 		r2.setOwner(player2);
 		
-		player1.displayResourcesAmounts();
-		player2.displayResourcesAmounts();
+		player1.displayTreasury();
+		player2.displayTreasury();
 		
 		player2.endTurn();
 		
-		player1.displayResourcesAmounts();
-		player2.displayResourcesAmounts();
+		player1.displayTreasury();
+		player2.displayTreasury();
 		
 		assertEquals(0, player2.getCurrentTreasuryAmount("wood"));
 		assertEquals(1000, player2.getCurrentTreasuryAmount("gold"));

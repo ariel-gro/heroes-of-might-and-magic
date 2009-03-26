@@ -15,6 +15,8 @@ import java.util.Vector;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import tau.heroes.test.ScoreBoardTest;
+
 public class MainModule
 {
 	public enum commands
@@ -28,7 +30,9 @@ public class MainModule
 		legend("prints the map legend"),
 		save("save the current game. Usage: save gameName"),
 		load("loads a saved game. Usage: load gameName"),
-		quit("quit the game");
+		quit("quit the game"),
+		highscore("prints the 10 highest scores"),
+		clearScore("clears the highscore table");
 
 		private final String description;
 
@@ -70,6 +74,7 @@ public class MainModule
 	static Vector<Hero> heroes;
 	static Vector<Castle> castles;
 	static Vector<Resource> resources;
+	static GameScoreBoard scoreBoard;
 
 	static final int BOARD_SIZE = 40;
 
@@ -140,6 +145,8 @@ public class MainModule
 		heroes = new Vector<Hero>();
 		castles = new Vector<Castle>();
 		resources = new Vector<Resource>();
+		scoreBoard = new GameScoreBoard();
+		scoreBoard.load();
 		//if(viewSelection.startsWith("g"))
 		//{
 		//	runGraphicalView();
@@ -282,6 +289,14 @@ public class MainModule
 				{
 					castleMenu(player);
 				}
+				else if (userInput[0].equals(commands.highscore.toString()))
+				{
+					scoreBoard.print();
+				}
+				else if (userInput[0].equals(commands.clearScore.toString()))
+				{
+					scoreBoard.clearScoreBoard();
+				}
 				else if (userInput[0].equals(commands.help.toString()))
 				{
 					for (commands cmd : commands.values())
@@ -297,8 +312,8 @@ public class MainModule
 				}
 				else if (userInput[0].equals(commands.info.toString()))
 				{
-					players.get(player).displayResources();
-					players.get(player).displayResourcesAmounts();
+					players.get(player).displayMines();
+					players.get(player).displayTreasury();
 					if (h != null)
 					{
 						System.out.println("You have " + h.getDefenseSkill()
@@ -311,7 +326,7 @@ public class MainModule
 				}
 				else if (userInput[0].equals(commands.quit.toString()))
 				{
-					System.exit(0);
+					endGame(null);
 				}
 				else if (userInput[0].equals(commands.save.toString()))
 				{
@@ -636,17 +651,20 @@ public class MainModule
 		}
 	}
 
-	private static void endGame(Player winner)
+	public static void endGame(Player winner)
 	{
 		System.out.println("game ended.");
-		System.out.println("winner is: " + winner.getName());
-		// TODO: after implementing score, display player's game score
-		// and update leader score board if needed
-		System.out.println("quitting game");
+		if (winner!= null)
+		{
+			System.out.println("winner is: " + winner.getName() + " with a score of: " + winner.finalScore());
+			scoreBoard.addToScoreBoard(winner, winner.finalScore());
+		}
+		scoreBoard.save();
+		scoreBoard.print();
 		System.exit(0);
 	}
 
-	private static Player isThereAWinner()
+	public static Player isThereAWinner()
 	{
 		if (players.size() == 1)
 			return players.firstElement();
