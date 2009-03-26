@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.lang.NullPointerException;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -90,6 +91,7 @@ public class MainModule
 			out.writeObject(new GameState(players, heroes, castles, resources, theBoard));
 			out.close();
 			fileOut.close();
+			return true;
 		}
 		catch (FileNotFoundException e)
 		{
@@ -101,7 +103,7 @@ public class MainModule
 			//e.printStackTrace();
 			System.out.println("Illegal file name ! \nPlease give another name");
 		}
-		return true;
+		return false;
 	}
 
 	public static GameState load(String fileName)
@@ -123,11 +125,12 @@ public class MainModule
 		catch (IOException e)
 		{
 			//e.printStackTrace();
-			System.out.println("Illegal file name ! \nPlease give another name");
+			System.out.println("Cant open the requested file ! \nPlease give another name");
 		}
 		catch (ClassNotFoundException e)
 		{
-			e.printStackTrace();
+			System.out.println("Can't find the requested file !");
+			//e.printStackTrace();
 		}
 		return null;
 	}
@@ -214,7 +217,6 @@ public class MainModule
 		
 		while (true)
 		{
-
 			for (int player = 0; player < numOfPlayers;)
 			{
 				removeDeadPlayers(theBoard);
@@ -324,13 +326,16 @@ public class MainModule
 				{
 					String fileName = userInput[1];
 					GameState gameState = load(fileName);
-					players = gameState.getPlayers();
-					heroes = gameState.getHeroes();
-					castles = gameState.getCastles();
-					resources = gameState.getResources();
-					theBoard = gameState.getBoard();
-					numOfPlayers = players.size();
-					System.out.println("Game has been load from '" + fileName + "'.");
+					if (gameState != null)
+					{
+						players = gameState.getPlayers();
+						heroes = gameState.getHeroes();
+						castles = gameState.getCastles();
+						resources = gameState.getResources();
+						theBoard = gameState.getBoard();
+						numOfPlayers = players.size();
+						System.out.println("Game has been load from '" + fileName + "'.");
+					}
 				}
 				else
 				{
