@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -107,6 +106,7 @@ public class GameScoreBoard implements Serializable
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public void load() {
 		try
 		{	
@@ -119,28 +119,23 @@ public class GameScoreBoard implements Serializable
 		catch (FileNotFoundException e)
 		{
 			this.clearScoreBoard();
-			//no file. file will be created later
 		}
 		catch (IOException e)
 		{
 			this.clearScoreBoard();
-			//corrupt file. file will be saved later
 		}
 		catch (ClassNotFoundException e)
 		{
-			e.printStackTrace();
+			this.clearScoreBoard();
 		}
-		catch (ClassCastException e)
-		{
-			e.printStackTrace();
-		}		
 	}
 
-	public void print() 
+	public String print() 
 	{
 		Scores score;
 		String name;
-		System.out.println("name\t  score");
+		String output = "name\t  score\n";
+	
 		for (int i = 0; i < 10; i++)
 		{
 			score = this.scoreBoard.elementAt(i);
@@ -148,9 +143,10 @@ public class GameScoreBoard implements Serializable
 				name = score.getPlayer().getName();
 			else 
 				name = "----";
-			System.out.println(name+"\t\t"+score.getScore());
+			output += name + "\t\t" + score.getScore() + "\n";
 		}
 		
+		return output;
 	}
 	
 	public void clearScoreBoard()

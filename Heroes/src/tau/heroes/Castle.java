@@ -129,7 +129,7 @@ public class Castle implements Serializable
 		{
 			this.factories.add(factory);
 
-			System.out.println(this.toLocationString() + ": A new " + factory.getName()
+			System.out.println(this.printLocation() + ": A new " + factory.getName()
 				+ " was added");
 		}
 	}
@@ -140,7 +140,7 @@ public class Castle implements Serializable
 		{
 			this.factories.remove(factory);
 
-			System.out.println(this.toLocationString() + ": A " + factory.getName()
+			System.out.println(this.printLocation() + ": A " + factory.getName()
 				+ " was removed");
 		}
 	}
@@ -212,14 +212,14 @@ public class Castle implements Serializable
 				return Math.min(unitsLeft, unitsCanBuy);
 			else
 			{
-				System.out.println("Army in " + this.toLocationString() + " is full.");
+				System.out.println("Army in " + this.printLocation() + " is full.");
 				return 0;
 			}
 		else
 			return Math.min(unitsLeft, unitsCanBuy);
 	}
 
-	public String toLocationString()
+	public String printLocation()
 	{
 		return "Castle at (" + this.xPos + ", " + this.yPos + ")";
 	}
@@ -266,7 +266,7 @@ public class Castle implements Serializable
 	
 	public String toInfoString()
 	{
-		String s = this.toLocationString() + ":\n";
+		String s = this.printLocation() + ":\n";
 		if (this.factories.size() > 0)
 			for (CreatureFactory factory : this.factories)
 				s += factory.toString() + "\n";

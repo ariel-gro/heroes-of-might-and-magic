@@ -10,39 +10,65 @@ public class GameState implements Serializable
 	private Vector<Hero> heroes;
 	private Vector<Castle> castles;
 	private Vector<Resource> resources;
-	private Board theBoard;
+	private Board board;
 	
-	
-	public GameState(Vector<Player> players, Vector<Hero> heroes, Vector<Castle> castles, Vector<Resource> resources, Board theBoard)
+	public GameState()
 	{
-		this.players = players;
-		this.heroes = heroes;
-		this.castles = castles;
-		this.resources = resources;
-		this.theBoard = theBoard;		
+		
 	}
-
 
 	public Vector<Player> getPlayers() 
 	{
-		return players;
+		return this.players;
+	}
+	
+	public void setPlayers(Vector<Player> players)
+	{
+		this.players = players;
 	}
 	
 	public Vector<Hero> getHeroes() 
 	{
-		return heroes;
+		return this.heroes;
 	}
+	
+	public void setHeroes(Vector<Hero> heroes)
+	{
+		this.heroes = heroes;
+	}
+	
 	public Vector<Castle> getCastles() 
 	{
-		return castles;
+		return this.castles;
 	}
+	
+	public void setCastles(Vector<Castle> castles)
+	{
+		this.castles = castles;
+	}
+	
 	public Vector<Resource> getResources() 
 	{
-		return resources;
+		return this.resources;
+	}
+	
+	public void setResources(Vector<Resource> resources)
+	{
+		this.resources = resources;
 	}
 	
 	public Board getBoard()
 	{
-		return theBoard;
+		return this.board;
+	}
+	
+	public void setBoard(Board board)
+	{
+		this.board = board;
+	}
+	
+	public int getNumberOfPlayers()
+	{
+		return this.players.size();
 	}
 }
