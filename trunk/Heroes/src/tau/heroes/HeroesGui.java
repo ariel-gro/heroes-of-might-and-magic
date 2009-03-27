@@ -50,22 +50,22 @@ public class HeroesGui
 	private Color black;
 
 	private Color green;
-	
+
 	private Color white;
 
 	private Display display;
-	
+
 	static Control currentChild = null;
-	
+
 	private GameController gameController;
 	private GameState gameState;
-	
+
 	private Composite boardComposite;
-	
+
 	private Composite statusComposite;
-	
+
 	private ScrolledComposite sc;
-	
+
 	public Display getDisplay()
 	{
 		return display;
@@ -118,9 +118,9 @@ public class HeroesGui
 		createBoardWindow();
 
 		createStatusWindow(sash);
-		
+
 		sash.setWeights(new int[] { 85, 15 });
-		
+
 		//addMovementListeners();
 
 		shell.open();
@@ -197,13 +197,13 @@ public class HeroesGui
 		return true;
 	}
 
-	
+
 	private int fromBoardToDisplayIcons(int i)
 	{
 		int x = i % numOfCells;
 		int y = i / numOfCells;
 		BoardState bs = gameState.getBoard().getBoardState(x, y);
-		
+
 		if ((bs.getHero()) != null)
 		{
 			return iconCache.heroIcon;
@@ -216,27 +216,27 @@ public class HeroesGui
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
-				return iconCache.woodIcon;			
+				return iconCache.woodIcon;
 			}
 			else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return iconCache.goldMineIcon;			
+				return iconCache.goldMineIcon;
 			}
 			else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return iconCache.stoneIcon;			
+				return iconCache.stoneIcon;
 			}
 		}
-		
+
 		return iconCache.grassIcon;
 	}
-	
+
 	private String fromBoardToDisplayDecription(int i)
 	{
 		int x = i % numOfCells;
 		int y = i / numOfCells;
 		BoardState bs = gameState.getBoard().getBoardState(x, y);
-		
+
 		if ((bs.getHero()) != null)
 		{
 			return bs.getHero().player.getName() + "'s Hero";
@@ -253,18 +253,18 @@ public class HeroesGui
 			}
 			else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());			
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
 			}
 			else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());			
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
 			}
 		}
-		
+
 		return "";
 	}
-	
-	
+
+
 	private void createBoardWindow()
 	{
 		if(boardComposite != null && boardComposite.isDisposed() == false)
@@ -273,40 +273,40 @@ public class HeroesGui
 			iconCache.freeResources();
 			iconCache.initResources(display);
 		}
-		
+
 		boardComposite = new Composite(sc, SWT.NONE);
 		//boardComposite.setEnabled(false);
 		boardComposite.setBackground(white);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
-		
+
 		GridLayout tableLayout = new GridLayout();
 		tableLayout.numColumns = numOfCells;
 		tableLayout.makeColumnsEqualWidth = true;
 		tableLayout.horizontalSpacing = 0;
 		tableLayout.verticalSpacing = 0;
 		boardComposite.setLayout(tableLayout);
-		
+
 		for (int i = 0; i < numOfCells * numOfCells; i++)
 		{
 			Label b = new Label(boardComposite, SWT.NONE);
 			int t = fromBoardToDisplayIcons(i);
 			b.setImage(iconCache.stockImages[t]);
 			b.setBackground(green);
-			
+
 			String description;
 			if(t != iconCache.grassIcon)
 			{
 				description = fromBoardToDisplayDecription(i);
 				b.setToolTipText(description);
 			}
-			
+
 			if(t == iconCache.heroIcon)
 				b.setMenu(createHeroPopUpMenu());
-			
+
 			if(t == iconCache.castleIcon)
 				b.setMenu(createCastlePopUpMenu());
-				
+
 		}
 
 		sc.setContent(boardComposite);
@@ -345,7 +345,7 @@ public class HeroesGui
 		statusComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
-		
+
 		Label tempLabel = new Label(statusComposite, SWT.NONE);
 		tempLabel.setText("THIS IS WHERE ALL \n THE STATUS WILL BE");
 		tempLabel.setBackground(green);
@@ -405,7 +405,7 @@ public class HeroesGui
 		//MainModule.resources = gameState.getResources();
 		this.gameController.loadGame(name);
 		this.gameState = this.gameController.getGameState();
-		
+
 		createBoardWindow();
 
 		shell.setCursor(null);
@@ -424,10 +424,10 @@ public class HeroesGui
 		System.out.println("Saving game to: " + file);
 		//MainModule.save(file, gameState.getPlayers(), gameState.getHeroes(), gameState.getCastles(), gameState.getResources(), gameState.getBoard());
 		this.gameController.saveGame(file);
-		
+
 		shell.setCursor(null);
 		waitCursor.dispose();
-		
+
 		return true;
 	}
 
@@ -556,7 +556,7 @@ public class HeroesGui
 	/**
 	   * Creates all items located in the popup menu and associates all the menu
 	   * items with their appropriate functions.
-	   * 
+	   *
 	   * @return Menu The created popup menu.
 	   */
 	  private Menu createHeroPopUpMenu() {
@@ -571,7 +571,7 @@ public class HeroesGui
 	        //Menu menu = (Menu) e.widget;
 	        //MenuItem[] items = menu.getItems();
 	        //int count = table.getSelectionCount();
-	       
+
 	      }
 	    });
 
@@ -579,7 +579,7 @@ public class HeroesGui
 	    item.setText("Move");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	    	  
+
 	      }
 	    });
 
@@ -589,17 +589,17 @@ public class HeroesGui
 	    item.setText("End Turn");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	       
+
 	      }
 	    });
 
 	    return popUpMenu;
 	  }
-	  
+
 	  /**
 	   * Creates all items located in the popup menu and associates all the menu
 	   * items with their appropriate functions.
-	   * 
+	   *
 	   * @return Menu The created popup menu.
 	   */
 	  private Menu createCastlePopUpMenu() {
@@ -614,7 +614,7 @@ public class HeroesGui
 	        //Menu menu = (Menu) e.widget;
 	        //MenuItem[] items = menu.getItems();
 	        //int count = table.getSelectionCount();
-	       
+
 	      }
 	    });
 
@@ -622,7 +622,7 @@ public class HeroesGui
 	    item.setText("Build");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	    	  
+
 	      }
 	    });
 
@@ -630,23 +630,23 @@ public class HeroesGui
 	    item.setText("Make");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	       
+
 	      }
 	    });
-	    
+
 	    item = new MenuItem(popUpMenu, SWT.CASCADE);
 	    item.setText("Split");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	       
+
 	      }
 	    });
-	    
+
 	    item = new MenuItem(popUpMenu, SWT.CASCADE);
 	    item.setText("Join");
 	    item.addSelectionListener(new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
-	       
+
 	      }
 	    });
 
@@ -685,116 +685,5 @@ public class HeroesGui
 	}
 }
 
-/**
- * Manages icons for the application. This is necessary as we could easily end up creating thousands of icons bearing the same image.
- */
-class IconCache
-{
-	// Stock images
-	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6;
 
-	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/knight3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg", "/icons/knight3_in_castle.jpg", "/icons/knight3_in_GoldMine.jpg", "/icons/knight3_in_Stone.jpg", "/icons/knight3_in_Wood.jpg" };
 
-	public Image stockImages[];
-
-	public Cursor stockCursors[];
-
-	// Cached icons
-	@SuppressWarnings("unchecked")
-	private Hashtable iconCache; /* map Program to Image */
-
-	public IconCache()
-	{
-	}
-
-	/**
-	 * Loads the resources
-	 *
-	 * @param display -
-	 *            the display
-	 */
-	@SuppressWarnings("unchecked")
-	public void initResources(Display display)
-	{
-		if (stockImages == null)
-		{
-			stockImages = new Image[stockImageLocations.length];
-
-			for (int i = 0; i < stockImageLocations.length; ++i)
-			{
-				Image image = createStockImage(display, stockImageLocations[i]);
-				if (image == null)
-				{
-					freeResources();
-					throw new IllegalStateException("error.CouldNotLoadResources: " + stockImageLocations[i]);
-				}
-				stockImages[i] = image;
-			}
-		}
-		if (stockCursors == null)
-		{
-			stockCursors = new Cursor[] { null, new Cursor(display, SWT.CURSOR_WAIT) };
-		}
-		iconCache = new Hashtable();
-	}
-
-	/**
-	 * Frees the resources
-	 */
-	@SuppressWarnings("unchecked")
-	public void freeResources()
-	{
-		if (stockImages != null)
-		{
-			for (int i = 0; i < stockImages.length; ++i)
-			{
-				final Image image = stockImages[i];
-				if (image != null)
-					image.dispose();
-			}
-			stockImages = null;
-		}
-		if (iconCache != null)
-		{
-			for (Enumeration it = iconCache.elements(); it.hasMoreElements();)
-			{
-				Image image = (Image) it.nextElement();
-				image.dispose();
-			}
-		}
-		if (stockCursors != null)
-		{
-			for (int i = 0; i < stockCursors.length; ++i)
-			{
-				final Cursor cursor = stockCursors[i];
-				if (cursor != null)
-					cursor.dispose();
-			}
-			stockCursors = null;
-		}
-	}
-
-	/**
-	 * Creates a stock image
-	 *
-	 * @param display
-	 *            the display
-	 * @param path
-	 *            the relative path to the icon
-	 */
-	private Image createStockImage(Display display, String path)
-	{
-		InputStream stream = IconCache.class.getResourceAsStream(path);
-		ImageData imageData = new ImageData(stream);
-		ImageData mask = imageData.getTransparencyMask();
-		Image result = new Image(display, imageData, mask);
-		try
-		{
-			stream.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return result;
-	}
-}
