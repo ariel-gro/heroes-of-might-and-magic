@@ -57,6 +57,7 @@ public class HeroesGui
 	
 	static Control currentChild = null;
 	
+	private GameController gameController;
 	private GameState gameState;
 	
 	private Composite boardComposite;
@@ -70,11 +71,12 @@ public class HeroesGui
 		return display;
 	}
 
-	public HeroesGui(Display d, GameState gs)
+	public HeroesGui(Display d, GameController gameController)
 	{
 		this.display = d;
-		this.gameState = gs;
-		this.numOfCells = gs.getBoard().getSize();
+		this.gameController = gameController;
+		this.gameState = gameController.getGameState();
+		this.numOfCells = this.gameState.getBoard().getSize();
 		iconCache.initResources(display);
 	}
 
@@ -398,11 +400,13 @@ public class HeroesGui
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
 
-		gameState = MainModule.load(name);
-		MainModule.players = gameState.getPlayers();
-		MainModule.heroes = gameState.getHeroes();
-		MainModule.castles = gameState.getCastles();
-		MainModule.resources = gameState.getResources();
+		//gameState = MainModule.load(name);
+		//MainModule.players = gameState.getPlayers();
+		//MainModule.heroes = gameState.getHeroes();
+		//MainModule.castles = gameState.getCastles();
+		//MainModule.resources = gameState.getResources();
+		this.gameController.loadGame(name);
+		this.gameState = this.gameController.getGameState();
 		
 		createBoardWindow();
 
@@ -420,8 +424,9 @@ public class HeroesGui
 		shell.setCursor(waitCursor);
 
 		System.out.println("Saving game to: " + file);
-		MainModule.save(file, gameState.getPlayers(), gameState.getHeroes(), gameState.getCastles(), gameState.getResources(), gameState.getBoard());
-
+		//MainModule.save(file, gameState.getPlayers(), gameState.getHeroes(), gameState.getCastles(), gameState.getResources(), gameState.getBoard());
+		this.gameController.saveGame(file);
+		
 		shell.setCursor(null);
 		waitCursor.dispose();
 		
@@ -483,8 +488,8 @@ public class HeroesGui
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{
-				Menu menu = (Menu) e.widget;
-				MenuItem[] items = menu.getItems();
+				//Menu menu = (Menu) e.widget;
+				//MenuItem[] items = menu.getItems();
 
 				//////// ************ TBD ********** //////////////////
 			}
@@ -565,8 +570,8 @@ public class HeroesGui
 	     */
 	    popUpMenu.addMenuListener(new MenuAdapter() {
 	      public void menuShown(MenuEvent e) {
-	        Menu menu = (Menu) e.widget;
-	        MenuItem[] items = menu.getItems();
+	        //Menu menu = (Menu) e.widget;
+	        //MenuItem[] items = menu.getItems();
 	        //int count = table.getSelectionCount();
 	       
 	      }
@@ -608,8 +613,8 @@ public class HeroesGui
 	     */
 	    popUpMenu.addMenuListener(new MenuAdapter() {
 	      public void menuShown(MenuEvent e) {
-	        Menu menu = (Menu) e.widget;
-	        MenuItem[] items = menu.getItems();
+	        //Menu menu = (Menu) e.widget;
+	        //MenuItem[] items = menu.getItems();
 	        //int count = table.getSelectionCount();
 	       
 	      }

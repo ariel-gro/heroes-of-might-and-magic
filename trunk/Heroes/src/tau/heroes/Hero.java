@@ -13,7 +13,6 @@ public class Hero implements Serializable
 	private Army _army;
 	private int _attackSkill;
 	private int _defenseSkill;
-	// private AlignmentType _type;
 	private int xPos;
 	private int yPos;
 	public Player player;
@@ -268,5 +267,10 @@ public class Hero implements Serializable
 			_army.remove(creature);
 			return true;
 		}
+	}
+	
+	public String printLocation()
+	{
+		return "(" + this.xPos + ", " + this.yPos + ")"; 
 	}
 }
