@@ -84,8 +84,6 @@ public class HeroesGui
 	{
 		shell = new Shell(display, SWT.APPLICATION_MODAL);
 		shell.setLayout(new FillLayout());
-		//Image shellImage = new Image(display, "/icons/Heroes-icon.jpg");
-		//Image shellImage = new Image(display, System.getProperty("user.dir") + "/bin/icons/Heroes-icon.jpg");
 		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
@@ -695,7 +693,7 @@ class IconCache
 	// Stock images
 	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6;
 
-	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/swampsnake_on_Grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg" };
+	public final String[] stockImageLocations = { "/icons/Heroes-icon.jpg", "/icons/Grass3.jpg", "/icons/knight3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg", "/icons/knight3_in_castle.jpg", "/icons/knight3_in_GoldMine.jpg", "/icons/knight3_in_Stone.jpg", "/icons/knight3_in_Wood.jpg" };
 
 	public Image stockImages[];
 
