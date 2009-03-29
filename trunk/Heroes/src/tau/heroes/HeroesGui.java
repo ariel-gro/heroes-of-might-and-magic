@@ -1,10 +1,9 @@
 package tau.heroes;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.Hashtable;
+
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -16,13 +15,12 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -34,6 +32,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class HeroesGui
 {
@@ -51,14 +50,13 @@ public class HeroesGui
 
 	private Color green;
 
-	private Color white;
-
 	private Display display;
 
 	static Control currentChild = null;
 
 	private GameController gameController;
-	private GameState gameState;
+
+	private static int currentPlayerIndex = 0;
 
 	private Composite boardComposite;
 
@@ -75,21 +73,19 @@ public class HeroesGui
 	{
 		this.display = d;
 		this.gameController = gameController;
-		this.gameState = gameController.getGameState();
-		this.numOfCells = this.gameState.getBoard().getSize();
+		this.numOfCells = gameController.getGameState().getBoard().getSize();
 		iconCache.initResources(display);
 	}
 
 	public Shell open()
 	{
-		shell = new Shell(display, SWT.APPLICATION_MODAL);
+		shell = new Shell(display/*, SWT.APPLICATION_MODAL*/);
 		shell.setLayout(new FillLayout());
 		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		green = display.getSystemColor(SWT.COLOR_GREEN);
-		white = display.getSystemColor(SWT.COLOR_WHITE);
 		shell.setBackground(black);
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
@@ -121,57 +117,10 @@ public class HeroesGui
 
 		sash.setWeights(new int[] { 85, 15 });
 
-		//addMovementListeners();
-
 		shell.open();
 		return shell;
 	}
 
-/*	private void addMovementListeners()
-	{
-		Listener moveListener = new Listener() {
-			public void handleEvent(Event event)
-			{
-				Control[] children;
-				switch (event.type)
-				{
-				case SWT.MouseDown:
-					children = boardComposite.getChildren();
-					for (int i = 0; i < children.length; i++)
-					{
-						Rectangle rect = children[i].getBounds();
-						if (rect.contains(event.x, event.y))
-						{
-							currentChild = children[i];
-						}
-					}
-					break;
-				case SWT.MouseMove:
-					if (currentChild != null)
-					{
-						children = boardComposite.getChildren();
-						for (int i = 0; i < children.length; i++)
-						{
-							Rectangle rect = children[i].getBounds();
-							if (rect.contains(event.x, event.y) && currentChild != children[i])
-							{
-								currentChild.moveAbove(children[i]);
-								sc.layout(new Control[] { currentChild });
-							}
-						}
-					}
-					break;
-				case SWT.MouseUp:
-					currentChild = null;
-					break;
-				}
-			}
-		};
-		sc.addListener(SWT.MouseDown, moveListener);
-		sc.addListener(SWT.MouseUp, moveListener);
-		sc.addListener(SWT.MouseMove, moveListener);
-	}
-*/
 	private boolean close()
 	{
 		if (isModified)
@@ -197,32 +146,25 @@ public class HeroesGui
 		return true;
 	}
 
-
-	private int fromBoardToDisplayIcons(int i)
+	private int fromBoardToDisplayIcons(int x, int y)
 	{
-		int x = i % numOfCells;
-		int y = i / numOfCells;
-		BoardState bs = gameState.getBoard().getBoardState(x, y);
+		BoardState bs = gameController.getGameState().getBoard().getBoardState(x, y);
 
 		if ((bs.getHero()) != null)
 		{
 			return iconCache.heroIcon;
-		}
-		else if ((bs.getCastle()) != null)
+		} else if ((bs.getCastle()) != null)
 		{
 			return iconCache.castleIcon;
-		}
-		else if ((bs.getResource()) != null)
+		} else if ((bs.getResource()) != null)
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
 				return iconCache.woodIcon;
-			}
-			else if (bs.getResource().getType().getTypeName().equals("gold"))
+			} else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
 				return iconCache.goldMineIcon;
-			}
-			else if (bs.getResource().getType().getTypeName().equals("stone"))
+			} else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
 				return iconCache.stoneIcon;
 			}
@@ -231,52 +173,50 @@ public class HeroesGui
 		return iconCache.grassIcon;
 	}
 
-	private String fromBoardToDisplayDecription(int i)
+	private String fromBoardToDisplayDecription(int x, int y)
 	{
-		int x = i % numOfCells;
-		int y = i / numOfCells;
-		BoardState bs = gameState.getBoard().getBoardState(x, y);
+		BoardState bs = gameController.getGameState().getBoard().getBoardState(x, y);
 
 		if ((bs.getHero()) != null)
 		{
 			return bs.getHero().player.getName() + "'s Hero";
-		}
-		else if ((bs.getCastle()) != null)
+		} else if ((bs.getCastle()) != null)
 		{
 			return bs.getCastle().getPlayer().getName() + "'s Castle";
-		}
-		else if ((bs.getResource()) != null)
+		} else if ((bs.getResource()) != null)
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
-			}
-			else if (bs.getResource().getType().getTypeName().equals("gold"))
+				return bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
+			} else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
-			}
-			else if (bs.getResource().getType().getTypeName().equals("stone"))
+				return bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
+			} else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner()==null?"none":bs.getResource().getOwner().getName());
+				return bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
 			}
 		}
 
 		return "";
 	}
 
-
 	private void createBoardWindow()
 	{
-		if(boardComposite != null && boardComposite.isDisposed() == false)
+		boolean[][] isVisible;
+
+		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
-			iconCache.freeResources();
-			iconCache.initResources(display);
+			//iconCache.freeResources();
+			//iconCache.initResources(display);
 		}
 
 		boardComposite = new Composite(sc, SWT.NONE);
 		//boardComposite.setEnabled(false);
-		boardComposite.setBackground(white);
+		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
 
@@ -287,26 +227,34 @@ public class HeroesGui
 		tableLayout.verticalSpacing = 0;
 		boardComposite.setLayout(tableLayout);
 
-		for (int i = 0; i < numOfCells * numOfCells; i++)
+		isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
+
+		for (int y = 0; y < numOfCells; y++)
 		{
-			Label b = new Label(boardComposite, SWT.NONE);
-			int t = fromBoardToDisplayIcons(i);
-			b.setImage(iconCache.stockImages[t]);
-			b.setBackground(green);
-
-			String description;
-			if(t != iconCache.grassIcon)
+			for (int x = 0; x < numOfCells; x++)
 			{
-				description = fromBoardToDisplayDecription(i);
-				b.setToolTipText(description);
+
+				Label b = new Label(boardComposite, SWT.NONE);
+				int t = fromBoardToDisplayIcons(x, y);
+
+				if (isVisible[x][y])
+					b.setImage(iconCache.stockImages[t]);
+				else
+					b.setImage(iconCache.stockImages[iconCache.grassIcon]);
+
+				String description;
+				if (t != iconCache.grassIcon)
+				{
+					description = fromBoardToDisplayDecription(x, y);
+					b.setToolTipText(description);
+				}
+
+				if (t == iconCache.heroIcon)
+					b.setMenu(createHeroPopUpMenu());
+
+				if (t == iconCache.castleIcon)
+					b.setMenu(createCastlePopUpMenu());
 			}
-
-			if(t == iconCache.heroIcon)
-				b.setMenu(createHeroPopUpMenu());
-
-			if(t == iconCache.castleIcon)
-				b.setMenu(createCastlePopUpMenu());
-
 		}
 
 		sc.setContent(boardComposite);
@@ -314,11 +262,16 @@ public class HeroesGui
 		sc.setExpandVertical(true);
 		sc.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		Listener listener = new Listener() {
-			public void handleEvent(Event e)
+		Control[] controls = boardComposite.getChildren();
+		for (int i = 0; i < controls.length; i++)
+		{
+			int x = i % numOfCells;
+			int y = i / numOfCells;
+			int t = fromBoardToDisplayIcons(x, y);
+
+			if (isVisible[x][y] && t == iconCache.heroIcon)
 			{
-				Control child = (Control) e.widget;
-				Rectangle bounds = child.getBounds();
+				Rectangle bounds = controls[i].getBounds();
 				Rectangle area = sc.getClientArea();
 				Point origin = sc.getOrigin();
 				if (origin.x > bounds.x)
@@ -326,16 +279,12 @@ public class HeroesGui
 				if (origin.y > bounds.y)
 					origin.y = Math.max(0, bounds.y);
 				if (origin.x + area.width < bounds.x + bounds.width)
-					origin.x = Math.max(0, bounds.x + bounds.width - area.width);
+					origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
 				if (origin.y + area.height < bounds.y + bounds.height)
-					origin.y = Math.max(0, bounds.y + bounds.height - area.height);
+					origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
+
 				sc.setOrigin(origin);
 			}
-		};
-		Control[] controls = boardComposite.getChildren();
-		for (int i = 0; i < controls.length; i++)
-		{
-			controls[i].addListener(SWT.Activate, listener);
 		}
 	}
 
@@ -398,13 +347,7 @@ public class HeroesGui
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
 
-		//gameState = MainModule.load(name);
-		//MainModule.players = gameState.getPlayers();
-		//MainModule.heroes = gameState.getHeroes();
-		//MainModule.castles = gameState.getCastles();
-		//MainModule.resources = gameState.getResources();
 		this.gameController.loadGame(name);
-		this.gameState = this.gameController.getGameState();
 
 		createBoardWindow();
 
@@ -559,99 +502,114 @@ public class HeroesGui
 	   *
 	   * @return Menu The created popup menu.
 	   */
-	  private Menu createHeroPopUpMenu() {
-	    Menu popUpMenu = new Menu(shell, SWT.POP_UP);
+	private Menu createHeroPopUpMenu()
+	{
+		Menu popUpMenu = new Menu(shell, SWT.POP_UP);
 
-	    /**
-	     * Adds a listener to handle enabling and disabling some items in the
-	     * Edit submenu.
-	     */
-	    popUpMenu.addMenuListener(new MenuAdapter() {
-	      public void menuShown(MenuEvent e) {
-	        //Menu menu = (Menu) e.widget;
-	        //MenuItem[] items = menu.getItems();
-	        //int count = table.getSelectionCount();
+		/**
+		 * Adds a listener to handle enabling and disabling some items in the
+		 * Edit submenu.
+		 */
+		popUpMenu.addMenuListener(new MenuAdapter() {
+			public void menuShown(MenuEvent e)
+			{
+				//Menu menu = (Menu) e.widget;
+				//MenuItem[] items = menu.getItems();
+				//int count = table.getSelectionCount();
 
-	      }
-	    });
+			}
+		});
 
-	    MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("Move");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
+		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Move");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "", "Enter 5-8 characters", "", null);
+				
+				 if (numberInput.open() == Window.OK) {
+			          // User clicked OK; update the label with the input
+			          //label.setText(numberInput.getValue());
+			        }
+			}
+		});
 
-	      }
-	    });
+		//new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-	    //new MenuItem(popUpMenu, SWT.SEPARATOR);
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("End Turn");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleEndTurnCommand();
+			}
+		});
 
-	    item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("End Turn");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
+		return popUpMenu;
+	}
 
-	      }
-	    });
+	/**
+	 * Creates all items located in the popup menu and associates all the menu
+	 * items with their appropriate functions.
+	 *
+	 * @return Menu The created popup menu.
+	 */
+	private Menu createCastlePopUpMenu()
+	{
+		Menu popUpMenu = new Menu(shell, SWT.POP_UP);
 
-	    return popUpMenu;
-	  }
+		/**
+		 * Adds a listener to handle enabling and disabling some items in the
+		 * Edit submenu.
+		 */
+		popUpMenu.addMenuListener(new MenuAdapter() {
+			public void menuShown(MenuEvent e)
+			{
+				//Menu menu = (Menu) e.widget;
+				//MenuItem[] items = menu.getItems();
+				//int count = table.getSelectionCount();
 
-	  /**
-	   * Creates all items located in the popup menu and associates all the menu
-	   * items with their appropriate functions.
-	   *
-	   * @return Menu The created popup menu.
-	   */
-	  private Menu createCastlePopUpMenu() {
-	    Menu popUpMenu = new Menu(shell, SWT.POP_UP);
+			}
+		});
 
-	    /**
-	     * Adds a listener to handle enabling and disabling some items in the
-	     * Edit submenu.
-	     */
-	    popUpMenu.addMenuListener(new MenuAdapter() {
-	      public void menuShown(MenuEvent e) {
-	        //Menu menu = (Menu) e.widget;
-	        //MenuItem[] items = menu.getItems();
-	        //int count = table.getSelectionCount();
+		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Build");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
 
-	      }
-	    });
+			}
+		});
 
-	    MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("Build");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Make");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
 
-	      }
-	    });
+			}
+		});
 
-	    item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("Make");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Split");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
 
-	      }
-	    });
+			}
+		});
 
-	    item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("Split");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Join");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
 
-	      }
-	    });
+			}
+		});
 
-	    item = new MenuItem(popUpMenu, SWT.CASCADE);
-	    item.setText("Join");
-	    item.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
-
-	      }
-	    });
-
-	    return popUpMenu;
-	  }
+		return popUpMenu;
+	}
 
 	/**
 	 * Creates all the items located in the Help submenu and associate all the
@@ -683,7 +641,73 @@ public class HeroesGui
 			}
 		});
 	}
+
+	/**
+	 * @param playerIndex
+	 * @param player
+	 * @return
+	 */
+	private void handleEndTurnCommand()
+	{
+		gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).endTurn();
+
+		removeDeadPlayers();
+		if (this.gameController.isThereAWinner() != null)
+			endGame(this.gameController.isThereAWinner());
+
+		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+
+		createBoardWindow();
+	}
+
+	private void removeDeadPlayers()
+	{
+		for (Player player : this.gameController.removeDeadPlayers())
+			System.out.println(player.getName() + " is out of the game .");
+	}
+
+	private void endGame(Player winner)
+	{
+		System.out.println("game ended.");
+		if (winner != null)
+		{
+			System.out.println("winner is: " + winner.getName() + " with a score of: " + winner.finalScore());
+			Helper.getScoreBoard().addToScoreBoard(winner, winner.finalScore());
+		}
+		Helper.getScoreBoard().save();
+		handleHighscoreCommand();
+		System.exit(0);
+	}
+
+	private void handleHighscoreCommand()
+	{
+		System.out.print(Helper.getScoreBoard().print());
+	}
+
+	/**
+	 * @param player
+	 * @param userInput
+	 */
+	private void handleMoveCommand(String[] userInput)
+	{
+		if (userInput.length < 3)
+			System.out.println("Wrong parameters.");
+		else
+		{
+			int newX, newY;
+			newX = Helper.tryParseInt(userInput[1]);
+			newY = Helper.tryParseInt(userInput[2]);
+
+			if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
+				System.out.println("Wrong parameters.");
+			else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY,
+					this.gameController.getGameState().getBoard()))
+				createBoardWindow();
+			else
+			{
+				System.out.println("Illegal move ! You can only move "
+						+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			}
+		}
+	}
 }
-
-
-
