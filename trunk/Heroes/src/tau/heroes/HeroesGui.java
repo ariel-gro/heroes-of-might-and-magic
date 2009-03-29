@@ -1,7 +1,7 @@
 package tau.heroes;
 
 import java.io.File;
-
+import java.util.Vector;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -20,19 +20,15 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 public class HeroesGui
 {
@@ -152,7 +148,21 @@ public class HeroesGui
 
 		if ((bs.getHero()) != null)
 		{
-			return iconCache.heroIcon;
+			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
+			{
+				return iconCache.heroeInWoodIcon;
+			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("gold"))
+			{
+				return iconCache.heroInGlodMineIcon;
+			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("stone"))
+			{
+				return iconCache.heroInStoneIcon;
+			} else if (bs.getCastle() != null)
+			{
+				return iconCache.heroInCastleIcon;
+			} else
+				return iconCache.heroIcon;
+			
 		} else if ((bs.getCastle()) != null)
 		{
 			return iconCache.castleIcon;
@@ -179,24 +189,41 @@ public class HeroesGui
 
 		if ((bs.getHero()) != null)
 		{
-			return bs.getHero().player.getName() + "'s Hero";
+			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
+			{
+				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("gold"))
+			{
+				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("stone"))
+			{
+				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+			} else if ((bs.getCastle()) != null)
+			{
+				return bs.getHero().player.getName() + "'s Hero in " + bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
+			} else
+				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
+			
 		} else if ((bs.getCastle()) != null)
 		{
-			return bs.getCastle().getPlayer().getName() + "'s Castle";
+			return bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
 		} else if ((bs.getResource()) != null)
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
 				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			} else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
 				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			} else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
 				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName());
+						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			}
 		}
 
@@ -210,8 +237,9 @@ public class HeroesGui
 		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
-			//iconCache.freeResources();
-			//iconCache.initResources(display);
+			iconCache.freeResources();
+			iconCache.initResources(display);
+			shell.setImage(iconCache.stockImages[iconCache.appIcon]); // workaround - fix if there's time.
 		}
 
 		boardComposite = new Composite(sc, SWT.NONE);
@@ -240,7 +268,7 @@ public class HeroesGui
 				if (isVisible[x][y])
 					b.setImage(iconCache.stockImages[t]);
 				else
-					b.setImage(iconCache.stockImages[iconCache.grassIcon]);
+					b.setImage(iconCache.stockImages[iconCache.blackIcon]);
 
 				String description;
 				if (t != iconCache.grassIcon)
@@ -269,7 +297,7 @@ public class HeroesGui
 			int y = i / numOfCells;
 			int t = fromBoardToDisplayIcons(x, y);
 
-			if (isVisible[x][y] && t == iconCache.heroIcon)
+			if (isVisible[x][y] && (t == iconCache.heroIcon || t == iconCache.heroInCastleIcon|| t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon))
 			{
 				Rectangle bounds = controls[i].getBounds();
 				Rectangle area = sc.getClientArea();
@@ -322,9 +350,69 @@ public class HeroesGui
 
 	private void displayError(String msg)
 	{
-		MessageBox box = new MessageBox(shell, SWT.ICON_ERROR);
+		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_ERROR);
 		box.setMessage(msg);
 		box.open();
+	}
+
+	private void startNewGame()
+	{
+		int numberOfPlayers = getNumberOfPlayers();
+		Vector<Player> players = getPlayers(numberOfPlayers);
+		gameController.initNewGame(players);
+
+		createBoardWindow();
+	}
+
+	/**
+	 * @return Number of players from user input
+	 */
+	protected static int getNumberOfPlayers()
+	{
+		String message = "Enter number of players (" + Constants.MIN_PLAYERS + "-" + Constants.MAX_PLAYERS + "): ";
+		int numberOfPlayers = Integer.MIN_VALUE;
+		String response = null;
+
+		do
+		{
+			InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Players", message, null, null);
+			if (numberInput.open() == Window.OK)
+			{
+				response = numberInput.getValue();
+			}
+
+			if (response != null)
+				numberOfPlayers = Helper.tryParseInt(response);
+
+		} while (!Helper.isIntBetween(numberOfPlayers, Constants.MIN_PLAYERS, Constants.MAX_PLAYERS));
+
+		return numberOfPlayers;
+	}
+
+	protected static Vector<Player> getPlayers(int numberOfPlayers)
+	{
+		String message;
+		String response = null;
+		Vector<Player> players = new Vector<Player>();
+
+		for (int i = 0; i < numberOfPlayers;)
+		{
+			message = "Please enter player " + (i + 1) + "'s name: ";
+
+			InputDialog stringInput = new InputDialog(Display.getCurrent().getActiveShell(), "Player Name", message, null, null);
+			if (stringInput.open() == Window.OK)
+			{
+				response = stringInput.getValue();
+			}
+
+			if (response.length() > 0)
+			{
+				players.add(new Player(response));
+				i++;
+			}
+		}
+
+		return players;
 	}
 
 	private void openFileDlg()
@@ -353,7 +441,6 @@ public class HeroesGui
 
 		shell.setCursor(null);
 		waitCursor.dispose();
-
 	}
 
 	private boolean save()
@@ -365,7 +452,7 @@ public class HeroesGui
 		shell.setCursor(waitCursor);
 
 		System.out.println("Saving game to: " + file);
-		//MainModule.save(file, gameState.getPlayers(), gameState.getHeroes(), gameState.getCastles(), gameState.getResources(), gameState.getBoard());
+		gameController.saveGame(file);
 		this.gameController.saveGame(file);
 
 		shell.setCursor(null);
@@ -422,10 +509,7 @@ public class HeroesGui
 		item.setText("File");
 		Menu menu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(menu);
-		/**
-		 * Adds a listener to handle enabling and disabling some items in the
-		 * Edit submenu.
-		 */
+
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{
@@ -436,18 +520,18 @@ public class HeroesGui
 			}
 		});
 
-		// File -> New Contact
+		// File -> New Game
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
 		subItem.setText("New Game");
 		subItem.setAccelerator(SWT.MOD1 + 'N');
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//newEntry();
+				startNewGame();
 			}
 		});
 
-		// File -> Open
+		// File -> Open Saved Game
 		subItem = new MenuItem(menu, SWT.NULL);
 		subItem.setText("Open Saved Game");
 		subItem.setAccelerator(SWT.MOD1 + 'O');
@@ -525,12 +609,44 @@ public class HeroesGui
 		item.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "", "Enter 5-8 characters", "", null);
-				
-				 if (numberInput.open() == Window.OK) {
-			          // User clicked OK; update the label with the input
-			          //label.setText(numberInput.getValue());
-			        }
+				String message = "Move to X,Y, e.g. 12,31 (Currenly at: " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getXPos() + "," + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getYPos() +"): ";
+				String response = null;
+				String[] responseSplit = null;
+				boolean ok = false;
+
+				do
+				{
+					InputDialog numbersInput = new InputDialog(Display.getCurrent().getActiveShell(), "Move to X,Y", message, null, null);
+					if (numbersInput.open() == Window.OK)
+					{
+						response = numbersInput.getValue();
+					}
+					else
+					{
+						numbersInput.close();
+						break;
+					}
+						
+					if (response != null)
+						responseSplit = response.split(",");
+					else
+					{
+						displayError("Invallid Input - Try again");
+						continue;
+					}
+
+					if (responseSplit.length == 2)
+					{
+						if (handleMoveCommand(responseSplit) == true)
+							ok = true;
+					} else
+					{
+						displayError("Invallid Input - Try again");
+						continue;
+					}
+
+				} while (ok == false);
+
 			}
 		});
 
@@ -688,26 +804,24 @@ public class HeroesGui
 	 * @param player
 	 * @param userInput
 	 */
-	private void handleMoveCommand(String[] userInput)
+	private boolean handleMoveCommand(String[] userInput)
 	{
-		if (userInput.length < 3)
-			System.out.println("Wrong parameters.");
-		else
-		{
-			int newX, newY;
-			newX = Helper.tryParseInt(userInput[1]);
-			newY = Helper.tryParseInt(userInput[2]);
+		int newX, newY;
+		newX = Helper.tryParseInt(userInput[0]);
+		newY = Helper.tryParseInt(userInput[1]);
 
-			if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
-				System.out.println("Wrong parameters.");
-			else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY,
-					this.gameController.getGameState().getBoard()))
-				createBoardWindow();
-			else
-			{
-				System.out.println("Illegal move ! You can only move "
-						+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
-			}
+		if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
+		{
+			displayError("Invallid Input. Outside of board - Try again");
+			return false;
+		} else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
+		{
+			createBoardWindow();
+			return true;
+		} else
+		{
+			displayError("Illegal move ! You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			return false;
 		}
 	}
 }
