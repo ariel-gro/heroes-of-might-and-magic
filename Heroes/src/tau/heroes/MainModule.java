@@ -13,9 +13,6 @@ public class MainModule
 	public static void main(String[] args)
 	{
 		GameController gameController = new GameController();
-		int numberOfPlayers = getNumberOfPlayers();
-		Vector<Player> players = getPlayers(numberOfPlayers);
-		gameController.initNewGame(players);
 
 		if (selectView())
 			runGraphicalView(gameController);
@@ -42,6 +39,11 @@ public class MainModule
 	private static void runGraphicalView(GameController gameController)
 	{
 		Display d = new Display();
+		
+		int numberOfPlayers = HeroesGui.getNumberOfPlayers();
+		Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);	
+		gameController.initNewGame(players);
+		
 		HeroesGui application = new HeroesGui(d, gameController);
 		Shell shell = application.open();
 		while (!shell.isDisposed())
@@ -54,6 +56,9 @@ public class MainModule
 
 	private static void runConsoleView(GameController gameController)
 	{
+		int numberOfPlayers = getNumberOfPlayers();
+		Vector<Player> players = getPlayers(numberOfPlayers);
+		gameController.initNewGame(players);
 		HeroesConsole application = new HeroesConsole(gameController);
 		application.run();
 	}
