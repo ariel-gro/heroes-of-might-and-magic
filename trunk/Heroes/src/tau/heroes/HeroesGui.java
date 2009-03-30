@@ -119,7 +119,7 @@ public class HeroesGui
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		createBoardWindow();
 
-		createStatusWindow(sash);
+		createStatusWindow();
 
 		sash.setWeights(new int[] { 85, 15 });
 
@@ -335,7 +335,7 @@ public class HeroesGui
 	
 	
 	
-	private void createStatusWindow(Composite parent)
+	private void createStatusWindow()
 	{		
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		if ((statusComposite != null) && ((statusComposite.isDisposed()) == false))
@@ -344,7 +344,7 @@ public class HeroesGui
 		}
 		
 		
-		statusComposite = new Composite(parent, SWT.BORDER);
+		statusComposite = new Composite(sash, SWT.BORDER);
 		statusComposite.setBackground(green);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
@@ -992,7 +992,7 @@ public class HeroesGui
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		createBoardWindow();
 		
-		createStatusWindow(sash);
+		createStatusWindow();
 		
 		//Here is the computer move.
 		while(p.getIsComputer())
@@ -1014,7 +1014,7 @@ public class HeroesGui
 			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 			createBoardWindow();			
-			createStatusWindow(sash);
+			createStatusWindow();
 		}
 	}
 
