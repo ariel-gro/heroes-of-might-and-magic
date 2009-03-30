@@ -19,6 +19,7 @@ public class ScoreBoardTest extends TestCase{
 		assertEquals(15, board.getScoreAt(1));
 		assertEquals(player2, board.getPlayerAt(0));
 		assertEquals(player1, board.getPlayerAt(1));
+		System.out.println(board.print());
 	}
 	
 	public void testSaveScoreBoard()
@@ -34,6 +35,7 @@ public class ScoreBoardTest extends TestCase{
 		assertEquals(15, board.getScoreAt(1));
 		assertEquals(player2, board.getPlayerAt(0));
 		assertEquals(player1, board.getPlayerAt(1));
+		System.out.println(board.print());
 	}
 
 }

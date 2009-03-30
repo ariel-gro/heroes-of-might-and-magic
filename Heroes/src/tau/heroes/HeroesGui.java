@@ -1,5 +1,6 @@
 package tau.heroes;
 
+import java.awt.Event;
 import java.io.File;
 import java.util.Vector;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -11,6 +12,7 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
@@ -20,15 +22,21 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 
 public class HeroesGui
@@ -437,8 +445,9 @@ public class HeroesGui
 
 		// create each header and subMenu for the menuBar
 		createFileMenu(menuBar);
+		createHighScoreMenu(menuBar);
 		createHelpMenu(menuBar);
-
+		
 		return menuBar;
 	}
 
@@ -852,6 +861,138 @@ public class HeroesGui
 			}
 		});
 	}
+	
+	/**
+	 * creates all the items in the high scores sub-menu, and associates all menu
+	 * items to the right functions 
+	 * 
+	 * @param menuBar
+	 *            Menu the <code>Menu</code> that will contain this sub-menu.
+	 * 
+	 */
+	private void createHighScoreMenu(Menu menuBar)
+	{
+		// high scores Menu
+		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
+		item.setText("&Highscores");
+		Menu menu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(menu);
+		
+		MenuItem subItem1 = new MenuItem(menu, SWT.NULL);
+		subItem1.setText("&Dispaly Highscores");
+		subItem1.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				GameScoreBoard board = new GameScoreBoard();
+				board.load();
+				displayTable(board);
+			}
+		});
+		MenuItem subItem2 = new MenuItem(menu, SWT.NULL);
+		subItem2.setText("&Reset Highscores");
+		subItem2.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				/*final Shell dialog = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+				dialog.setText("Reset Highscores");
+				dialog.setSize(300, 150);
+				dialog.setImage(iconCache.stockImages[iconCache.highscoreIcon]);
+				
+				Label label = new Label(dialog, SWT.CENTER);
+			    label.setText("Are you sure you want to reset higscores?\nThis action can not be reversed");
+			    label.setBounds(0, 0, 300, 75);
+				
+				final Button ok = new Button(dialog, SWT.PUSH);
+				ok.setText("OK");
+				ok.setBounds(165, 10, 50, 25);
+				final Button cancel = new Button(dialog, SWT.PUSH);
+				cancel.setText("Cancel");
+				cancel.setBounds(165, 180, 50, 25);
+				
+				SelectionListener listener = new SelectionAdapter() {
+				      public void handleEvent(SelectionEvent event) {
+				        if (event.widget == ok)
+				        {
+				        	GameScoreBoard board = new GameScoreBoard();
+							board.load();
+							board.clearScoreBoard();
+							board.save();
+							displayTable(board);
+				        }
+				        dialog.close();
+				      }
+				};
+				ok.addSelectionListener(listener);
+				cancel.addSelectionListener(listener);
+				
+				dialog.open();
+				while (!dialog.isDisposed()) {
+			        if (!display.readAndDispatch())
+			          display.sleep();
+			      }*/
+
+				//TODO: ariel - pop "are you sure" msg
+				GameScoreBoard board = new GameScoreBoard();
+				board.load();
+				board.clearScoreBoard();
+				board.save();
+				displayTable(board);
+				
+			}
+		});
+	}
+	/**
+	 * helper for the high-scores table display
+	 *  
+	 * @param board
+	 */
+	private void displayTable(GameScoreBoard board)
+	{
+		Player tempPlayer;
+		int tempScore;
+		String name, score;
+		Shell tableShell = new Shell(Display.getCurrent().getActiveShell());
+		tableShell.setLayout(new FillLayout());
+		tableShell.setSize(200, 200);
+		tableShell.setText("Highscores - The 10 Best Players");
+		tableShell.setImage(iconCache.stockImages[iconCache.highscoreIcon]);
+		Table scoreTable = new Table(tableShell, SWT.NULL);
+		TableColumn col1 = new TableColumn(scoreTable, SWT.CENTER);
+	    TableColumn col2 = new TableColumn(scoreTable, SWT.CENTER);
+	    col1.setText("Player Name");
+	    col2.setText("Player Score");
+	    col1.setWidth(96);
+	    col2.setWidth(97);
+	    scoreTable.setHeaderVisible(true);
+	    
+	    TableItem ti;
+	    
+	    for (int i = 0; i < 10; i++)
+	    {
+	    	tempPlayer = board.getPlayerAt(i);
+	    	tempScore = board.getScoreAt(i);
+	    	ti = new TableItem(scoreTable, SWT.NONE);
+	    	
+	    	if (tempPlayer == null)
+	    		name = "----";
+	    	else
+	    		name = tempPlayer.getName();
+	    	if (tempScore == 0)
+	    		score = "0";
+	    	else
+	    		score = tempScore+"";
+	    	
+	    	ti.setText(new String[] {name, score});
+	    }
+	    
+	    tableShell.open();
+	    while (!tableShell.isDisposed()) {
+	        if (!display.readAndDispatch())
+	          display.sleep();
+	      }
+	}
+	
+	
 
 	/**
 	 * @param playerIndex

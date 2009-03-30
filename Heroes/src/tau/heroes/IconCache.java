@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class IconCache {
 	// Stock images
-	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, heroInCastleIcon = 7, heroInGlodMineIcon = 8, heroInStoneIcon = 9, heroeInWoodIcon = 10, blackIcon = 11;
+	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, heroInCastleIcon = 7, heroInGlodMineIcon = 8, heroInStoneIcon = 9, heroeInWoodIcon = 10, blackIcon = 11, highscoreIcon = 12;
 
 	public final String[] stockImageLocations =
 	{ "/icons/Heroes-icon.jpg",
@@ -29,7 +29,8 @@ public class IconCache {
 			"/icons/knight3_in_GoldMine.jpg",
 			"/icons/knight3_in_Stone.jpg",
 			"/icons/knight3_in_Wood.jpg",
-			"/icons/Black.jpg"};
+			"/icons/Black.jpg", 
+			"/icons/HighScores.jpg"};
 
 	public Image stockImages[];
 
