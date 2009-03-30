@@ -1,6 +1,5 @@
 package tau.heroes;
 
-import java.awt.Event;
 import java.io.File;
 import java.util.Vector;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -12,7 +11,6 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
@@ -22,18 +20,15 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -337,13 +332,6 @@ public class HeroesGui
 	
 	private void createStatusWindow()
 	{		
-		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-		if ((statusComposite != null) && ((statusComposite.isDisposed()) == false))
-		{
-			statusComposite.dispose();
-		}
-		
-		
 		statusComposite = new Composite(sash, SWT.BORDER);
 		statusComposite.setBackground(green);
 		GridData d = new GridData(GridData.FILL_BOTH);
@@ -351,6 +339,19 @@ public class HeroesGui
 		
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);		
+		
+		updateStatusWindow();			
+	}
+
+	private void updateStatusWindow()
+	{
+		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		
+		Control[] children = statusComposite.getChildren();
+		for (int i = 0; i < children.length; i++)
+		{
+			children[i].dispose();
+		}
 		
 		createLabel(statusComposite, "Player Status", green);
 		String str = p.getName();
@@ -436,13 +437,7 @@ public class HeroesGui
 			{
 				createLabel(statusComposite, "Castle's Army : none", green);
 			}
-			
-			
 		}
-		
-
-		
-		
 	}
 
 	/**
@@ -990,9 +985,8 @@ public class HeroesGui
 
 		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-		createBoardWindow();
-		
-		createStatusWindow();
+		createBoardWindow();	
+		updateStatusWindow();
 		
 		//Here is the computer move.
 		while(p.getIsComputer())
@@ -1014,7 +1008,7 @@ public class HeroesGui
 			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 			createBoardWindow();			
-			createStatusWindow();
+			updateStatusWindow();
 		}
 	}
 
