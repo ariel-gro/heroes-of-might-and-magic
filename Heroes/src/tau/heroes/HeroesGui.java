@@ -893,51 +893,18 @@ public class HeroesGui
 		subItem2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				/*final Shell dialog = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-				dialog.setText("Reset Highscores");
-				dialog.setSize(300, 150);
-				dialog.setImage(iconCache.stockImages[iconCache.highscoreIcon]);
-				
-				Label label = new Label(dialog, SWT.CENTER);
-			    label.setText("Are you sure you want to reset higscores?\nThis action can not be reversed");
-			    label.setBounds(0, 0, 300, 75);
-				
-				final Button ok = new Button(dialog, SWT.PUSH);
-				ok.setText("OK");
-				ok.setBounds(165, 10, 50, 25);
-				final Button cancel = new Button(dialog, SWT.PUSH);
-				cancel.setText("Cancel");
-				cancel.setBounds(165, 180, 50, 25);
-				
-				SelectionListener listener = new SelectionAdapter() {
-				      public void handleEvent(SelectionEvent event) {
-				        if (event.widget == ok)
-				        {
-				        	GameScoreBoard board = new GameScoreBoard();
-							board.load();
-							board.clearScoreBoard();
-							board.save();
-							displayTable(board);
-				        }
-				        dialog.close();
-				      }
-				};
-				ok.addSelectionListener(listener);
-				cancel.addSelectionListener(listener);
-				
-				dialog.open();
-				while (!dialog.isDisposed()) {
-			        if (!display.readAndDispatch())
-			          display.sleep();
-			      }*/
-
-				//TODO: ariel - pop "are you sure" msg
-				GameScoreBoard board = new GameScoreBoard();
-				board.load();
-				board.clearScoreBoard();
-				board.save();
-				displayTable(board);
-				
+				MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION   | SWT.YES | SWT.NO);
+		        messageBox.setMessage("Are you sure you want to clear higscores table?\nThis action can not be reversed");
+		        messageBox.setText("Clear Highscores");
+		        int response = messageBox.open();
+		        if (response == SWT.YES)
+		        {
+		        	GameScoreBoard board = new GameScoreBoard();
+					board.load();
+					board.clearScoreBoard();
+					board.save();
+					displayTable(board);
+		        }			
 			}
 		});
 	}
