@@ -60,8 +60,7 @@ public class MainModuleTest extends TestCase {
 		GameScoreBoard score = new GameScoreBoard();
 		player1.setHero(hero1);
 		hero1.player = player1;
-		player1.addCastle(castle1);
-		player2.addCastle(castle2);
+
 		player1.incrementMineQuantity("wood");
 		player1.incrementMineQuantity("gold");
 		assertEquals(true, player1.isAlive());

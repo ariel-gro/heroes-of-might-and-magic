@@ -87,16 +87,19 @@ public class PlayerTest {
 	 * Test method for {@link tau.heroes.Player#isAlive()}.
 	 */
 	@Test
-	public void testIsAlive() {
+	public void testEndTurn() {
 		//the player has no castle and no heroes - so it dies
 		assertEquals(false, p.isAlive());
-		
 		//now we give the player a dummy hero
 		p.setHero(h);
 		//for the first six days the hero is alive
 		for(int i = 0; i< 6;i++)
+		{
+			p.endTurn();
 			assertEquals(true,p.isAlive());
+		}
 		//now it should be dead.
+		p.endTurn();
 		assertEquals(false,p.isAlive());
 	}
 
