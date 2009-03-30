@@ -15,7 +15,6 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -48,8 +47,6 @@ public class HeroesGui
 
         private Color black;
 
-        private Color green;
-        
         private Color white;
 
         private Display display;
@@ -89,7 +86,6 @@ public class HeroesGui
                 shell.setText("Heroes of Might and Magic");
                 shell.setMaximized(true);
                 black = display.getSystemColor(SWT.COLOR_BLACK);
-                green = display.getSystemColor(SWT.COLOR_GREEN);
                 white = display.getSystemColor(SWT.COLOR_WHITE);
                 shell.setBackground(black);
                 shell.addShellListener(new ShellAdapter() {
@@ -286,7 +282,7 @@ public class HeroesGui
                                         b.setToolTipText(description);
                                 }
 
-                                if (t == iconCache.heroIcon)
+                                if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
                                         b.setMenu(createHeroPopUpMenu());
 
                                 if (t == iconCache.castleIcon)
