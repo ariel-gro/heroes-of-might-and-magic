@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Hero implements Serializable
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean _alive;
@@ -34,7 +34,7 @@ public class Hero implements Serializable
 		this.xPos = X;
 		this.yPos = Y;
 		_alive = true;
-		_autoFight = false;
+		_autoFight = player.getIsComputer();
 		// randomly select a number between 0 and 2.
 		_attackSkill = (int) (Math.random() * 3);
 		_defenseSkill = (int) (Math.random() * 3);
@@ -139,7 +139,7 @@ public class Hero implements Serializable
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -170,7 +170,7 @@ public class Hero implements Serializable
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -236,7 +236,7 @@ public class Hero implements Serializable
 	{
 		_autoFight = bAuto;
 	}
-	
+
 	public boolean canAddToArmy(Class<? extends Creature> creatureClass)
 	{
 		return (this._army == null || this._army.canAdd(creatureClass));
@@ -268,9 +268,9 @@ public class Hero implements Serializable
 			return true;
 		}
 	}
-	
+
 	public String printLocation()
 	{
-		return "(" + this.xPos + ", " + this.yPos + ")"; 
+		return "(" + this.xPos + ", " + this.yPos + ")";
 	}
 }

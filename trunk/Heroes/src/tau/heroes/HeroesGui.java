@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+
 public class HeroesGui
 {
 	private Shell shell;
@@ -162,7 +163,7 @@ public class HeroesGui
 				return iconCache.heroInCastleIcon;
 			} else
 				return iconCache.heroIcon;
-			
+
 		} else if ((bs.getCastle()) != null)
 		{
 			return iconCache.castleIcon;
@@ -206,7 +207,7 @@ public class HeroesGui
 				return bs.getHero().player.getName() + "'s Hero in " + bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
 			} else
 				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
-			
+
 		} else if ((bs.getCastle()) != null)
 		{
 			return bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
@@ -397,7 +398,8 @@ public class HeroesGui
 
 		for (int i = 0; i < numberOfPlayers;)
 		{
-			message = "Please enter player " + (i + 1) + "'s name: ";
+			message = "If you want one of the players will be the computer, enter "+Player.COMPUTER_NAME +" as his name.\n";
+			message += "Please enter player " + (i + 1) + "'s name: ";
 
 			InputDialog stringInput = new InputDialog(Display.getCurrent().getActiveShell(), "Player Name", message, null, null);
 			if (stringInput.open() == Window.OK)
@@ -626,7 +628,7 @@ public class HeroesGui
 						numbersInput.close();
 						break;
 					}
-						
+
 					if (response != null)
 						responseSplit = response.split(",");
 					else
@@ -765,15 +767,37 @@ public class HeroesGui
 	 */
 	private void handleEndTurnCommand()
 	{
-		gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).endTurn();
+		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		p.endTurn();
 
 		removeDeadPlayers();
 		if (this.gameController.isThereAWinner() != null)
 			endGame(this.gameController.isThereAWinner());
 
 		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
-
+		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		createBoardWindow();
+		//Here is the computer move.
+		while(p.getIsComputer())
+		{
+			Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+			if(hero != null)
+			{
+				String[] computerMove = new String[2];
+				computerMove[0] = String.valueOf(hero.getXPos() + (int) (Math.random() * 3) -1);
+				computerMove[1] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) -1);
+				handleMoveCommand(computerMove);
+			}
+			//End turn:
+			p.endTurn();
+			removeDeadPlayers();
+			if (this.gameController.isThereAWinner() != null)
+				endGame(this.gameController.isThereAWinner());
+
+			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+			createBoardWindow();
+		}
 	}
 
 	private void removeDeadPlayers()
@@ -820,7 +844,7 @@ public class HeroesGui
 			return true;
 		} else
 		{
-			displayError("Illegal move ! You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			displayError("Illegal move !"+currentPlayerIndex+" You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
 			return false;
 		}
 	}

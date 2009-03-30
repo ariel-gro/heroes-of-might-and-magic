@@ -6,7 +6,7 @@ public class Resource implements Serializable
 {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Player owner;
@@ -37,6 +37,8 @@ public class Resource implements Serializable
 			}
 		}
 		this.owner = player;
+		if(player == null)
+			return;
 		player.incrementMineQuantity(this.getType().getTypeName());
 		System.out.println("player " + this.owner.getName()
 				+ " took ownership over " + this.getType().getTypeName()

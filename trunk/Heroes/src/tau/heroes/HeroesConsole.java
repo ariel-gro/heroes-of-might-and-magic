@@ -1,6 +1,7 @@
 package tau.heroes;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class HeroesConsole
 {
@@ -77,7 +78,14 @@ public class HeroesConsole
 				if (this.gameController.isThereAWinner() != null)
 					endGame(this.gameController.isThereAWinner());
 
-				playerIndex = handleMenu(playerIndex, player);
+				if(player.getIsComputer())
+				{
+					playerIndex = handleComputerMove(playerIndex, player);
+				}
+				else
+				{
+					playerIndex = handleMenu(playerIndex, player);
+				}
 			}
 		}
 	}
@@ -105,6 +113,23 @@ public class HeroesConsole
 		else
 			playerIndex = switchCommands(playerIndex, player, userInput);
 
+		return playerIndex;
+	}
+	private int handleComputerMove(int playerIndex, Player player)
+	{
+		Hero hero = player.getHero();
+		String[] computerMove = new String[3];
+		if(hero != null && hero.alive())
+		{
+			//make a random move:
+			computerMove[0] = commands.move.toString();
+			computerMove[1] = String.valueOf(hero.getXPos() + (int) (Math.random() * 3) -1);
+			computerMove[2] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) -1);
+			playerIndex = switchCommands(playerIndex, player, computerMove);
+		}
+		//end turn:
+		computerMove[0] = commands.endTurn.toString();
+		playerIndex = switchCommands(playerIndex, player, computerMove);
 		return playerIndex;
 	}
 
@@ -203,7 +228,7 @@ public class HeroesConsole
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void handleHighscoreCommand()
 	{
@@ -211,7 +236,7 @@ public class HeroesConsole
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void handleClearScoreCommand()
 	{
@@ -219,7 +244,7 @@ public class HeroesConsole
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void handleMainHelpCommand()
 	{
@@ -236,7 +261,7 @@ public class HeroesConsole
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void handleLegendCommand()
 	{
@@ -353,12 +378,12 @@ public class HeroesConsole
 		case exit:
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void handleCastleHelpCommand()
 	{
