@@ -459,7 +459,7 @@ public class HeroesGui
                 return menuBar;
         }
 
-        private void displayError(String msg)
+        public static void displayError(String msg)
         {
                 MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_ERROR);
                 box.setMessage(msg);
@@ -993,7 +993,7 @@ public class HeroesGui
                 updateStatusWindow();
 
                 //Here is the computer move.
-                while(p.getIsComputer())
+                while(p.isComputer())
                 {
                         Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
                         if(hero != null)
@@ -1052,7 +1052,7 @@ public class HeroesGui
 
                 if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
                 {
-                		if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getIsComputer())
+                		if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).isComputer())
                 			displayError("Invallid Input. Outside of board - Try again");
                         return false;
                 } else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
