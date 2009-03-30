@@ -241,6 +241,7 @@ public class Player implements Serializable
 			movesLeft -= counter;
 			setVisiblePath(oldX , oldY , x , y);
 		}
+
 		return retVal;
 	}
 	private void setVisiblePath(int xSource,int ySource,int xDest,int yDest)
@@ -282,7 +283,7 @@ public class Player implements Serializable
 	{
 		return visibleBoard;
 	}
-	public boolean getIsComputer()
+	public boolean isComputer()
 	{
 		return (getName().toLowerCase().equals(COMPUTER_NAME));
 	}

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainModule
@@ -39,11 +41,16 @@ public class MainModule
         private static void runGraphicalView(GameController gameController)
         {
                 Display d = new Display();
-
                 int numberOfPlayers = HeroesGui.getNumberOfPlayers();
                 Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);
-                if(players == null)
-                	return;
+                if(players == null || players.isEmpty()|| players.size() < 2 || players.get(0).isComputer())
+                {
+                	Shell s = new Shell(d);
+                	MessageBox box = new MessageBox(s, SWT.ICON_ERROR);
+                    box.setMessage("Players' names are ilegal! make sure you follow the rules\n\t\tBye-Bye");
+                    box.open();
+                   	return;
+                }
                 gameController.initNewGame(players);
 
                 HeroesGui application = new HeroesGui(d, gameController);

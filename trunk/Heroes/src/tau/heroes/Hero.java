@@ -34,7 +34,7 @@ public class Hero implements Serializable
 		this.xPos = X;
 		this.yPos = Y;
 		_alive = true;
-		_autoFight = player.getIsComputer();
+		_autoFight = player.isComputer();
 		// randomly select a number between 0 and 2.
 		_attackSkill = (int) (Math.random() * 3);
 		_defenseSkill = (int) (Math.random() * 3);

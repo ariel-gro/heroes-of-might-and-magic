@@ -78,7 +78,7 @@ public class HeroesConsole
 				if (this.gameController.isThereAWinner() != null)
 					endGame(this.gameController.isThereAWinner());
 
-				if(player.getIsComputer())
+				if(player.isComputer())
 				{
 					playerIndex = handleComputerMove(playerIndex, player);
 				}
