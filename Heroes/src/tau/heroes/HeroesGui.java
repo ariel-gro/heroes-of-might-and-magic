@@ -51,7 +51,7 @@ public class HeroesGui
         private Color green;
 
         private Display display;
-        
+
         static Control currentChild = null;
 
         private GameController gameController;
@@ -61,8 +61,8 @@ public class HeroesGui
         private Composite boardComposite;
 
         private Composite statusComposite;
-        
-        SashForm sash; 
+
+        SashForm sash;
 
         private ScrolledComposite sc;
 
@@ -327,36 +327,36 @@ public class HeroesGui
                 tempLabel.setText(text);
                 tempLabel.setBackground(color);
         }
-        
-        
-        
+
+
+
         private void createStatusWindow()
-        {               
+        {
                 statusComposite = new Composite(sash, SWT.BORDER);
                 statusComposite.setBackground(green);
                 GridData d = new GridData(GridData.FILL_BOTH);
                 statusComposite.setLayoutData(d);
-                
+
                 GridLayout tempLayout = new GridLayout();
-                statusComposite.setLayout(tempLayout);          
-                
-                updateStatusWindow();                   
+                statusComposite.setLayout(tempLayout);
+
+                updateStatusWindow();
         }
 
         private void updateStatusWindow()
         {
                 Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-                
+
                 Control[] children = statusComposite.getChildren();
                 for (int i = 0; i < children.length; i++)
                 {
                         children[i].dispose();
                 }
-                
+
                 createLabel(statusComposite, "Player Status", green);
                 String str = p.getName();
                 createLabel(statusComposite, str, green);
-                
+
                 int xPos = p.getHero().getXPos();
                 int yPos = p.getHero().getYPos();
                 createLabel(statusComposite, "Heroe's position : "+xPos+" , "+yPos, green);
@@ -370,7 +370,7 @@ public class HeroesGui
                 createLabel(statusComposite, "Wood            "+woodNum, green);
                 createLabel(statusComposite, "Gold            "+goldNum, green);
                 createLabel(statusComposite, "Stone           "+stoneNum, green);
-                
+
                 createLabel(statusComposite, "Treasury List", green);
                 createLabel(statusComposite, "Resource      Amount", green);
                 createLabel(statusComposite, "--------      ------", green);
@@ -380,55 +380,55 @@ public class HeroesGui
                 createLabel(statusComposite, "Wood            "+woodAmount, green);
                 createLabel(statusComposite, "Gold            "+goldAmount, green);
                 createLabel(statusComposite, "Stone           "+stoneAmount, green);
-                
+
                 createLabel(statusComposite, "Defence Skill : "+p.getHero().getDefenseSkill(), green);
                 createLabel(statusComposite, "Attack Skill : "+p.getHero().getAttackSkill(), green);
-                
+
                 createLabel(statusComposite, "Army", green);
                 createLabel(statusComposite, "----", green);
                 Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
                 for (int j = 0 ; j < 5 ; ++j)
                 {
-                        
+
                         if (creaturesArray[j] != null)
                         {
-                                createLabel(statusComposite, "Creature number " + (j+1) + " : " + creaturesArray[j].toString(), green);         
+                                createLabel(statusComposite, "Creature number " + (j+1) + " : " + creaturesArray[j].toString(), green);
                         }
                         else
                         {
-                                createLabel(statusComposite, "Creature number " + (j+1) + " : none", green);            
+                                createLabel(statusComposite, "Creature number " + (j+1) + " : none", green);
                         }
                 }
-                
+
                 int numOfCastles = p.getCastles().size();
                 for (int i = 0 ; i < numOfCastles ; ++i)
                 {
                         int castleXPos = p.getCastles().get(i).getXPos();
                         int castleYPos = p.getCastles().get(i).getYPos();
                         createLabel(statusComposite, "Castle at : "+ castleXPos+" , "+castleYPos, green);
-                        
+
                         Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
                         if (p.getCastles().get(i).hasFactory(soldierFactoryClass))
                         {
                                 String str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
-                                createLabel(statusComposite, "Castle's Soldier Factories : "+str1 , green);     
+                                createLabel(statusComposite, "Castle's Soldier Factories : "+str1 , green);
                         }
                         else
                         {
-                                createLabel(statusComposite, "Castle's Soldier Factories : none", green);       
+                                createLabel(statusComposite, "Castle's Soldier Factories : none", green);
                         }
-                        
+
                         Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
                         if (p.getCastles().get(i).hasFactory(goblinFactoryClass))
                         {
                                 String str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
-                                createLabel(statusComposite, "Castle's Goblin Factories : "+str1 , green);      
+                                createLabel(statusComposite, "Castle's Goblin Factories : "+str1 , green);
                         }
                         else
                         {
-                                createLabel(statusComposite, "Castle's Goblin Factories : none", green);        
+                                createLabel(statusComposite, "Castle's Goblin Factories : none", green);
                         }
-                
+
                         if (p.getCastles().get(i).getArmy() != null)
                         {
                                 createLabel(statusComposite, "Castle's Army : "+p.getCastles().get(i).getArmy().toString(), green);
@@ -455,7 +455,7 @@ public class HeroesGui
                 createFileMenu(menuBar);
                 createHighScoreMenu(menuBar);
                 createHelpMenu(menuBar);
-                
+
                 return menuBar;
         }
 
@@ -508,13 +508,17 @@ public class HeroesGui
 
                 for (int i = 0; i < numberOfPlayers;)
                 {
-                        message = "If you want one of the players will be the computer, enter "+Player.COMPUTER_NAME +" as his name.\n";
+                        message = (i == 0 )? "" : "If you want one of the players will be the computer, enter "+Player.COMPUTER_NAME +" as his name.\n";
                         message += "Please enter player " + (i + 1) + "'s name: ";
 
                         InputDialog stringInput = new InputDialog(Display.getCurrent().getActiveShell(), "Player Name", message, null, null);
                         if (stringInput.open() == Window.OK)
                         {
                                 response = stringInput.getValue();
+                        }
+                        else
+                        {
+                        	return null;
                         }
 
                         if (response.length() > 0)
@@ -869,14 +873,14 @@ public class HeroesGui
                         }
                 });
         }
-        
+
         /**
          * creates all the items in the high scores sub-menu, and associates all menu
-         * items to the right functions 
-         * 
+         * items to the right functions
+         *
          * @param menuBar
          *            Menu the <code>Menu</code> that will contain this sub-menu.
-         * 
+         *
          */
         private void createHighScoreMenu(Menu menuBar)
         {
@@ -885,7 +889,7 @@ public class HeroesGui
                 item.setText("&Highscores");
                 Menu menu = new Menu(shell, SWT.DROP_DOWN);
                 item.setMenu(menu);
-                
+
                 MenuItem subItem1 = new MenuItem(menu, SWT.NULL);
                 subItem1.setText("&Dispaly Highscores");
                 subItem1.addSelectionListener(new SelectionAdapter() {
@@ -912,13 +916,13 @@ public class HeroesGui
                                         board.clearScoreBoard();
                                         board.save();
                                         displayTable(board);
-                        }                       
+                        }
                         }
                 });
         }
         /**
          * helper for the high-scores table display
-         *  
+         *
          * @param board
          */
         private void displayTable(GameScoreBoard board)
@@ -939,15 +943,15 @@ public class HeroesGui
             col1.setWidth(96);
             col2.setWidth(97);
             scoreTable.setHeaderVisible(true);
-            
+
             TableItem ti;
-            
+
             for (int i = 0; i < 10; i++)
             {
                 tempPlayer = board.getPlayerAt(i);
                 tempScore = board.getScoreAt(i);
                 ti = new TableItem(scoreTable, SWT.NONE);
-                
+
                 if (tempPlayer == null)
                         name = "----";
                 else
@@ -956,18 +960,18 @@ public class HeroesGui
                         score = "0";
                 else
                         score = tempScore+"";
-                
+
                 ti.setText(new String[] {name, score});
             }
-            
+
             tableShell.open();
             while (!tableShell.isDisposed()) {
                 if (!display.readAndDispatch())
                   display.sleep();
               }
         }
-        
-        
+
+
 
         /**
          * @param playerIndex
@@ -985,9 +989,9 @@ public class HeroesGui
 
                 currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
                 p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-                createBoardWindow();    
+                createBoardWindow();
                 updateStatusWindow();
-                
+
                 //Here is the computer move.
                 while(p.getIsComputer())
                 {
@@ -1007,7 +1011,7 @@ public class HeroesGui
 
                         currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
                         p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-                        createBoardWindow();                    
+                        createBoardWindow();
                         updateStatusWindow();
                 }
         }
@@ -1048,7 +1052,8 @@ public class HeroesGui
 
                 if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
                 {
-                        displayError("Invallid Input. Outside of board - Try again");
+                		if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getIsComputer())
+                			displayError("Invallid Input. Outside of board - Try again");
                         return false;
                 } else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
                 {
