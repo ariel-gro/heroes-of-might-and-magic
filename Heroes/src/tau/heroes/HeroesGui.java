@@ -471,6 +471,7 @@ public class HeroesGui
                 gameController.initNewGame(players);
 
                 createBoardWindow();
+                updateStatusWindow();
         }
 
         /**
@@ -551,6 +552,7 @@ public class HeroesGui
                 this.gameController.loadGame(name);
 
                 createBoardWindow();
+                updateStatusWindow();
 
                 shell.setCursor(null);
                 waitCursor.dispose();
@@ -1057,6 +1059,7 @@ public class HeroesGui
                                 this.gameController.getGameState().getBoard()))
                 {
                         createBoardWindow();
+                        updateStatusWindow();
                         return true;
                 } else
                 {
