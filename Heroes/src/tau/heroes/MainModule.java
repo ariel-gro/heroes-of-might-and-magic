@@ -39,11 +39,11 @@ public class MainModule
 	private static void runGraphicalView(GameController gameController)
 	{
 		Display d = new Display();
-		
+
 		int numberOfPlayers = HeroesGui.getNumberOfPlayers();
-		Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);	
+		Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);
 		gameController.initNewGame(players);
-		
+
 		HeroesGui application = new HeroesGui(d, gameController);
 		Shell shell = application.open();
 		while (!shell.isDisposed())
@@ -89,7 +89,7 @@ public class MainModule
 		String message;
 		String[] responses;
 		Vector<Player> players = new Vector<Player>();
-
+		System.out.println("If you want one of the players will be the computer, enter "+Player.COMPUTER_NAME +" as his name.");
 		for (int i = 0; i < numberOfPlayers;)
 		{
 			message = "Please enter player " + (i + 1) + "'s name: ";

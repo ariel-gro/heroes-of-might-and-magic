@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 public class Player implements Serializable
 {
+	public static final String COMPUTER_NAME = "computer";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String playerName;
@@ -177,6 +178,12 @@ public class Player implements Serializable
 			amount = (this.mines.get(tempType.getTypeName()))*tempType.getPerDay();
 			this.incrementTreasury(tempType.getTypeName(), amount);
 		}
+		if (castles.isEmpty())
+			daysWithoutCastles++;
+		else
+			daysWithoutCastles = 0;
+		if(daysWithoutCastles >= 7)
+			hero = null;
 		//will make sure that the hero is alive, if not then null the hero.
 		getHero();
 
@@ -212,22 +219,7 @@ public class Player implements Serializable
 
 	public boolean isAlive()
 	{
-		if (castles.isEmpty())
-			if (hero == null) /* a player with no castles and no heroes can't play */
-				return false;
-			else /* player has no castles but has heroes that can obtain castles */
-			{
-				daysWithoutCastles++;
-				if (daysWithoutCastles == 7)
-				{
-					return false;
-				}
-			}
-		else
-		{
-			daysWithoutCastles = 0;
-		}
-		return true;
+		return (getHero() != null) || !this.castles.isEmpty();
 	}
 	public boolean move(int x,int y, Board board)
 	{
@@ -249,6 +241,7 @@ public class Player implements Serializable
 			movesLeft -= counter;
 			setVisiblePath(oldX , oldY , x , y);
 		}
+		System.out.println(playerName+" Move: "+x+"x"+y+" left moves = "+movesLeft);
 		return retVal;
 	}
 	private void setVisiblePath(int xSource,int ySource,int xDest,int yDest)
@@ -290,21 +283,25 @@ public class Player implements Serializable
 	{
 		return visibleBoard;
 	}
+	public boolean getIsComputer()
+	{
+		return (getName().toLowerCase().equals(COMPUTER_NAME));
+	}
 
 	public int finalScore()
 	{
 		int ret = 0;
 		Army army;
-		
+
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
 			ret += this.getMineQuantity(ResourceType.values()[i].getTypeName());
 			ret += this.getCurrentTreasuryAmount(ResourceType.values()[i].getTypeName());
 		}
-		
+
 		army = this.hero.getArmy();
 		ret += army.getTotalNumberOfUnits();
-		
+
 		for (int i = 0; i< this.castles.size()-1; i++)
 		{
 			army = this.castles.get(i).getArmy();

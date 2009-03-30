@@ -85,7 +85,7 @@ public class GameController
 	/**
 	 * Removes dead players from game and return all of their belongings to the
 	 * board.
-	 * @return vector of players that were removed  
+	 * @return vector of players that were removed
 	 */
 	public Vector<Player> removeDeadPlayers()
 	{
@@ -97,11 +97,10 @@ public class GameController
 			{
 				removePlayerHero(player);
 				removePlayerResources(player);
-				this.gameState.getPlayers().remove(player);
 				deadPlayers.add(player);
 			}
 		}
-
+		this.gameState.getPlayers().removeAll(deadPlayers);
 		return deadPlayers;
 	}
 
@@ -160,7 +159,7 @@ public class GameController
 		}
 		return false;
 	}
-	
+
 	public boolean loadGame(String fileName)
 	{
 		try
@@ -184,7 +183,7 @@ public class GameController
 		{
 			System.out.println("Can't find the requested file !");
 		}
-		
+
 		return false;
 	}
 
