@@ -871,36 +871,80 @@ public class HeroesGui
 		return popUpMenu;
 	}
 
-	/**
-	 * Creates all the items located in the Help submenu and associate all the
-	 * menu items with their appropriate functions.
-	 *
-	 * @param menuBar
-	 *            Menu the <code>Menu</code> that file contain the Help
-	 *            submenu.
-	 */
-	private void createHelpMenu(Menu menuBar)
-	{
 
-		// Help Menu
-		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
-		item.setText("Help");
-		Menu menu = new Menu(shell, SWT.DROP_DOWN);
-		item.setMenu(menu);
+	 /**
+	  * Creates all the items located in the Help submenu and associate all the
+	  * menu items with their appropriate functions.
+	  *
+	  * @param menuBar
+	  *            Menu the <code>Menu</code> that file contain the Help
+	  *            submenu.
+	  */
+	 private void createHelpMenu(Menu menuBar)
+	 {
 
-		// Help -> About Text Editor
-		MenuItem subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("About");
-		subItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				MessageBox box = new MessageBox(shell, SWT.NONE);
-				box.setText(shell.getText());
-				box.setMessage(shell.getText());
-				box.open();
-			}
-		});
-	}
+		 // Help Menu
+		 MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
+		 item.setText("Help");
+		 Menu menu = new Menu(shell, SWT.DROP_DOWN);
+		 item.setMenu(menu);
+
+		 //Help -> Gameplay assistance
+		 MenuItem assistItem = new MenuItem(menu, SWT.NULL);
+		 assistItem.setText("&Gameplay assistance");
+		 assistItem.setAccelerator(SWT.MOD1 + 'G');
+		 assistItem.addSelectionListener(new SelectionAdapter()
+		 {
+			 public void widgetSelected(SelectionEvent e)
+			 {
+				 String helpString;
+
+				 helpString = "\n" +
+				 "Welcome to Gameplay assistance\n\n" +
+				 "Right click your hero to:\n" +
+				 "Move, End Turn.\n\n" +
+				 "Right click your castel(s) to see Castle menu and options:\n" +
+				 "Build: build a creature factory\n" +
+				 "Make: make a new creature\n" +
+				 "Split: move units from hero to castle\n" +
+				 "Join: move units from castle to hero\n" +
+				 "\n" +
+				 "Player info is on the right part of the screen (status window)\n\n" +
+				 "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n" +
+				 "Use the Highscores menu to view or reset the highscores table\n\n" +
+				 "Quitting the game is via File -> Exit\n\n\n" +
+				 "Enjoy the game";
+
+				 Shell gameHelpShell = new Shell(Display.getCurrent().getActiveShell());
+				 gameHelpShell.setLayout(new FillLayout());
+				 gameHelpShell.setSize(700, 350);
+				 gameHelpShell.setText("Gameplay assistance");
+				 gameHelpShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+				 Label gameHelp = new Label(gameHelpShell, SWT.CENTER);
+				 gameHelp.setBounds(gameHelpShell.getClientArea());
+				 gameHelp.setText(helpString);
+				 gameHelpShell.open();
+
+				 while (!gameHelpShell.isDisposed())
+					 if (!display.readAndDispatch())
+						 display.sleep();
+			 }
+		 });
+
+
+		 // Help -> About Text Editor
+		 MenuItem subItem = new MenuItem(menu, SWT.NULL);
+		 subItem.setText("About");
+		 subItem.addSelectionListener(new SelectionAdapter() {
+			 public void widgetSelected(SelectionEvent e)
+			 {
+				 MessageBox box = new MessageBox(shell, SWT.NONE);
+				 box.setText(shell.getText());
+				 box.setMessage(shell.getText());
+				 box.open();
+			 }
+		 });
+	 }
 
 	/**
 	 * creates all the items in the high scores sub-menu, and associates all menu
