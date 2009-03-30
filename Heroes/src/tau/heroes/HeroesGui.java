@@ -900,7 +900,8 @@ public class HeroesGui
 				 String helpString;
 
 				 helpString = "\n" +
-				 "Welcome to Gameplay assistance\n\n" +
+				 "Heroes of Might and Magic (TAU Version)\n" +
+				 "Gameplay assistance\n\n" +
 				 "Right click your hero to:\n" +
 				 "Move, End Turn.\n\n" +
 				 "Right click your castel(s) to see Castle menu and options:\n" +
