@@ -56,7 +56,7 @@ public class HeroesGui
 	private Color green;
 
 	private Display display;
-
+	
 	static Control currentChild = null;
 
 	private GameController gameController;
@@ -66,6 +66,8 @@ public class HeroesGui
 	private Composite boardComposite;
 
 	private Composite statusComposite;
+	
+	SashForm sash; 
 
 	private ScrolledComposite sc;
 
@@ -109,13 +111,12 @@ public class HeroesGui
 		sashData.grabExcessVerticalSpace = true;
 		sashData.horizontalAlignment = GridData.FILL;
 		sashData.verticalAlignment = GridData.FILL;
-		SashForm sash = new SashForm(shell, SWT.BORDER);
+		sash = new SashForm(shell, SWT.BORDER);
 		sash.setOrientation(SWT.HORIZONTAL);
 		sash.setLayoutData(sashData);
 
 		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
 		createBoardWindow();
 
 		createStatusWindow(sash);
@@ -335,8 +336,12 @@ public class HeroesGui
 	
 	
 	private void createStatusWindow(Composite parent)
-	{
+	{		
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		if ((statusComposite != null) && ((statusComposite.isDisposed()) == false))
+		{
+			statusComposite.dispose();
+		}
 		
 		
 		statusComposite = new Composite(parent, SWT.BORDER);
@@ -344,10 +349,17 @@ public class HeroesGui
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
 		
+		GridLayout tempLayout = new GridLayout();
+		statusComposite.setLayout(tempLayout);		
+		
 		createLabel(statusComposite, "Player Status", green);
 		String str = p.getName();
 		createLabel(statusComposite, str, green);
 		
+		int xPos = p.getHero().getXPos();
+		int yPos = p.getHero().getYPos();
+		createLabel(statusComposite, "Heroe's position : "+xPos+" , "+yPos, green);
+
 		createLabel(statusComposite, "Mine List", green);
 		createLabel(statusComposite, "Mine          Quantity", green);
 		createLabel(statusComposite, "----          --------", green);
@@ -428,8 +440,9 @@ public class HeroesGui
 			
 		}
 		
-		GridLayout tempLayout = new GridLayout();
-		statusComposite.setLayout(tempLayout);
+
+		
+		
 	}
 
 	/**
@@ -978,6 +991,9 @@ public class HeroesGui
 		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		createBoardWindow();
+		
+		createStatusWindow(sash);
+		
 		//Here is the computer move.
 		while(p.getIsComputer())
 		{
@@ -997,7 +1013,8 @@ public class HeroesGui
 
 			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-			createBoardWindow();
+			createBoardWindow();			
+			createStatusWindow(sash);
 		}
 	}
 
