@@ -207,8 +207,7 @@ public class HeroesGui
 						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			} else if ((bs.getCastle()) != null)
 			{
-				return bs.getHero().player.getName() + "'s Hero in " + bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", "
-						+ y;
+				return bs.getHero().player.getName() + "'s Hero in " + bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
 			} else
 				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
 
@@ -219,16 +218,13 @@ public class HeroesGui
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			} else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			} else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
 			}
 		}
 
@@ -282,18 +278,15 @@ public class HeroesGui
 				}
 
 				if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState()
-							.getPlayers().elementAt(currentPlayerIndex)))
+					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 						b.setMenu(createHeroPopUpMenu());
 
 				if (t == iconCache.castleIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(
-							gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 						b.setMenu(createCastlePopUpMenu());
 
 				if (t == iconCache.heroInCastleIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState()
-							.getPlayers().elementAt(currentPlayerIndex)))
+					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 						b.setMenu(createHeroInCastlePopUpMenu());
 			}
 		}
@@ -310,9 +303,7 @@ public class HeroesGui
 			int y = i / numOfCells;
 			int t = fromBoardToDisplayIcons(x, y);
 
-			if (isVisible[x][y]
-					&& (t == iconCache.heroIcon || t == iconCache.heroInCastleIcon || t == iconCache.heroInGlodMineIcon
-							|| t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon))
+			if (isVisible[x][y] && (t == iconCache.heroIcon || t == iconCache.heroInCastleIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon))
 			{
 				Rectangle bounds = controls[i].getBounds();
 				Rectangle area = sc.getClientArea();
@@ -1012,8 +1003,7 @@ public class HeroesGui
 
 	private void moveHero()
 	{
-		String message = "Move to X,Y, e.g. 12,31 (Currenly at: "
-				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getXPos() + ","
+		String message = "Move to X,Y, e.g. 12,31 (Currenly at: " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getXPos() + ","
 				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getYPos() + "): ";
 		String response = null;
 		String[] responseSplit = null;
@@ -1134,16 +1124,14 @@ public class HeroesGui
 			if (!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).isComputer())
 				displayError("Invallid Input. Outside of board - Try again");
 			return false;
-		} else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY,
-				this.gameController.getGameState().getBoard()))
+		} else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
 		{
 			createBoardWindow();
 			updateStatusWindow();
 			return true;
 		} else
 		{
-			displayError("Illegal move !" + currentPlayerIndex + " You can only move "
-					+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			displayError("Illegal move !" + currentPlayerIndex + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
 			return false;
 		}
 	}
