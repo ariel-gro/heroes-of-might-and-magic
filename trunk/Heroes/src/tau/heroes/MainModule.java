@@ -42,6 +42,8 @@ public class MainModule
 
                 int numberOfPlayers = HeroesGui.getNumberOfPlayers();
                 Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);
+                if(players == null)
+                	return;
                 gameController.initNewGame(players);
 
                 HeroesGui application = new HeroesGui(d, gameController);

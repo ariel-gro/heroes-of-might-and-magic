@@ -241,7 +241,6 @@ public class Player implements Serializable
 			movesLeft -= counter;
 			setVisiblePath(oldX , oldY , x , y);
 		}
-		System.out.println(playerName+" Move: "+x+"x"+y+" left moves = "+movesLeft);
 		return retVal;
 	}
 	private void setVisiblePath(int xSource,int ySource,int xDest,int yDest)
