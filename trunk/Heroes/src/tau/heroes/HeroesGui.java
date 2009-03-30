@@ -48,6 +48,8 @@ public class HeroesGui
         private Color black;
 
         private Color green;
+        
+        private Color white;
 
         private Display display;
 
@@ -87,6 +89,7 @@ public class HeroesGui
                 shell.setMaximized(true);
                 black = display.getSystemColor(SWT.COLOR_BLACK);
                 green = display.getSystemColor(SWT.COLOR_GREEN);
+                white = display.getSystemColor(SWT.COLOR_WHITE);
                 shell.setBackground(black);
                 shell.addShellListener(new ShellAdapter() {
                         public void shellClosed(ShellEvent e)
@@ -323,17 +326,17 @@ public class HeroesGui
                 }
         }
 
-        private void createLabel(Composite composite, String text, Color color)
+        private void createLabel(Composite composite, String text)
         {
                 Label tempLabel = new Label(composite, SWT.NONE);
                 tempLabel.setText(text);
-                tempLabel.setBackground(color);
+                tempLabel.setBackground(white);
         }
 
         private void createStatusWindow()
         {
                 statusComposite = new Composite(sash, SWT.BORDER);
-                statusComposite.setBackground(green);
+                statusComposite.setBackground(white);
                 GridData d = new GridData(GridData.FILL_BOTH);
                 statusComposite.setLayoutData(d);
 
@@ -353,49 +356,49 @@ public class HeroesGui
                         children[i].dispose();
                 }
 
-                createLabel(statusComposite, "Player Status", green);
+                createLabel(statusComposite, "Player Status");
                 String str = p.getName();
-                createLabel(statusComposite, str, green);
+                createLabel(statusComposite, str);
 
                 int xPos = p.getHero().getXPos();
                 int yPos = p.getHero().getYPos();
-                createLabel(statusComposite, "Heroe's position : " + xPos + " , " + yPos, green);
+                createLabel(statusComposite, "Heroe's position : " + xPos + " , " + yPos);
 
-                createLabel(statusComposite, "Mine List", green);
-                createLabel(statusComposite, "Mine          Quantity", green);
-                createLabel(statusComposite, "----          --------", green);
+                createLabel(statusComposite, "Mine List");
+                createLabel(statusComposite, "Mine          Quantity");
+                createLabel(statusComposite, "----          --------");
                 int woodNum = p.getMineQuantity("wood");
                 int goldNum = p.getMineQuantity("gold");
                 int stoneNum = p.getMineQuantity("stone");
-                createLabel(statusComposite, "Wood            " + woodNum, green);
-                createLabel(statusComposite, "Gold            " + goldNum, green);
-                createLabel(statusComposite, "Stone           " + stoneNum, green);
+                createLabel(statusComposite, "Wood            " + woodNum);
+                createLabel(statusComposite, "Gold            " + goldNum);
+                createLabel(statusComposite, "Stone           " + stoneNum);
 
-                createLabel(statusComposite, "Treasury List", green);
-                createLabel(statusComposite, "Resource      Amount", green);
-                createLabel(statusComposite, "--------      ------", green);
+                createLabel(statusComposite, "Treasury List");
+                createLabel(statusComposite, "Resource      Amount");
+                createLabel(statusComposite, "--------      ------");
                 int woodAmount = p.getCurrentTreasuryAmount("wood");
                 int goldAmount = p.getCurrentTreasuryAmount("gold");
                 int stoneAmount = p.getCurrentTreasuryAmount("stone");
-                createLabel(statusComposite, "Wood            " + woodAmount, green);
-                createLabel(statusComposite, "Gold            " + goldAmount, green);
-                createLabel(statusComposite, "Stone           " + stoneAmount, green);
+                createLabel(statusComposite, "Wood            " + woodAmount);
+                createLabel(statusComposite, "Gold            " + goldAmount);
+                createLabel(statusComposite, "Stone           " + stoneAmount);
 
-                createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill(), green);
-                createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill(), green);
+                createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill());
+                createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill());
 
-                createLabel(statusComposite, "Army", green);
-                createLabel(statusComposite, "----", green);
+                createLabel(statusComposite, "Army");
+                createLabel(statusComposite, "----");
                 Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
                 for (int j = 0; j < 5; ++j)
                 {
 
                         if (creaturesArray[j] != null)
                         {
-                                createLabel(statusComposite, "Creature number " + (j + 1) + " : " + creaturesArray[j].toString(), green);
+                                createLabel(statusComposite, "Creature number " + (j + 1) + " : " + creaturesArray[j].toString());
                         } else
                         {
-                                createLabel(statusComposite, "Creature number " + (j + 1) + " : none", green);
+                                createLabel(statusComposite, "Creature number " + (j + 1) + " : none");
                         }
                 }
 
@@ -404,34 +407,34 @@ public class HeroesGui
                 {
                         int castleXPos = p.getCastles().get(i).getXPos();
                         int castleYPos = p.getCastles().get(i).getYPos();
-                        createLabel(statusComposite, "Castle at : " + castleXPos + " , " + castleYPos, green);
+                        createLabel(statusComposite, "Castle at : " + castleXPos + " , " + castleYPos);
 
                         Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
                         if (p.getCastles().get(i).hasFactory(soldierFactoryClass))
                         {
                                 String str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
-                                createLabel(statusComposite, "Castle's Soldier Factories : " + str1, green);
+                                createLabel(statusComposite, "Castle's Soldier Factories : " + str1);
                         } else
                         {
-                                createLabel(statusComposite, "Castle's Soldier Factories : none", green);
+                                createLabel(statusComposite, "Castle's Soldier Factories : none");
                         }
 
                         Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
                         if (p.getCastles().get(i).hasFactory(goblinFactoryClass))
                         {
                                 String str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
-                                createLabel(statusComposite, "Castle's Goblin Factories : " + str1, green);
+                                createLabel(statusComposite, "Castle's Goblin Factories : " + str1);
                         } else
                         {
-                                createLabel(statusComposite, "Castle's Goblin Factories : none", green);
+                                createLabel(statusComposite, "Castle's Goblin Factories : none");
                         }
 
                         if (p.getCastles().get(i).getArmy() != null)
                         {
-                                createLabel(statusComposite, "Castle's Army : " + p.getCastles().get(i).getArmy().toString(), green);
+                                createLabel(statusComposite, "Castle's Army : " + p.getCastles().get(i).getArmy().toString());
                         } else
                         {
-                                createLabel(statusComposite, "Castle's Army : none", green);
+                                createLabel(statusComposite, "Castle's Army : none");
                         }
                 }
                 
