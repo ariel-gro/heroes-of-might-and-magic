@@ -317,16 +317,109 @@ public class HeroesGui
 		}
 	}
 
+	private void createLabel(Composite composite, String text, Color color)
+	{
+		Label tempLabel = new Label(composite, SWT.NONE);
+		tempLabel.setText(text);
+		tempLabel.setBackground(color);
+	}
+	
+	
+	
 	private void createStatusWindow(Composite parent)
 	{
+		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		
+		
 		statusComposite = new Composite(parent, SWT.BORDER);
-		statusComposite.setBackground(black);
+		statusComposite.setBackground(green);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
-
-		Label tempLabel = new Label(statusComposite, SWT.NONE);
-		tempLabel.setText("THIS IS WHERE ALL \n THE STATUS WILL BE");
-		tempLabel.setBackground(green);
+		
+		createLabel(statusComposite, "Player Status", green);
+		String str = p.getName();
+		createLabel(statusComposite, str, green);
+		
+		createLabel(statusComposite, "Mine List", green);
+		createLabel(statusComposite, "Mine          Quantity", green);
+		createLabel(statusComposite, "----          --------", green);
+		int woodNum = p.getMineQuantity("wood");
+		int goldNum = p.getMineQuantity("gold");
+		int stoneNum = p.getMineQuantity("stone");
+		createLabel(statusComposite, "Wood            "+woodNum, green);
+		createLabel(statusComposite, "Gold            "+goldNum, green);
+		createLabel(statusComposite, "Stone           "+stoneNum, green);
+		
+		createLabel(statusComposite, "Treasury List", green);
+		createLabel(statusComposite, "Resource      Amount", green);
+		createLabel(statusComposite, "--------      ------", green);
+		int woodAmount = p.getCurrentTreasuryAmount("wood");
+		int goldAmount = p.getCurrentTreasuryAmount("gold");
+		int stoneAmount = p.getCurrentTreasuryAmount("stone");
+		createLabel(statusComposite, "Wood            "+woodAmount, green);
+		createLabel(statusComposite, "Gold            "+goldAmount, green);
+		createLabel(statusComposite, "Stone           "+stoneAmount, green);
+		
+		createLabel(statusComposite, "Defence Skill : "+p.getHero().getDefenseSkill(), green);
+		createLabel(statusComposite, "Attack Skill : "+p.getHero().getAttackSkill(), green);
+		
+		createLabel(statusComposite, "Army", green);
+		createLabel(statusComposite, "----", green);
+		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
+		for (int j = 0 ; j < 5 ; ++j)
+		{
+			
+			if (creaturesArray[j] != null)
+			{
+				createLabel(statusComposite, "Creature number " + (j+1) + " : " + creaturesArray[j].toString(), green);		
+			}
+			else
+			{
+				createLabel(statusComposite, "Creature number " + (j+1) + " : none", green);		
+			}
+		}
+		
+		int numOfCastles = p.getCastles().size();
+		for (int i = 0 ; i < numOfCastles ; ++i)
+		{
+			int castleXPos = p.getCastles().get(i).getXPos();
+			int castleYPos = p.getCastles().get(i).getYPos();
+			createLabel(statusComposite, "Castle at : "+ castleXPos+" , "+castleYPos, green);
+			
+			Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
+			if (p.getCastles().get(i).hasFactory(soldierFactoryClass))
+			{
+				String str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
+				createLabel(statusComposite, "Castle's Soldier Factories : "+str1 , green);	
+			}
+			else
+			{
+				createLabel(statusComposite, "Castle's Soldier Factories : none", green);	
+			}
+			
+			Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
+			if (p.getCastles().get(i).hasFactory(goblinFactoryClass))
+			{
+				String str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
+				createLabel(statusComposite, "Castle's Goblin Factories : "+str1 , green);	
+			}
+			else
+			{
+				createLabel(statusComposite, "Castle's Goblin Factories : none", green);	
+			}
+		
+			if (p.getCastles().get(i).getArmy() != null)
+			{
+				createLabel(statusComposite, "Castle's Army : "+p.getCastles().get(i).getArmy().toString(), green);
+			}
+			else
+			{
+				createLabel(statusComposite, "Castle's Army : none", green);
+			}
+			
+			
+		}
+		
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
 	}
