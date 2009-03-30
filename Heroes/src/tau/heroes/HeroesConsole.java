@@ -240,7 +240,17 @@ public class HeroesConsole
 	 */
 	private void handleClearScoreCommand()
 	{
-		Helper.getScoreBoard().clearScoreBoard();
+		String message = "Yes or No?\n";
+		String[] responses;
+		
+		System.out.println("Are you sure yo want to clear the highscore table?");
+		System.out.println("this action can not be reversed");
+		responses = MainModule.getCommandAndParameters(message); 
+		if (responses.length > 0 &&
+			(responses[0].startsWith("y") || (responses[0].startsWith("Y"))))
+		{
+			Helper.getScoreBoard().clearScoreBoard();
+		}	
 	}
 
 	/**
