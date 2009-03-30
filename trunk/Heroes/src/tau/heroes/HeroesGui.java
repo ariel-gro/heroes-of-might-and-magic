@@ -377,6 +377,12 @@ public class HeroesGui
                 createLabel(statusComposite, "Stone                " + stoneNum);
                 createLabel(statusComposite, "");
                 
+                
+                
+                
+                
+                
+                
                 createLabel(statusComposite, "TREASURY LIST");
                 createLabel(statusComposite, "Resource      Amount");
                 createLabel(statusComposite, "--------      ------");
