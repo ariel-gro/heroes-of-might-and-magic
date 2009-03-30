@@ -15,6 +15,7 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -326,11 +327,12 @@ public class HeroesGui
                 }
         }
 
-        private void createLabel(Composite composite, String text)
+        private Label createLabel(Composite composite, String text)
         {
                 Label tempLabel = new Label(composite, SWT.NONE);
                 tempLabel.setText(text);
                 tempLabel.setBackground(white);
+                return tempLabel;
         }
 
         private void createStatusWindow()
@@ -356,25 +358,30 @@ public class HeroesGui
                         children[i].dispose();
                 }
 
-                createLabel(statusComposite, "Player Status");
+                createLabel(statusComposite, "               PLAYER  STATUS");
+                createLabel(statusComposite, "");
+                
                 String str = p.getName();
-                createLabel(statusComposite, str);
+                createLabel(statusComposite, "PLAYER  NAME  :  " + str);
+                createLabel(statusComposite, "");
 
                 int xPos = p.getHero().getXPos();
                 int yPos = p.getHero().getYPos();
-                createLabel(statusComposite, "Heroe's position : " + xPos + " , " + yPos);
+                createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
+                createLabel(statusComposite, "");
 
-                createLabel(statusComposite, "Mine List");
+                createLabel(statusComposite, "MINE  LIST");
                 createLabel(statusComposite, "Mine          Quantity");
-                createLabel(statusComposite, "----          --------");
+                createLabel(statusComposite, "-------------------------");
                 int woodNum = p.getMineQuantity("wood");
                 int goldNum = p.getMineQuantity("gold");
                 int stoneNum = p.getMineQuantity("stone");
-                createLabel(statusComposite, "Wood            " + woodNum);
-                createLabel(statusComposite, "Gold            " + goldNum);
-                createLabel(statusComposite, "Stone           " + stoneNum);
-
-                createLabel(statusComposite, "Treasury List");
+                createLabel(statusComposite, "Wood               " + woodNum);
+                createLabel(statusComposite, "Gold                 " + goldNum);
+                createLabel(statusComposite, "Stone                " + stoneNum);
+                createLabel(statusComposite, "");
+                
+                createLabel(statusComposite, "TREASURY LIST");
                 createLabel(statusComposite, "Resource      Amount");
                 createLabel(statusComposite, "--------      ------");
                 int woodAmount = p.getCurrentTreasuryAmount("wood");
@@ -383,9 +390,11 @@ public class HeroesGui
                 createLabel(statusComposite, "Wood            " + woodAmount);
                 createLabel(statusComposite, "Gold            " + goldAmount);
                 createLabel(statusComposite, "Stone           " + stoneAmount);
+                createLabel(statusComposite, "");
 
                 createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill());
                 createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill());
+                createLabel(statusComposite, "");
 
                 createLabel(statusComposite, "Army");
                 createLabel(statusComposite, "----");
