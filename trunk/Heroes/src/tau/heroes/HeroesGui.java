@@ -366,10 +366,10 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "MINE  LIST");		
-		Table table1 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
+		Table table1 = new Table (statusComposite, SWT.BORDER | SWT.FILL_WINDING);
 		table1.setLinesVisible (true);
 		table1.setHeaderVisible (true);
-		GridData data1 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData data1 = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		data1.heightHint = 50;
 		table1.setLayoutData(data1);
 		String[] titles1 = {" Mine ", " Quantity "};
@@ -399,7 +399,7 @@ public class HeroesGui
 		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
 		table2.setLinesVisible (true);
 		table2.setHeaderVisible (true);
-		GridData data2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData data2 = new GridData(SWT.LEFT, SWT.CENTER, true, true);
 		data2.heightHint = 50;
 		table2.setLayoutData(data2);
 		String[] titles2 = {" Resource ", " Amount "};
