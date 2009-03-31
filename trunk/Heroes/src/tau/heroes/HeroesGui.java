@@ -9,6 +9,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -56,6 +58,8 @@ public class HeroesGui
 	private GameController gameController;
 
 	private static int currentPlayerIndex = 0;
+	
+	private static Point currentPoint;
 
 	private Composite boardComposite;
 
@@ -256,7 +260,22 @@ public class HeroesGui
 		boardComposite.setLayout(tableLayout);
 
 		isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
+		
+		MouseListener focusListener = new MouseListener() {
+			public void mouseDown(MouseEvent e)
+			{
+				Label selectedLabel = (Label) e.getSource();
+				currentPoint = (Point) selectedLabel.getData();
+			}
 
+			public void mouseDoubleClick(MouseEvent arg0)
+			{}
+
+			public void mouseUp(MouseEvent arg0)
+			{}
+		};	
+
+	    
 		for (int y = 0; y < numOfCells; y++)
 		{
 			for (int x = 0; x < numOfCells; x++)
@@ -283,7 +302,11 @@ public class HeroesGui
 
 				if (t == iconCache.castleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+					{
 						b.setMenu(createCastlePopUpMenu());
+						b.setData(new Point(x, y));
+						b.addMouseListener(focusListener);			
+					}
 
 				if (t == iconCache.heroInCastleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
@@ -319,7 +342,7 @@ public class HeroesGui
 
 				sc.setOrigin(origin);
 			}
-		}
+		}	
 	}
 
 	
@@ -531,6 +554,13 @@ public class HeroesGui
 		box.setMessage(msg);
 		box.open();
 	}
+	
+	public static void displayMessage(String msg)
+	{
+		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
+		box.setMessage(msg);
+		box.open();
+	}
 
 	private void startNewGame()
 	{
@@ -695,12 +725,7 @@ public class HeroesGui
 
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{
-				//Menu menu = (Menu) e.widget;
-				//MenuItem[] items = menu.getItems();
-
-				//////// ************ TBD ********** //////////////////
-			}
+			{}
 		});
 
 		// File -> New Game
@@ -779,12 +804,7 @@ public class HeroesGui
 		 */
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{
-				//Menu menu = (Menu) e.widget;
-				//MenuItem[] items = menu.getItems();
-				//int count = table.getSelectionCount();
-
-			}
+			{}
 		});
 
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
@@ -825,25 +845,52 @@ public class HeroesGui
 		 */
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{
-			}
+			{}
 		});
 
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");
-		item.addSelectionListener(new SelectionAdapter() {
+		item.setText("Build");	
+		
+		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(buildMenu);
+	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+	    goblinBuildItem.setText("Goblin");
+	    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleBuildCommand("goblin");
+			}
+		});
+	    
+	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+	    soldierBuildItem.setText("Soldier");
+	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleBuildCommand("soldier");
 			}
 		});
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
-		item.addSelectionListener(new SelectionAdapter() {
+		
+		Menu makeMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(makeMenu);
+	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+	    goblinMakeItem.setText("Goblin");
+	    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleMakeCommand("goblin");
+			}
+		});
+	    
+	    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+	    soldierMakeItem.setText("Soldier");
+	    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleMakeCommand("soldier");
 			}
 		});
 
@@ -880,8 +927,6 @@ public class HeroesGui
 
 		});
 
-		//new MenuItem(popUpMenu, SWT.SEPARATOR);
-
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("End Turn");
 		item.addSelectionListener(new SelectionAdapter() {
@@ -894,38 +939,94 @@ public class HeroesGui
 		new MenuItem(popUpMenu, SWT.SEPARATOR);
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");
-		item.addSelectionListener(new SelectionAdapter() {
+		item.setText("Build");	
+		
+		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(buildMenu);
+	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+	    goblinBuildItem.setText("Goblin");
+	    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleBuildCommand("goblin");
+			}
+		});
+	    
+	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+	    soldierBuildItem.setText("Soldier");
+	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleBuildCommand("soldier");
 			}
 		});
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
-		item.addSelectionListener(new SelectionAdapter() {
+		
+		Menu makeMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(makeMenu);
+	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+	    goblinMakeItem.setText("Goblin");
+	    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleMakeCommand("goblin");
 			}
 		});
-
+	    
+	    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+	    soldierMakeItem.setText("Soldier");
+	    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleMakeCommand("soldier");
+			}
+		});
+	    
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Split");
-		item.addSelectionListener(new SelectionAdapter() {
+
+		Menu splitMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(splitMenu);
+	    final MenuItem goblinSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+	    goblinSplitItem.setText("Goblin");
+	    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleSplitCommand("goblin");
 			}
 		});
-
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Join");
-		item.addSelectionListener(new SelectionAdapter() {
+	    
+	    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+	    soldierSplitItem.setText("Soldier");
+	    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-
+				handleSplitCommand("soldier");
+			}
+		});
+	    
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Join");
+		
+		Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(joinMenu);
+	    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+	    goblinJoinItem.setText("Goblin");
+	    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleJoinCommand("goblin");
+			}
+		});
+	    
+	    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+	    soldierJoinItem.setText("Soldier");
+	    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleJoinCommand("soldier");
 			}
 		});
 
@@ -1199,20 +1300,14 @@ public class HeroesGui
 
 	private void endGame(Player winner)
 	{
-		System.out.println("game ended.");
+		displayMessage("game ended.");
 		if (winner != null)
 		{
-			System.out.println("winner is: " + winner.getName() + " with a score of: " + winner.finalScore());
+			displayMessage("winner is: " + winner.getName() + " with a score of: " + winner.finalScore());
 			Helper.getScoreBoard().addToScoreBoard(winner, winner.finalScore());
 		}
 		Helper.getScoreBoard().save();
-		handleHighscoreCommand();
 		System.exit(0);
-	}
-
-	private void handleHighscoreCommand()
-	{
-		System.out.print(Helper.getScoreBoard().print());
 	}
 
 	/**
@@ -1222,8 +1317,8 @@ public class HeroesGui
 	private boolean handleMoveCommand(String[] userInput)
 	{
 		int newX, newY;
-		newX = Helper.tryParseInt(userInput[0]);
-		newY = Helper.tryParseInt(userInput[1]);
+		newX = Helper.tryParseInt(userInput[0].trim());
+		newY = Helper.tryParseInt(userInput[1].trim());
 
 		if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
 		{
@@ -1241,173 +1336,206 @@ public class HeroesGui
 			return false;
 		}
 	}
-
-	/*
-	private void handleBuildCommand()
+	
+	private void handleBuildCommand(String type)
 	{
 		CreatureFactory factory = null;
-
-		if (response[1].equals("goblin"))
-			factory = new GoblinFactory();
-		else if (response[1].equals("soldier"))
-			factory = new SoldierFactory();
-
-		if (factory != null)
+		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		
+		if(currentCastle != null)
 		{
-			Class<? extends CreatureFactory> factoryClass = factory.getClass();
+			if (type.equals("goblin"))
+				factory = new GoblinFactory();
+			else if (type.equals("soldier"))
+				factory = new SoldierFactory();
+	
+			if (factory != null)
+			{
+				Class<? extends CreatureFactory> factoryClass = factory.getClass();
+	
+				if (currentCastle.hasFactory(factoryClass))
+					displayError("There is already a factory of this type in this castle");
+				else if (currentCastle.canBuildFactory(factoryClass))
+					currentCastle.addFactory(currentCastle.buildFactory(factoryClass));
+			} else
+				displayError("Unknown creature type!");
+		}
+	}
 
-			if (theCastle.hasFactory(factoryClass))
-				System.out.println("There is already a factory of this type in this castle");
-			else if (theCastle.canBuildFactory(factoryClass))
-				theCastle.addFactory(theCastle.buildFactory(factoryClass));
+	private void handleSplitCommand(String type)
+	{
+		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		String message;
+		String response = null;
+		int numberOfUnits = 0;
+		
+		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+		if (hero == null)
+		{
+			displayError("Sorry, but you don't have a hero.");
+			return;
+		}
+
+		message = "Enter desired number of units to split to the caste: ";
+
+		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+		if (numberInput.open() == Window.OK)
+		{
+			response = numberInput.getValue();
+		}
+		else
+		{
+			numberInput.close();
+			return;
+		}
+
+		if (response != null)
+			numberOfUnits = Helper.tryParseInt(response);
+		if (numberOfUnits < 1)
+		{
+			displayError("Illegal input.");
+			return;
+		}
+
+		Creature creature = null;
+		if (type.equals("goblin"))
+		{
+			creature = new Goblin(numberOfUnits);
+		} else if (type.equals("soldier"))
+		{
+			creature = new Soldier(numberOfUnits);
 		} else
-			System.out.println("Unknown creature type!");
-
-	}
-
-	private void handleSplitCommand(Castle theCastle, String[] response)
-	{
-		if (response.length == 3)
 		{
-			Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
-			if (hero == null)
-			{
-				System.out.println("Sorry, but you don't have a hero.");
-				return;
-			}
-
-			if ((hero.getXPos() != theCastle.getXPos()) || (hero.getYPos() != theCastle.getYPos()))
-			{
-				System.out.println("You must be in the castle in order to split units !");
-				return;
-			}
-
-			int numberOfUnits = Helper.tryParseInt(response[2]);
-			if (numberOfUnits < 1)
-			{
-				System.out.println("Illegal input.");
-				return;
-			}
-
-			Creature creature = null;
-			if (response[1].equals("goblin"))
-			{
-				creature = new Goblin(numberOfUnits);
-			} else if (response[1].equals("soldier"))
-			{
-				creature = new Soldier(numberOfUnits);
-			} else
-			{
-				System.out.println("Unknown creature type!");
-				return;
-			}
-
-			if (!theCastle.canAddToArmy(creature.getClass()))
-			{
-				System.out.println("Army in " + theCastle.printLocation() + " is full.");
-				return;
-			} else if (!hero.removeFromArmy(creature))
-			{
-				System.out.println("You dont have enough units to split");
-				return;
-			} else
-			{
-				theCastle.addToArmy(creature);
-				return;
-			}
+			displayError("Unknown creature type!");
+			return;
 		}
-		System.out.println("Illegal move !");
-	}
 
-	private void handleJoinCommand(Castle theCastle, String[] response)
-	{
-		if (response.length == 3)
+		if (!currentCastle.canAddToArmy(creature.getClass()))
 		{
-			Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
-			if (hero == null)
-			{
-				System.out.println("Sorry, but you don't have a hero.");
-				return;
-			}
-
-			if ((hero.getXPos() != theCastle.getXPos()) || (hero.getYPos() != theCastle.getYPos()))
-			{
-				System.out.println("You must be in the castle in order to join units !");
-				return;
-			}
-
-			int numberOfUnits = Helper.tryParseInt(response[2]);
-			if (numberOfUnits < 1)
-			{
-				System.out.println("Illegal input.");
-				return;
-			}
-
-			Creature creature = null;
-			if (response[1].equals("goblin"))
-			{
-				creature = new Goblin(numberOfUnits);
-			} else if (response[1].equals("soldier"))
-			{
-				creature = new Soldier(numberOfUnits);
-			} else
-			{
-				System.out.println("Unknown creature type!");
-				return;
-			}
-
-			if (!hero.canAddToArmy(creature.getClass()))
-			{
-				System.out.println("Army of " + hero.toString() + " is full.");
-				return;
-			} else if (!theCastle.canRemoveFromArmy(creature))
-			{
-				System.out.println("You dont have enough units to join.");
-				return;
-			} else
-			{
-				theCastle.removeFromArmy(creature);
-				hero.addToArmy(creature);
-				return;
-			}
+			displayError("Army in " + currentCastle.printLocation() + " is full.");
+			return;
+		} else if (!hero.removeFromArmy(creature))
+		{
+			displayError("You dont have enough units to split");
+			return;
+		} else
+		{
+			currentCastle.addToArmy(creature);
+			return;
 		}
-		System.out.println("Illegal move !");
 	}
 
-	private static void handleMakeCommand(Castle theCastle, String[] response)
+	private void handleJoinCommand(String type)
 	{
-		if (response.length > 1)
-		{
-			Class<? extends Creature> creatureClass = null;
+		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		String message;
+		String response = null;
+		int numberOfUnits = 0;
 
-			if (response[1].equals("goblin"))
+		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+		if (hero == null)
+		{
+			displayError("Sorry, but you don't have a hero.");
+			return;
+		}
+
+		message = "Enter desired number of units to join from the caste: ";
+
+		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+		if (numberInput.open() == Window.OK)
+		{
+			response = numberInput.getValue();
+		} else
+		{
+			numberInput.close();
+			return;
+		}
+
+		if (response != null)
+			numberOfUnits = Helper.tryParseInt(response);
+		if (numberOfUnits < 1)
+		{
+			displayError("Illegal input.");
+			return;
+		}
+
+		Creature creature = null;
+		if (type.equals("goblin"))
+		{
+			creature = new Goblin(numberOfUnits);
+		} else if (type.equals("soldier"))
+		{
+			creature = new Soldier(numberOfUnits);
+		} else
+		{
+			displayError("Unknown creature type!");
+			return;
+		}
+
+		if (!hero.canAddToArmy(creature.getClass()))
+		{
+			displayError("Army of " + hero.toString() + " is full.");
+			return;
+		} else if (!currentCastle.canRemoveFromArmy(creature))
+		{
+			displayError("You dont have enough units to join.");
+			return;
+		} else
+		{
+			currentCastle.removeFromArmy(creature);
+			hero.addToArmy(creature);
+			return;
+		}
+	}
+
+	private void handleMakeCommand(String type)
+	{
+		Class<? extends Creature> creatureClass = null;
+		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		String message;
+		String response = null;
+		int numberOfUnits = 0;
+
+		if (currentCastle != null)
+		{
+			if (type.equals("goblin"))
 				creatureClass = Goblin.class;
-			else if (response[1].equals("soldier"))
+			else if (type.equals("soldier"))
 				creatureClass = Soldier.class;
 
 			if (creatureClass != null)
 			{
-				int maxUnits = theCastle.getAvailableUnits(creatureClass);
+				int maxUnits = currentCastle.getAvailableUnits(creatureClass);
 
 				if (maxUnits > 0)
 				{
-					String[] numOfUnitsResponse = MainModule.getCommandAndParameters("Enter desired number of units (1-" + maxUnits + "): ");
+					message = "Enter desired number of units (1-" + maxUnits + "): ";
 
-					if (numOfUnitsResponse.length > 0)
+					InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+					if (numberInput.open() == Window.OK)
 					{
-						int numberOfUnits = Integer.parseInt(numOfUnitsResponse[0]);
-						if (numberOfUnits > 0 && numberOfUnits <= maxUnits)
-						{
-							theCastle.makeUnits(creatureClass, numberOfUnits);
-						} else
-							System.out.println("Number of units is our of range.");
+						response = numberInput.getValue();
+					}
+					else
+					{
+						numberInput.close();
+						return;
+					}
+
+
+					if (response != null)
+						numberOfUnits = Helper.tryParseInt(response);
+
+					if (numberOfUnits > 0 && numberOfUnits <= maxUnits)
+					{
+						currentCastle.makeUnits(creatureClass, numberOfUnits);
 					} else
-						System.out.println("Bad input.");
+						displayError("Number of units is our of range.");
+
 				} else
-					System.out.println("Sorry, but you can't build units.");
+					displayError("Sorry, but you can't build units.");
 			} else
-				System.out.println("Unknown creature type.");
+				displayError("Unknown creature type.");
 		}
 	}
-	*/
 }
