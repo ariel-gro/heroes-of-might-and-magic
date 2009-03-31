@@ -389,9 +389,11 @@ public class HeroesGui
 		int xPos = p.getHero().getXPos();
 		int yPos = p.getHero().getYPos();
 		createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
+		createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
+		createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
 		createLabel(statusComposite, "");
 
-		createLabel(statusComposite, "MINE  LIST");		
+		createLabel(statusComposite, "MINE  LIST  :");		
 		Table minesTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
 		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
@@ -409,9 +411,8 @@ public class HeroesGui
 		ti.setText(new String[] {"Gold", goldNum.toString()});
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] {"Stone", stoneNum.toString()});
-		createLabel(statusComposite, "");
 	
-		createLabel(statusComposite, "TREASURY LIST");	
+		createLabel(statusComposite, "TREASURY LIST  :");	
 		Table treasursTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn treasursCol1 = new TableColumn(treasursTable, SWT.CENTER);
 		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
@@ -428,48 +429,34 @@ public class HeroesGui
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] {"Gold", goldAmount.toString()});
 		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] {"Stone", stoneAmount.toString()});
-		createLabel(statusComposite, "");		
-		
-		createLabel(statusComposite, "DEFENCE SKILL  :  " + p.getHero().getDefenseSkill());
-		createLabel(statusComposite, "");
-		createLabel(statusComposite, "ATTACK SKILL  :  " + p.getHero().getAttackSkill());
-		createLabel(statusComposite, "");
+		ti.setText(new String[] {"Stone", stoneAmount.toString()});		
 
-		createLabel(statusComposite, "ARMY");
-		Table table3 = new Table (statusComposite, SWT.BORDER);
-		table3.setLinesVisible (true);
-		table3.setHeaderVisible (true);
-		GridData data3 = new GridData(SWT.LEFT, SWT.UP, true, true);
-		data3.heightHint = 60;
-		table3.setLayoutData(data3);
-		String[] titles3 = {"Creature", "Units"};
-		for (int i=0 ; i<titles3.length ; ++i) 
-		{
-			TableColumn column3 = new TableColumn (table3, SWT.NONE);
-			column3.setText (titles3[i]);
-		}	
+		createLabel(statusComposite, "ARMY  :");
+		Table armyTable = new Table(statusComposite, SWT.BORDER);
+		TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
+		TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
+		armyCol1.setText("Slot");
+		armyCol2.setText("Units");
+		armyCol1.setWidth(50);
+		armyCol2.setWidth(128);
+		armyTable.setHeaderVisible(true); 
 		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-		for (Integer j = 1; j < 6; ++j)
+		for (Integer j=1 ; j<6 ; ++j)
 		{
-			TableItem item3 = new TableItem (table3, SWT.NONE);
-			item3.setText (0, j.toString());
-			item3.setText (1, woodAmount.toString());
+			ti = new TableItem(armyTable, SWT.NONE);
+			ti.setText (0, j.toString());
 			if (creaturesArray[j-1] != null)
 			{
-				item3.setText (1, creaturesArray[j-1].toString());
+				ti.setText (1, creaturesArray[j-1].toString());
 			}
 			else
 			{
-				item3.setText (1, "none");
+				ti.setText (1, "none");
 			}
 		}
-		for (int i=0; i<titles3.length; i++) 
-		{
-			table3.getColumn (i).pack ();
-		}
+		createLabel(statusComposite, "");
 		
-		createLabel(statusComposite, "CASTLES");
+		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
 		for (int i = 0; i < numOfCastles; ++i)
 		{
