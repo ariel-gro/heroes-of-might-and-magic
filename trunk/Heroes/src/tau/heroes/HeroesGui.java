@@ -385,32 +385,56 @@ public class HeroesGui
 			TableItem item1 = new TableItem (table, SWT.NONE);
 			item1.setText (0, "Wood");
 			item1.setText (1, woodNum.toString());
-			TableItem item2 = new TableItem (table, SWT.NONE);
-			item2.setText (0, "Gold");
-			item2.setText (1, goldNum.toString());
-			TableItem item3 = new TableItem (table, SWT.NONE);
-			item3.setText (0, "Stone");
-			item3.setText (1, stoneNum.toString());
+			item1 = new TableItem (table, SWT.NONE);
+			item1.setText (0, "Gold");
+			item1.setText (1, goldNum.toString());
+			item1 = new TableItem (table, SWT.NONE);
+			item1.setText (0, "Stone");
+			item1.setText (1, stoneNum.toString());
 			
-		for (int i=0; i<titles.length; i++) {
+		for (int i=0; i<titles.length; i++) 
+		{
 			table.getColumn (i).pack ();
 		}	
 	
+
+		
+			
+		
+		createLabel(statusComposite, "TREASURY LIST");	
+		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		table2.setLinesVisible (true);
+		table2.setHeaderVisible (true);
+		GridData data2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data2.heightHint = 200;
+		table2.setLayoutData(data2);
+		String[] titles2 = {" Resource ", " Amount "};
+		for (int i=0; i<titles2.length; i++) 
+		{
+			TableColumn column2 = new TableColumn (table2, SWT.NONE);
+			column2.setText (titles2[i]);
+		}	
+
+		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
+		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
+		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
+		TableItem item2 = new TableItem (table, SWT.NONE);
+		item2.setText (0, "Wood");
+		item2.setText (1, woodAmount.toString());
+		item2 = new TableItem (table2, SWT.NONE);
+		item2.setText (0, "Gold");
+		item2.setText (1, goldAmount.toString());
+		item2 = new TableItem (table2, SWT.NONE);
+		item2.setText (0, "Stone");
+		item2.setText (1, stoneAmount.toString());
+			
+		for (int i=0; i<titles.length; i++) 
+		{
+			table2.getColumn (i).pack ();
+		}
+		createLabel(statusComposite, "");
 		
 		
-		createLabel(statusComposite, "");
-
-		createLabel(statusComposite, "TREASURY LIST");
-		createLabel(statusComposite, "Resource      Amount");
-		createLabel(statusComposite, "--------      ------");
-		int woodAmount = p.getCurrentTreasuryAmount("wood");
-		int goldAmount = p.getCurrentTreasuryAmount("gold");
-		int stoneAmount = p.getCurrentTreasuryAmount("stone");
-		createLabel(statusComposite, "Wood            " + woodAmount);
-		createLabel(statusComposite, "Gold            " + goldAmount);
-		createLabel(statusComposite, "Stone           " + stoneAmount);
-		createLabel(statusComposite, "");
-
 		createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill());
 		createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill());
 		createLabel(statusComposite, "");
