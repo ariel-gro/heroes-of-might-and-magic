@@ -366,33 +366,33 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "MINE  LIST");		
-		Table table = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
-		table.setLinesVisible (true);
-		table.setHeaderVisible (true);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.heightHint = 200;
-		table.setLayoutData(data);
-		String[] titles = {" Mine ", " Quantity "};
-		for (int i=0; i<titles.length; i++) 
+		Table table1 = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		table1.setLinesVisible (true);
+		table1.setHeaderVisible (true);
+		GridData data1 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data1.heightHint = 200;
+		table1.setLayoutData(data1);
+		String[] titles1 = {" Mine ", " Quantity "};
+		for (int i=0 ; i<titles1.length ; ++i) 
 		{
-			TableColumn column = new TableColumn (table, SWT.NONE);
-			column.setText (titles [i]);
+			TableColumn column1 = new TableColumn (table1, SWT.NONE);
+			column1.setText (titles1[i]);
 		}	
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
 		Integer stoneNum = p.getMineQuantity("stone");
-		TableItem item1 = new TableItem (table, SWT.NONE);
+		TableItem item1 = new TableItem (table1, SWT.NONE);
 		item1.setText (0, "Wood");
 		item1.setText (1, woodNum.toString());
-		item1 = new TableItem (table, SWT.NONE);
+		item1 = new TableItem (table1, SWT.NONE);
 		item1.setText (0, "Gold");
 		item1.setText (1, goldNum.toString());
-		item1 = new TableItem (table, SWT.NONE);
+		item1 = new TableItem (table1, SWT.NONE);
 		item1.setText (0, "Stone");
 		item1.setText (1, stoneNum.toString());
-		for (int i=0; i<titles.length; i++) 
+		for (int i=0; i<titles1.length; i++) 
 		{
-			table.getColumn (i).pack ();
+			table1.getColumn (i).pack ();
 		}	
 	
 		createLabel(statusComposite, "TREASURY LIST");	
@@ -403,7 +403,7 @@ public class HeroesGui
 		data2.heightHint = 200;
 		table2.setLayoutData(data2);
 		String[] titles2 = {" Resource ", " Amount "};
-		for (int i=0; i<titles2.length; i++) 
+		for (int i=0 ; i<titles2.length ; ++i) 
 		{
 			TableColumn column2 = new TableColumn (table2, SWT.NONE);
 			column2.setText (titles2[i]);
@@ -411,7 +411,7 @@ public class HeroesGui
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
 		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
-		TableItem item2 = new TableItem (table, SWT.NONE);
+		TableItem item2 = new TableItem (table2, SWT.NONE);
 		item2.setText (0, "Wood");
 		item2.setText (1, woodAmount.toString());
 		item2 = new TableItem (table2, SWT.NONE);
@@ -420,7 +420,7 @@ public class HeroesGui
 		item2 = new TableItem (table2, SWT.NONE);
 		item2.setText (0, "Stone");
 		item2.setText (1, stoneAmount.toString());
-		for (int i=0; i<titles.length; i++) 
+		for (int i=0; i<titles2.length; i++) 
 		{
 			table2.getColumn (i).pack ();
 		}
