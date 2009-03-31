@@ -366,11 +366,11 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "MINE  LIST");		
-		Table table1 = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		Table table1 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
 		table1.setLinesVisible (true);
 		table1.setHeaderVisible (true);
 		GridData data1 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data1.heightHint = 200;
+		data1.heightHint = 50;
 		table1.setLayoutData(data1);
 		String[] titles1 = {" Mine ", " Quantity "};
 		for (int i=0 ; i<titles1.length ; ++i) 
@@ -396,11 +396,11 @@ public class HeroesGui
 		}	
 	
 		createLabel(statusComposite, "TREASURY LIST");	
-		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
 		table2.setLinesVisible (true);
 		table2.setHeaderVisible (true);
 		GridData data2 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data2.heightHint = 200;
+		data2.heightHint = 50;
 		table2.setLayoutData(data2);
 		String[] titles2 = {" Resource ", " Amount "};
 		for (int i=0 ; i<titles2.length ; ++i) 
@@ -426,12 +426,13 @@ public class HeroesGui
 		}
 		createLabel(statusComposite, "");
 		
-		createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill());
-		createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill());
+		createLabel(statusComposite, "DEFENCE SKILL  :  " + p.getHero().getDefenseSkill());
+		createLabel(statusComposite, "");
+		createLabel(statusComposite, "ATTACK SKILL  :  " + p.getHero().getAttackSkill());
 		createLabel(statusComposite, "");
 
-		createLabel(statusComposite, "Army");
-		createLabel(statusComposite, "----");
+		createLabel(statusComposite, "ARMY");
+		createLabel(statusComposite, "-----");
 		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
 		for (int j = 0; j < 5; ++j)
 		{
