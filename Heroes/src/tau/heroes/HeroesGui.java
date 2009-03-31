@@ -322,6 +322,7 @@ public class HeroesGui
 		}
 	}
 
+	
 	private Label createLabel(Composite composite, String text)
 	{
 		Label tempLabel = new Label(composite, SWT.NONE);
@@ -330,6 +331,7 @@ public class HeroesGui
 		return tempLabel;
 	}
 
+	
 	private void createStatusWindow()
 	{
 		statusComposite = new Composite(sash, SWT.BORDER);
@@ -432,13 +434,13 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "ARMY");
-		Table table3 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
+		Table table3 = new Table (statusComposite, SWT.BORDER);
 		table3.setLinesVisible (true);
 		table3.setHeaderVisible (true);
 		GridData data3 = new GridData(SWT.LEFT, SWT.UP, true, true);
-		data3.heightHint = 50;
+		data3.heightHint = 60;
 		table3.setLayoutData(data3);
-		String[] titles3 = {"  Creature number  ", "  Units  "};
+		String[] titles3 = {"Creature", "Units"};
 		for (int i=0 ; i<titles3.length ; ++i) 
 		{
 			TableColumn column3 = new TableColumn (table3, SWT.NONE);
@@ -498,6 +500,7 @@ public class HeroesGui
 			{
 				createLabel(statusComposite, "Castle's Army : none");
 			}
+			createLabel(statusComposite, "");
 		}
 
 		statusComposite.layout(true, true);
