@@ -371,6 +371,7 @@ public class HeroesGui
 	private void updateStatusWindow()
 	{
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		TableItem ti;
 
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
@@ -391,65 +392,44 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "MINE  LIST");		
-		Table table1 = new Table (statusComposite, SWT.BORDER | SWT.FILL_WINDING);
-		table1.setLinesVisible (true);
-		table1.setHeaderVisible (true);
-		GridData data1 = new GridData(SWT.LEFT, SWT.UP, false, false);
-		data1.heightHint = 50;
-		table1.setLayoutData(data1);
-		String[] titles1 = {" Mine ", " Quantity "};
-		for (int i=0 ; i<titles1.length ; ++i) 
-		{
-			TableColumn column1 = new TableColumn (table1, SWT.NONE);
-			column1.setText (titles1[i]);
-		}	
+		Table minesTable = new Table(statusComposite, SWT.BORDER);
+		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
+		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
+		minesCol1.setText("Mine");
+		minesCol2.setText("Quantity");
+		minesCol1.setWidth(89);
+		minesCol2.setWidth(89);
+		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
-		Integer stoneNum = p.getMineQuantity("stone");
-		TableItem item1 = new TableItem (table1, SWT.NONE);
-		item1.setText (0, "Wood");
-		item1.setText (1, woodNum.toString());
-		item1 = new TableItem (table1, SWT.NONE);
-		item1.setText (0, "Gold");
-		item1.setText (1, goldNum.toString());
-		item1 = new TableItem (table1, SWT.NONE);
-		item1.setText (0, "Stone");
-		item1.setText (1, stoneNum.toString());
-		for (int i=0; i<titles1.length; i++) 
-		{
-			table1.getColumn (i).pack ();
-		}	
-	
+		Integer stoneNum = p.getMineQuantity("stone"); 
+		ti = new TableItem(minesTable, SWT.NONE);
+		ti.setText(new String[] {"Wood", woodNum.toString()});
+		ti = new TableItem(minesTable, SWT.NONE);
+		ti.setText(new String[] {"Gold", goldNum.toString()});
+		ti = new TableItem(minesTable, SWT.NONE);
+		ti.setText(new String[] {"Stone", stoneNum.toString()});
 		createLabel(statusComposite, "");
+	
 		createLabel(statusComposite, "TREASURY LIST");	
-		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
-		table2.setLinesVisible (true);
-		table2.setHeaderVisible (true);
-		GridData data2 = new GridData(SWT.LEFT, SWT.UP, true, true);
-		data2.heightHint = 50;
-		table2.setLayoutData(data2);
-		String[] titles2 = {" Resource ", " Amount "};
-		for (int i=0 ; i<titles2.length ; ++i) 
-		{
-			TableColumn column2 = new TableColumn (table2, SWT.NONE);
-			column2.setText (titles2[i]);
-		}	
+		Table treasursTable = new Table(statusComposite, SWT.BORDER);
+		TableColumn treasursCol1 = new TableColumn(treasursTable, SWT.CENTER);
+		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
+		treasursCol1.setText("Resource");
+		treasursCol2.setText("Amount");
+		treasursCol1.setWidth(89);
+		treasursCol2.setWidth(89);
+		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
-		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
-		TableItem item2 = new TableItem (table2, SWT.NONE);
-		item2.setText (0, "Wood");
-		item2.setText (1, woodAmount.toString());
-		item2 = new TableItem (table2, SWT.NONE);
-		item2.setText (0, "Gold");
-		item2.setText (1, goldAmount.toString());
-		item2 = new TableItem (table2, SWT.NONE);
-		item2.setText (0, "Stone");
-		item2.setText (1, stoneAmount.toString());
-		for (int i=0; i<titles2.length; i++) 
-		{
-			table2.getColumn (i).pack ();
-		}
+		Integer stoneAmount = p.getCurrentTreasuryAmount("stone"); 
+		ti = new TableItem(treasursTable, SWT.NONE);
+		ti.setText(new String[] {"Wood", woodAmount.toString()});
+		ti = new TableItem(treasursTable, SWT.NONE);
+		ti.setText(new String[] {"Gold", goldAmount.toString()});
+		ti = new TableItem(treasursTable, SWT.NONE);
+		ti.setText(new String[] {"Stone", stoneAmount.toString()});
+		createLabel(statusComposite, "");		
 		
 		createLabel(statusComposite, "DEFENCE SKILL  :  " + p.getHero().getDefenseSkill());
 		createLabel(statusComposite, "");
@@ -526,7 +506,7 @@ public class HeroesGui
 			}
 			createLabel(statusComposite, "");
 		}
-
+		
 		statusComposite.layout(true, true);
 	}
 
