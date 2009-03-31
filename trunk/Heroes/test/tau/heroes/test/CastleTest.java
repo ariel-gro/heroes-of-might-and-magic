@@ -305,19 +305,35 @@ public class CastleTest extends TestCase {
 		assertEquals(10, castle1.getAvailableUnits(Soldier.class));
 		assertEquals(5, castle1.getAvailableUnits(Goblin.class));
 		
+		int gold = player1.getCurrentTreasuryAmount("gold");
+		
 		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
 		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
 		for (int i = 0; i < 6; i++)
 		{
 			player1.endTurn();
 		}
+		gold += 6*Constants.GOLD_PER_CASTLE;
 		assertEquals("Saturday", castle1.getFactory(gFactoryClass).getDay());
 		assertEquals("Saturday", castle1.getFactory(sFactoryClass).getDay());
+		
+		
 		player1.endTurn();
+		gold += Constants.GOLD_PER_CASTLE;
 		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
 		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
+		assertEquals(gold, player1.getCurrentTreasuryAmount("gold"));
 		
 		assertEquals(10, castle1.getFactory(gFactoryClass).getUnitsAvailableToBuild());
 		assertEquals(20, castle1.getFactory(sFactoryClass).getUnitsAvailableToBuild());
+		
+		assertEquals(0, player2.getCurrentTreasuryAmount("gold"));
+		assertEquals(1, player2.getCastles().size());
+		player2.endTurn();
+		assertEquals(Constants.GOLD_PER_CASTLE, player2.getCurrentTreasuryAmount("gold"));
+		player2.removeCastle(castle2);
+		assertEquals(0, player2.getCastles().size());
+		player2.endTurn();
+		assertEquals(Constants.GOLD_PER_CASTLE, player2.getCurrentTreasuryAmount("gold"));
 	}
 }
