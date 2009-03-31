@@ -188,7 +188,10 @@ public class Player implements Serializable
 		getHero();
 		
 		for (int i = 0; i < this.castles.size(); i++)
+		{
 			this.castles.get(i).endDay();
+			this.incrementTreasury("gold", Constants.GOLD_PER_CASTLE);
+		}
 
 		System.out.println("Player "+this.playerName+" ended his turn\n");
 	}
