@@ -489,6 +489,7 @@ public class HeroesGui
 			table3.getColumn (i).pack ();
 		}
 		
+		createLabel(statusComposite, "CASTLES");
 		int numOfCastles = p.getCastles().size();
 		for (int i = 0; i < numOfCastles; ++i)
 		{
