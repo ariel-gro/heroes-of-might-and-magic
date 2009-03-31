@@ -369,7 +369,7 @@ public class HeroesGui
 		Table table1 = new Table (statusComposite, SWT.BORDER | SWT.FILL_WINDING);
 		table1.setLinesVisible (true);
 		table1.setHeaderVisible (true);
-		GridData data1 = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		GridData data1 = new GridData(SWT.LEFT, SWT.UP, false, false);
 		data1.heightHint = 50;
 		table1.setLayoutData(data1);
 		String[] titles1 = {" Mine ", " Quantity "};
@@ -395,11 +395,12 @@ public class HeroesGui
 			table1.getColumn (i).pack ();
 		}	
 	
+		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST");	
 		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
 		table2.setLinesVisible (true);
 		table2.setHeaderVisible (true);
-		GridData data2 = new GridData(SWT.LEFT, SWT.CENTER, true, true);
+		GridData data2 = new GridData(SWT.LEFT, SWT.UP, true, true);
 		data2.heightHint = 50;
 		table2.setLayoutData(data2);
 		String[] titles2 = {" Resource ", " Amount "};
@@ -424,7 +425,6 @@ public class HeroesGui
 		{
 			table2.getColumn (i).pack ();
 		}
-		createLabel(statusComposite, "");
 		
 		createLabel(statusComposite, "DEFENCE SKILL  :  " + p.getHero().getDefenseSkill());
 		createLabel(statusComposite, "");
@@ -432,20 +432,38 @@ public class HeroesGui
 		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "ARMY");
-		createLabel(statusComposite, "-----");
-		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-		for (int j = 0; j < 5; ++j)
+		Table table3 = new Table (statusComposite, SWT.MULTI | SWT.BORDER);
+		table3.setLinesVisible (true);
+		table3.setHeaderVisible (true);
+		GridData data3 = new GridData(SWT.LEFT, SWT.UP, true, true);
+		data3.heightHint = 50;
+		table3.setLayoutData(data3);
+		String[] titles3 = {"  Creature number  ", "  Units  "};
+		for (int i=0 ; i<titles3.length ; ++i) 
 		{
-
-			if (creaturesArray[j] != null)
+			TableColumn column3 = new TableColumn (table3, SWT.NONE);
+			column3.setText (titles3[i]);
+		}	
+		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
+		for (Integer j = 1; j < 6; ++j)
+		{
+			TableItem item3 = new TableItem (table3, SWT.NONE);
+			item3.setText (0, j.toString());
+			item3.setText (1, woodAmount.toString());
+			if (creaturesArray[j-1] != null)
 			{
-				createLabel(statusComposite, "Creature number " + (j + 1) + " : " + creaturesArray[j].toString());
-			} else
+				item3.setText (1, creaturesArray[j-1].toString());
+			}
+			else
 			{
-				createLabel(statusComposite, "Creature number " + (j + 1) + " : none");
+				item3.setText (1, "none");
 			}
 		}
-
+		for (int i=0; i<titles3.length; i++) 
+		{
+			table3.getColumn (i).pack ();
+		}
+		
 		int numOfCastles = p.getCastles().size();
 		for (int i = 0; i < numOfCastles; ++i)
 		{
