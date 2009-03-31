@@ -378,29 +378,23 @@ public class HeroesGui
 			TableColumn column = new TableColumn (table, SWT.NONE);
 			column.setText (titles [i]);
 		}	
-
-			Integer woodNum = p.getMineQuantity("wood");
-			Integer goldNum = p.getMineQuantity("gold");
-			Integer stoneNum = p.getMineQuantity("stone");
-			TableItem item1 = new TableItem (table, SWT.NONE);
-			item1.setText (0, "Wood");
-			item1.setText (1, woodNum.toString());
-			item1 = new TableItem (table, SWT.NONE);
-			item1.setText (0, "Gold");
-			item1.setText (1, goldNum.toString());
-			item1 = new TableItem (table, SWT.NONE);
-			item1.setText (0, "Stone");
-			item1.setText (1, stoneNum.toString());
-			
+		Integer woodNum = p.getMineQuantity("wood");
+		Integer goldNum = p.getMineQuantity("gold");
+		Integer stoneNum = p.getMineQuantity("stone");
+		TableItem item1 = new TableItem (table, SWT.NONE);
+		item1.setText (0, "Wood");
+		item1.setText (1, woodNum.toString());
+		item1 = new TableItem (table, SWT.NONE);
+		item1.setText (0, "Gold");
+		item1.setText (1, goldNum.toString());
+		item1 = new TableItem (table, SWT.NONE);
+		item1.setText (0, "Stone");
+		item1.setText (1, stoneNum.toString());
 		for (int i=0; i<titles.length; i++) 
 		{
 			table.getColumn (i).pack ();
 		}	
 	
-
-		
-			
-		
 		createLabel(statusComposite, "TREASURY LIST");	
 		Table table2 = new Table (statusComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		table2.setLinesVisible (true);
@@ -414,7 +408,6 @@ public class HeroesGui
 			TableColumn column2 = new TableColumn (table2, SWT.NONE);
 			column2.setText (titles2[i]);
 		}	
-
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
 		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
@@ -427,13 +420,11 @@ public class HeroesGui
 		item2 = new TableItem (table2, SWT.NONE);
 		item2.setText (0, "Stone");
 		item2.setText (1, stoneAmount.toString());
-			
 		for (int i=0; i<titles.length; i++) 
 		{
 			table2.getColumn (i).pack ();
 		}
 		createLabel(statusComposite, "");
-		
 		
 		createLabel(statusComposite, "Defence Skill : " + p.getHero().getDefenseSkill());
 		createLabel(statusComposite, "Attack Skill : " + p.getHero().getAttackSkill());
