@@ -204,7 +204,7 @@ public class Castle implements Serializable
 			return 0;
 		}
 
-		int unitsLeft = factory.getUnitsLeftToday();
+		int unitsLeft = factory.getUnitsAvailableToBuild();
 		int unitsCanBuy = player.getMaxUnits(factory.getPricesPerUnit());
 
 		if (this.army != null)
@@ -280,5 +280,11 @@ public class Castle implements Serializable
 			s += "No army.";
 		
 		return s;
+	}
+
+	protected void endDay()
+	{
+		for (int i = 0; i < this.factories.size(); i++)
+			this.factories.get(i).endDay();
 	}	
 }

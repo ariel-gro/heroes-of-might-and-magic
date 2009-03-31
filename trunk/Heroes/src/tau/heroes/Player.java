@@ -186,6 +186,9 @@ public class Player implements Serializable
 			hero = null;
 		//will make sure that the hero is alive, if not then null the hero.
 		getHero();
+		
+		for (int i = 0; i < this.castles.size(); i++)
+			this.castles.get(i).endDay();
 
 		System.out.println("Player "+this.playerName+" ended his turn\n");
 	}

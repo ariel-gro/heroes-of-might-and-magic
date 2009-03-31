@@ -11,10 +11,10 @@ public class GoblinFactory extends CreatureFactory
 {
 	private static final long serialVersionUID = 1L;
 	private final static String name = "Goblin Factory";
-	public final static int MAX_UNITS_PER_DAY = 5;
+	public final static int UNITS_PER_WEEK = 5;
 	
 	public GoblinFactory() {
-		super(5);
+		super(UNITS_PER_WEEK);
 		this.setPrice(ResourceType.GOLD.getTypeName(), 100);
 		this.setPricePerUnit(ResourceType.GOLD.getTypeName(), 30);
 	}

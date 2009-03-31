@@ -201,8 +201,12 @@ public class CastleTest extends TestCase {
 		assertEquals(8, castle1.getAvailableUnits(Soldier.class));
 		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
 		
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 5; i++)
 			player1.incrementTreasury(sFactory.getPricesPerUnit());
+		
+		// here we see that even though the player has more than enough treasury
+		// he can only purchase the amount of units in:
+		// castle1.getFactory(sFactoryClass).getUnitsLeftToBuild();
 		
 		assertEquals(10, castle1.getAvailableUnits(Soldier.class));
 		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
@@ -285,5 +289,35 @@ public class CastleTest extends TestCase {
 		
 		assertEquals(0, castle1.getAvailableUnits(Soldier.class));
 		assertEquals(0, castle1.getAvailableUnits(Goblin.class));
+	}
+	
+	public void testWeekEndAndDayEnd()
+	{
+		castle1.addFactory(sFactory);
+		castle1.addFactory(gFactory);
+		
+		for (int i = 0; i < 15; i++)
+		{
+			player1.incrementTreasury(sFactory.getPricesPerUnit());
+			player1.incrementTreasury(gFactory.getPricesPerUnit());
+		}
+		
+		assertEquals(10, castle1.getAvailableUnits(Soldier.class));
+		assertEquals(5, castle1.getAvailableUnits(Goblin.class));
+		
+		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
+		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
+		for (int i = 0; i < 6; i++)
+		{
+			player1.endTurn();
+		}
+		assertEquals("Saturday", castle1.getFactory(gFactoryClass).getDay());
+		assertEquals("Saturday", castle1.getFactory(sFactoryClass).getDay());
+		player1.endTurn();
+		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
+		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
+		
+		assertEquals(10, castle1.getFactory(gFactoryClass).getUnitsAvailableToBuild());
+		assertEquals(20, castle1.getFactory(sFactoryClass).getUnitsAvailableToBuild());
 	}
 }
