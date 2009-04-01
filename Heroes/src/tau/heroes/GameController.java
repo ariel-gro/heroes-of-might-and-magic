@@ -37,11 +37,11 @@ public class GameController
 	{
 		Vector<Hero> heroes = new Vector<Hero>();
 
-		for (Player player : players)
+		for (int i = 0; i < players.size(); i++)
 		{
-			int randomX = (int) (Math.random() * (Constants.BOARD_SIZE - 1));
-			int randomY = (int) (Math.random() * (Constants.BOARD_SIZE - 1));
-			Hero hero = new Hero(player, this.gameState.getBoard(), randomX, randomY);
+			Player player = players.elementAt(i);
+			int[] point = randomizeByZone(i);
+			Hero hero = new Hero(player, this.gameState.getBoard(), point[0], point[1]);
 			heroes.add(hero);
 			player.setHero(hero);
 		}
@@ -55,7 +55,7 @@ public class GameController
 
 		for (Player player : players)
 		{
-			Hero hero = player.getHero();
+			Hero hero = player.getHero();			
 			castles.add(new Castle(player, this.gameState.getBoard(), hero.getXPos() + 1, hero
 				.getYPos()));
 		}
@@ -69,13 +69,17 @@ public class GameController
 
 		for (int i = 0; i < numberOfResources; i++)
 		{
-			for (ResourceType rt : ResourceType.values())
+			for (int ind = 0; ind < ResourceType.values().length; )
 			{
-				int randomX = (int) (Math.random() * (Constants.BOARD_SIZE - 1));
-				int randomY = (int) (Math.random() * (Constants.BOARD_SIZE - 1));
-
-				if (this.gameState.getBoard().getBoardState(randomX, randomY).getIsEmpty())
-					resources.add(new Resource(rt, this.gameState.getBoard(), randomX, randomY));
+				ResourceType rt = ResourceType.values()[ind];
+				int [] point = randomizeByZone(i);
+				//make sure board is empty at (randomX, randomY)
+				//and only if empty place mine and increment ind.
+				if (this.gameState.getBoard().getBoardState(point[0], point[1]).getIsEmpty())
+				{
+					resources.add(new Resource(rt, this.gameState.getBoard(), point[0], point[1]));
+					ind++;
+				}
 			}
 		}
 
@@ -195,5 +199,42 @@ public class GameController
 	public void setGameState(GameState gameState)
 	{
 		this.gameState = gameState;
+	}
+	
+	private int[] randomizeByZone(int playerNum)
+	{
+		int[] rt = new int[2];
+		
+		double randomX = Math.random();
+		double randomY = Math.random();
+		
+		switch (playerNum)
+		{
+		case 0:
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			break;
+			
+		case 1:
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			break;
+			
+		case 2:
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			break;
+			
+		case 3:
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			break;
+			
+		default:
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			break;
+		}
+		return rt;
 	}
 }
