@@ -379,7 +379,7 @@ public class HeroesGui
 			children[i].dispose();
 		}
 
-		createLabel(statusComposite, "               PLAYER  STATUS");
+		createLabel(statusComposite, "             PLAYER   STATUS");
 		createLabel(statusComposite, "");
 
 		String str = p.getName();
@@ -454,49 +454,104 @@ public class HeroesGui
 				ti.setText (1, "none");
 			}
 		}
-		createLabel(statusComposite, "");
 		
-		createLabel(statusComposite, "CASTLES  :");
+		createLabel(statusComposite, "CASTLES  :");	
+		Table castlesTable = new Table(statusComposite, SWT.BORDER | SWT.V_SCROLL);
+		TableColumn castlesCol1 = new TableColumn(castlesTable, SWT.CENTER);
+		TableColumn castlesCol2 = new TableColumn(castlesTable, SWT.CENTER);
+		castlesCol1.setText("Subject");
+		castlesCol2.setText("Info");
+		castlesCol1.setWidth(110);
+		castlesCol2.setWidth(68);
+		castlesTable.setHeaderVisible(true);	
 		int numOfCastles = p.getCastles().size();
-		for (int i = 0; i < numOfCastles; ++i)
+		for (int i=0 ; i<numOfCastles ; ++i)
 		{
 			int castleXPos = p.getCastles().get(i).getXPos();
 			int castleYPos = p.getCastles().get(i).getYPos();
-			createLabel(statusComposite, "Castle at : " + castleXPos + " , " + castleYPos);
-
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"Castle location", castleXPos + " , " + castleYPos});
 			Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
+			String str1;
+			ti = new TableItem(castlesTable, SWT.NONE);
 			if (p.getCastles().get(i).hasFactory(soldierFactoryClass))
 			{
-				String str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
-				createLabel(statusComposite, "Castle's Soldier Factories : " + str1);
-			} else
+				str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
+				ti.setText(new String[] {"Soldier Factories", str1});
+			} 
+			else
 			{
-				createLabel(statusComposite, "Castle's Soldier Factories : none");
+				ti.setText(new String[] {"Soldier Factories", "none"});
 			}
-
 			Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
+			ti = new TableItem(castlesTable, SWT.NONE);
 			if (p.getCastles().get(i).hasFactory(goblinFactoryClass))
 			{
-				String str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
-				createLabel(statusComposite, "Castle's Goblin Factories : " + str1);
-			} else
+				str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
+				ti.setText(new String[] {"Goblin Factories", str1});
+			} 
+			else
 			{
-				createLabel(statusComposite, "Castle's Goblin Factories : none");
+				ti.setText(new String[] {"Goblin Factories", "none"});
 			}
-
+			ti = new TableItem(castlesTable, SWT.NONE);
 			if (p.getCastles().get(i).getArmy() != null)
 			{
-				createLabel(statusComposite, "Castle's Army : " + p.getCastles().get(i).getArmy().toString());
-			} else
+				ti.setText(new String[] {"Army", p.getCastles().get(i).getArmy().toString()});
+			} 
+			else
 			{
-				createLabel(statusComposite, "Castle's Army : none");
+				ti.setText(new String[] {"Army", "none"});
 			}
-			createLabel(statusComposite, "");
-		}
-		
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			
+			
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"123", "456"});
+			ti = new TableItem(castlesTable, SWT.NONE);
+			ti.setText(new String[] {"", ""});
+		}	
 		statusComposite.layout(true, true);
 	}
 
+	
 	/**
 	 * Creates the menu at the top of the shell where most of the programs
 	 * functionality is accessed.
