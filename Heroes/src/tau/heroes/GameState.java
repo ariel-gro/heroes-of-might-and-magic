@@ -11,11 +11,11 @@ public class GameState implements Serializable
 	private Vector<Castle> castles;
 	private Vector<Resource> resources;
 	private Board board;
-	private static boolean isGUI;
+	private final boolean isGUI;
 	
-	public GameState(boolean is_GUI)
+	public GameState(boolean isGUI)
 	{
-		isGUI = is_GUI;
+		this.isGUI = isGUI;
 	}
 
 	public Vector<Player> getPlayers() 
@@ -73,8 +73,8 @@ public class GameState implements Serializable
 		return this.players.size();
 	}
 	
-	public static boolean isGUI()
+	public boolean isGUI()
 	{
-		return isGUI;
+		return this.isGUI;
 	}
 }

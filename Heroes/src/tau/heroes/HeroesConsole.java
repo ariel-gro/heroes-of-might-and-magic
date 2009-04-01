@@ -629,4 +629,9 @@ public class HeroesConsole
 		handleHighscoreCommand();
 		System.exit(0);
 	}
+	
+	public static void displayMessage(String message)
+	{
+		System.out.println(message);
+	}
 }

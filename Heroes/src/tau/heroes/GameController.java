@@ -237,4 +237,12 @@ public class GameController
 		}
 		return rt;
 	}
+	
+	public void displayMessage(String message)
+	{
+		if (this.gameState.isGUI())
+			HeroesGui.displayMessage(message);
+		else
+			HeroesConsole.displayMessage(message);
+	}
 }
