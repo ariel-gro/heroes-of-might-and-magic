@@ -455,8 +455,11 @@ public class HeroesGui
 			}
 		}
 		
-		createLabel(statusComposite, "CASTLES  :");	
-		Table castlesTable = new Table(statusComposite, SWT.BORDER | SWT.V_SCROLL);
+		createLabel(statusComposite, "CASTLES  :");
+		Table castlesTable = new Table(statusComposite, SWT.BORDER);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.heightHint = 300;
+		castlesTable.setLayoutData(data);
 		TableColumn castlesCol1 = new TableColumn(castlesTable, SWT.CENTER);
 		TableColumn castlesCol2 = new TableColumn(castlesTable, SWT.CENTER);
 		castlesCol1.setText("Subject");
@@ -503,48 +506,6 @@ public class HeroesGui
 			{
 				ti.setText(new String[] {"Army", "none"});
 			}
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			
-			
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"123", "456"});
 			ti = new TableItem(castlesTable, SWT.NONE);
 			ti.setText(new String[] {"", ""});
 		}	
