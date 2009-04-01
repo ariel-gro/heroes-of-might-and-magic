@@ -1359,6 +1359,7 @@ public class HeroesGui
 			} else
 				displayError("Unknown creature type!");
 		}
+		updateStatusWindow();
 	}
 
 	private void handleSplitCommand(String type)
@@ -1420,6 +1421,7 @@ public class HeroesGui
 		} else
 		{
 			currentCastle.addToArmy(creature);
+			updateStatusWindow();
 			return;
 		}
 	}
@@ -1483,6 +1485,7 @@ public class HeroesGui
 		{
 			currentCastle.removeFromArmy(creature);
 			hero.addToArmy(creature);
+			updateStatusWindow();
 			return;
 		}
 	}
@@ -1521,17 +1524,20 @@ public class HeroesGui
 						return;
 					}
 
-
 					if (response != null)
 						numberOfUnits = Helper.tryParseInt(response);
 
 					if (numberOfUnits > 0 && numberOfUnits <= maxUnits)
 					{
 						currentCastle.makeUnits(creatureClass, numberOfUnits);
-					} else
+						updateStatusWindow();
+					} 
+					else
+					{
 						displayError("Number of units is our of range.");
-
-				} else
+					}
+				} 
+				else
 					displayError("Sorry, but you can't build units.");
 			} else
 				displayError("Unknown creature type.");
