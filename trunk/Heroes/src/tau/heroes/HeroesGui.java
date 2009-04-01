@@ -356,12 +356,12 @@ public class HeroesGui
 	}
 	
 	
-	private void displayCastle(Castle castle)
+	private void displayCastleInfo(Castle castle)
 	{
 		Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setLayout(new GridLayout());
 		shell.setBackground(white);
-		shell.setSize(160, 120);
+		shell.setSize(170, 120);
 		shell.setLocation(1070, 615);
 		shell.setText("Castle info");
 		shell.setImage(iconCache.stockImages[iconCache.castleIcon]);
@@ -497,8 +497,8 @@ public class HeroesGui
 		TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
 		armyCol1.setText("Slot");
 		armyCol2.setText("Units");
-		armyCol1.setWidth(50);
-		armyCol2.setWidth(128);
+		armyCol1.setWidth(40);
+		armyCol2.setWidth(138);
 		armyTable.setHeaderVisible(true); 
 		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
 		for (Integer j=1 ; j<6 ; ++j)
@@ -527,7 +527,7 @@ public class HeroesGui
 			button.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
-					displayCastle(castle);
+					displayCastleInfo(castle);
 				}
 			});
 		}
