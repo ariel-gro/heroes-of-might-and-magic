@@ -92,7 +92,7 @@ public class GameControllerTest extends TestCase
 		int x1 = hero1.getXPos();
 		int y1 = hero1.getYPos();
 		
-		GameController gameController = new GameController();
+		GameController gameController = new GameController(false);
 		gameController.getGameState().setPlayers(players);
 		gameController.getGameState().setHeroes(heroes);
 		gameController.getGameState().setCastles(castles);
