@@ -13,9 +13,9 @@ public class GameController
 {
 	private GameState gameState;
 
-	public GameController()
+	public GameController(boolean isGUI)
 	{
-		this.gameState = new GameState();
+		this.gameState = new GameState(isGUI);
 	}
 
 	public void initNewGame(Vector<Player> players)

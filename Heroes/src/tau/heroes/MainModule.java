@@ -14,9 +14,9 @@ public class MainModule
 {
         public static void main(String[] args)
         {
-                GameController gameController = new GameController();
-
-                if (selectView())
+                boolean isGUI = selectView();
+                GameController gameController = new GameController(isGUI);
+                if (isGUI)
                         runGraphicalView(gameController);
                 else
                         runConsoleView(gameController);

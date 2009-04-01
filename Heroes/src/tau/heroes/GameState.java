@@ -11,10 +11,11 @@ public class GameState implements Serializable
 	private Vector<Castle> castles;
 	private Vector<Resource> resources;
 	private Board board;
+	private final boolean GUI;
 	
-	public GameState()
+	public GameState(boolean isGUI)
 	{
-		
+		this.GUI = isGUI;
 	}
 
 	public Vector<Player> getPlayers() 
