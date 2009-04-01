@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -353,6 +354,56 @@ public class HeroesGui
 		tempLabel.setBackground(white);
 		return tempLabel;
 	}
+	
+	
+	private void displayCastle(Castle castle)
+	{
+		Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setLayout(new GridLayout());
+		shell.setBackground(white);
+		shell.setSize(150, 115);
+		shell.setText("Castle info");
+		shell.setImage(iconCache.stockImages[iconCache.castleIcon]);
+		int xPos = castle.getXPos();
+		int yPos = castle.getYPos();
+		createLabel(shell, "Castle location  :  " + xPos + " , " + yPos);
+		Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
+		String str;
+		if (castle.hasFactory(soldierFactoryClass))
+		{
+			str = castle.getFactory(soldierFactoryClass).toString();
+			createLabel(shell, "Soldier factories  :  " + str);
+		} 
+		else
+		{
+			createLabel(shell, "Soldier factories  :  none");
+		}
+		Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
+		if (castle.hasFactory(goblinFactoryClass))
+		{
+			str = castle.getFactory(goblinFactoryClass).toString();
+			createLabel(shell, "Goblin factories  :  " + str);
+		} 
+		else
+		{
+			createLabel(shell, "Goblin factories  :  none");
+		}
+		if (castle.getArmy() != null)
+		{
+			str = castle.getArmy().toString();
+			createLabel(shell, "Army  :  " + str);
+		} 
+		else
+		{
+			createLabel(shell, "Army  :  none");
+		}
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	}
 
 	
 	private void createStatusWindow()
@@ -367,6 +418,7 @@ public class HeroesGui
 
 		updateStatusWindow();
 	}
+	
 
 	private void updateStatusWindow()
 	{
@@ -456,56 +508,21 @@ public class HeroesGui
 		}
 		
 		createLabel(statusComposite, "CASTLES  :");
-		Table castlesTable = new Table(statusComposite, SWT.BORDER);
-		TableColumn castlesCol1 = new TableColumn(castlesTable, SWT.CENTER);
-		TableColumn castlesCol2 = new TableColumn(castlesTable, SWT.CENTER);
-		castlesCol1.setText("Subject");
-		castlesCol2.setText("Info");
-		castlesCol1.setWidth(110);
-		castlesCol2.setWidth(68);
-		castlesTable.setHeaderVisible(true);	
 		int numOfCastles = p.getCastles().size();
 		for (int i=0 ; i<numOfCastles ; ++i)
 		{
-			int castleXPos = p.getCastles().get(i).getXPos();
-			int castleYPos = p.getCastles().get(i).getYPos();
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"Castle location", castleXPos + " , " + castleYPos});
-			Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
-			String str1;
-			ti = new TableItem(castlesTable, SWT.NONE);
-			if (p.getCastles().get(i).hasFactory(soldierFactoryClass))
-			{
-				str1 = p.getCastles().get(i).getFactory(soldierFactoryClass).toString();
-				ti.setText(new String[] {"Soldier Factories", str1});
-			} 
-			else
-			{
-				ti.setText(new String[] {"Soldier Factories", "none"});
-			}
-			Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
-			ti = new TableItem(castlesTable, SWT.NONE);
-			if (p.getCastles().get(i).hasFactory(goblinFactoryClass))
-			{
-				str1 = p.getCastles().get(i).getFactory(goblinFactoryClass).toString();
-				ti.setText(new String[] {"Goblin Factories", str1});
-			} 
-			else
-			{
-				ti.setText(new String[] {"Goblin Factories", "none"});
-			}
-			ti = new TableItem(castlesTable, SWT.NONE);
-			if (p.getCastles().get(i).getArmy() != null)
-			{
-				ti.setText(new String[] {"Army", p.getCastles().get(i).getArmy().toString()});
-			} 
-			else
-			{
-				ti.setText(new String[] {"Army", "none"});
-			}
-			ti = new TableItem(castlesTable, SWT.NONE);
-			ti.setText(new String[] {"", ""});
-		}	
+			final Castle castle = p.getCastles().get(i);
+			int castleXPos = castle.getXPos();
+			int castleYPos = castle.getYPos();
+			Button button = new Button(statusComposite, SWT.NONE);
+			button.setText("Castle at  " + castleXPos + " , " + castleYPos);
+			button.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					displayCastle(castle);
+				}
+			});
+		}
 		statusComposite.layout(true, true);
 	}
 
