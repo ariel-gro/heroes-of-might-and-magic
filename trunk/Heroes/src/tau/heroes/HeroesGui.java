@@ -457,9 +457,6 @@ public class HeroesGui
 		
 		createLabel(statusComposite, "CASTLES  :");
 		Table castlesTable = new Table(statusComposite, SWT.BORDER);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
-		data.heightHint = 300;
-		castlesTable.setLayoutData(data);
 		TableColumn castlesCol1 = new TableColumn(castlesTable, SWT.CENTER);
 		TableColumn castlesCol2 = new TableColumn(castlesTable, SWT.CENTER);
 		castlesCol1.setText("Subject");
