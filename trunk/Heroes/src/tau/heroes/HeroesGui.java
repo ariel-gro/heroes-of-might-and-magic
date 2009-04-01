@@ -645,9 +645,9 @@ public class HeroesGui
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
 
-		System.out.println("Saving game to: " + file);
 		gameController.saveGame(file);
 		this.gameController.saveGame(file);
+		displayMessage("Game successfully saved to: " + file);
 
 		shell.setCursor(null);
 		waitCursor.dispose();
@@ -1276,7 +1276,7 @@ public class HeroesGui
 	private void removeDeadPlayers()
 	{
 		for (Player player : this.gameController.removeDeadPlayers())
-			System.out.println(player.getName() + " is out of the game .");
+			displayMessage(player.getName() + " is out of the game.");
 	}
 
 	private void endGame(Player winner)

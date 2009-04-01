@@ -216,17 +216,17 @@ public class GameController
 			break;
 			
 		case 1:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + 20;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			break;
 			
 		case 2:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			break;
 			
 		case 3:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + 20;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			break;
 			
