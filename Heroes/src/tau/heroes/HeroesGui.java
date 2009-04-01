@@ -439,13 +439,20 @@ public class HeroesGui
 		createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
 
-		int xPos = p.getHero().getXPos();
-		int yPos = p.getHero().getYPos();
-		createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
-		createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
-		createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
+		if (p.getHero() == null)
+		{
+			createLabel(statusComposite, "You  have  no  hero  !!!");
+		}
+		else
+		{
+			int xPos = p.getHero().getXPos();
+			int yPos = p.getHero().getYPos();
+			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
+			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
+			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
+		}
 		createLabel(statusComposite, "");
-
+		
 		createLabel(statusComposite, "MINE  LIST  :");		
 		Table minesTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
