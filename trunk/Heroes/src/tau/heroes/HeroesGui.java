@@ -17,6 +17,8 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -361,7 +363,7 @@ public class HeroesGui
 		Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setLayout(new GridLayout());
 		shell.setBackground(white);
-		shell.setSize(170, 120);
+		shell.setSize(250, 200);
 		shell.setLocation(1070, 615);
 		shell.setText("Castle info");
 		shell.setImage(iconCache.stockImages[iconCache.castleIcon]);
@@ -372,7 +374,7 @@ public class HeroesGui
 		String str;
 		if (castle.hasFactory(soldierFactoryClass))
 		{
-			str = castle.getFactory(soldierFactoryClass).toString();
+			str = castle.getFactory(soldierFactoryClass).getName();
 			createLabel(shell, "Soldier factories  :  " + str);
 		} 
 		else
@@ -382,7 +384,7 @@ public class HeroesGui
 		Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
 		if (castle.hasFactory(goblinFactoryClass))
 		{
-			str = castle.getFactory(goblinFactoryClass).toString();
+			str = castle.getFactory(goblinFactoryClass).getName();
 			createLabel(shell, "Goblin factories  :  " + str);
 		} 
 		else
@@ -392,7 +394,7 @@ public class HeroesGui
 		if (castle.getArmy() != null)
 		{
 			str = castle.getArmy().toString();
-			createLabel(shell, "Army  :  " + str);
+			createLabel(shell, "Army  :\n" + str);
 		} 
 		else
 		{
@@ -1174,25 +1176,26 @@ public class HeroesGui
 		String name, score;
 		Shell tableShell = new Shell(Display.getCurrent().getActiveShell());
 		tableShell.setLayout(new FillLayout());
-		tableShell.setSize(200, 200);
+		tableShell.setSize(300, 300);
 		tableShell.setText("Highscores - The 10 Best Players");
 		tableShell.setImage(iconCache.stockImages[iconCache.highscoreIcon]);
-		Table scoreTable = new Table(tableShell, SWT.NULL);
+		Table scoreTable = new Table(tableShell, SWT.CENTER);
 		TableColumn col1 = new TableColumn(scoreTable, SWT.CENTER);
 		TableColumn col2 = new TableColumn(scoreTable, SWT.CENTER);
 		col1.setText("Player Name");
 		col2.setText("Player Score");
-		col1.setWidth(96);
-		col2.setWidth(97);
+		col1.setWidth(146);
+		col2.setWidth(147);
 		scoreTable.setHeaderVisible(true);
 
 		TableItem ti;
-
+		Font newFont = scoreTable.getFont(); //just an initialization for the compiler
+		
 		for (int i = 0; i < 10; i++)
 		{
 			tempPlayer = board.getPlayerAt(i);
 			tempScore = board.getScoreAt(i);
-			ti = new TableItem(scoreTable, SWT.NONE);
+			ti = new TableItem(scoreTable, SWT.CENTER);
 
 			if (tempPlayer == null)
 				name = "----";
@@ -1204,6 +1207,15 @@ public class HeroesGui
 				score = tempScore + "";
 
 			ti.setText(new String[] { name, score });
+			Font initialFont = ti.getFont();
+			FontData[] fontData = initialFont.getFontData();
+		    for (int k = 0; k < fontData.length; k++)
+		    {
+		      fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+		      fontData[k].setStyle(SWT.BOLD);
+		    }
+		    newFont = new Font(display, fontData);
+		    ti.setFont(newFont);
 		}
 
 		tableShell.open();
@@ -1212,6 +1224,7 @@ public class HeroesGui
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		newFont.dispose();
 	}
 
 	private void moveHero()
