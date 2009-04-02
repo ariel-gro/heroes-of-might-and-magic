@@ -464,6 +464,31 @@ public class HeroesGui
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
+			createLabel(statusComposite, "");
+
+			createLabel(statusComposite, "ARMY  :");
+			Table armyTable = new Table(statusComposite, SWT.BORDER);
+			TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
+			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
+			armyCol1.setText("Slot");
+			armyCol2.setText("Units");
+			armyCol1.setWidth(40);
+			armyCol2.setWidth(138);
+			armyTable.setHeaderVisible(true);
+			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
+			for (Integer j=1 ; j<6 ; ++j)
+			{
+				ti = new TableItem(armyTable, SWT.NONE);
+				ti.setText (0, j.toString());
+				if (creaturesArray[j-1] != null)
+				{
+					ti.setText (1, creaturesArray[j-1].toString());
+				}
+				else
+				{
+					ti.setText (1, "none");
+				}
+			}
 		}
 		createLabel(statusComposite, "");
 
@@ -504,30 +529,6 @@ public class HeroesGui
 		ti.setText(new String[] {"Gold", goldAmount.toString()});
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] {"Stone", stoneAmount.toString()});
-
-		createLabel(statusComposite, "ARMY  :");
-		Table armyTable = new Table(statusComposite, SWT.BORDER);
-		TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
-		TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
-		armyCol1.setText("Slot");
-		armyCol2.setText("Units");
-		armyCol1.setWidth(40);
-		armyCol2.setWidth(138);
-		armyTable.setHeaderVisible(true);
-		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-		for (Integer j=1 ; j<6 ; ++j)
-		{
-			ti = new TableItem(armyTable, SWT.NONE);
-			ti.setText (0, j.toString());
-			if (creaturesArray[j-1] != null)
-			{
-				ti.setText (1, creaturesArray[j-1].toString());
-			}
-			else
-			{
-				ti.setText (1, "none");
-			}
-		}
 
 		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
