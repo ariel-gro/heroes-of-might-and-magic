@@ -70,8 +70,9 @@ public class HeroesConsole
 	{
 		while (true)
 		{
-			for (int playerIndex = 0; playerIndex < this.getGameState().getNumberOfPlayers();)
+			for (int playerIndex = 0 ; playerIndex < this.getGameState().getNumberOfPlayers();)
 			{
+				this.getGameState().setWhosTurn(playerIndex);
 				Player player = this.getGameState().getPlayers().get(playerIndex);
 				removeDeadPlayers();
 				if (this.gameController.isThereAWinner() != null)
@@ -176,7 +177,7 @@ public class HeroesConsole
 			handleSaveCommand(userInput);
 			break;
 		case load:
-			handleLoadCommand(userInput);
+			playerIndex = handleLoadCommand(userInput);
 			break;
 		}
 		return playerIndex;
@@ -302,7 +303,7 @@ public class HeroesConsole
 	/**
 	 * @param userInput
 	 */
-	private void handleLoadCommand(String[] userInput)
+	private int handleLoadCommand(String[] userInput)
 	{
 		if (userInput.length < 2)
 			System.out.println("Illegal input.");
@@ -312,6 +313,7 @@ public class HeroesConsole
 			if (this.gameController.loadGame(fileName))
 				System.out.println("Game has been load from '" + fileName + "'.");
 		}
+		return this.gameController.getGameState().getWhosTurn();
 	}
 
 	/**

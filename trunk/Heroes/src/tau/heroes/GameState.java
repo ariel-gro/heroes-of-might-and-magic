@@ -6,6 +6,7 @@ import java.util.Vector;
 public class GameState implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	private int whosTurn = 0;
 	private Vector<Player> players;
 	private Vector<Hero> heroes;
 	private Vector<Castle> castles;
@@ -17,7 +18,17 @@ public class GameState implements Serializable
 	{
 		this.isGUI = isGUI;
 	}
-
+	
+	public int getWhosTurn()
+	{
+		return this.whosTurn;
+	}
+	
+	public void setWhosTurn(int whosTurn)
+	{
+		this.whosTurn = whosTurn;
+	}
+	
 	public Vector<Player> getPlayers() 
 	{
 		return this.players;
