@@ -363,7 +363,7 @@ public class HeroesGui
 		Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setLayout(new GridLayout());
 		shell.setBackground(white);
-		shell.setSize(250, 200);
+		shell.setSize(180, 120);
 		shell.setLocation(1070, 615);
 		shell.setText("Castle info");
 		shell.setImage(iconCache.stockImages[iconCache.castleIcon]);
