@@ -490,7 +490,6 @@ public class HeroesGui
 				}
 			}
 		}
-		createLabel(statusComposite, "");
 
 		createLabel(statusComposite, "MINE  LIST  :");
 		Table minesTable = new Table(statusComposite, SWT.BORDER);
@@ -913,6 +912,17 @@ public class HeroesGui
 			public void widgetSelected(SelectionEvent e)
 			{
 				handleMakeCommand("soldier");
+			}
+		});
+
+	    new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+	    item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("End Turn");
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleEndTurnCommand();
 			}
 		});
 
