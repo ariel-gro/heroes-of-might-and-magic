@@ -656,6 +656,7 @@ public class HeroesGui
 		shell.setCursor(waitCursor);
 
 		this.gameController.loadGame(name);
+		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
 
 		createBoardWindow();
 		updateStatusWindow();
@@ -1283,6 +1284,7 @@ public class HeroesGui
 			endGame(this.gameController.isThereAWinner());
 
 		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+		this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		createBoardWindow();
 		updateStatusWindow();
@@ -1305,6 +1307,7 @@ public class HeroesGui
 				endGame(this.gameController.isThereAWinner());
 
 			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+			this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 			createBoardWindow();
 			updateStatusWindow();
