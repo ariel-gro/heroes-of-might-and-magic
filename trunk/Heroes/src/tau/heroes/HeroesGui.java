@@ -65,7 +65,7 @@ public class HeroesGui
 	private GameController gameController;
 
 	private static int currentPlayerIndex = 0;
-	
+
 	private static Point currentPoint;
 
 	private Composite boardComposite;
@@ -267,7 +267,7 @@ public class HeroesGui
 		boardComposite.setLayout(tableLayout);
 
 		isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
-		
+
 		MouseListener focusListener = new MouseListener() {
 			public void mouseDown(MouseEvent e)
 			{
@@ -280,9 +280,9 @@ public class HeroesGui
 
 			public void mouseUp(MouseEvent arg0)
 			{}
-		};	
+		};
 
-	    
+
 		for (int y = 0; y < numOfCells; y++)
 		{
 			for (int x = 0; x < numOfCells; x++)
@@ -312,7 +312,7 @@ public class HeroesGui
 					{
 						b.setMenu(createCastlePopUpMenu());
 						b.setData(new Point(x, y));
-						b.addMouseListener(focusListener);			
+						b.addMouseListener(focusListener);
 					}
 
 				if (t == iconCache.heroInCastleIcon)
@@ -349,10 +349,10 @@ public class HeroesGui
 
 				sc.setOrigin(origin);
 			}
-		}	
+		}
 	}
 
-	
+
 	private Label createLabel(Composite composite, String text)
 	{
 		Label tempLabel = new Label(composite, SWT.NONE);
@@ -360,8 +360,8 @@ public class HeroesGui
 		tempLabel.setBackground(white);
 		return tempLabel;
 	}
-	
-	
+
+
 	private void displayCastleInfo(Castle castle)
 	{
 		Shell shell = new Shell(Display.getCurrent().getActiveShell());
@@ -380,7 +380,7 @@ public class HeroesGui
 		{
 			str = castle.getFactory(soldierFactoryClass).getName();
 			createLabel(shell, "Soldier factories  :  " + str);
-		} 
+		}
 		else
 		{
 			createLabel(shell, "Soldier factories  :  none");
@@ -390,7 +390,7 @@ public class HeroesGui
 		{
 			str = castle.getFactory(goblinFactoryClass).getName();
 			createLabel(shell, "Goblin factories  :  " + str);
-		} 
+		}
 		else
 		{
 			createLabel(shell, "Goblin factories  :  none");
@@ -399,7 +399,7 @@ public class HeroesGui
 		{
 			str = castle.getArmy().toString();
 			createLabel(shell, "Army  :\n" + str);
-		} 
+		}
 		else
 		{
 			createLabel(shell, "Army  :  none");
@@ -412,7 +412,7 @@ public class HeroesGui
 		}
 	}
 
-	
+
 	private void createStatusWindow()
 	{
 		statusComposite = new Composite(sash, SWT.BORDER);
@@ -425,7 +425,7 @@ public class HeroesGui
 
 		updateStatusWindow();
 	}
-	
+
 
 	private void updateStatusWindow()
 	{
@@ -443,7 +443,7 @@ public class HeroesGui
 		firstLabel.setImage(iconCache.stockImages[iconCache.appIcon]);
 		firstLabel.setText("  PLAYER   STATUS");
 		createLabel(statusComposite, "");
-		
+
 		String str = p.getName();
 		createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
@@ -461,8 +461,8 @@ public class HeroesGui
 			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
 		}
 		createLabel(statusComposite, "");
-		
-		createLabel(statusComposite, "MINE  LIST  :");		
+
+		createLabel(statusComposite, "MINE  LIST  :");
 		Table minesTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
 		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
@@ -473,15 +473,15 @@ public class HeroesGui
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
-		Integer stoneNum = p.getMineQuantity("stone"); 
+		Integer stoneNum = p.getMineQuantity("stone");
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] {"Wood", woodNum.toString()});
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] {"Gold", goldNum.toString()});
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] {"Stone", stoneNum.toString()});
-	
-		createLabel(statusComposite, "TREASURY LIST  :");	
+
+		createLabel(statusComposite, "TREASURY LIST  :");
 		Table treasursTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn treasursCol1 = new TableColumn(treasursTable, SWT.CENTER);
 		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
@@ -492,13 +492,13 @@ public class HeroesGui
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
-		Integer stoneAmount = p.getCurrentTreasuryAmount("stone"); 
+		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] {"Wood", woodAmount.toString()});
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] {"Gold", goldAmount.toString()});
 		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] {"Stone", stoneAmount.toString()});		
+		ti.setText(new String[] {"Stone", stoneAmount.toString()});
 
 		createLabel(statusComposite, "ARMY  :");
 		Table armyTable = new Table(statusComposite, SWT.BORDER);
@@ -508,7 +508,7 @@ public class HeroesGui
 		armyCol2.setText("Units");
 		armyCol1.setWidth(40);
 		armyCol2.setWidth(138);
-		armyTable.setHeaderVisible(true); 
+		armyTable.setHeaderVisible(true);
 		Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
 		for (Integer j=1 ; j<6 ; ++j)
 		{
@@ -523,7 +523,7 @@ public class HeroesGui
 				ti.setText (1, "none");
 			}
 		}
-		
+
 		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
 		for (int i=0 ; i<numOfCastles ; ++i)
@@ -543,7 +543,7 @@ public class HeroesGui
 		statusComposite.layout(true, true);
 	}
 
-	
+
 	/**
 	 * Creates the menu at the top of the shell where most of the programs
 	 * functionality is accessed.
@@ -569,7 +569,7 @@ public class HeroesGui
 		box.setMessage(msg);
 		box.open();
 	}
-	
+
 	public static void displayMessage(String msg)
 	{
 		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
@@ -865,8 +865,8 @@ public class HeroesGui
 		});
 
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");	
-		
+		item.setText("Build");
+
 		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(buildMenu);
 	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
@@ -877,7 +877,7 @@ public class HeroesGui
 				handleBuildCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
 	    soldierBuildItem.setText("Soldier factory");
 	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
@@ -889,7 +889,7 @@ public class HeroesGui
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
-		
+
 		Menu makeMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(makeMenu);
 	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
@@ -900,7 +900,7 @@ public class HeroesGui
 				handleMakeCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
 	    soldierMakeItem.setText("Soldier");
 	    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
@@ -955,8 +955,8 @@ public class HeroesGui
 		new MenuItem(popUpMenu, SWT.SEPARATOR);
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");	
-		
+		item.setText("Build");
+
 		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(buildMenu);
 	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
@@ -967,7 +967,7 @@ public class HeroesGui
 				handleBuildCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
 	    soldierBuildItem.setText("Soldier factory");
 	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
@@ -979,7 +979,7 @@ public class HeroesGui
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
-		
+
 		Menu makeMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(makeMenu);
 	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
@@ -990,7 +990,7 @@ public class HeroesGui
 				handleMakeCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
 	    soldierMakeItem.setText("Soldier");
 	    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
@@ -999,7 +999,7 @@ public class HeroesGui
 				handleMakeCommand("soldier");
 			}
 		});
-	    
+
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Split");
 
@@ -1013,7 +1013,7 @@ public class HeroesGui
 				handleSplitCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
 	    soldierSplitItem.setText("Soldier");
 	    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
@@ -1022,10 +1022,10 @@ public class HeroesGui
 				handleSplitCommand("soldier");
 			}
 		});
-	    
+
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Join");
-		
+
 		Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(joinMenu);
 	    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
@@ -1036,7 +1036,7 @@ public class HeroesGui
 				handleJoinCommand("goblin");
 			}
 		});
-	    
+
 	    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
 	    soldierJoinItem.setText("Soldier");
 	    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
@@ -1198,7 +1198,7 @@ public class HeroesGui
 
 		TableItem ti;
 		Font newFont = scoreTable.getFont(); //just an initialization for the compiler
-		
+
 		for (int i = 0; i < 10; i++)
 		{
 			tempPlayer = board.getPlayerAt(i);
@@ -1361,27 +1361,27 @@ public class HeroesGui
 			return true;
 		} else
 		{
-			displayError("Illegal move !" + currentPlayerIndex + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			displayError("Illegal move !" + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getName() + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
 			return false;
 		}
 	}
-	
+
 	private void handleBuildCommand(String type)
 	{
 		CreatureFactory factory = null;
 		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
-		
+
 		if(currentCastle != null)
 		{
 			if (type.equals("goblin"))
 				factory = new GoblinFactory();
 			else if (type.equals("soldier"))
 				factory = new SoldierFactory();
-	
+
 			if (factory != null)
 			{
 				Class<? extends CreatureFactory> factoryClass = factory.getClass();
-	
+
 				if (currentCastle.hasFactory(factoryClass))
 					displayError("There is already a factory of this type in this castle");
 				else if (currentCastle.canBuildFactory(factoryClass))
@@ -1398,7 +1398,7 @@ public class HeroesGui
 		String message;
 		String response = null;
 		int numberOfUnits = 0;
-		
+
 		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
 		if (hero == null)
 		{
@@ -1561,12 +1561,12 @@ public class HeroesGui
 					{
 						currentCastle.makeUnits(creatureClass, numberOfUnits);
 						updateStatusWindow();
-					} 
+					}
 					else
 					{
 						displayError("Number of units is our of range.");
 					}
-				} 
+				}
 				else
 					displayError("Sorry, but you can't build units.");
 			} else

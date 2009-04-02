@@ -174,6 +174,8 @@ public class HeroesConsole
 			endGame(null);
 			break;
 		case save:
+			if (!userInput[1].endsWith(".sav"))
+				userInput[1] += ".sav";
 			handleSaveCommand(userInput);
 			break;
 		case load:
@@ -242,15 +244,15 @@ public class HeroesConsole
 	{
 		String message = "Yes or No?\n";
 		String[] responses;
-		
+
 		System.out.println("Are you sure yo want to clear the highscore table?");
 		System.out.println("this action can not be reversed");
-		responses = MainModule.getCommandAndParameters(message); 
+		responses = MainModule.getCommandAndParameters(message);
 		if (responses.length > 0 &&
 			(responses[0].startsWith("y") || (responses[0].startsWith("Y"))))
 		{
 			Helper.getScoreBoard().clearScoreBoard();
-		}	
+		}
 	}
 
 	/**
@@ -631,7 +633,7 @@ public class HeroesConsole
 		handleHighscoreCommand();
 		System.exit(0);
 	}
-	
+
 	public static void displayMessage(String message)
 	{
 		System.out.println(message);
