@@ -870,7 +870,7 @@ public class HeroesGui
 		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(buildMenu);
 	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-	    goblinBuildItem.setText("Goblin");
+	    goblinBuildItem.setText("Goblin factory");
 	    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -879,7 +879,7 @@ public class HeroesGui
 		});
 	    
 	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-	    soldierBuildItem.setText("Soldier");
+	    soldierBuildItem.setText("Soldier factory");
 	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
