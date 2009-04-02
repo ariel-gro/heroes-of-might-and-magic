@@ -17,7 +17,7 @@ public class Player implements Serializable
 	private ArrayList<Castle> castles;
 	private int daysWithoutCastles;
 	private final static int MAX_MOVES_ALLOWED = 5;
-	private static int movesLeft;
+	private int movesLeft;
 	private boolean[][] visibleBoard;
 
 
@@ -186,7 +186,7 @@ public class Player implements Serializable
 			hero = null;
 		//will make sure that the hero is alive, if not then null the hero.
 		getHero();
-		
+
 		for (int i = 0; i < this.castles.size(); i++)
 		{
 			this.castles.get(i).endDay();
