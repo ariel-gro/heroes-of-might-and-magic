@@ -30,7 +30,8 @@ public class IconCache {
 			"/icons/knight3_in_Stone.jpg",
 			"/icons/knight3_in_Wood.jpg",
 			"/icons/Black.jpg", 
-			"/icons/HighScores.jpg"};
+			"/icons/HighScores.jpg"
+	};
 
 	public Image stockImages[];
 
