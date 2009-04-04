@@ -78,7 +78,7 @@ public class AttackGUI
 
 		createBoardWindow();
 		createStatusWindow();
-		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1));
+		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1)+" (double click on the selected unit to attack)");
 		sash.setWeights(new int[] { 85, 15 });
 
 
@@ -206,7 +206,7 @@ public class AttackGUI
 		while(heroes[heroIndex].getArmy().getCreature(creatureIndex) == null);
 
 		setNextCreatureAttack();
-		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1));
+		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1)+" (double click on the selected unit to attack)");
 	}
 
 	private void setNextCreatureAttack()
