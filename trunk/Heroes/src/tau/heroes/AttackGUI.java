@@ -15,28 +15,26 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
 public class AttackGUI
 {
-
+	private static IconCache iconCache = new IconCache();
+	private Display display;
 	private Shell shell;
 	private Color black;
-
 	private Color green;
-
 	private Color white;
 
-	private Display display;
-	private static IconCache iconCache = new IconCache();
 	private SashForm sash;
 	private Composite boardComposite;
 	private Composite statusComposite;
+
 	private Hero[] heroes;
 	private List<MyMouseListner> mouseListeners;
 	private int heroIndex;
 	private int creatureIndex;
+	private Label statusLabel;
 
 	public AttackGUI(Hero h1,Hero h2, Display d)
 	{
@@ -58,7 +56,7 @@ public class AttackGUI
 		green = display.getSystemColor(SWT.COLOR_GREEN);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
 		shell.setBackground(black);
-		shell.setSize(546, 642);
+		shell.setSize(525, 625);
 		shell.setLocation(300, 50);
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
@@ -77,8 +75,6 @@ public class AttackGUI
 		sash = new SashForm(shell, SWT.NONE);
 		sash.setOrientation(SWT.VERTICAL);
 		sash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-
 
 		createBoardWindow();
 		createStatusWindow();
@@ -110,12 +106,18 @@ public class AttackGUI
 			iconCache.initResources(display);
 			mouseListeners.clear();
 		}
-		System.out.println("createBoardWindow");
 		boardComposite = new Composite(sash, SWT.NONE);
-		boardComposite.setBackground(white);
-		boardComposite.setSize(600,600);
+		boardComposite.setBackground(black);
+
 		Hero[] tempHeroes = new Hero[]{heroes[0],null,null,null,heroes[1]};
-		boardComposite.setLayout(new GridLayout(tempHeroes.length,true));
+		GridData d = new GridData(GridData.FILL_BOTH);
+		boardComposite.setLayoutData(d);
+		GridLayout tableLayout = new GridLayout();
+		tableLayout.numColumns = tempHeroes.length;
+		tableLayout.makeColumnsEqualWidth = true;
+		tableLayout.horizontalSpacing = 0;
+		tableLayout.verticalSpacing = 0;
+		boardComposite.setLayout(tableLayout);
 		mouseListeners = new ArrayList<MyMouseListner>();
 		for (int i = 0; i < Army.MAX_CREATURES; i++)
 		{
@@ -145,7 +147,7 @@ public class AttackGUI
 		}
 		setNextCreatureAttack();
 	}
-	private Label statusLabel;
+
 	private void createStatusWindow()
 	{
 		statusComposite = new Composite(sash, SWT.BORDER);
@@ -154,10 +156,7 @@ public class AttackGUI
 		statusComposite.setLayoutData(d);
 		statusLabel = new Label(statusComposite, SWT.NONE);
 		statusLabel.setBackground(white);
-		setStatusLabel( "                                                                                                                                                               \n" +
-						"                 	                                                                                                                                            \n"+
-					    "	                                                                                                                                                            \n" +
-					    "	                                                                                                                                                            \n");
+		setStatusLabel( "\t\t\t\t\t\t\t\t\t\t            \n\n\n\n");
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
