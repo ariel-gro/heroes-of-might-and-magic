@@ -271,6 +271,7 @@ public class HeroesGui
 			{
 				Label selectedLabel = (Label) e.getSource();
 				currentPoint = (Point) selectedLabel.getData();
+				//System.out.println("Current Point = " + currentPoint.x + ", " + currentPoint.y);
 			}
 
 			public void mouseDoubleClick(MouseEvent arg0)
@@ -315,7 +316,11 @@ public class HeroesGui
 
 				if (t == iconCache.heroInCastleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+					{
 						b.setMenu(createHeroInCastlePopUpMenu());
+						b.setData(new Point(x, y));
+						b.addMouseListener(focusListener);
+					}
 			}
 		}
 
