@@ -154,9 +154,10 @@ public class AttackGUI
 		statusComposite.setLayoutData(d);
 		statusLabel = new Label(statusComposite, SWT.NONE);
 		statusLabel.setBackground(white);
-		setStatusLabel( "                                                                                                               \n" +
-						"               	                                                                                            \n"+
-					    "	                                                                                                            \n");
+		setStatusLabel( "                                                                                                                                                               \n" +
+						"                 	                                                                                                                                            \n"+
+					    "	                                                                                                                                                            \n" +
+					    "	                                                                                                                                                            \n");
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
