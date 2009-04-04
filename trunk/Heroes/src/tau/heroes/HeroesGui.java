@@ -84,11 +84,7 @@ public class HeroesGui
 		this.gameController = gameController;
 		this.numOfCells = gameController.getGameState().getBoard().getSize();
 		iconCache.initResources(display);
-		//This is for auto fight during GUI game: (should be remove when GUI fight will be available)
-		for(Hero h : this.gameController.getGameState().getHeroes())
-		{
-			h.setAutoFight(true);
-		}
+		
 	}
 
 	public Shell open()

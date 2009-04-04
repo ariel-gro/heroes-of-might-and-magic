@@ -16,6 +16,9 @@ import org.eclipse.swt.widgets.Display;
 public class IconCache {
 	// Stock images
 	public final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3, goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, heroInCastleIcon = 7, heroInGlodMineIcon = 8, heroInStoneIcon = 9, heroeInWoodIcon = 10, blackIcon = 11, highscoreIcon = 12;
+	public final int battleGrassIcon = 13, goblinFaceRightIcon = 14 , goblinFaceLeftIcon = 15,soldierFaceRightIcon = 16,soldierFaceLeftIcon = 17;
+
+	public final int cursorAttackLeft = 2, cursorAttackRight = 3,cursorNo = 4;
 
 	public final String[] stockImageLocations =
 	{ "/icons/Heroes-icon.jpg",
@@ -29,8 +32,17 @@ public class IconCache {
 			"/icons/knight3_in_GoldMine.jpg",
 			"/icons/knight3_in_Stone.jpg",
 			"/icons/knight3_in_Wood.jpg",
-			"/icons/Black.jpg", 
-			"/icons/HighScores.jpg"
+			"/icons/Black.jpg",
+			"/icons/HighScores.jpg",
+			"/icons/battle_grass.jpg",
+			"/icons/battle_goblin_face_right.jpg",
+			"/icons/battle_goblin_face_left.jpg",
+			"/icons/battle_soldier_face_right.jpg",
+			"/icons/battle_soldier_face_left.jpg"};
+	public final String[] stockCursorLocations =
+	{
+			"/icons/attack_left.gif",
+			"/icons/attack_right.gif",
 	};
 
 	public Image stockImages[];
@@ -71,7 +83,13 @@ public class IconCache {
 		}
 		if (stockCursors == null)
 		{
-			stockCursors = new Cursor[] { null, new Cursor(display, SWT.CURSOR_WAIT) };
+			stockCursors = new Cursor[] { null,
+										new Cursor(display, SWT.CURSOR_WAIT),
+										new Cursor(display, createStockImage(display,stockCursorLocations[0]).getImageData(), 0, 0),
+										new Cursor(display, createStockImage(display,stockCursorLocations[1]).getImageData(), 0, 0),
+										new Cursor(display, SWT.CURSOR_NO),
+										new Cursor(display, SWT.CURSOR_UPARROW)
+										 };
 		}
 		iconCache = new Hashtable();
 	}
