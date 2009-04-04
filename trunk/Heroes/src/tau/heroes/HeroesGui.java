@@ -1091,7 +1091,7 @@ public class HeroesGui
 				 "Gameplay assistance\n\n" +
 				 "Right click your hero to:\n" +
 				 "Move, End Turn.\n\n" +
-				 "Right click your castel(s) to see Castle menu and options:\n" +
+				 "Right click your castle(s) to see Castle menu and options:\n" +
 				 "Build: build a creature factory\n" +
 				 "Make: make a new creature\n" +
 				 "Split: move units from hero to castle\n" +
@@ -1415,7 +1415,7 @@ public class HeroesGui
 			return;
 		}
 
-		message = "Enter desired number of units to split to the caste: ";
+		message = "Enter desired number of units to split to the castle: ";
 
 		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
 		if (numberInput.open() == Window.OK)
@@ -1479,7 +1479,7 @@ public class HeroesGui
 			return;
 		}
 
-		message = "Enter desired number of units to join from the caste: ";
+		message = "Enter desired number of units to join from the castle: ";
 
 		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
 		if (numberInput.open() == Window.OK)
