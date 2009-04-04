@@ -165,7 +165,7 @@ public class AttackGUI
 	private void setStatusLabel(String status)
 	{
 		String currentText = statusLabel.getText();
-		status += (currentText == null || currentText.isEmpty())? "\n" : "\n"+currentText;
+		status += (currentText == null) ? "\n" : "\n"+currentText;
 		statusLabel.setText(status);
 	}
 	private int fromBattleToDisplayIcons(Hero h, int i,int left)
