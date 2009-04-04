@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Castle implements Serializable
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Board board;
@@ -65,16 +65,30 @@ public class Castle implements Serializable
 		if (bIsHeroInCastle)
 			defendingHero = this.player.getHero();
 		else
+		{
 			defendingHero = new Hero(0, 0, army);
-
+			defendingHero.player = this.player;
+		}
 		hero.attack(defendingHero);
-		if (hero.alive())
+		System.out.println("attack = "+hero.alive()+" defender = "+defendingHero.alive());
+		if (hero.alive() && !defendingHero.alive())
 		{
 			army = null;
 			enterHeroIntoEmptyCastle(hero);
 		}
+		else
+		{
+			board.removeHero(xPos, yPos);
+		}
+
 		// Dummy hero is dead when we leave this function - no one will point to
 		// him.
+		if(!bIsHeroInCastle)
+		{
+			defendingHero.kill();
+			defendingHero = null;
+		}
+
 	}
 
 	private void enterHeroIntoEmptyCastle(Hero hero)
@@ -237,7 +251,7 @@ public class Castle implements Serializable
 
 		this.addToArmy(creature);
 	}
-	
+
 	public boolean canAddToArmy(Class<? extends Creature> creatureClass)
 	{
 		return (this.army == null || this.army.canAdd(creatureClass));
@@ -253,17 +267,17 @@ public class Castle implements Serializable
 		else
 			this.army.add(creature);
 	}
-	
+
 	public boolean canRemoveFromArmy(Creature creature)
 	{
 		return (this.army != null && this.army.canRemove(creature));
 	}
-	
+
 	public void removeFromArmy(Creature creature)
 	{
 		this.army.remove(creature);
 	}
-	
+
 	public String toInfoString()
 	{
 		String s = this.printLocation() + ":\n";
@@ -278,7 +292,7 @@ public class Castle implements Serializable
 			s += this.army.toString();
 		else
 			s += "No army.";
-		
+
 		return s;
 	}
 
@@ -286,5 +300,5 @@ public class Castle implements Serializable
 	{
 		for (int i = 0; i < this.factories.size(); i++)
 			this.factories.get(i).endDay();
-	}	
+	}
 }

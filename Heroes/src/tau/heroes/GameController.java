@@ -55,7 +55,7 @@ public class GameController
 
 		for (Player player : players)
 		{
-			Hero hero = player.getHero();			
+			Hero hero = player.getHero();
 			castles.add(new Castle(player, this.gameState.getBoard(), hero.getXPos() + 1, hero
 				.getYPos()));
 		}
@@ -200,36 +200,36 @@ public class GameController
 	{
 		this.gameState = gameState;
 	}
-	
+
 	private int[] randomizeByZone(int playerNum)
 	{
 		int[] rt = new int[2];
-		
+
 		double randomX = Math.random();
 		double randomY = Math.random();
-		
+
 		switch (playerNum)
 		{
 		case 0:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			break;
-			
+
 		case 1:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			break;
-			
+
 		case 2:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			break;
-			
+
 		case 3:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			break;
-			
+
 		default:
 			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
 			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
@@ -237,10 +237,10 @@ public class GameController
 		}
 		return rt;
 	}
-	
+
 	public void displayMessage(String message)
 	{
-		if (this.gameState.isGUI())
+		if (GameState.isGUI())
 			HeroesGui.displayMessage(message);
 		else
 			HeroesConsole.displayMessage(message);
