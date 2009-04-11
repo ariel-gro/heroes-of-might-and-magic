@@ -37,7 +37,9 @@ public class HeroesConsole
 	private enum CastleCommands
 	{
 		build("Build a creature factory. Usage: build [goblin|soldier]"),
+		buildPrices("Get help about creature factory prices"),
 		make("Make a new creature. Usage: make [goblin|soldier]"),
+		makePrices("Get help about creature prices per unit"),
 		split("Split units from the hero's army to the castle's army. Usage: split [goblin|soldier] numberOfUnits"),
 		join("Join units to the hero's army from the castle's army. Usage: join [goblin|soldier] numberOfUnits"),
 		help("Get help for the possible commands"),
@@ -376,8 +378,14 @@ public class HeroesConsole
 		case build:
 			handleBuildCommand(player, theCastle, userInput);
 			break;
+		case buildPrices:
+			System.out.println(GameController.handleBuildPricesCommand());
+			break;
 		case make:
 			handleMakeCommand(player, theCastle, userInput);
+			break;
+		case makePrices:
+			System.out.println(GameController.handleMakePricesCommand());
 			break;
 		case help:
 			handleCastleHelpCommand();
@@ -447,8 +455,28 @@ public class HeroesConsole
 
 				if (theCastle.hasFactory(factoryClass))
 					System.out.println("There is already a factory of this type in this castle");
-				else if (theCastle.canBuildFactory(factoryClass))
-					theCastle.addFactory(theCastle.buildFactory(factoryClass));
+				else
+				{
+					if (theCastle.canBuildFactory(factoryClass))
+						theCastle.addFactory(theCastle.buildFactory(factoryClass));
+					else
+					{
+						String msg = theCastle.getPlayer().getName() +
+										" doesn't have enough resources.\n\n" +
+										"Need:\n";
+						
+						for (ResourceType rType : ResourceType.values())
+						{
+							msg += rType.getTypeName() + ":\t " + factory.getPrice(rType.getTypeName()) + "\n";
+						}
+						msg += "\nHas only:\n";
+						for (ResourceType rType : ResourceType.values())
+						{
+							msg += rType.getTypeName() + ":\t " + theCastle.getPlayer().getCurrentTreasuryAmount(rType.getTypeName()) + "\n";
+						}
+						System.out.println(msg);
+					}
+				}
 			}
 			else
 				System.out.println("Unknown creature type!");

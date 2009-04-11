@@ -885,6 +885,29 @@ public class HeroesGui
 				handleBuildCommand("soldier");
 			}
 		});
+	    
+	    final MenuItem buildPricesItem = new MenuItem(buildMenu, SWT.PUSH);
+	    buildPricesItem.setText("Build Prices");
+	    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
+				buildPricesShell.setLayout(new FillLayout());
+				buildPricesShell.setSize(200, 200);
+				buildPricesShell.setText("Build Prices");
+				buildPricesShell.setLocation(450, 450);
+				buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+				Label pricesLable = new Label(buildPricesShell, SWT.NULL);
+				pricesLable.setBackground(new Color(display, 255,255,255));
+				pricesLable.setBounds(buildPricesShell.getClientArea());
+				pricesLable.setText(GameController.handleBuildPricesCommand());
+				buildPricesShell.open();
+				
+				while (!buildPricesShell.isDisposed())
+					 if (!display.readAndDispatch())
+						 display.sleep();
+			}
+		});
 
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
@@ -906,6 +929,29 @@ public class HeroesGui
 			public void widgetSelected(SelectionEvent e)
 			{
 				handleMakeCommand("soldier");
+			}
+		});
+	    
+	    final MenuItem makePricesItem = new MenuItem(makeMenu, SWT.PUSH);
+	    makePricesItem.setText("Unit Prices");
+	    makePricesItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
+				makePricesShell.setLayout(new FillLayout());
+				makePricesShell.setSize(200, 200);
+				makePricesShell.setText("Unit Prices");
+				makePricesShell.setLocation(450, 450);
+				makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+				Label pricesLable = new Label(makePricesShell, SWT.NULL);
+				pricesLable.setBackground(new Color(display, 255,255,255));
+				pricesLable.setBounds(makePricesShell.getClientArea());
+				pricesLable.setText(GameController.handleMakePricesCommand());
+				makePricesShell.open();
+				
+				while (!makePricesShell.isDisposed())
+					 if (!display.readAndDispatch())
+						 display.sleep();
 			}
 		});
 
@@ -1394,8 +1440,29 @@ public class HeroesGui
 
 				if (currentCastle.hasFactory(factoryClass))
 					displayError("There is already a factory of this type in this castle");
-				else if (currentCastle.canBuildFactory(factoryClass))
-					currentCastle.addFactory(currentCastle.buildFactory(factoryClass));
+				else
+				{
+					if (currentCastle.canBuildFactory(factoryClass))
+						currentCastle.addFactory(currentCastle.buildFactory(factoryClass));
+					else
+					{
+						String msg = currentCastle.getPlayer().getName() +
+										" doesn't have enough resources.\n\n" +
+										"Need:\n";
+						
+						for (ResourceType rType : ResourceType.values())
+						{
+							msg += rType.getTypeName() + ":\t " + factory.getPrice(rType.getTypeName()) + "\n";
+						}
+						msg += "\nHas only:\n";
+						for (ResourceType rType : ResourceType.values())
+						{
+							msg += rType.getTypeName() + ":\t " + currentCastle.getPlayer().getCurrentTreasuryAmount(rType.getTypeName()) + "\n";
+						}
+						displayError(msg);
+					}
+				}
+				
 			} else
 				displayError("Unknown creature type!");
 		}

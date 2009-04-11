@@ -16,7 +16,7 @@ public class GameState implements Serializable
 
 	public GameState(boolean isGUI)
 	{
-		GameState.isGUI = isGUI;
+		this.isGUI = isGUI;
 	}
 
 	public int getWhosTurn()
@@ -83,7 +83,7 @@ public class GameState implements Serializable
 	{
 		return this.players.size();
 	}
-
+	
 	public static boolean isGUI()
 	{
 		return isGUI;

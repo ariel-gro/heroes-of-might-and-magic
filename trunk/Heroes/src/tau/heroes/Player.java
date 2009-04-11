@@ -136,10 +136,8 @@ public class Player implements Serializable
 		for (ResourceType rType : ResourceType.values()) {
 			int price = neededResources.get(rType.getTypeName());
 			int amount = this.getCurrentTreasuryAmount(rType.getTypeName());
-			if (price > amount) {
-				System.out.println(this.getName() + " doesn't have enough resources of type " +
-						rType.getTypeName() + ". Needs " + price +
-						" and has only " + amount + ".");
+			if (price > amount)
+			{
 				hasEnough = false;
 			}
 		}
