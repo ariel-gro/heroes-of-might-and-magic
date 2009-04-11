@@ -15,8 +15,8 @@ public class GoblinFactory extends CreatureFactory
 	
 	public GoblinFactory() {
 		super(UNITS_PER_WEEK);
-		this.setPrice(ResourceType.GOLD.getTypeName(), 100);
-		this.setPricePerUnit(ResourceType.GOLD.getTypeName(), 30);
+		this.setPrice(ResourceType.GOLD.getTypeName(), Constants.GOBLIN_FACTORY_PRICE_GOLD);
+		this.setPricePerUnit(ResourceType.GOLD.getTypeName(), Constants.GOBLIN_UNIT_PRICE_GOLD);
 	}
 	
 	@Override

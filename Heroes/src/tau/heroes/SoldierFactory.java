@@ -14,8 +14,8 @@ public class SoldierFactory extends CreatureFactory {
 	
 	public SoldierFactory() {
 		super(UNITS_PER_WEEK);
-		this.setPrice(ResourceType.GOLD.getTypeName(), 50);
-		this.setPricePerUnit(ResourceType.GOLD.getTypeName(), 10);
+		this.setPrice(ResourceType.GOLD.getTypeName(), Constants.SOLDIER_FACTORY_PRICE_GOLD);
+		this.setPricePerUnit(ResourceType.GOLD.getTypeName(), Constants.SOLDIER_UNIT_PRICE_GOLD);
 	}
 	
 	@Override

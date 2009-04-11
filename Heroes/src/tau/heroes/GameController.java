@@ -238,11 +238,53 @@ public class GameController
 		return rt;
 	}
 
-	public void displayMessage(String message)
+	public static void displayMessage(String message, boolean isGUI)
 	{
-		if (GameState.isGUI())
+		if (isGUI)
 			HeroesGui.displayMessage(message);
 		else
 			HeroesConsole.displayMessage(message);
+	}
+
+	public static String handleBuildPricesCommand()
+	{
+		String msg = "Prices:\n\n";
+		CreatureFactory factory;
+		
+		factory = new GoblinFactory();
+		msg = factory.getName() + ":\n";
+		for (ResourceType rType : ResourceType.values())
+		{
+			msg += rType.getTypeName() + "\t-\t " + factory.getPrice(rType.getTypeName()) + "\n";
+		}
+		factory = new SoldierFactory();
+		msg += "\n\n" + factory.getName() + ":\n";
+		for (ResourceType rType : ResourceType.values())
+		{
+			msg += rType.getTypeName() + "\t-\t " + factory.getPrice(rType.getTypeName()) + "\n";
+		}
+		
+		return msg;
+	}
+
+	public static String handleMakePricesCommand()
+	{
+		String msg = "Prices:\n\n";
+		CreatureFactory factory;
+		
+		factory = new GoblinFactory();
+		msg = "1 Goblin unit:\n";
+		for (ResourceType rType : ResourceType.values())
+		{
+			msg += rType.getTypeName() + "\t-\t " + factory.getPricePerUnit(rType.getTypeName()) + "\n";
+		}
+		factory = new SoldierFactory();
+		msg += "\n\n1 Soldier unit:\n";
+		for (ResourceType rType : ResourceType.values())
+		{
+			msg += rType.getTypeName() + "\t-\t " + factory.getPricePerUnit(rType.getTypeName()) + "\n";
+		}
+		
+		return msg;
 	}
 }
