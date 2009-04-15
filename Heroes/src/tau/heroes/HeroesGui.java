@@ -1215,7 +1215,7 @@ public class HeroesGui
 				 "Heroes of Might and Magic (TAU Version)\n" +
 				 "Gameplay assistance\n\n" +
 				 "To move: Right click your hero, or just click hero and click destenation.\n" +
-				 "To end turn: Right click your hero or castle(s)" +
+				 "To end turn: Right click your hero or castle(s) and select 'end turn'\n" +
 				 "Castle menu and options are:\n" +
 				 "Build - build a creature factory\n" +
 				 "Make - make a new creature\n" +
