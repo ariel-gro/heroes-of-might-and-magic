@@ -1214,13 +1214,13 @@ public class HeroesGui
 				 helpString = "\n" +
 				 "Heroes of Might and Magic (TAU Version)\n" +
 				 "Gameplay assistance\n\n" +
-				 "Right click your hero to:\n" +
-				 "Move, End Turn.\n\n" +
-				 "Right click your castle(s) to see Castle menu and options:\n" +
-				 "Build: build a creature factory\n" +
-				 "Make: make a new creature\n" +
-				 "Split: move units from hero to castle\n" +
-				 "Join: move units from castle to hero\n" +
+				 "To move: Right click your hero, or just click hero and click destenation.\n" +
+				 "To end turn: Right click your hero or castle(s)" +
+				 "Castle menu and options are:\n" +
+				 "Build - build a creature factory\n" +
+				 "Make - make a new creature\n" +
+				 "Split - move units from hero to castle\n" +
+				 "Join - move units from castle to hero\n" +
 				 "\n" +
 				 "Player info is on the right part of the screen (status window)\n\n" +
 				 "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n" +
