@@ -217,7 +217,7 @@ public class Hero implements Serializable
 	 * @param theBoard
 	 * @return
 	 */
-	private boolean checkStepsAllowed(int x, int y, Board theBoard)
+	public boolean checkStepsAllowed(int x, int y, Board theBoard)
 	{
 		if ((Math.abs(xPos - x) + Math.abs(yPos - y)) > maxAllowedSteps)
 		{
