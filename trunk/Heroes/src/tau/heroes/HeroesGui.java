@@ -29,8 +29,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -38,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tracker;
 
 public class HeroesGui
 {
@@ -64,6 +67,8 @@ public class HeroesGui
 	private static int currentPlayerIndex = 0;
 
 	private static Point currentPoint;
+	
+	private static Point newPoint;
 
 	private Composite boardComposite;
 
@@ -72,6 +77,10 @@ public class HeroesGui
 	SashForm sash;
 
 	private ScrolledComposite sc;
+	
+	Cursor cursor;;
+	
+	Cursor defaultCursor;
 
 	public Display getDisplay()
 	{
@@ -96,6 +105,8 @@ public class HeroesGui
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
+		cursor = new Cursor(display, SWT.CURSOR_NO);	
+		defaultCursor  = new Cursor(display, SWT.NONE);
 		shell.setBackground(black);
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
@@ -151,6 +162,11 @@ public class HeroesGui
 		}
 
 		iconCache.freeResources();
+		
+		cursor.dispose();
+		defaultCursor.dispose();
+		white.dispose();
+		black.dispose();
 
 		return true;
 	}
@@ -271,7 +287,6 @@ public class HeroesGui
 			{
 				Label selectedLabel = (Label) e.getSource();
 				currentPoint = (Point) selectedLabel.getData();
-				//System.out.println("Current Point = " + currentPoint.x + ", " + currentPoint.y);
 			}
 
 			public void mouseDoubleClick(MouseEvent arg0)
@@ -280,46 +295,109 @@ public class HeroesGui
 			public void mouseUp(MouseEvent arg0)
 			{}
 		};
+		
+		Listener listener = new Listener() {
+			Point point = null;
+			
+			public void handleEvent(Event event)
+			{
+				switch (event.type)
+				{
+					case SWT.MouseDown:
+						if (event.button == 1)
+						{
+							point = new Point(event.x, event.y);
+						}
+					break;
+					case SWT.MouseMove:
+						if (point == null)
+							break;
+	
+						int x = point.x - event.x;
+						int y = point.y - event.y;
+						if (Math.abs(x) < 8 && Math.abs(y) < 8)
+							break;			
 
+						Control control = (Control) event.widget;
+						final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
+						Rectangle rect = control.getBounds();
+						final Rectangle r1 = display.map(control, boardComposite, rect);
+						tracker.setRectangles(new Rectangle[] { r1 });
+						tracker.addListener(SWT.Move, new Listener() {
+							public void handleEvent(Event event)
+							{
+								Rectangle r2 = tracker.getRectangles()[0];								
+								newPoint = new Point(r2.x/r2.width, r2.y/r2.height);
+								
+								if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).checkMove((r2.x/r2.width), (r2.y/r2.height), gameController.getGameState().getBoard()))
+									tracker.setCursor(cursor);
+								else
+									tracker.setCursor(defaultCursor);
+							}
+						});
+						
+						if (!tracker.open())
+							break;
+						
+						if(newPoint != null && currentPoint != null && !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
+							handleMoveCommand(new String[]{newPoint.x+"", newPoint.y+""});
+						
+						point = null;
+					break;
+				}
+			}
+		};
 
 		for (int y = 0; y < numOfCells; y++)
 		{
 			for (int x = 0; x < numOfCells; x++)
 			{
-
-				Label b = new Label(boardComposite, SWT.NONE);
+				Composite b = new Composite(boardComposite, SWT.NONE);
+				GridLayout cellLayout = new GridLayout();
+				cellLayout.marginWidth = 0;
+				cellLayout.marginHeight = 0;
+				b.setLayout(cellLayout);
+				Label l = new Label(b, SWT.NONE);
+				l.setLayoutData(new GridData(GridData.FILL_BOTH));
 				int t = fromBoardToDisplayIcons(x, y);
 
 				if (isVisible[x][y])
-					b.setImage(iconCache.stockImages[t]);
+					l.setImage(iconCache.stockImages[t]);
 				else
-					b.setImage(iconCache.stockImages[iconCache.blackIcon]);
-
+					l.setImage(iconCache.stockImages[iconCache.blackIcon]);
+				
 				String description;
 				if (t != iconCache.grassIcon)
 				{
 					description = fromBoardToDisplayDecription(x, y);
-					b.setToolTipText(description);
+					l.setToolTipText(description);
 				}
 
 				if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
-						b.setMenu(createHeroPopUpMenu());
+					{
+						l.setData(new Point(x, y));
+						l.setMenu(createHeroPopUpMenu());
+						l.addMouseListener(focusListener);
+						l.addListener(SWT.MouseDown, listener);
+						l.addListener(SWT.MouseMove, listener);
+					}
 
 				if (t == iconCache.castleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
-						b.setMenu(createCastlePopUpMenu());
-						b.setData(new Point(x, y));
-						b.addMouseListener(focusListener);
+						l.setMenu(createCastlePopUpMenu());
+						l.addMouseListener(focusListener);
 					}
 
 				if (t == iconCache.heroInCastleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
-						b.setMenu(createHeroInCastlePopUpMenu());
-						b.setData(new Point(x, y));
-						b.addMouseListener(focusListener);
+						l.setData(new Point(x, y));
+						l.setMenu(createHeroInCastlePopUpMenu());
+						l.addMouseListener(focusListener);
+						l.addListener(SWT.MouseDown, listener);
+						l.addListener(SWT.MouseMove, listener);
 					}
 			}
 		}

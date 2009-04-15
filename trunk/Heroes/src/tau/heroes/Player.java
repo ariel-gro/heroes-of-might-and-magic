@@ -248,6 +248,25 @@ public class Player implements Serializable
 
 		return retVal;
 	}
+	
+	public boolean checkMove(int x,int y, Board board)
+	{
+		if(hero == null)
+			return false;
+
+		int oldX = hero.getXPos();
+		int oldY = hero.getYPos();
+
+		int counter = Math.abs(oldX - x)+Math.abs(oldY-y);
+		if (counter > movesLeft)
+			return false;
+
+		if(hero.checkStepsAllowed(x, y, board) == false)
+			return false;
+			
+		return true;
+	}
+	
 	private void setVisiblePath(int xSource,int ySource,int xDest,int yDest)
 	{
 		int bigX = Math.max(xSource, xDest);
