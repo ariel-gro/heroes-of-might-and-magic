@@ -73,6 +73,8 @@ public class HeroesGui
 	private Composite boardComposite;
 
 	private Composite statusComposite;
+	
+	private Point[][] boardPoints = null;
 
 	SashForm sash;
 
@@ -94,6 +96,10 @@ public class HeroesGui
 		this.numOfCells = gameController.getGameState().getBoard().getSize();
 		iconCache.initResources(display);
 		
+		boardPoints = new Point[numOfCells][numOfCells];
+		for (int y = 0; y < numOfCells; y++)
+			for (int x = 0; x < numOfCells; x++)
+				boardPoints[x][y] = new Point(x,y);	
 	}
 
 	public Shell open()
@@ -259,13 +265,14 @@ public class HeroesGui
 	private void createBoardWindow()
 	{
 		boolean[][] isVisible;
+		Composite currentHero = null;
 
 		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
-			iconCache.freeResources();
-			iconCache.initResources(display);
-			shell.setImage(iconCache.stockImages[iconCache.appIcon]); // workaround - fix if there's time.
+			//iconCache.freeResources();
+			//iconCache.initResources(display);
+			//shell.setImage(iconCache.stockImages[iconCache.appIcon]); // workaround - fix if there's time.
 		}
 
 		boardComposite = new Composite(sc, SWT.NONE);
@@ -367,7 +374,7 @@ public class HeroesGui
 					l.setImage(iconCache.stockImages[iconCache.blackIcon]);
 				
 				String description;
-				if (t != iconCache.grassIcon)
+				if (t != iconCache.grassIcon && t != iconCache.blackIcon)
 				{
 					description = fromBoardToDisplayDecription(x, y);
 					l.setToolTipText(description);
@@ -376,11 +383,12 @@ public class HeroesGui
 				if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
-						l.setData(new Point(x, y));
+						l.setData(boardPoints[x][y]);
 						l.setMenu(createHeroPopUpMenu());
 						l.addMouseListener(focusListener);
 						l.addListener(SWT.MouseDown, listener);
 						l.addListener(SWT.MouseMove, listener);
+						currentHero = b;
 					}
 
 				if (t == iconCache.castleIcon)
@@ -393,11 +401,12 @@ public class HeroesGui
 				if (t == iconCache.heroInCastleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
-						l.setData(new Point(x, y));
+						l.setData(boardPoints[x][y]);
 						l.setMenu(createHeroInCastlePopUpMenu());
 						l.addMouseListener(focusListener);
 						l.addListener(SWT.MouseDown, listener);
 						l.addListener(SWT.MouseMove, listener);
+						currentHero = b;
 					}
 			}
 		}
@@ -407,30 +416,20 @@ public class HeroesGui
 		sc.setExpandVertical(true);
 		sc.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		Control[] controls = boardComposite.getChildren();
-		for (int i = 0; i < controls.length; i++)
-		{
-			int x = i % numOfCells;
-			int y = i / numOfCells;
-			int t = fromBoardToDisplayIcons(x, y);
+		Rectangle bounds = currentHero.getBounds();
+		Rectangle area = sc.getClientArea();
+		Point origin = sc.getOrigin();
+		if (origin.x > bounds.x)
+			origin.x = Math.max(0, bounds.x);
+		if (origin.y > bounds.y)
+			origin.y = Math.max(0, bounds.y);
+		if (origin.x + area.width < bounds.x + bounds.width)
+			origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
+		if (origin.y + area.height < bounds.y + bounds.height)
+			origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
 
-			if (isVisible[x][y] && (t == iconCache.heroIcon || t == iconCache.heroInCastleIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon))
-			{
-				Rectangle bounds = controls[i].getBounds();
-				Rectangle area = sc.getClientArea();
-				Point origin = sc.getOrigin();
-				if (origin.x > bounds.x)
-					origin.x = Math.max(0, bounds.x);
-				if (origin.y > bounds.y)
-					origin.y = Math.max(0, bounds.y);
-				if (origin.x + area.width < bounds.x + bounds.width)
-					origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
-				if (origin.y + area.height < bounds.y + bounds.height)
-					origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
+		sc.setOrigin(origin);
 
-				sc.setOrigin(origin);
-			}
-		}
 	}
 
 
