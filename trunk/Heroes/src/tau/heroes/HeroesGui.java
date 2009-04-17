@@ -394,6 +394,7 @@ public class HeroesGui
 				if (t == iconCache.castleIcon)
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
+						l.setData(boardPoints[x][y]);
 						l.setMenu(createCastlePopUpMenu());
 						l.addMouseListener(focusListener);
 					}
