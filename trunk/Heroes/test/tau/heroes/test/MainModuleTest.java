@@ -47,6 +47,7 @@ public class MainModuleTest extends TestCase {
 		Player player1;
 		Player player2;
 		Hero hero1;
+		@SuppressWarnings("unused")
 		Castle castle1;
 		Castle castle2;
 		
