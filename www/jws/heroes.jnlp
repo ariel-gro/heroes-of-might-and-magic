@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp 
+  spec="1.5+" 
+  codebase="http://heroes-of-might-and-magic.googlecode.com/svn/www/jws/" href="heroes.jnlp"> 
+  <information> 
+    <title>Heroes Of Might And Magic</title> 
+    <vendor>TAU Heroes Team</vendor> 
+    <homepage href="http://code.google.com/p/heroes-of-might-and-magic/"/> 
+    <description>The Heroes of Might & Magic game for project in JAVA development course at TAU</description> 
+    <offline-allowed/>
+    <icon href="heroes-icon.jpg"/>
+    <shortcut>
+      <desktop/>
+    </shortcut>
+  </information> 
+  <security> 
+    <all-permissions/> 
+  </security> 
+  <resources> 
+    <j2se version="1.4+" java-vm-args="-Xmx1024m"/> 
+    <jar href="heroes.jar"/> 
+    <extension name="swt" href="swt.jnlp"/>
+  </resources> 
+  <application-desc main-class="tau.heroes.MainModule">
+    <argument>gui</argument> 
+  </application-desc>
+</jnlp>
