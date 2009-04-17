@@ -16,7 +16,7 @@ public class GameState implements Serializable
 
 	public GameState(boolean isGUI)
 	{
-		this.isGUI = isGUI;
+		GameState.isGUI = isGUI;
 	}
 
 	public int getWhosTurn()

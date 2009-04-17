@@ -23,6 +23,7 @@ public class AttackGUI
 	private Display display;
 	private Shell shell;
 	private Color black;
+	@SuppressWarnings("unused")
 	private Color green;
 	private Color white;
 
