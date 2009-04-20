@@ -68,6 +68,7 @@ public class MainModule
 			if (!d.readAndDispatch())
 				d.sleep();
 		}
+		System.out.println("new !!!");
 //		d.dispose();
 	}
 
