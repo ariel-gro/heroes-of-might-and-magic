@@ -670,7 +670,7 @@ public class HeroesGui
 	/**
 	 * @return Number of players from user input
 	 */
-	protected static int getNumberOfPlayers()
+	public static int getNumberOfPlayers()
 	{
 		String message = "Enter number of players (" + Constants.MIN_PLAYERS + "-" + Constants.MAX_PLAYERS + "): ";
 		int numberOfPlayers = Integer.MIN_VALUE;
