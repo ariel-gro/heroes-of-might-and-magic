@@ -68,7 +68,7 @@ public class MainModule
 			if (!d.readAndDispatch())
 				d.sleep();
 		}
-		d.dispose();
+//		d.dispose();
 	}
 
 	private static void runConsoleView(GameController gameController)
