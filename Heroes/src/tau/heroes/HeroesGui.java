@@ -692,7 +692,7 @@ public class HeroesGui
 		return numberOfPlayers;
 	}
 
-	protected static Vector<Player> getPlayers(int numberOfPlayers)
+	public static Vector<Player> getPlayers(int numberOfPlayers)
 	{
 		String message;
 		String response = null;
