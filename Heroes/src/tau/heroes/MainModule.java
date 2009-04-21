@@ -66,6 +66,7 @@ public class MainModule
 		}
 		gameController.initNewGame(players);
 
+		
 		HeroesGui application = new HeroesGui(d, gameController);
 		Shell shell = application.open();
 		while (!shell.isDisposed())
@@ -73,8 +74,8 @@ public class MainModule
 			if (!d.readAndDispatch())
 				d.sleep();
 		}
-		System.out.println("new !!!");
-//		d.dispose();
+		//d.dispose();
+		System.out.println("12");
 	}
 
 	private static void runConsoleView(GameController gameController)
