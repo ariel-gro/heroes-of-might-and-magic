@@ -46,7 +46,12 @@ public class MainModule
 
 	private static void runGraphicalView(GameController gameController)
 	{
-		Display d = Display.getDefault();
+		Display d = Display.getCurrent();
+		if (d == null)
+		{
+			d = Display.getDefault();
+		}
+		
 		int numberOfPlayers = HeroesGui.getNumberOfPlayers();
 		Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);
 		if (players == null || players.isEmpty() || players.size() < 2
