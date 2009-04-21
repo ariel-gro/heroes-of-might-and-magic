@@ -9,6 +9,7 @@ public class HeroesConsole
 	private enum commands
 	{
 		move("move hero to x,y on the map. Usage: move x y"),
+		movesLeft("show haw many moves my hero has left in this turn"),
 		endTurn("end the player turn. change turn to other player/s"),
 		castle("enter the castle menu"),
 		help("get help for the possible commands"),
@@ -147,6 +148,9 @@ public class HeroesConsole
 		{
 		case move:
 			handleMoveCommand(player, userInput);
+			break;
+		case movesLeft:
+			System.out.println(player.getName() + "`s hero has " + player.getMovesLeft() + " moves left in this turn");
 			break;
 		case endTurn:
 			playerIndex = handleEndTurnCommand(playerIndex, player);
