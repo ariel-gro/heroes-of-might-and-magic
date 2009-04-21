@@ -537,6 +537,7 @@ public class HeroesGui
 			int xPos = p.getHero().getXPos();
 			int yPos = p.getHero().getYPos();
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
+			createLabel(statusComposite, "HERO MOVES LEFT : " + p.getMovesLeft());
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
@@ -1541,7 +1542,7 @@ public class HeroesGui
 			return true;
 		} else
 		{
-			displayError("Illegal move !" + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getName() + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " steps more .");
+			displayError("Illegal move ! " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getName() + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " more step(s) .");
 			return false;
 		}
 	}
