@@ -21,7 +21,7 @@ public abstract class CreatureFactory implements Serializable
 	private HashMap<String, Integer> pricesPerUnit;
 	private final int unitsPerWeek;
 	private int unitsAvailable;
-	private int dayOfTheWeek; /** 1 = Sunday, 2 = Monday,...., 7 = Saturday */
+	private int dayOfTheWeek = 1; /** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
 
 	static 
 	{
@@ -99,18 +99,23 @@ public abstract class CreatureFactory implements Serializable
 		else
 			this.dayOfTheWeek++;
 	}
+	
+	public int getDayAsInt()
+	{
+		return this.dayOfTheWeek;
+	}
 
-	public String getDay()
+	public String getDayAsString()
 	{
 		switch (this.dayOfTheWeek)
 		{
-			case 1: return "Sunday";
-			case 2: return "Monday";
-			case 3: return "Tuesday";
-			case 4: return "Wednesday";
-			case 5: return "Thursday";
-			case 6: return "Friday";
-			case 7: return "Saturday";
+			case 1: return "Day 1";
+			case 2: return "Day 2";
+			case 3: return "Day 3";
+			case 4: return "Day 4";
+			case 5: return "Day 5";
+			case 6: return "Day 6";
+			case 7: return "Day 7";
 			default:
 				return null;
 		}

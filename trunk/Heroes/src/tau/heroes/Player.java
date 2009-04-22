@@ -3,6 +3,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.swt.widgets.Display;
+
 public class Player implements Serializable
 {
 	public static final String COMPUTER_NAME = "computer";
@@ -19,6 +21,7 @@ public class Player implements Serializable
 	private final static int MAX_MOVES_ALLOWED = 5;
 	private int movesLeft;
 	private boolean[][] visibleBoard;
+	private int dayOfTheWeek = 1; /** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
 
 
 
@@ -82,6 +85,11 @@ public class Player implements Serializable
 	{
 		return this.playerName;
 	}
+	
+	public int getDaysWithoutCastles()
+	{
+		return this.daysWithoutCastles;
+	}
 
 	public int getCurrentTreasuryAmount(String type)
 	{
@@ -116,8 +124,12 @@ public class Player implements Serializable
 		if (!this.castles.contains(castle)) {
 			this.castles.add(castle);
 
-			System.out.println(this.playerName + " now has the castle at (" +
+			if (GameState.isGUI() && Display.getCurrent().getActiveShell() != null)
+				HeroesGui.displayMessage(this.playerName + " now has the castle at (" +
 					castle.getXPos() + ", " + castle.getYPos() + ")");
+			else
+				HeroesConsole.displayMessage(this.playerName + " now has the castle at (" +
+						castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
 	}
 
@@ -125,8 +137,12 @@ public class Player implements Serializable
 		if (this.castles.contains(castle)) {
 			this.castles.remove(castle);
 
-			System.out.println(this.playerName + " lost the castle at (" +
+			if (GameState.isGUI())
+				HeroesGui.displayMessage(this.playerName + " lost the castle at (" +
 					castle.getXPos() + ", " + castle.getYPos() + ")");
+			else
+				HeroesConsole.displayMessage(this.playerName + " lost the castle at (" +
+						castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
 	}
 
@@ -190,8 +206,42 @@ public class Player implements Serializable
 			this.castles.get(i).endDay();
 			this.incrementTreasury("gold", Constants.GOLD_PER_CASTLE);
 		}
+		
+		if (this.dayOfTheWeek == 7)
+		{
+			this.dayOfTheWeek = 1;
+			if (GameState.isGUI())
+				HeroesGui.displayMessage("New week started !\n" +
+										"All factories increase creature population");
+			else
+				HeroesConsole.displayMessage("New week started !\n" +
+											"All factories increase creature population");
+		}
+		else
+			this.dayOfTheWeek++;
 
 		System.out.println("Player "+this.playerName+" ended his turn\n");
+	}
+	
+	public int getDayAsInt()
+	{
+		return this.dayOfTheWeek;
+	}
+
+	public String getDayAsString()
+	{
+		switch (this.dayOfTheWeek)
+		{
+			case 1: return "Day 1";
+			case 2: return "Day 2";
+			case 3: return "Day 3";
+			case 4: return "Day 4";
+			case 5: return "Day 5";
+			case 6: return "Day 6";
+			case 7: return "Day 7";
+			default:
+				return null;
+		}
 	}
 
 	public void displayTreasury()

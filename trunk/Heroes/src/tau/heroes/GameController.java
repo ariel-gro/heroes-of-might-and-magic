@@ -238,14 +238,6 @@ public class GameController
 		return rt;
 	}
 
-	public static void displayMessage(String message, boolean isGUI)
-	{
-		if (isGUI)
-			HeroesGui.displayMessage(message);
-		else
-			HeroesConsole.displayMessage(message);
-	}
-
 	public static String handleBuildPricesCommand()
 	{
 		String msg = "Prices:\n\n";

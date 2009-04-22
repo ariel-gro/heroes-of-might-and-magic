@@ -11,6 +11,8 @@ public class HeroesConsole
 		move("move hero to x,y on the map. Usage: move x y"),
 		movesLeft("show haw many moves my hero has left in this turn"),
 		endTurn("end the player turn. change turn to other player/s"),
+		showDay("show what day is it for current player"),
+		daysWithoutCastle("show how many days player is without a castle"),
 		castle("enter the castle menu"),
 		help("get help for the possible commands"),
 		info("get information about your player"),
@@ -150,10 +152,16 @@ public class HeroesConsole
 			handleMoveCommand(player, userInput);
 			break;
 		case movesLeft:
-			System.out.println(player.getName() + "`s hero has " + player.getMovesLeft() + " moves left in this turn");
+			displayMessage(player.getName() + "`s hero has " + player.getMovesLeft() + " moves left in this turn");
 			break;
 		case endTurn:
 			playerIndex = handleEndTurnCommand(playerIndex, player);
+			break;
+		case showDay:
+			displayMessage("Current Day is  :  " + player.getDayAsString());
+			break;
+		case daysWithoutCastle:
+			displayMessage("Days witout castle  :  " + player.getDaysWithoutCastles());
 			break;
 		case castle:
 			castleMenu(player);
@@ -383,13 +391,13 @@ public class HeroesConsole
 			handleBuildCommand(player, theCastle, userInput);
 			break;
 		case buildPrices:
-			System.out.println(GameController.handleBuildPricesCommand());
+			displayMessage(GameController.handleBuildPricesCommand());
 			break;
 		case make:
 			handleMakeCommand(player, theCastle, userInput);
 			break;
 		case makePrices:
-			System.out.println(GameController.handleMakePricesCommand());
+			displayMessage(GameController.handleMakePricesCommand());
 			break;
 		case help:
 			handleCastleHelpCommand();
@@ -668,6 +676,6 @@ public class HeroesConsole
 
 	public static void displayMessage(String message)
 	{
-		System.out.println(message);
+		System.out.println(message + "\n");
 	}
 }

@@ -23,27 +23,49 @@ public class Resource implements Serializable
 		theBoard.placeResource(this, xPos, yPos);
 	}
 
-	public void setOwner(Player player) {
+	public void setOwner(Player player)
+	{
+		String msg;
 		if (this.owner != null) {
 			if (!this.owner.equals(player)) {
 				this.owner.decrementMineQuantity(this.getType().getTypeName());
-				System.out.println("player " + this.owner.getName()
+				msg = ("player " + this.owner.getName()
 						+ " lost ownership over "
 						+ this.getType().getTypeName() + " at place: ("
 						+ this.getXPos() + ", " + this.getYPos() + ")\n");
 			} else {
-				System.out.println("this resource is already yours!");
-				return;
+				msg = ("this resource is already yours!");
 			}
+			
+			if (GameState.isGUI())
+			{
+				HeroesGui.displayMessage(msg);
+			}
+			else
+			{
+				HeroesConsole.displayMessage(msg);
+			}
+			if (msg.equals("this resource is already yours!"))
+				return;
 		}
+		
 		this.owner = player;
 		if(player == null)
 			return;
 		player.incrementMineQuantity(this.getType().getTypeName());
-		System.out.println("player " + this.owner.getName()
+		msg = ("player " + this.owner.getName()
 				+ " took ownership over " + this.getType().getTypeName()
 				+ " at place: (" + this.getXPos() + ", " + this.getYPos()
 				+ ")\n");
+		
+		if (GameState.isGUI())
+		{
+			HeroesGui.displayMessage(msg);
+		}
+		else
+		{
+			HeroesConsole.displayMessage(msg);
+		}
 	}
 
 	public boolean checkOwner(Player player) {

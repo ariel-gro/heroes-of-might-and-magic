@@ -50,13 +50,23 @@ public class Castle implements Serializable
 
 	private void enterHeroIntoOwnCastle(Hero hero)
 	{
-		System.out.println(hero.player.getName() + "'s hero has entered his own castle.");
+		if (GameState.isGUI())
+			HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
+		else
+			HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
 	}
 
 	private void enterHeroIntoOccupiedCastle(Hero hero, boolean bIsHeroInCastle)
 	{
-		System.out.println(hero.player.getName() + "'s hero has entered " + this.player.getName()
+		boolean isGui = GameState.isGUI();
+		if (isGui)
+		{
+			HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
+					+ "'s castle.");
+		} else {
+			HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
 			+ "'s castle.");
+		}
 
 		Hero defendingHero;
 
@@ -70,7 +80,7 @@ public class Castle implements Serializable
 			defendingHero.player = this.player;
 		}
 		hero.attack(defendingHero);
-		System.out.println("attack = "+hero.alive()+" defender = "+defendingHero.alive());
+		System.out.println("attacker = "+hero.alive()+" defender = "+defendingHero.alive());
 		if (hero.alive() && !defendingHero.alive())
 		{
 			army = null;
@@ -143,8 +153,12 @@ public class Castle implements Serializable
 		{
 			this.factories.add(factory);
 
-			System.out.println(this.printLocation() + ": A new " + factory.getName()
-				+ " was added");
+			if (GameState.isGUI())
+				HeroesGui.displayMessage(this.printLocation() + ": A new " + factory.getName()
+						+ " was added");
+			else
+				HeroesConsole.displayMessage(this.printLocation() + ": A new " + factory.getName()
+						+ " was added");
 		}
 	}
 

@@ -151,7 +151,7 @@ public class HeroesGui
 	{
 		if (isModified)
 		{
-			// ask user if they want to save current address book
+			// ask user if they want to save current game
 			MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
 			box.setText(shell.getText());
 			box.setMessage("Close_save");
@@ -527,6 +527,8 @@ public class HeroesGui
 		String str = p.getName();
 		createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
+		createLabel(statusComposite, "DAY  :  " + p.getDayAsString());
+		createLabel(statusComposite, "");
 
 		if (p.getHero() == null)
 		{
@@ -537,7 +539,7 @@ public class HeroesGui
 			int xPos = p.getHero().getXPos();
 			int yPos = p.getHero().getYPos();
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
-			createLabel(statusComposite, "HERO MOVES LEFT : " + p.getMovesLeft());
+			createLabel(statusComposite, "HERO MOVES LEFT  :  " + p.getMovesLeft());
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
@@ -607,6 +609,11 @@ public class HeroesGui
 
 		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
+		if (numOfCastles == 0)
+		{
+			createLabel(statusComposite, "You have no castles");
+			createLabel(statusComposite, "Days witout castle  :  " + (p.getDaysWithoutCastles()+1));
+		}
 		for (int i=0 ; i<numOfCastles ; ++i)
 		{
 			final Castle castle = p.getCastles().get(i);
@@ -1056,6 +1063,10 @@ public class HeroesGui
 	 */
 	private Menu createHeroInCastlePopUpMenu()
 	{
+		/*
+		 * TODO refactor using createCastlePopUpMenu()
+		 */
+		
 		Menu popUpMenu = new Menu(shell, SWT.POP_UP);
 
 		/**
