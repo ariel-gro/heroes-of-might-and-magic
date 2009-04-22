@@ -307,21 +307,21 @@ public class CastleTest extends TestCase {
 		
 		int gold = player1.getCurrentTreasuryAmount("gold");
 		
-		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
-		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
+		assertEquals("Day 1", castle1.getFactory(gFactoryClass).getDayAsString());
+		assertEquals("Day 1", castle1.getFactory(sFactoryClass).getDayAsString());
 		for (int i = 0; i < 6; i++)
 		{
 			player1.endTurn();
 		}
 		gold += 6*Constants.GOLD_PER_CASTLE;
-		assertEquals("Saturday", castle1.getFactory(gFactoryClass).getDay());
-		assertEquals("Saturday", castle1.getFactory(sFactoryClass).getDay());
+		assertEquals("Day 7", castle1.getFactory(gFactoryClass).getDayAsString());
+		assertEquals("Day 7", castle1.getFactory(sFactoryClass).getDayAsString());
 		
 		
 		player1.endTurn();
 		gold += Constants.GOLD_PER_CASTLE;
-		assertEquals("Sunday", castle1.getFactory(gFactoryClass).getDay());
-		assertEquals("Sunday", castle1.getFactory(sFactoryClass).getDay());
+		assertEquals("Day 1", castle1.getFactory(gFactoryClass).getDayAsString());
+		assertEquals("Day 1", castle1.getFactory(sFactoryClass).getDayAsString());
 		assertEquals(gold, player1.getCurrentTreasuryAmount("gold"));
 		
 		assertEquals(10, castle1.getFactory(gFactoryClass).getUnitsAvailableToBuild());
