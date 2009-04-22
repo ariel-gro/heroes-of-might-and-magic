@@ -9,4 +9,3 @@ public enum AlignmentType implements Serializable
 	SORCERESS,
 	WARLOCK
 }
-
