@@ -691,6 +691,8 @@ public class HeroesGui
 			{
 				response = numberInput.getValue();
 			}
+			else
+				return 0;
 
 			if (response != null)
 				numberOfPlayers = Helper.tryParseInt(response);
