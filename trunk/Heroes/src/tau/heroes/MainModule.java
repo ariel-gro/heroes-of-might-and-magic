@@ -60,7 +60,7 @@ public class MainModule
 			Shell s = new Shell(d);
 			MessageBox box = new MessageBox(s, SWT.ICON_ERROR);
 			box
-				.setMessage("Players' names are ilegal! make sure you follow the rules\n\t\tBye-Bye");
+				.setMessage("Game canceled!\n Bye-Bye");
 			box.open();
 			return;
 		}
