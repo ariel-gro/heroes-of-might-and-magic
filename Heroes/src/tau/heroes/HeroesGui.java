@@ -397,6 +397,9 @@ public class HeroesGui
 						l.setData(boardPoints[x][y]);
 						l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 						l.addMouseListener(focusListener);
+						
+						if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
+							currentHero = b;			
 					}
 
 				if (t == iconCache.heroInCastleIcon)
@@ -408,7 +411,7 @@ public class HeroesGui
 						l.addListener(SWT.MouseDown, listener);
 						l.addListener(SWT.MouseMove, listener);
 						currentHero = b;
-					}
+					}					
 			}
 		}
 
