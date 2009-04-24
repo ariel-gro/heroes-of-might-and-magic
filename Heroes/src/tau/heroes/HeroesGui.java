@@ -1232,8 +1232,6 @@ public class HeroesGui
 	 *
 	 * @return Menu The created popup menu.
 	 */
-	
-	
 	private Menu createHeroInCastlePopUpMenu()
 	{
 		Menu popUpMenu;
@@ -1362,17 +1360,6 @@ public class HeroesGui
 			});
 	
 		    new MenuItem(popUpMenu, SWT.SEPARATOR);
-	
-		    final MenuItem endTurnItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    endTurnItem.setText("End Turn");
-		    endTurnItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleEndTurnCommand();
-				}
-			});
-			
-			new MenuItem(popUpMenu, SWT.SEPARATOR);
 			
 		    final MenuItem goblinSplitItem = new MenuItem(popUpMenu, SWT.PUSH);
 		    goblinSplitItem.setText("Split Goblin");
