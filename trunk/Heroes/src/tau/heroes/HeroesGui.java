@@ -1020,7 +1020,7 @@ public class HeroesGui
 
 		Menu buildMenu;
 		if(eclipseComposite != null)
-			buildMenu = new Menu(eclipseComposite);
+			buildMenu = new Menu(eclipseComposite.getShell(), SWT.DROP_DOWN);
 		else
 			buildMenu = new Menu(shell, SWT.DROP_DOWN);
 		

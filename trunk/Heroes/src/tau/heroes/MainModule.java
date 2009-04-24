@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
@@ -17,7 +18,7 @@ public class MainModule
 		boolean isGUI = selectView(args);
 		GameController gameController = new GameController(isGUI);
 		if (isGUI)
-			runGraphicalView(gameController);
+			runGraphicalView(gameController, null);
 		else
 			runConsoleView(gameController);
 	}
@@ -44,8 +45,8 @@ public class MainModule
 		}
 	}
 
-	public static void runGraphicalView(GameController gameController)
-	{
+	public static void runGraphicalView(GameController gameController, Composite c)
+	{	
 		Display d = Display.getCurrent();
 		if (d == null)
 		{
@@ -68,6 +69,10 @@ public class MainModule
 
 		
 		HeroesGui application = new HeroesGui(d, gameController);
+		if (c != null)
+		{
+			application.createEclipseView(c);
+		}
 		Shell shell = application.open();
 		while (!shell.isDisposed())
 		{
