@@ -47,7 +47,17 @@ public class MainModule
 
 	public static void runGraphicalView(GameController gameController, Composite c)
 	{	
-		Display d = Display.getCurrent();
+		
+		Display d;
+		if (c != null)
+		{
+			d = c.getDisplay();
+		}
+		else
+		{
+			d = Display.getCurrent();
+		}
+		
 		if (d == null)
 		{
 			d = Display.getDefault();
@@ -73,11 +83,14 @@ public class MainModule
 		{
 			application.createEclipseView(c);
 		}
-		Shell shell = application.open();
-		while (!shell.isDisposed())
+		else
 		{
-			if (!d.readAndDispatch())
-				d.sleep();
+			Shell shell = application.open();
+			while (!shell.isDisposed())
+			{
+				if (!d.readAndDispatch())
+					d.sleep();
+			}
 		}
 		//d.dispose();
 		System.out.println("12");
