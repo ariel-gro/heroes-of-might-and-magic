@@ -69,6 +69,8 @@ public class HeroesGui
 	private static Point currentPoint;
 	
 	private static Point newPoint;
+	
+	public Composite eclipseComposite;
 
 	private Composite boardComposite;
 
@@ -147,6 +149,37 @@ public class HeroesGui
 		return shell;
 	}
 
+	public void createEclipseView(Composite theEclipseComposite)
+	{
+		eclipseComposite = theEclipseComposite;
+		eclipseComposite.setLayout(new FillLayout());
+		black = display.getSystemColor(SWT.COLOR_BLACK);
+		white = display.getSystemColor(SWT.COLOR_WHITE);
+		cursor = new Cursor(display, SWT.CURSOR_NO);	
+		defaultCursor  = new Cursor(display, SWT.NONE);
+		eclipseComposite.setBackground(black);
+		
+		GridLayout layout = new GridLayout();
+		eclipseComposite.setLayout(layout);
+
+		GridData sashData = new GridData();
+		sashData.grabExcessHorizontalSpace = true;
+		sashData.grabExcessVerticalSpace = true;
+		sashData.horizontalAlignment = GridData.FILL;
+		sashData.verticalAlignment = GridData.FILL;
+		sash = new SashForm(eclipseComposite, SWT.BORDER);
+		sash.setOrientation(SWT.HORIZONTAL);
+		sash.setLayoutData(sashData);
+
+		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		createBoardWindow();
+
+		createStatusWindow();
+
+		sash.setWeights(new int[] { 85, 15 });
+	}
+	
 	private boolean close()
 	{
 		if (isModified)
@@ -906,10 +939,17 @@ public class HeroesGui
 	private Menu createHeroPopUpMenu(int style)
 	{
 		Menu popUpMenu;
-		if (style == SWT.DROP_DOWN)
-			popUpMenu = new Menu(shell, SWT.DROP_DOWN);
+		if(eclipseComposite != null)
+		{
+			popUpMenu = new Menu(eclipseComposite);
+		}
 		else
-			popUpMenu = new Menu(shell, SWT.POP_UP);
+		{
+			if (style == SWT.DROP_DOWN)
+				popUpMenu = new Menu(shell, SWT.DROP_DOWN);
+			else
+				popUpMenu = new Menu(shell, SWT.POP_UP);
+		}
 
 		/**
 		 * Adds a listener to handle enabling and disabling some items in the
@@ -954,10 +994,17 @@ public class HeroesGui
 	private Menu createCastlePopUpMenu(int style)
 	{
 		Menu popUpMenu;
-		if (style == SWT.DROP_DOWN)
-			popUpMenu = new Menu(shell, SWT.DROP_DOWN);
+		if(eclipseComposite != null)
+		{
+			popUpMenu = new Menu(eclipseComposite);
+		}
 		else
-			popUpMenu = new Menu(shell, SWT.POP_UP);
+		{
+			if (style == SWT.DROP_DOWN)
+				popUpMenu = new Menu(shell, SWT.DROP_DOWN);
+			else
+				popUpMenu = new Menu(shell, SWT.POP_UP);
+		}
 
 		/**
 		 * Adds a listener to handle enabling and disabling some items in the
@@ -971,7 +1018,12 @@ public class HeroesGui
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Build");
 
-		Menu buildMenu = new Menu(shell, SWT.DROP_DOWN);
+		Menu buildMenu;
+		if(eclipseComposite != null)
+			buildMenu = new Menu(eclipseComposite);
+		else
+			buildMenu = new Menu(shell, SWT.DROP_DOWN);
+		
 		item.setMenu(buildMenu);
 	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
 	    goblinBuildItem.setText("Goblin factory");
@@ -1017,7 +1069,11 @@ public class HeroesGui
 		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("Make");
 
-		Menu makeMenu = new Menu(shell, SWT.DROP_DOWN);
+		Menu makeMenu;
+		if(eclipseComposite != null)
+			makeMenu = new Menu(eclipseComposite);
+		else
+			makeMenu = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(makeMenu);
 	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
 	    goblinMakeItem.setText("Goblin");
@@ -1082,7 +1138,11 @@ public class HeroesGui
 	 */
 	private Menu createHeroInCastlePopUpMenu()
 	{
-		Menu popUpMenu = new Menu(shell, SWT.POP_UP);
+		Menu popUpMenu;
+		if(eclipseComposite != null)
+			popUpMenu = new Menu(eclipseComposite);
+		else
+			popUpMenu = new Menu(shell, SWT.POP_UP);
 
 		/**
 		 * Adds a listener to handle enabling and disabling some items in the
@@ -1104,6 +1164,53 @@ public class HeroesGui
 		item.setText("Castle Options");
 		item.setMenu(createCastlePopUpMenu(SWT.DROP_DOWN));
 		
+		
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Split");
+
+		Menu splitMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(splitMenu);
+	    final MenuItem goblinSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+	    goblinSplitItem.setText("Goblin");
+	    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleSplitCommand("goblin");
+			}
+		});
+
+	    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+	    soldierSplitItem.setText("Soldier");
+	    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleSplitCommand("soldier");
+			}
+		});
+
+		item = new MenuItem(popUpMenu, SWT.CASCADE);
+		item.setText("Join");
+
+		Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(joinMenu);
+	    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+	    goblinJoinItem.setText("Goblin");
+	    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleJoinCommand("goblin");
+			}
+		});
+
+	    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+	    soldierJoinItem.setText("Soldier");
+	    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleJoinCommand("soldier");
+			}
+		});
+
 		return popUpMenu;
 	}
 
