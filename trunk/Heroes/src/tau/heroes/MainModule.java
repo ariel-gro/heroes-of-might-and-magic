@@ -44,7 +44,7 @@ public class MainModule
 		}
 	}
 
-	private static void runGraphicalView(GameController gameController)
+	public static void runGraphicalView(GameController gameController)
 	{
 		Display d = Display.getCurrent();
 		if (d == null)
