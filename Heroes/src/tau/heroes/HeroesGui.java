@@ -152,7 +152,7 @@ public class HeroesGui
 	public void createEclipseView(Composite theEclipseComposite)
 	{
 		eclipseComposite = theEclipseComposite;
-		eclipseComposite.setLayout(new FillLayout());
+		//eclipseComposite.setLayout(new FillLayout());
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
 		cursor = new Cursor(display, SWT.CURSOR_NO);	
@@ -428,7 +428,7 @@ public class HeroesGui
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
 						l.setData(boardPoints[x][y]);
-						l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
+					//	l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 						l.addMouseListener(focusListener);
 						
 						if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
@@ -439,7 +439,7 @@ public class HeroesGui
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
 						l.setData(boardPoints[x][y]);
-						l.setMenu(createHeroInCastlePopUpMenu());
+						//l.setMenu(createHeroInCastlePopUpMenu());
 						l.addMouseListener(focusListener);
 						l.addListener(SWT.MouseDown, listener);
 						l.addListener(SWT.MouseMove, listener);
@@ -936,6 +936,7 @@ public class HeroesGui
 	 *
 	 * @return Menu The created popup menu.
 	 */
+	
 	private Menu createHeroPopUpMenu(int style)
 	{
 		Menu popUpMenu;
@@ -951,10 +952,6 @@ public class HeroesGui
 				popUpMenu = new Menu(shell, SWT.POP_UP);
 		}
 
-		/**
-		 * Adds a listener to handle enabling and disabling some items in the
-		 * Edit submenu.
-		 */
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{}
@@ -981,6 +978,7 @@ public class HeroesGui
 
 		return popUpMenu;
 	}
+	
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
@@ -991,6 +989,8 @@ public class HeroesGui
 	 *
 	 * @return Menu The created popup menu.
 	 */
+	
+	/**
 	private Menu createCastlePopUpMenu(int style)
 	{
 		Menu popUpMenu;
@@ -1006,10 +1006,6 @@ public class HeroesGui
 				popUpMenu = new Menu(shell, SWT.POP_UP);
 		}
 
-		/**
-		 * Adds a listener to handle enabling and disabling some items in the
-		 * Edit submenu.
-		 */
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{}
@@ -1020,7 +1016,7 @@ public class HeroesGui
 
 		Menu buildMenu;
 		if(eclipseComposite != null)
-			buildMenu = new Menu(eclipseComposite.getShell(), SWT.DROP_DOWN);
+			buildMenu = new Menu(eclipseComposite);
 		else
 			buildMenu = new Menu(shell, SWT.DROP_DOWN);
 		
@@ -1129,6 +1125,8 @@ public class HeroesGui
 
 		return popUpMenu;
 	}
+	
+	*/
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
@@ -1136,18 +1134,21 @@ public class HeroesGui
 	 *
 	 * @return Menu The created popup menu.
 	 */
-	private Menu createHeroInCastlePopUpMenu()
-	{
-		Menu popUpMenu;
-		if(eclipseComposite != null)
-			popUpMenu = new Menu(eclipseComposite);
-		else
-			popUpMenu = new Menu(shell, SWT.POP_UP);
+	
+	
+	//private Menu createHeroInCastlePopUpMenu()
+	//{
+		//Menu popUpMenu;
+		//if(eclipseComposite != null)
+	//		popUpMenu = new Menu(eclipseComposite);
+	//	else
+		//	popUpMenu = new Menu(shell, SWT.POP_UP);
 
 		/**
 		 * Adds a listener to handle enabling and disabling some items in the
 		 * Edit submenu.
 		 */
+	/**
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{
@@ -1214,7 +1215,7 @@ public class HeroesGui
 		return popUpMenu;
 	}
 
-
+*/
 	 /**
 	  * Creates all the items located in the Help submenu and associate all the
 	  * menu items with their appropriate functions.
