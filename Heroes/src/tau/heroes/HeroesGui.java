@@ -428,7 +428,7 @@ public class HeroesGui
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
 						l.setData(boardPoints[x][y]);
-					//	l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
+						l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 						l.addMouseListener(focusListener);
 						
 						if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
@@ -439,7 +439,7 @@ public class HeroesGui
 					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
 					{
 						l.setData(boardPoints[x][y]);
-						//l.setMenu(createHeroInCastlePopUpMenu());
+						l.setMenu(createHeroInCastlePopUpMenu());
 						l.addMouseListener(focusListener);
 						l.addListener(SWT.MouseDown, listener);
 						l.addListener(SWT.MouseMove, listener);
@@ -989,8 +989,6 @@ public class HeroesGui
 	 *
 	 * @return Menu The created popup menu.
 	 */
-	
-	/**
 	private Menu createCastlePopUpMenu(int style)
 	{
 		Menu popUpMenu;
@@ -1011,122 +1009,222 @@ public class HeroesGui
 			{}
 		});
 
-		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Build");
+		if(eclipseComposite!=null)
+		{
+		    final MenuItem goblinBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinBuildItem.setText("Build Goblin factory");
+		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierBuildItem.setText("Build Soldier factory");
+		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    buildPricesItem.setText("Build Prices");
+		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
+					buildPricesShell.setLayout(new FillLayout());
+					buildPricesShell.setSize(200, 200);
+					buildPricesShell.setText("Build Prices");
+					buildPricesShell.setLocation(450, 450);
+					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(buildPricesShell.getClientArea());
+					pricesLable.setText(GameController.handleBuildPricesCommand());
+					buildPricesShell.open();
+					
+					while (!buildPricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		Menu buildMenu;
-		if(eclipseComposite != null)
-			buildMenu = new Menu(eclipseComposite);
+		    final MenuItem goblinMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinMakeItem.setText("Make Goblin");
+		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierMakeItem.setText("Make Soldier");
+		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    makePricesItem.setText("Unit Prices");
+		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
+					makePricesShell.setLayout(new FillLayout());
+					makePricesShell.setSize(200, 200);
+					makePricesShell.setText("Unit Prices");
+					makePricesShell.setLocation(450, 450);
+					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(makePricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(makePricesShell.getClientArea());
+					pricesLable.setText(GameController.handleMakePricesCommand());
+					makePricesShell.open();
+					
+					while (!makePricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
+	
+		    final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
+			item.setText("End Turn");
+			item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleEndTurnCommand();
+				}
+			});
+		}
 		else
-			buildMenu = new Menu(shell, SWT.DROP_DOWN);
-		
-		item.setMenu(buildMenu);
-	    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-	    goblinBuildItem.setText("Goblin factory");
-	    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleBuildCommand("goblin");
-			}
-		});
-
-	    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-	    soldierBuildItem.setText("Soldier factory");
-	    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleBuildCommand("soldier");
-			}
-		});
-	    
-	    final MenuItem buildPricesItem = new MenuItem(buildMenu, SWT.PUSH);
-	    buildPricesItem.setText("Build Prices");
-	    buildPricesItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
-				buildPricesShell.setLayout(new FillLayout());
-				buildPricesShell.setSize(200, 200);
-				buildPricesShell.setText("Build Prices");
-				buildPricesShell.setLocation(450, 450);
-				buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
-				Label pricesLable = new Label(buildPricesShell, SWT.NULL);
-				pricesLable.setBackground(new Color(display, 255,255,255));
-				pricesLable.setBounds(buildPricesShell.getClientArea());
-				pricesLable.setText(GameController.handleBuildPricesCommand());
-				buildPricesShell.open();
-				
-				while (!buildPricesShell.isDisposed())
-					 if (!display.readAndDispatch())
-						 display.sleep();
-			}
-		});
-
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Make");
-
-		Menu makeMenu;
-		if(eclipseComposite != null)
-			makeMenu = new Menu(eclipseComposite);
-		else
-			makeMenu = new Menu(shell, SWT.DROP_DOWN);
-		item.setMenu(makeMenu);
-	    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
-	    goblinMakeItem.setText("Goblin");
-	    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleMakeCommand("goblin");
-			}
-		});
-
-	    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
-	    soldierMakeItem.setText("Soldier");
-	    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleMakeCommand("soldier");
-			}
-		});
-	    
-	    final MenuItem makePricesItem = new MenuItem(makeMenu, SWT.PUSH);
-	    makePricesItem.setText("Unit Prices");
-	    makePricesItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
-				makePricesShell.setLayout(new FillLayout());
-				makePricesShell.setSize(200, 200);
-				makePricesShell.setText("Unit Prices");
-				makePricesShell.setLocation(450, 450);
-				makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
-				Label pricesLable = new Label(makePricesShell, SWT.NULL);
-				pricesLable.setBackground(new Color(display, 255,255,255));
-				pricesLable.setBounds(makePricesShell.getClientArea());
-				pricesLable.setText(GameController.handleMakePricesCommand());
-				makePricesShell.open();
-				
-				while (!makePricesShell.isDisposed())
-					 if (!display.readAndDispatch())
-						 display.sleep();
-			}
-		});
-
-	    new MenuItem(popUpMenu, SWT.SEPARATOR);
-
-	    item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("End Turn");
-		item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleEndTurnCommand();
-			}
-		});
+		{
+			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Build");
+	
+			Menu buildMenu;
+			if(eclipseComposite != null)
+				buildMenu = new Menu(eclipseComposite);
+			else
+				buildMenu = new Menu(shell, SWT.DROP_DOWN);
+			
+			item.setMenu(buildMenu);
+		    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+		    goblinBuildItem.setText("Goblin factory");
+		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
+		    soldierBuildItem.setText("Soldier factory");
+		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem buildPricesItem = new MenuItem(buildMenu, SWT.PUSH);
+		    buildPricesItem.setText("Build Prices");
+		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
+					buildPricesShell.setLayout(new FillLayout());
+					buildPricesShell.setSize(200, 200);
+					buildPricesShell.setText("Build Prices");
+					buildPricesShell.setLocation(450, 450);
+					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(buildPricesShell.getClientArea());
+					pricesLable.setText(GameController.handleBuildPricesCommand());
+					buildPricesShell.open();
+					
+					while (!buildPricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Make");
+	
+			Menu makeMenu;
+			if(eclipseComposite != null)
+				makeMenu = new Menu(eclipseComposite);
+			else
+				makeMenu = new Menu(shell, SWT.DROP_DOWN);
+			item.setMenu(makeMenu);
+		    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+		    goblinMakeItem.setText("Goblin");
+		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
+		    soldierMakeItem.setText("Soldier");
+		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem makePricesItem = new MenuItem(makeMenu, SWT.PUSH);
+		    makePricesItem.setText("Unit Prices");
+		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
+					makePricesShell.setLayout(new FillLayout());
+					makePricesShell.setSize(200, 200);
+					makePricesShell.setText("Unit Prices");
+					makePricesShell.setLocation(450, 450);
+					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(makePricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(makePricesShell.getClientArea());
+					pricesLable.setText(GameController.handleMakePricesCommand());
+					makePricesShell.open();
+					
+					while (!makePricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
+	
+		    item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("End Turn");
+			item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleEndTurnCommand();
+				}
+			});
+		}
 
 		return popUpMenu;
 	}
 	
-	*/
+	
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
@@ -1136,19 +1234,19 @@ public class HeroesGui
 	 */
 	
 	
-	//private Menu createHeroInCastlePopUpMenu()
-	//{
-		//Menu popUpMenu;
-		//if(eclipseComposite != null)
-	//		popUpMenu = new Menu(eclipseComposite);
-	//	else
-		//	popUpMenu = new Menu(shell, SWT.POP_UP);
+	private Menu createHeroInCastlePopUpMenu()
+	{
+		Menu popUpMenu;
+		if(eclipseComposite != null)
+			popUpMenu = new Menu(eclipseComposite);
+		else
+			popUpMenu = new Menu(shell, SWT.POP_UP);
 
 		/**
 		 * Adds a listener to handle enabling and disabling some items in the
 		 * Edit submenu.
 		 */
-	/**
+	
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{
@@ -1156,66 +1254,227 @@ public class HeroesGui
 		});
 		
 
-		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		
-		item.setText("Hero Options");
-		item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
-		
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Castle Options");
-		item.setMenu(createCastlePopUpMenu(SWT.DROP_DOWN));
-		
-		
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Split");
+		if(eclipseComposite!=null)
+		{
+			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Move");
+			item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					moveHero();
+				}
 
-		Menu splitMenu = new Menu(shell, SWT.DROP_DOWN);
-		item.setMenu(splitMenu);
-	    final MenuItem goblinSplitItem = new MenuItem(splitMenu, SWT.PUSH);
-	    goblinSplitItem.setText("Goblin");
-	    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleSplitCommand("goblin");
-			}
-		});
+			});
 
-	    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
-	    soldierSplitItem.setText("Soldier");
-	    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleSplitCommand("soldier");
-			}
-		});
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("End Turn");
+			item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleEndTurnCommand();
+				}
+			});
+			
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+			
+			final MenuItem goblinBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinBuildItem.setText("Build Goblin factory");
+		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierBuildItem.setText("Build Soldier factory");
+		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleBuildCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    buildPricesItem.setText("Build Prices");
+		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
+					buildPricesShell.setLayout(new FillLayout());
+					buildPricesShell.setSize(200, 200);
+					buildPricesShell.setText("Build Prices");
+					buildPricesShell.setLocation(450, 450);
+					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(buildPricesShell.getClientArea());
+					pricesLable.setText(GameController.handleBuildPricesCommand());
+					buildPricesShell.open();
+					
+					while (!buildPricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Join");
-
-		Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
-		item.setMenu(joinMenu);
-	    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
-	    goblinJoinItem.setText("Goblin");
-	    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleJoinCommand("goblin");
-			}
-		});
-
-	    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
-	    soldierJoinItem.setText("Soldier");
-	    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleJoinCommand("soldier");
-			}
-		});
+		    final MenuItem goblinMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinMakeItem.setText("Make Goblin");
+		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierMakeItem.setText("Make Soldier");
+		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleMakeCommand("soldier");
+				}
+			});
+		    
+		    final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    makePricesItem.setText("Unit Prices");
+		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
+					makePricesShell.setLayout(new FillLayout());
+					makePricesShell.setSize(200, 200);
+					makePricesShell.setText("Unit Prices");
+					makePricesShell.setLocation(450, 450);
+					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					Label pricesLable = new Label(makePricesShell, SWT.NULL);
+					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBounds(makePricesShell.getClientArea());
+					pricesLable.setText(GameController.handleMakePricesCommand());
+					makePricesShell.open();
+					
+					while (!makePricesShell.isDisposed())
+						 if (!display.readAndDispatch())
+							 display.sleep();
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
+	
+		    final MenuItem endTurnItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    endTurnItem.setText("End Turn");
+		    endTurnItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleEndTurnCommand();
+				}
+			});
+			
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+			
+		    final MenuItem goblinSplitItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinSplitItem.setText("Split Goblin");
+		    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleSplitCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierSplitItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierSplitItem.setText("Split Soldier");
+		    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleSplitCommand("soldier");
+				}
+			});
+	
+		    new MenuItem(popUpMenu, SWT.SEPARATOR);
+			
+		    final MenuItem goblinJoinItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    goblinJoinItem.setText("Join Goblin");
+		    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleJoinCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierJoinItem = new MenuItem(popUpMenu, SWT.PUSH);
+		    soldierJoinItem.setText("Join Soldier");
+		    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleJoinCommand("soldier");
+				}
+			});
+		}
+		else
+		{
+			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			
+			item.setText("Hero Options");
+			item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
+			
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Castle Options");
+			item.setMenu(createCastlePopUpMenu(SWT.DROP_DOWN));
+			
+			
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Split");
+	
+			Menu splitMenu = new Menu(shell, SWT.DROP_DOWN);
+			item.setMenu(splitMenu);
+		    final MenuItem goblinSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+		    goblinSplitItem.setText("Goblin");
+		    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleSplitCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
+		    soldierSplitItem.setText("Soldier");
+		    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleSplitCommand("soldier");
+				}
+			});
+	
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
+			item.setText("Join");
+	
+			Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
+			item.setMenu(joinMenu);
+		    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+		    goblinJoinItem.setText("Goblin");
+		    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleJoinCommand("goblin");
+				}
+			});
+	
+		    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
+		    soldierJoinItem.setText("Soldier");
+		    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					handleJoinCommand("soldier");
+				}
+			});
+		}
 
 		return popUpMenu;
 	}
 
-*/
+
 	 /**
 	  * Creates all the items located in the Help submenu and associate all the
 	  * menu items with their appropriate functions.
