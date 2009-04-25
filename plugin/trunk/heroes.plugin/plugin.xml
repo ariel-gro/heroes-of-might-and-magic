@@ -111,9 +111,9 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="heroes.plugin.PerspectiveFactory2"
-            fixed="true"
-            id="heroes.plugin.perspective2"
+            class="heroes.plugin.Perspective"
+            fixed="false"
+            id="heroes.plugin.perspective.heroesperspective"
             name="Heroes of might and magic">
       </perspective>
    </extension>
