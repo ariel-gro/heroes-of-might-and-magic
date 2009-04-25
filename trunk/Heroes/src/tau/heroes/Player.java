@@ -123,13 +123,6 @@ public class Player implements Serializable
 	public void addCastle(Castle castle) {
 		if (!this.castles.contains(castle)) {
 			this.castles.add(castle);
-
-			if (GameState.isGUI() && Display.getCurrent().getActiveShell() != null)
-				HeroesGui.displayMessage(this.playerName + " now has the castle at (" +
-					castle.getXPos() + ", " + castle.getYPos() + ")");
-			else
-				HeroesConsole.displayMessage(this.playerName + " now has the castle at (" +
-						castle.getXPos() + ", " + castle.getYPos() + ")");
 		}
 	}
 

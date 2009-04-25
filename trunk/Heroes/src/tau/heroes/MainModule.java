@@ -45,7 +45,7 @@ public class MainModule
 		}
 	}
 
-	public static void runGraphicalView(GameController gameController, Composite c)
+	public static HeroesGui runGraphicalView(GameController gameController, Composite c)
 	{	
 		
 		Display d;
@@ -73,7 +73,7 @@ public class MainModule
 			box
 				.setMessage("Game canceled!\n Bye-Bye");
 			box.open();
-			return;
+			return null;
 		}
 		gameController.initNewGame(players);
 
@@ -82,6 +82,7 @@ public class MainModule
 		if (c != null)
 		{
 			application.createEclipseView(c);
+			return application;
 		}
 		else
 		{
@@ -94,6 +95,7 @@ public class MainModule
 		}
 		//d.dispose();
 		System.out.println("12");
+		return null;
 	}
 
 	private static void runConsoleView(GameController gameController)
