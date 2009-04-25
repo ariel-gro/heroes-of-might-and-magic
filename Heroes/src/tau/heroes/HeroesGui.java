@@ -152,6 +152,7 @@ public class HeroesGui
 	public void createEclipseView(Composite theEclipseComposite)
 	{
 		eclipseComposite = theEclipseComposite;
+		shell = eclipseComposite.getShell();
 		//eclipseComposite.setLayout(new FillLayout());
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
@@ -697,11 +698,12 @@ public class HeroesGui
 	public static void displayMessage(String msg)
 	{
 		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
+		box.setText(Display.getCurrent().getActiveShell().getText());
 		box.setMessage(msg);
 		box.open();
 	}
 
-	private void startNewGame()
+	public void startNewGame()
 	{
 		int numberOfPlayers = getNumberOfPlayers();
 		Vector<Player> players = getPlayers(numberOfPlayers);
@@ -768,8 +770,9 @@ public class HeroesGui
 		return players;
 	}
 
-	private void openFileDlg()
+	public void openFileDlg()
 	{
+	
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 
 		fileDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
@@ -798,7 +801,7 @@ public class HeroesGui
 		waitCursor.dispose();
 	}
 
-	private boolean save()
+	public boolean save()
 	{
 		if (file == null)
 			return saveAs();
@@ -816,9 +819,9 @@ public class HeroesGui
 		return true;
 	}
 
-	private boolean saveAs()
+	public boolean saveAs()
 	{
-
+	
 		FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
 		saveDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
 		saveDialog.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
@@ -1487,38 +1490,7 @@ public class HeroesGui
 		 {
 			 public void widgetSelected(SelectionEvent e)
 			 {
-				 String helpString;
-
-				 helpString = "\n" +
-				 "Heroes of Might and Magic (TAU Version)\n" +
-				 "Gameplay assistance\n\n" +
-				 "To move: Right click your hero, or just click hero and click destenation.\n" +
-				 "To end turn: Right click your hero or castle(s) and select 'end turn'\n" +
-				 "Castle menu and options are:\n" +
-				 "Build - build a creature factory\n" +
-				 "Make - make a new creature\n" +
-				 "Split - move units from hero to castle\n" +
-				 "Join - move units from castle to hero\n" +
-				 "\n" +
-				 "Player info is on the right part of the screen (status window)\n\n" +
-				 "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n" +
-				 "Use the Highscores menu to view or reset the highscores table\n\n" +
-				 "Quitting the game is via File -> Exit\n\n\n" +
-				 "Enjoy the game";
-
-				 Shell gameHelpShell = new Shell(Display.getCurrent().getActiveShell());
-				 gameHelpShell.setLayout(new FillLayout());
-				 gameHelpShell.setSize(700, 350);
-				 gameHelpShell.setText("Gameplay assistance");
-				 gameHelpShell.setImage(iconCache.stockImages[iconCache.appIcon]);
-				 Label gameHelp = new Label(gameHelpShell, SWT.CENTER);
-				 gameHelp.setBounds(gameHelpShell.getClientArea());
-				 gameHelp.setText(helpString);
-				 gameHelpShell.open();
-
-				 while (!gameHelpShell.isDisposed())
-					 if (!display.readAndDispatch())
-						 display.sleep();
+				 showGameAssistanceMbox();
 			 }
 		 });
 
@@ -1529,14 +1501,40 @@ public class HeroesGui
 		 subItem.addSelectionListener(new SelectionAdapter() {
 			 public void widgetSelected(SelectionEvent e)
 			 {
-				 MessageBox box = new MessageBox(shell, SWT.NONE);
-				 box.setText(shell.getText());
-				 box.setMessage(shell.getText());
-				 box.open();
+				 showAboutMbox();
 			 }
 		 });
 	 }
+	 public void showGameAssistanceMbox()
+	 {
+		 String helpString;
 
+		 helpString = "\n" +
+		 "Heroes of Might and Magic (TAU Version)\n" +
+		 "Gameplay assistance\n\n" +
+		 "To move: Right click your hero, or just click hero and click destenation.\n" +
+		 "To end turn: Right click your hero or castle(s) and select 'end turn'\n" +
+		 "Castle menu and options are:\n" +
+		 "Build - build a creature factory\n" +
+		 "Make - make a new creature\n" +
+		 "Split - move units from hero to castle\n" +
+		 "Join - move units from castle to hero\n" +
+		 "\n" +
+		 "Player info is on the right part of the screen (status window)\n\n" +
+		 "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n" +
+		 "Use the Highscores menu to view or reset the highscores table\n\n" +
+		 "Quitting the game is via File -> Exit\n\n\n" +
+		 "Enjoy the game";
+		 displayMessage(helpString);
+	 }
+	 public void showAboutMbox()
+	 {
+		 String aboutString;
+		 aboutString = "\n" +
+		 "Heroes of Might and Magic (TAU Version)\n"+
+		 "(C) 2009 - All right reserved!";
+		 displayMessage(aboutString);
+	 }
 	/**
 	 * creates all the items in the high scores sub-menu, and associates all menu
 	 * items to the right functions
@@ -1558,9 +1556,7 @@ public class HeroesGui
 		subItem1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				GameScoreBoard board = new GameScoreBoard();
-				board.load();
-				displayTable(board);
+				displayHighscores();
 			}
 		});
 		MenuItem subItem2 = new MenuItem(menu, SWT.NULL);
@@ -1568,22 +1564,31 @@ public class HeroesGui
 		subItem2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-				messageBox.setMessage("Are you sure you want to clear higscores table?\nThis action can not be reversed");
-				messageBox.setText("Clear Highscores");
-				int response = messageBox.open();
-				if (response == SWT.YES)
-				{
-					GameScoreBoard board = new GameScoreBoard();
-					board.load();
-					board.clearScoreBoard();
-					board.save();
-					displayTable(board);
-				}
+				resetHighscores();	
 			}
 		});
 	}
-
+	public void displayHighscores()
+	{
+		GameScoreBoard board = new GameScoreBoard();
+		board.load();
+		displayTable(board);
+	}
+	public void resetHighscores()
+	{
+		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+		messageBox.setMessage("Are you sure you want to clear higscores table?\nThis action can not be reversed");
+		messageBox.setText("Clear Highscores");
+		int response = messageBox.open();
+		if (response == SWT.YES)
+		{
+			GameScoreBoard board = new GameScoreBoard();
+			board.load();
+			board.clearScoreBoard();
+			board.save();
+			displayTable(board);
+		}
+	}
 	/**
 	 * helper for the high-scores table display
 	 *
