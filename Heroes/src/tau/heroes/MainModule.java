@@ -4,11 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainModule
@@ -63,21 +60,6 @@ public class MainModule
 			d = Display.getDefault();
 		}
 		
-		int numberOfPlayers = HeroesGui.getNumberOfPlayers();
-		Vector<Player> players = HeroesGui.getPlayers(numberOfPlayers);
-		if (players == null || players.isEmpty() || players.size() < 2
-			|| players.get(0).isComputer())
-		{
-			Shell s = new Shell(d);
-			MessageBox box = new MessageBox(s, SWT.ICON_ERROR);
-			box
-				.setMessage("Game canceled!\n Bye-Bye");
-			box.open();
-			return null;
-		}
-		gameController.initNewGame(players);
-
-		
 		HeroesGui application = new HeroesGui(d, gameController);
 		if (c != null)
 		{
@@ -94,7 +76,6 @@ public class MainModule
 			}
 		}
 		//d.dispose();
-		System.out.println("12");
 		return null;
 	}
 

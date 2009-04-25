@@ -52,7 +52,7 @@ public class HeroesGui
 
 	private static IconCache iconCache = new IconCache();
 
-	final int numOfCells;
+	int numOfCells;
 
 	private Color black;
 
@@ -95,13 +95,7 @@ public class HeroesGui
 	{
 		this.display = d;
 		this.gameController = gameController;
-		this.numOfCells = gameController.getGameState().getBoard().getSize();
 		iconCache.initResources(display);
-		
-		boardPoints = new Point[numOfCells][numOfCells];
-		for (int y = 0; y < numOfCells; y++)
-			for (int x = 0; x < numOfCells; x++)
-				boardPoints[x][y] = new Point(x,y);	
 	}
 
 	public Shell open()
@@ -138,14 +132,17 @@ public class HeroesGui
 		sash.setLayoutData(sashData);
 
 		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setBackground(black);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		createBoardWindow();
-
-		createStatusWindow();
-
-		sash.setWeights(new int[] { 85, 15 });
+		
+		createBoardWindow(false);
+		createStatusWindow(false);
+		sash.setWeights(new int[] { 85, 15 });	
 
 		shell.open();
+		
+		displayStartWindow();
+		
 		return shell;
 	}
 
@@ -153,7 +150,6 @@ public class HeroesGui
 	{
 		eclipseComposite = theEclipseComposite;
 		shell = eclipseComposite.getShell();
-		//eclipseComposite.setLayout(new FillLayout());
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
 		cursor = new Cursor(display, SWT.CURSOR_NO);	
@@ -174,11 +170,12 @@ public class HeroesGui
 
 		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		createBoardWindow();
-
-		createStatusWindow();
-
+		
+		createBoardWindow(false);
+		createStatusWindow(false);
 		sash.setWeights(new int[] { 85, 15 });
+		
+		displayStartWindow();
 	}
 	
 	private boolean close()
@@ -296,7 +293,7 @@ public class HeroesGui
 		return "";
 	}
 
-	private void createBoardWindow()
+	private void createBoardWindow(boolean initBoard)
 	{
 		boolean[][] isVisible;
 		Composite currentHero = null;
@@ -304,170 +301,176 @@ public class HeroesGui
 		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
-			//iconCache.freeResources();
-			//iconCache.initResources(display);
-			//shell.setImage(iconCache.stockImages[iconCache.appIcon]); // workaround - fix if there's time.
 		}
-
+		
 		boardComposite = new Composite(sc, SWT.NONE);
 		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
 
-		GridLayout tableLayout = new GridLayout();
-		tableLayout.numColumns = numOfCells;
-		tableLayout.makeColumnsEqualWidth = true;
-		tableLayout.horizontalSpacing = 0;
-		tableLayout.verticalSpacing = 0;
-		boardComposite.setLayout(tableLayout);
-
-		isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
-
-		MouseListener focusListener = new MouseListener() {
-			public void mouseDown(MouseEvent e)
-			{
-				Label selectedLabel = (Label) e.getSource();
-				currentPoint = (Point) selectedLabel.getData();
-			}
-
-			public void mouseDoubleClick(MouseEvent arg0)
-			{}
-
-			public void mouseUp(MouseEvent arg0)
-			{}
-		};
-		
-		Listener listener = new Listener() {
-			Point point = null;
-			
-			public void handleEvent(Event event)
-			{
-				switch (event.type)
-				{
-					case SWT.MouseDown:
-						if (event.button == 1)
-						{
-							point = new Point(event.x, event.y);
-						}
-					break;
-					case SWT.MouseMove:
-						if (point == null)
-							break;
-	
-						int x = point.x - event.x;
-						int y = point.y - event.y;
-						if (Math.abs(x) < 8 && Math.abs(y) < 8)
-							break;			
-
-						Control control = (Control) event.widget;
-						final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
-						Rectangle rect = control.getBounds();
-						final Rectangle r1 = display.map(control, boardComposite, rect);
-						tracker.setRectangles(new Rectangle[] { r1 });
-						tracker.addListener(SWT.Move, new Listener() {
-							public void handleEvent(Event event)
-							{
-								Rectangle r2 = tracker.getRectangles()[0];								
-								newPoint = new Point(r2.x/r2.width, r2.y/r2.height);
-								
-								if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).checkMove((r2.x/r2.width), (r2.y/r2.height), gameController.getGameState().getBoard()))
-									tracker.setCursor(cursor);
-								else
-									tracker.setCursor(defaultCursor);
-							}
-						});
-						
-						if (!tracker.open())
-							break;
-						
-						if(newPoint != null && currentPoint != null && !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
-							handleMoveCommand(new String[]{newPoint.x+"", newPoint.y+""});
-						
-						point = null;
-					break;
-				}
-			}
-		};
-
-		for (int y = 0; y < numOfCells; y++)
+		if(initBoard)
 		{
-			for (int x = 0; x < numOfCells; x++)
-			{
-				Composite b = new Composite(boardComposite, SWT.NONE);
-				GridLayout cellLayout = new GridLayout();
-				cellLayout.marginWidth = 0;
-				cellLayout.marginHeight = 0;
-				b.setLayout(cellLayout);
-				Label l = new Label(b, SWT.NONE);
-				l.setLayoutData(new GridData(GridData.FILL_BOTH));
-				int t = fromBoardToDisplayIcons(x, y);
-
-				if (isVisible[x][y])
-					l.setImage(iconCache.stockImages[t]);
-				else
-					l.setImage(iconCache.stockImages[iconCache.blackIcon]);
-				
-				String description;
-				if (t != iconCache.grassIcon && t != iconCache.blackIcon)
+			this.numOfCells = gameController.getGameState().getBoard().getSize();
+			
+			boardPoints = new Point[numOfCells][numOfCells];
+			for (int y = 0; y < numOfCells; y++)
+				for (int x = 0; x < numOfCells; x++)
+					boardPoints[x][y] = new Point(x,y);	
+			
+			GridLayout tableLayout = new GridLayout();
+			tableLayout.numColumns = numOfCells;
+			tableLayout.makeColumnsEqualWidth = true;
+			tableLayout.horizontalSpacing = 0;
+			tableLayout.verticalSpacing = 0;
+			boardComposite.setLayout(tableLayout);
+	
+			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
+	
+			MouseListener focusListener = new MouseListener() {
+				public void mouseDown(MouseEvent e)
 				{
-					description = fromBoardToDisplayDecription(x, y);
-					l.setToolTipText(description);
+					Label selectedLabel = (Label) e.getSource();
+					currentPoint = (Point) selectedLabel.getData();
 				}
-
-				if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+	
+				public void mouseDoubleClick(MouseEvent arg0)
+				{}
+	
+				public void mouseUp(MouseEvent arg0)
+				{}
+			};
+			
+			Listener listener = new Listener() {
+				Point point = null;
+				
+				public void handleEvent(Event event)
+				{
+					switch (event.type)
 					{
-						l.setData(boardPoints[x][y]);
-						l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
-						l.addMouseListener(focusListener);
-						l.addListener(SWT.MouseDown, listener);
-						l.addListener(SWT.MouseMove, listener);
-						currentHero = b;
+						case SWT.MouseDown:
+							if (event.button == 1)
+							{
+								point = new Point(event.x, event.y);
+							}
+						break;
+						case SWT.MouseMove:
+							if (point == null)
+								break;
+		
+							int x = point.x - event.x;
+							int y = point.y - event.y;
+							if (Math.abs(x) < 8 && Math.abs(y) < 8)
+								break;			
+	
+							Control control = (Control) event.widget;
+							final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
+							Rectangle rect = control.getBounds();
+							final Rectangle r1 = display.map(control, boardComposite, rect);
+							tracker.setRectangles(new Rectangle[] { r1 });
+							tracker.addListener(SWT.Move, new Listener() {
+								public void handleEvent(Event event)
+								{
+									Rectangle r2 = tracker.getRectangles()[0];								
+									newPoint = new Point(r2.x/r2.width, r2.y/r2.height);
+									
+									if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).checkMove((r2.x/r2.width), (r2.y/r2.height), gameController.getGameState().getBoard()))
+										tracker.setCursor(cursor);
+									else
+										tracker.setCursor(defaultCursor);
+								}
+							});
+							
+							if (!tracker.open())
+								break;
+							
+							if(newPoint != null && currentPoint != null && !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
+								handleMoveCommand(new String[]{newPoint.x+"", newPoint.y+""});
+							
+							point = null;
+						break;
 					}
-
-				if (t == iconCache.castleIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+				}
+			};
+	
+			for (int y = 0; y < numOfCells; y++)
+			{
+				for (int x = 0; x < numOfCells; x++)
+				{
+					Composite b = new Composite(boardComposite, SWT.NONE);
+					GridLayout cellLayout = new GridLayout();
+					cellLayout.marginWidth = 0;
+					cellLayout.marginHeight = 0;
+					b.setLayout(cellLayout);
+					Label l = new Label(b, SWT.NONE);
+					l.setLayoutData(new GridData(GridData.FILL_BOTH));
+					int t = fromBoardToDisplayIcons(x, y);
+	
+					if (isVisible[x][y])
+						l.setImage(iconCache.stockImages[t]);
+					else
+						l.setImage(iconCache.stockImages[iconCache.blackIcon]);
+					
+					String description;
+					if (t != iconCache.grassIcon && t != iconCache.blackIcon)
 					{
-						l.setData(boardPoints[x][y]);
-						l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
-						l.addMouseListener(focusListener);
-						
-						if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
-							currentHero = b;			
+						description = fromBoardToDisplayDecription(x, y);
+						l.setToolTipText(description);
 					}
-
-				if (t == iconCache.heroInCastleIcon)
-					if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
-					{
-						l.setData(boardPoints[x][y]);
-						l.setMenu(createHeroInCastlePopUpMenu());
-						l.addMouseListener(focusListener);
-						l.addListener(SWT.MouseDown, listener);
-						l.addListener(SWT.MouseMove, listener);
-						currentHero = b;
-					}					
+	
+					if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
+						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+						{
+							l.setData(boardPoints[x][y]);
+							l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
+							l.addMouseListener(focusListener);
+							l.addListener(SWT.MouseDown, listener);
+							l.addListener(SWT.MouseMove, listener);
+							currentHero = b;
+						}
+	
+					if (t == iconCache.castleIcon)
+						if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+						{
+							l.setData(boardPoints[x][y]);
+							l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
+							l.addMouseListener(focusListener);
+							
+							if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
+								currentHero = b;			
+						}
+	
+					if (t == iconCache.heroInCastleIcon)
+						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+						{
+							l.setData(boardPoints[x][y]);
+							l.setMenu(createHeroInCastlePopUpMenu());
+							l.addMouseListener(focusListener);
+							l.addListener(SWT.MouseDown, listener);
+							l.addListener(SWT.MouseMove, listener);
+							currentHero = b;
+						}					
+				}
 			}
+	
+			sc.setContent(boardComposite);
+			sc.setExpandHorizontal(true);
+			sc.setExpandVertical(true);
+			sc.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	
+			Rectangle bounds = currentHero.getBounds();
+			Rectangle area = sc.getClientArea();
+			Point origin = sc.getOrigin();
+			if (origin.x > bounds.x)
+				origin.x = Math.max(0, bounds.x);
+			if (origin.y > bounds.y)
+				origin.y = Math.max(0, bounds.y);
+			if (origin.x + area.width < bounds.x + bounds.width)
+				origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
+			if (origin.y + area.height < bounds.y + bounds.height)
+				origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
+	
+			sc.setOrigin(origin);
 		}
-
-		sc.setContent(boardComposite);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		sc.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
-		Rectangle bounds = currentHero.getBounds();
-		Rectangle area = sc.getClientArea();
-		Point origin = sc.getOrigin();
-		if (origin.x > bounds.x)
-			origin.x = Math.max(0, bounds.x);
-		if (origin.y > bounds.y)
-			origin.y = Math.max(0, bounds.y);
-		if (origin.x + area.width < bounds.x + bounds.width)
-			origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
-		if (origin.y + area.height < bounds.y + bounds.height)
-			origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
-
-		sc.setOrigin(origin);
-
 	}
 
 
@@ -479,6 +482,97 @@ public class HeroesGui
 		return tempLabel;
 	}
 
+	private void displayStartWindow()
+	{
+		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
+		
+		GridLayout layout1 = new GridLayout (4, true);
+		layout1.marginWidth = layout1.marginHeight = 10;
+		shell.setLayout (layout1);
+	
+		GridData newGameData = new GridData();
+		newGameData.horizontalSpan = 4;
+		newGameData.grabExcessHorizontalSpace = true;
+		newGameData.grabExcessVerticalSpace = true;
+		final Button newGame = new Button (shell, SWT.RADIO);
+		newGame.setSelection(true);
+		newGame.setText ("Start a New Game");
+		newGame.setLayoutData(newGameData);
+		
+		GridData loadGameData = new GridData();
+		loadGameData.horizontalSpan = 4;
+		loadGameData.grabExcessHorizontalSpace = true;
+		loadGameData.grabExcessVerticalSpace = true;
+		final Button loadGame = new Button (shell, SWT.RADIO);
+		loadGame.setText ("Load a Saved Game");
+		loadGame.setLayoutData(loadGameData);
+		
+		GridData emptyLabelData1 = new GridData();
+		emptyLabelData1.grabExcessHorizontalSpace = true;
+		emptyLabelData1.horizontalSpan = 4;
+		Label emptyLabel1 = new Label(shell, SWT.None);
+		emptyLabel1.setVisible(false);
+		emptyLabel1.setLayoutData(emptyLabelData1);
+		
+		GridData okData = new GridData();
+		okData.grabExcessHorizontalSpace = true;
+		okData.grabExcessVerticalSpace = true;
+		okData.horizontalSpan = 1;
+		Button okButton = new Button (shell, SWT.PUSH);
+		okButton.setText ("    OK    ");
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				if(newGame.getSelection())
+					startNewGame();
+				else if(loadGame.getSelection())
+					openFileDlg();
+
+				shell.dispose();
+			}
+		});
+		okButton.setLayoutData(okData);
+		
+		GridData cancelData = new GridData();
+		cancelData.grabExcessHorizontalSpace = true;
+		Button cancelButton = new Button (shell, SWT.PUSH);
+		cancelButton.setText (" Cancel ");
+		cancelButton.setLayoutData(cancelData);
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.dispose();
+			}
+		});
+		
+		GridData emptyLabelData2 = new GridData();
+		emptyLabelData2.grabExcessHorizontalSpace = true;
+		Label emptyLabel2 = new Label(shell, SWT.None);
+		emptyLabel2.setVisible(false);
+		emptyLabel2.setLayoutData(emptyLabelData2);
+		
+		GridData helpData = new GridData();
+		helpData.grabExcessHorizontalSpace = true;
+		Button helpButton = new Button (shell, SWT.PUSH);
+		helpButton.setText ("  Help  ");
+		helpButton.setLayoutData(helpData);
+		helpButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showGameAssistanceMbox();
+			}
+		});
+		
+		shell.pack ();
+		
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	}
 
 	private void displayCastleInfo(Castle castle)
 	{
@@ -531,17 +625,24 @@ public class HeroesGui
 	}
 
 
-	private void createStatusWindow()
+	private void createStatusWindow(boolean initStatus)
 	{
+
+		if (statusComposite != null && statusComposite.isDisposed() == false)
+		{
+			statusComposite.dispose();
+		}
+		
 		statusComposite = new Composite(sash, SWT.BORDER);
-		statusComposite.setBackground(white);
+		statusComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
 
-		updateStatusWindow();
+		if(initStatus)
+			updateStatusWindow();
 	}
 
 
@@ -550,6 +651,7 @@ public class HeroesGui
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		TableItem ti;
 
+		statusComposite.setBackground(white);
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
@@ -709,8 +811,9 @@ public class HeroesGui
 		Vector<Player> players = getPlayers(numberOfPlayers);
 		gameController.initNewGame(players);
 
-		createBoardWindow();
-		updateStatusWindow();
+		createBoardWindow(true);
+		createStatusWindow(true);
+		sash.setWeights(new int[] { 85, 15 });
 	}
 
 	/**
@@ -794,8 +897,9 @@ public class HeroesGui
 		this.gameController.loadGame(name);
 		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
 
-		createBoardWindow();
-		updateStatusWindow();
+		createBoardWindow(true);
+		createStatusWindow(true);
+		sash.setWeights(new int[] { 85, 15 });
 
 		shell.setCursor(null);
 		waitCursor.dispose();
@@ -1710,7 +1814,7 @@ public class HeroesGui
 		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 		this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-		createBoardWindow();
+		createBoardWindow(true);
 		updateStatusWindow();
 
 		//Here is the computer move.
@@ -1733,7 +1837,7 @@ public class HeroesGui
 			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
 			this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-			createBoardWindow();
+			createBoardWindow(true);
 			updateStatusWindow();
 		}
 	}
@@ -1773,7 +1877,7 @@ public class HeroesGui
 			return false;
 		} else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
 		{
-			createBoardWindow();
+			createBoardWindow(true);
 			updateStatusWindow();
 			return true;
 		} else
