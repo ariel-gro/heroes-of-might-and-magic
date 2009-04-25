@@ -97,7 +97,7 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="heroes.plugin.view.category1"
+            id="heroes.plugin.view.heroescategory"
             name="Heroes">
       </category>
       <view
