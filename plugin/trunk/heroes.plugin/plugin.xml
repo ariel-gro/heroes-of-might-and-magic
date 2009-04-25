@@ -49,6 +49,16 @@
                tooltip="Hello, Eclipse world">
          </action>
          <action
+               class="heroes.plugin.actions.ExitGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.exitGameAction"
+               label="Exit Game"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               toolbarPath="sampleGroup"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
                class="heroes.plugin.actions.SaveAsGameAction"
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.actions.saveGameAsAction"
