@@ -3,8 +3,6 @@
    <description url="http://heroes-of-might-and-magic.googlecode.com/svn/site/trunk/">
       Heroes of Might and Magic Update Site
    </description>
-   <feature url="features/heroes.feature_1.1.9.jar" id="heroes.feature" version="1.1.9">
-      <category name="Heroes"/>
-   </feature>
+   <feature url="features/heroes.feature_1.1.10.jar" id="heroes.feature" version="1.1.10"/>
    <category-def name="Heroes" label="Heroes"/>
 </site>
