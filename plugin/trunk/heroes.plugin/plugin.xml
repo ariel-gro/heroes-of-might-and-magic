@@ -55,7 +55,6 @@
                label="Exit Game"
                menubarPath="sampleMenu/sampleGroup"
                style="push"
-               toolbarPath="sampleGroup"
                tooltip="Hello, Eclipse world">
          </action>
          <action
