@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            icon="icons/Heroes-icon.jpg">
+         <run
+               class="tau.heroes.rcp.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Perspective"
+            class="tau.heroes.rcp.Perspective"
+            id="Heroes.rcp.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="View"
+            class="tau.heroes.rcp.View"
+            id="Heroes.rcp.view">
+      </view>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="Heroes.rcp.application"
+            name="Heroes RCP application">
+         <property
+               name="appName"
+               value="Heroes RCP application">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/HeroesV-of-Might-and-Magic-2-16x16.gif,icons/HeroesV-of-Might-and-Magic-2-32x32.gif,icons/HeroesV-of-Might-and-Magic-2-48x48.gif,icons/HeroesV-of-Might-and-Magic-2-64x64.gif,icons/HeroesV-of-Might-and-Magic-2-128x128.gif">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="HeroesRCP.actionSet"
+            label="Heroes Action Set"
+            visible="true">
+         <menu
+               id="HeroesRCP.menu3"
+               label="Help">
+         </menu>
+         <action
+               class="tau.heroes.rcp.AssistanceAction"
+               id="HeroesRCP.actions.AssistanceAction"
+               label="Gameplay Assistance"
+               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.AssistanceAction"
+               style="push">
+         </action>
+         <action
+               class="tau.heroes.rcp.AboutAction"
+               id="HeroesRCP.actions.AboutAction"
+               label="About"
+               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.AboutAction"
+               style="push">
+         </action>
+         <menu
+               id="HeroesRCP.menu2"
+               label="Highscores">
+         </menu>
+         <action
+               class="tau.heroes.rcp.DisplayHighscoresAction"
+               id="HeroesRCP.actions.DisplayHighscoresAction"
+               label="Display Highscores"
+               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.DisplayHighscoresAction"
+               style="push"
+               tooltip="Display the latest highscores table">
+         </action>
+         <action
+               class="tau.heroes.rcp.ResetHighscoresAction"
+               id="HeroesRCP.actions.ResetHighscoresAction"
+               label="Reset Highscores"
+               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.ResetHighscoresAction"
+               style="push">
+         </action>
+         <menu
+               id="HeroesRCP.menu1"
+               label="&amp;File">
+         </menu>
+         <action
+               class="tau.heroes.rcp.NewGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="HeroesRCP.actions.NewGameAction"
+               label="&amp;New"
+               menubarPath="HeroesRCP.menu1/HeroesRCP.actions.NewGameAction"
+               tooltip="Start a new game">
+         </action>
+         <action
+               class="tau.heroes.rcp.LoadGameAction"
+               id="HeroesRCP.actions.LoadGameAction"
+               label="&amp;Load"
+               menubarPath="HeroesRCP.menu1/HeroesRCP.actions.LoadGameAction"
+               style="push"
+               tooltip="Load a saved game">
+         </action>
+         <action
+               class="tau.heroes.rcp.SaveGameAction"
+               id="HeroesRCP.actions.SaveGameAction"
+               label="&amp;Save"
+               menubarPath="HeroesRCP.menu1/HeroesRCP.actions.SaveGameAction"
+               style="push"
+               tooltip="Save a game">
+         </action>
+         <action
+               class="tau.heroes.rcp.SaveAsGameAction"
+               id="HeroesRCP.actions.SaveAsGameAction"
+               label="Save As"
+               menubarPath="HeroesRCP.menu1/HeroesRCP.actions.SaveAsGameAction"
+               style="push"
+               tooltip="Save a game">
+         </action>
+         <action
+               class="tau.heroes.rcp.ExitGameAction"
+               id="HeroesRCP.actions.ExitGameAction"
+               label="&amp;Exit"
+               menubarPath="HeroesRCP.menu1/HeroesRCP.actions.ExitGameAction"
+               style="push">
+         </action>
+      </actionSet>
+   </extension>
+
+</plugin>
