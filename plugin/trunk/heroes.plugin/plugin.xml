@@ -11,49 +11,22 @@
          <menu
                id="sampleMenu"
                label="Heroes">
+            <groupMarker
+                  name="heroes.plugin.file">
+            </groupMarker>
+            <groupMarker
+                  name="heroes.plugin.score">
+            </groupMarker>
+            <groupMarker
+                  name="heroes.plugin.help">
+            </groupMarker>
          </menu>
-         <action
-               class="heroes.plugin.actions.AboutAction"
-               icon="icons/Heroes-icon.jpg"
-               id="heroes.plugin.actions.aboutAction"
-               label="About"
-               menubarPath="sampleMenu/sampleGroup"
-               style="push"
-               tooltip="Hello, Eclipse world">
-         </action>
-         <action
-               class="heroes.plugin.actions.AssistanceAction"
-               icon="icons/Heroes-icon.jpg"
-               id="heroes.plugin.actions.assistanceAction"
-               label="Gameplay Assistance"
-               menubarPath="sampleMenu/sampleGroup"
-               style="push"
-               tooltip="Hello, Eclipse world">
-         </action>
-         <action
-               class="heroes.plugin.actions.ResetHighscoresAction"
-               icon="icons/Heroes-icon.jpg"
-               id="heroes.plugin.actions.resetHighscoresAction"
-               label="Reset Highscores"
-               menubarPath="sampleMenu/sampleGroup"
-               style="push"
-               tooltip="Hello, Eclipse world">
-         </action>
-         <action
-               class="heroes.plugin.actions.DisplayHighscoresAction"
-               icon="icons/Heroes-icon.jpg"
-               id="heroes.plugin.actions.displayHighscoresAction"
-               label="Display Highscores"
-               menubarPath="sampleMenu/sampleGroup"
-               style="push"
-               tooltip="Hello, Eclipse world">
-         </action>
          <action
                class="heroes.plugin.actions.ExitGameAction"
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.actions.exitGameAction"
                label="Exit Game"
-               menubarPath="sampleMenu/sampleGroup"
+               menubarPath="sampleMenu/file"
                style="push"
                tooltip="Hello, Eclipse world">
          </action>
@@ -62,7 +35,7 @@
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.actions.saveGameAsAction"
                label="Save Game As"
-               menubarPath="sampleMenu/sampleGroup"
+               menubarPath="sampleMenu/file"
                style="push"
                tooltip="Hello, Eclipse world">
          </action>
@@ -71,7 +44,7 @@
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.saveGameAction"
                label="Save Game"
-               menubarPath="sampleMenu/sampleGroup"
+               menubarPath="sampleMenu/file"
                style="push">
          </action>
          <action
@@ -79,7 +52,7 @@
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.actions.loadGameAction"
                label="Open Saved Game"
-               menubarPath="sampleMenu/sampleGroup"
+               menubarPath="sampleMenu/file"
                style="push">
          </action>
          <action
@@ -87,10 +60,46 @@
                icon="icons/Heroes-icon.jpg"
                id="heroes.plugin.actions.newGameAction"
                label="New Game"
-               menubarPath="sampleMenu/sampleGroup"
+               menubarPath="sampleMenu/file"
                style="push"
                toolbarPath="sampleGroup"
                tooltip="Heroes of might and magic">
+         </action>
+         <action
+               class="heroes.plugin.actions.ResetHighscoresAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.resetHighscoresAction"
+               label="Reset Highscores"
+               menubarPath="sampleMenu/scores"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.DisplayHighscoresAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.displayHighscoresAction"
+               label="Display Highscores"
+               menubarPath="sampleMenu/scores"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.AboutAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.aboutAction"
+               label="About"
+               menubarPath="sampleMenu/help"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.AssistanceAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.assistanceAction"
+               label="Gameplay Assistance"
+               menubarPath="sampleMenu/help"
+               style="push"
+               tooltip="Hello, Eclipse world">
          </action>
       </actionSet>
    </extension>
