@@ -1,9 +1,5 @@
 package heroes.plugin.view;
 
-//import java.awt.Label;
-
-
-
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
