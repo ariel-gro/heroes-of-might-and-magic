@@ -7,7 +7,7 @@
          id="application"
          point="org.eclipse.core.runtime.applications">
       <application
-            icon="icons/Heroes-icon.jpg">
+            icon="icons/HeroesV-of-Might-and-Magic-2-32x32.gif">
          <run
                class="tau.heroes.rcp.Application">
          </run>
@@ -98,7 +98,7 @@
          </menu>
          <action
                class="tau.heroes.rcp.NewGameAction"
-               icon="icons/Heroes-icon.jpg"
+               icon="icons/HeroesV-of-Might-and-Magic-2-32x32.gif"
                id="HeroesRCP.actions.NewGameAction"
                label="&amp;New"
                menubarPath="HeroesRCP.menu1/HeroesRCP.actions.NewGameAction"
@@ -133,6 +133,7 @@
                id="HeroesRCP.actions.ExitGameAction"
                label="&amp;Exit"
                menubarPath="HeroesRCP.menu1/HeroesRCP.actions.ExitGameAction"
+               mode="FORCE_TEXT"
                style="push">
          </action>
       </actionSet>
