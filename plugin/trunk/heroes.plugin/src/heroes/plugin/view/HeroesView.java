@@ -17,7 +17,7 @@ import tau.heroes.HeroesGui;
 
 public class HeroesView extends ViewPart 
 {
-	
+	public static final String ID = "heroes.plugin.view.heroesview";
 	public static HeroesGui GUI;
 	
 

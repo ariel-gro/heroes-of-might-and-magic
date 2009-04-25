@@ -90,7 +90,7 @@
                menubarPath="sampleMenu/sampleGroup"
                style="push"
                toolbarPath="sampleGroup"
-               tooltip="Hello, Eclipse world">
+               tooltip="Heroes of might and magic">
          </action>
       </actionSet>
    </extension>
@@ -107,6 +107,15 @@
             name="Heroes"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="heroes.plugin.PerspectiveFactory2"
+            fixed="true"
+            id="heroes.plugin.perspective2"
+            name="Heroes of might and magic">
+      </perspective>
    </extension>
 
 </plugin>
