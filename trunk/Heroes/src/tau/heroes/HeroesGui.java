@@ -808,12 +808,18 @@ public class HeroesGui
 	public void startNewGame()
 	{
 		int numberOfPlayers = getNumberOfPlayers();
-		Vector<Player> players = getPlayers(numberOfPlayers);
-		gameController.initNewGame(players);
-
-		createBoardWindow(true);
-		createStatusWindow(true);
-		sash.setWeights(new int[] { 85, 15 });
+		if(numberOfPlayers != 0)
+		{
+			Vector<Player> players = getPlayers(numberOfPlayers);
+			if(players != null)
+			{
+				gameController.initNewGame(players);
+		
+				createBoardWindow(true);
+				createStatusWindow(true);
+				sash.setWeights(new int[] { 85, 15 });
+			}
+		}
 	}
 
 	/**
