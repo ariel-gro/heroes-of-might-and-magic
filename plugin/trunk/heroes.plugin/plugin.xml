@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Heroes"
+            visible="true"
+            id="heroes.plugin.actionSet">
+         <menu
+               id="sampleMenu"
+               label="Heroes">
+         </menu>
+         <action
+               class="heroes.plugin.actions.AboutAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.aboutAction"
+               label="About"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.AssistanceAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.assistanceAction"
+               label="Gameplay Assistance"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.ResetHighscoresAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.resetHighscoresAction"
+               label="Reset Highscores"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.DisplayHighscoresAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.displayHighscoresAction"
+               label="Display Highscores"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.SaveAsGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.saveGameAsAction"
+               label="Save Game As"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               tooltip="Hello, Eclipse world">
+         </action>
+         <action
+               class="heroes.plugin.actions.SaveGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.saveGameAction"
+               label="Save Game"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push">
+         </action>
+         <action
+               class="heroes.plugin.actions.loadGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.loadGameAction"
+               label="Open Saved Game"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push">
+         </action>
+         <action
+               class="heroes.plugin.actions.newGameAction"
+               icon="icons/Heroes-icon.jpg"
+               id="heroes.plugin.actions.newGameAction"
+               label="New Game"
+               menubarPath="sampleMenu/sampleGroup"
+               style="push"
+               toolbarPath="sampleGroup"
+               tooltip="Hello, Eclipse world">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="heroes.plugin.view.category1"
+            name="Heroes">
+      </category>
+      <view
+            category="heroes.plugin.view.heroescategory"
+            class="heroes.plugin.view.HeroesView"
+            id="heroes.plugin.view.heroesview"
+            name="Heroes"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
