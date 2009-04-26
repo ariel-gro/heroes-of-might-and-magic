@@ -135,9 +135,7 @@ public class HeroesGui
 		sc.setBackground(black);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		createBoardWindow(false);
-		createStatusWindow(false);
-		sash.setWeights(new int[] { 85, 15 });	
+		initBlankGame();	
 
 		shell.open();
 		
@@ -171,14 +169,27 @@ public class HeroesGui
 		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		createBoardWindow(false);
-		createStatusWindow(false);
-		sash.setWeights(new int[] { 85, 15 });
+		initBlankGame();
+		
+		shell.addShellListener(new ShellAdapter() {
+			public void shellClosed(ShellEvent e)
+			{
+				e.doit = close();
+			}
+		});
+		
+		
 		
 		//displayStartWindow();
 	}
+
+	public void initBlankGame() {
+		createBoardWindow(false);
+		createStatusWindow(false);
+		sash.setWeights(new int[] { 85, 15 });
+	}
 	
-	private boolean close()
+	public boolean close()
 	{
 		if (isModified)
 		{
@@ -204,6 +215,7 @@ public class HeroesGui
 		defaultCursor.dispose();
 		white.dispose();
 		black.dispose();
+		
 
 		return true;
 	}
