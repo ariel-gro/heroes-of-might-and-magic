@@ -141,7 +141,7 @@ public class HeroesGui
 
 		shell.open();
 		
-		displayStartWindow();
+		//displayStartWindow();
 		
 		return shell;
 	}
@@ -175,7 +175,7 @@ public class HeroesGui
 		createStatusWindow(false);
 		sash.setWeights(new int[] { 85, 15 });
 		
-		displayStartWindow();
+		//displayStartWindow();
 	}
 	
 	private boolean close()
