@@ -3,7 +3,7 @@
 <repository name='file:/C:/workspace/heroes.site/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1240704345209'/>
+    <property name='p2.timestamp' value='1240735029932'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
@@ -11,6 +11,13 @@
     <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
   </mappings>
   <artifacts size='8'>
+    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.11'>
+      <properties size='3'>
+        <property name='artifact.size' value='430144'/>
+        <property name='download.size' value='430144'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.9'>
       <properties size='3'>
         <property name='artifact.size' value='430140'/>
@@ -24,6 +31,13 @@
         <property name='download.size' value='687'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.12'>
+      <properties size='3'>
+        <property name='artifact.size' value='430916'/>
+        <property name='download.size' value='430916'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.11'>
       <properties size='3'>
         <property name='artifact.size' value='430937'/>
@@ -31,17 +45,10 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.11'>
+    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.12'>
       <properties size='2'>
         <property name='artifact.size' value='687'/>
         <property name='download.size' value='687'/>
-      </properties>
-    </artifact>
-    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.11'>
-      <properties size='3'>
-        <property name='artifact.size' value='430144'/>
-        <property name='download.size' value='430144'/>
-        <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
     <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.11'>
@@ -54,13 +61,6 @@
       <properties size='2'>
         <property name='artifact.size' value='687'/>
         <property name='download.size' value='687'/>
-      </properties>
-    </artifact>
-    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.11'>
-      <properties size='3'>
-        <property name='artifact.size' value='430937'/>
-        <property name='download.size' value='430937'/>
-        <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
   </artifacts>
