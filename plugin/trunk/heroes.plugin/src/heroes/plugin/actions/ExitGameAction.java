@@ -9,6 +9,12 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
+import org.eclipse.swt.widgets.Composite;
+
+import tau.heroes.GameController;
+import tau.heroes.HeroesGui;
+import tau.heroes.MainModule;
+
 public class ExitGameAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
 	@Override
@@ -26,8 +32,10 @@ public class ExitGameAction implements IWorkbenchWindowActionDelegate {
 	@Override
 	public void run(IAction action) {
 		// TODO Auto-generated method stub
-		IWorkbenchAction exit = ActionFactory.QUIT.create(window);
-		exit.run();
+		//IWorkbenchAction exit = ActionFactory.QUIT.create(window);
+		//exit.run();
+	
+		HeroesView.GUI.initBlankGame();
 	}
 
 	@Override

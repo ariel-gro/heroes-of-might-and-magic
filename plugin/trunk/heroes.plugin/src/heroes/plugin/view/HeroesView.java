@@ -19,6 +19,7 @@ public class HeroesView extends ViewPart
 {
 	public static final String ID = "heroes.plugin.view.heroesview";
 	public static HeroesGui GUI;
+	public static Composite parent;
 	
 
 	public HeroesView() {
@@ -28,6 +29,7 @@ public class HeroesView extends ViewPart
 	@Override
 	public void createPartControl(Composite parent) {
 		//TODO: here we should creat the game window.
+		this.parent = parent;
 		GameController game = new GameController(true);
 		GUI = MainModule.runGraphicalView(game, parent);
 		if(GUI == null)
