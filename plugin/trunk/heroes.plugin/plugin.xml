@@ -107,14 +107,14 @@
          point="org.eclipse.ui.views">
       <category
             id="heroes.plugin.view.heroescategory"
-            name="Heroes">
+            name="Heroes of might and magic">
       </category>
       <view
             category="heroes.plugin.view.heroescategory"
             class="heroes.plugin.view.HeroesView"
             icon="icons/Heroes-icon.jpg"
             id="heroes.plugin.view.heroesview"
-            name="Heroes"
+            name="Heroes View"
             restorable="true">
       </view>
    </extension>
@@ -125,7 +125,7 @@
             fixed="false"
             icon="icons/Heroes-icon.jpg"
             id="heroes.plugin.perspective.heroesperspective"
-            name="Heroes of might and magic">
+            name="Heroes Perspective">
       </perspective>
    </extension>
 
