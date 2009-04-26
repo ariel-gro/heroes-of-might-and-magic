@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Plugin Plug-in
 Bundle-SymbolicName: heroes.plugin; singleton:=true
-Bundle-Version: 1.1.11
+Bundle-Version: 1.1.12
 Bundle-Activator: heroes.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
