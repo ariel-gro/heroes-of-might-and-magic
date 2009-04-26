@@ -920,6 +920,13 @@ public class HeroesGui
 		this.gameController.loadGame(name);
 		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
 
+		if (gameController.getGameState().getBoard() == null)
+		{
+			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n" +
+							"Please try again with a different file");
+			return;
+		}
+		
 		createBoardWindow(true);
 		createStatusWindow(true);
 		sash.setWeights(new int[] { 85, 15 });
@@ -989,6 +996,8 @@ public class HeroesGui
 	 */
 	private void createFileMenu(Menu menuBar)
 	{
+		final MenuItem saveAsSubItem, saveSubItem;
+		
 		// File menu.
 		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
 		item.setText("File");
@@ -1000,47 +1009,61 @@ public class HeroesGui
 			{}
 		});
 
-		// File -> New Game
+		//space reserve for File -> New and File -> Open Saved Game
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("New Game");
-		subItem.setAccelerator(SWT.MOD1 + 'N');
-		subItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				startNewGame();
-			}
-		});
-
-		// File -> Open Saved Game
-		subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("Open Saved Game");
-		subItem.setAccelerator(SWT.MOD1 + 'O');
-		subItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				openFileDlg();
-			}
-		});
+		MenuItem openSubItem = new MenuItem(menu, SWT.NULL);
+		new MenuItem(menu, SWT.SEPARATOR);
+		
 
 		// File -> Save.
-		subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("Save Game");
-		subItem.setAccelerator(SWT.MOD1 + 'S');
-		subItem.addSelectionListener(new SelectionAdapter() {
+		saveSubItem = new MenuItem(menu, SWT.NULL);
+		saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
+		saveSubItem.setText("Save Game");
+		saveSubItem.setAccelerator(SWT.MOD1 + 'S');
+		saveSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
 				save();
 			}
 		});
 
+
 		// File -> Save As.
-		subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("Save Game as");
-		subItem.setAccelerator(SWT.MOD1 + 'A');
-		subItem.addSelectionListener(new SelectionAdapter() {
+		saveAsSubItem = new MenuItem(menu, SWT.NULL);
+		saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
+		saveAsSubItem.setText("Save Game as");
+		saveAsSubItem.setAccelerator(SWT.MOD1 + 'A');
+		saveAsSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
 				saveAs();
+			}
+		});
+		
+		// File -> New Game
+		subItem.setText("New Game");
+		subItem.setAccelerator(SWT.MOD1 + 'N');
+		subItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				//TODO: ariel
+				startNewGame();
+				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
+				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
+			}
+		});
+		
+		
+		// File -> Open Saved Game
+		openSubItem.setText("Open Saved Game");
+		openSubItem.setAccelerator(SWT.MOD1 + 'O');
+		openSubItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				//TODO: ariel
+				openFileDlg();
+				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
+				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 			}
 		});
 
@@ -1052,6 +1075,7 @@ public class HeroesGui
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				close();
 				shell.close();
 			}
 		});
@@ -2084,6 +2108,7 @@ public class HeroesGui
 			return;
 		}
 	}
+		
 
 	private void handleMakeCommand(String type)
 	{
