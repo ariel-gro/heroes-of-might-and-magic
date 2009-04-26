@@ -326,6 +326,10 @@ public class HeroesConsole
 		else
 		{
 			String fileName = userInput[1];
+			if (!fileName.endsWith(".sav"))
+			{
+				displayMessage("Not a valid Heroes *.sav file.\nTry again or start a new game");
+			}
 			if (this.gameController.loadGame(fileName))
 				System.out.println("Game has been load from '" + fileName + "'.");
 		}

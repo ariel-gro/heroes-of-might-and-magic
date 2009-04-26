@@ -890,10 +890,15 @@ public class HeroesGui
 
 		if (name == null)
 			return;
+		if (!name.endsWith(".sav"))
+		{
+			displayMessage("Not a valid Heroes *.sav file.\nTry again or start a new game");
+			return;
+		}
 		File file = new File(name);
 		if (!file.exists())
 		{
-			displayError("File " + file.getName() + " " + "Does_not_exist");
+			displayError("File " + file.getName() + " " + "Does not exist");
 			return;
 		}
 
