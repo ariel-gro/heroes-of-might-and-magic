@@ -18,14 +18,14 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.9'>
+    <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.12'>
       <properties size='3'>
         <property name='artifact.size' value='430140'/>
         <property name='download.size' value='430140'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.10'>
+    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.12'>
       <properties size='2'>
         <property name='artifact.size' value='687'/>
         <property name='download.size' value='687'/>
@@ -57,7 +57,7 @@
         <property name='download.size' value='687'/>
       </properties>
     </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.9'>
+    <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.12'>
       <properties size='2'>
         <property name='artifact.size' value='687'/>
         <property name='download.size' value='687'/>
