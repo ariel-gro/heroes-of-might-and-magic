@@ -684,7 +684,7 @@ public class HeroesGui
 		TableItem ti;
 
 		statusComposite.setBackground(white);
-		int statusWidth = (sc2.getSize().x);
+		int statusWidth = (sc2.getSize().x-30);
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
