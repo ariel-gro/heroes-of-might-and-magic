@@ -694,7 +694,7 @@ public class HeroesGui
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(iconCache.stockImages[iconCache.appIcon]);
-		firstLabel.setText("  PLAYER   STATUS");
+		firstLabel.setText("      PLAYER   STATUS");
 
 		String str = p.getName();
 		createLabel(statusComposite, "PLAYER  NAME  :  " + str);
