@@ -80,7 +80,9 @@ public class HeroesGui
 
 	SashForm sash;
 
-	private ScrolledComposite sc;
+	private ScrolledComposite sc1;
+	
+	private ScrolledComposite sc2;
 	
 	Cursor cursor;;
 	
@@ -131,9 +133,14 @@ public class HeroesGui
 		sash.setOrientation(SWT.HORIZONTAL);
 		sash.setLayoutData(sashData);
 
-		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		sc.setBackground(black);
-		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		sc1 = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc1.setBackground(black);
+		sc1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
+		
+		sc2 = new ScrolledComposite(sash, SWT.BORDER | SWT.V_SCROLL);
+		sc2.setBackground(black);
+		//sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		initBlankGame();	
 
@@ -166,8 +173,12 @@ public class HeroesGui
 		sash.setOrientation(SWT.HORIZONTAL);
 		sash.setLayoutData(sashData);
 
-		sc = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		sc1 = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
+		sc2 = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
 		
 		initBlankGame();
 		
@@ -186,7 +197,8 @@ public class HeroesGui
 	public void initBlankGame() {
 		createBoardWindow(false);
 		createStatusWindow(false);
-		sash.setWeights(new int[] { 85, 15 });
+		//sash.setWeights(new int[] { 85, 15 });
+		sash.setWeights(new int[] { 80, 20 });
 	}
 	
 	public boolean close()
@@ -315,7 +327,7 @@ public class HeroesGui
 			boardComposite.dispose();
 		}
 		
-		boardComposite = new Composite(sc, SWT.NONE);
+		boardComposite = new Composite(sc1, SWT.NONE);
 		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
@@ -464,14 +476,14 @@ public class HeroesGui
 				}
 			}
 	
-			sc.setContent(boardComposite);
-			sc.setExpandHorizontal(true);
-			sc.setExpandVertical(true);
-			sc.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	
+			sc1.setContent(boardComposite);
+			sc1.setExpandHorizontal(true);
+			sc1.setExpandVertical(true);
+			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
 			Rectangle bounds = currentHero.getBounds();
-			Rectangle area = sc.getClientArea();
-			Point origin = sc.getOrigin();
+			Rectangle area = sc1.getClientArea();
+			Point origin = sc1.getOrigin();
 			if (origin.x > bounds.x)
 				origin.x = Math.max(0, bounds.x);
 			if (origin.y > bounds.y)
@@ -481,7 +493,7 @@ public class HeroesGui
 			if (origin.y + area.height < bounds.y + bounds.height)
 				origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
 	
-			sc.setOrigin(origin);
+			sc1.setOrigin(origin);
 		}
 	}
 
@@ -645,17 +657,25 @@ public class HeroesGui
 			statusComposite.dispose();
 		}
 		
-		statusComposite = new Composite(sash, SWT.BORDER);
+		//statusComposite = new ScrolledComposite(sash, SWT.BORDER);
+		statusComposite = new Composite(sc2, SWT.BORDER);
 		statusComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
-
+		
 		if(initStatus)
 			updateStatusWindow();
+		
+		sc2.setContent(statusComposite);
+		sc2.setExpandHorizontal(true);
+		sc2.setExpandVertical(true);
+		sc2.setMinSize(statusComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));	
+		
 	}
+		
 
 
 	private void updateStatusWindow()
@@ -664,6 +684,7 @@ public class HeroesGui
 		TableItem ti;
 
 		statusComposite.setBackground(white);
+		int statusWidth = (sc2.getSize().x);
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
@@ -690,9 +711,9 @@ public class HeroesGui
 			int xPos = p.getHero().getXPos();
 			int yPos = p.getHero().getYPos();
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
-			createLabel(statusComposite, "HERO MOVES LEFT  :  " + p.getMovesLeft());
+			createLabel(statusComposite, "HERO  MOVES  LEFT  :  " + p.getMovesLeft());
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
-			createLabel(statusComposite, "ATTACK   SKILL  :  " + p.getHero().getAttackSkill());
+			createLabel(statusComposite, "ATTACK  SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
 
 			createLabel(statusComposite, "ARMY  :");
@@ -701,8 +722,10 @@ public class HeroesGui
 			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
 			armyCol1.setText("Slot");
 			armyCol2.setText("Units");
+			//armyCol1.setWidth(40);
+			//armyCol2.setWidth(138);
 			armyCol1.setWidth(40);
-			armyCol2.setWidth(138);
+			armyCol2.setWidth(statusWidth-40);
 			armyTable.setHeaderVisible(true);
 			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
 			for (Integer j=1 ; j<6 ; ++j)
@@ -720,14 +743,15 @@ public class HeroesGui
 			}
 		}
 
+		createLabel(statusComposite, "");
 		createLabel(statusComposite, "MINE  LIST  :");
 		Table minesTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
 		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
 		minesCol1.setText("Mine");
 		minesCol2.setText("Quantity");
-		minesCol1.setWidth(89);
-		minesCol2.setWidth(89);
+		minesCol1.setWidth(80);
+		minesCol2.setWidth(statusWidth-80);
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
@@ -739,14 +763,15 @@ public class HeroesGui
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] {"Stone", stoneNum.toString()});
 
+		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST  :");
 		Table treasursTable = new Table(statusComposite, SWT.BORDER);
 		TableColumn treasursCol1 = new TableColumn(treasursTable, SWT.CENTER);
 		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
 		treasursCol1.setText("Resource");
 		treasursCol2.setText("Amount");
-		treasursCol1.setWidth(89);
-		treasursCol2.setWidth(89);
+		treasursCol1.setWidth(80);
+		treasursCol2.setWidth(statusWidth-80);
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
@@ -758,6 +783,7 @@ public class HeroesGui
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] {"Stone", stoneAmount.toString()});
 
+		createLabel(statusComposite, "");
 		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
 		if (numOfCastles == 0)
@@ -829,7 +855,8 @@ public class HeroesGui
 		
 				createBoardWindow(true);
 				createStatusWindow(true);
-				sash.setWeights(new int[] { 85, 15 });
+				//sash.setWeights(new int[] { 85, 15 });
+				sash.setWeights(new int[] { 80, 20 });
 			}
 		}
 	}
@@ -929,7 +956,8 @@ public class HeroesGui
 		
 		createBoardWindow(true);
 		createStatusWindow(true);
-		sash.setWeights(new int[] { 85, 15 });
+		//sash.setWeights(new int[] { 85, 15 });
+		sash.setWeights(new int[] { 80, 20 });
 
 		shell.setCursor(null);
 		waitCursor.dispose();
