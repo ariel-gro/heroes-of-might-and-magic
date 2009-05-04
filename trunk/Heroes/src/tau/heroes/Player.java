@@ -130,12 +130,15 @@ public class Player implements Serializable
 		if (this.castles.contains(castle)) {
 			this.castles.remove(castle);
 
-			if (GameState.isGUI())
-				HeroesGui.displayMessage(this.playerName + " lost the castle at (" +
-					castle.getXPos() + ", " + castle.getYPos() + ")");
-			else
-				HeroesConsole.displayMessage(this.playerName + " lost the castle at (" +
-						castle.getXPos() + ", " + castle.getYPos() + ")");
+			if (!(this.playerName.equals("computer")))
+			{
+				if (GameState.isGUI())
+					HeroesGui.displayMessage(this.playerName + " lost the castle at (" +
+							castle.getXPos() + ", " + castle.getYPos() + ")");
+				else
+					HeroesConsole.displayMessage(this.playerName + " lost the castle at (" +
+							castle.getXPos() + ", " + castle.getYPos() + ")");
+			}
 		}
 	}
 
@@ -203,12 +206,15 @@ public class Player implements Serializable
 		if (this.dayOfTheWeek == 7)
 		{
 			this.dayOfTheWeek = 1;
-			if (GameState.isGUI())
-				HeroesGui.displayMessage("New week started !\n" +
-										"All factories increase creature population");
-			else
-				HeroesConsole.displayMessage("New week started !\n" +
-											"All factories increase creature population");
+			if (!(this.getName().equals("computer")))
+			{
+				if (GameState.isGUI())
+					HeroesGui.displayMessage("New week started !\n" +
+					"All factories increase creature population");
+				else
+					HeroesConsole.displayMessage("New week started !\n" +
+						"All factories increase creature population");
+			}
 		}
 		else
 			this.dayOfTheWeek++;

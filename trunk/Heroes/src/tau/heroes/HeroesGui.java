@@ -1330,17 +1330,17 @@ public class HeroesGui
 			{}
 		});
 
+		//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+		//item.setText("Move");
+		//item.addSelectionListener(new SelectionAdapter() {
+		//	public void widgetSelected(SelectionEvent e)
+		//	{
+		//		moveHero();
+		//	}
+
+	//	});
+
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("Move");
-		item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				moveHero();
-			}
-
-		});
-
-		item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("End Turn");
 		item.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -1627,17 +1627,17 @@ public class HeroesGui
 
 		if(eclipseComposite!=null)
 		{
+			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			//item.setText("Move");
+			//item.addSelectionListener(new SelectionAdapter() {
+			//	public void widgetSelected(SelectionEvent e)
+				//{
+				//	moveHero();
+				//}
+
+		//	});
+
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-			item.setText("Move");
-			item.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					moveHero();
-				}
-
-			});
-
-			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("End Turn");
 			item.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
