@@ -37,7 +37,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tracker;
@@ -843,12 +845,201 @@ public class HeroesGui
 		box.open();
 	}
 
+	
+	
+	public Vector<Player> getGameDetails()
+	{
+		final Vector<Player> players = new Vector<Player>();
+		final Combo pcLevel1;
+		final Combo pcLevel2;
+		final Combo pcLevel3;
+		final int[] arr = new int[1];
+		
+		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		shell1.setLayout(new GridLayout());
+		shell1.setSize(430, 190);
+		shell1.setText("New game menu");
+		shell1.setImage(iconCache.stockImages[iconCache.appIcon]);
+		
+		Composite form = new Composite(shell1,SWT.FILL); 
+        form.setLayout(new GridLayout(5,true));
+        
+		final Label player1Label = new Label(form, SWT.NONE);
+        player1Label.setText("Player 1 : ");
+		final Text player1Name = new Text(form, SWT.NONE);
+        final Label emptyLabel1 = new Label(form, SWT.NONE);
+        emptyLabel1.setText("");
+        final Label emptyLabel2 = new Label(form, SWT.NONE);
+        emptyLabel2.setText("");
+        final Label emptyLabel3 = new Label(form, SWT.NONE);
+        emptyLabel3.setText("");
+        
+        final Label player2Label = new Label(form, SWT.NONE);
+        player2Label.setText("Player 2 : ");
+		final Text player2Name = new Text(form, SWT.NONE);
+        final Label computer1 = new Label(form, SWT.NONE);
+        computer1.setText("Computer");
+        final Button pcButton1 = new Button(form, SWT.CHECK);
+        pcLevel1 = new Combo(form, SWT.NONE);
+        pcLevel1.setText("level");
+        pcLevel1.setItems(new String[] {"Beginner", "Expert"});
+        pcLevel1.setEnabled(false);
+        pcButton1.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(final SelectionEvent arg0) {
+                        if(pcButton1.getSelection()){
+                                pcLevel1.setEnabled(true);
+                        } else {
+                                pcLevel1.setEnabled(false);
+                        }
+                }
+        });
+        
+        final Label player3Label = new Label(form, SWT.NONE);
+        player3Label.setText("Player 3 : ");
+		final Text player3Name = new Text(form, SWT.NONE);
+        final Label computer2 = new Label(form, SWT.NONE);
+        computer2.setText("Computer");
+        final Button pcButton2 = new Button(form, SWT.CHECK);
+        pcLevel2 = new Combo(form, SWT.NONE);
+        pcLevel2.setText("level");
+        pcLevel2.setItems(new String[] {"Beginner", "Expert"});
+        pcLevel2.setEnabled(false);
+        pcButton2.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(final SelectionEvent arg0) {
+                        if(pcButton2.getSelection()){
+                                pcLevel2.setEnabled(true);
+                        } else {
+                                pcLevel2.setEnabled(false);
+                        }
+                }
+        });
+        
+        final Label player4Label = new Label(form, SWT.NONE);
+        player4Label.setText("Player 4 : ");
+		final Text player4Name = new Text(form, SWT.NONE);
+        final Label computer3 = new Label(form, SWT.NONE);
+        computer3.setText("Computer");
+        final Button pcButton3 = new Button(form, SWT.CHECK);
+        pcLevel3 = new Combo(form, SWT.NONE);
+        pcLevel3.setText("level");
+        pcLevel3.setItems(new String[] {"Beginner", "Expert"});
+        pcLevel3.setEnabled(false);
+        pcButton3.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(final SelectionEvent arg0) {
+                        if(pcButton3.getSelection()){
+                                pcLevel3.setEnabled(true);
+                        } else {
+                                pcLevel3.setEnabled(false);
+                        }
+                }
+        });
+        
+        Composite form2 = new Composite(shell1,SWT.FILL); 
+        
+        form2.setLayout(new GridLayout(3,false));
+        Button okButton = new Button(form2, SWT.NONE);
+        okButton.setText("          OK          ");
+        okButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+            		String name1 = player1Name.getText();
+            		String name2 = player2Name.getText();
+            		String name3 = player3Name.getText();
+            		String name4 = player4Name.getText();
+            		if (name1.length() == 0)
+            		{
+            			displayError("You must choose the first player !" );
+            		}
+            		else
+            		{
+            			players.add(new Player(name1));
+            		}
+            		if ((name2.length() > 0) || (pcButton1.getSelection()))
+            		{
+            			if (pcButton1.getSelection())
+            			{
+            				players.add(new Player("computer"));
+            			}
+            			else
+            			{
+            				players.add(new Player(name2));
+            			}
+            		}
+            		if ((name3.length() > 0) || (pcButton2.getSelection()))
+            		{
+            			if (pcButton2.getSelection())
+            			{
+            				players.add(new Player("computer"));
+            			}
+            			else
+            			{
+            				players.add(new Player(name3));
+            			}
+            		}
+            		if ((name4.length() > 0) || (pcButton3.getSelection()))
+            		{
+            			if (pcButton3.getSelection())
+            			{
+            				players.add(new Player("computer"));
+            			}
+            			else
+            			{
+            				players.add(new Player(name4));
+            			}
+            		}
+
+                    if(players.size() < 2)
+                    {
+                            displayError("You must select at least 2 players");
+                            players.removeAllElements();
+                            //return;
+                    }  
+                    else
+                    {
+                    	shell1.dispose();
+                    }
+            }
+            
+    });
+        
+        final Label emptyLabel4 = new Label(form2, SWT.NONE);
+        emptyLabel4.setText("                                                                  ");
+        
+        Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
+        cancelButton.setText("        Cancel        ");
+        cancelButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+            	arr[0] = 5;
+            	shell1.dispose();	
+            }
+        });		
+		shell1.open();
+		while (!shell1.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		if (arr[0] != 5)
+		{
+			return players;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	
+
 	public void startNewGame()
 	{
-		int numberOfPlayers = getNumberOfPlayers();
-		if(numberOfPlayers != 0)
-		{
-			Vector<Player> players = getPlayers(numberOfPlayers);
+		
+		//getGameDetails();
+		
+		
+		//int numberOfPlayers = getNumberOfPlayers();
+		//if(numberOfPlayers != 0)
+		//{
+			Vector<Player> players = getGameDetails();
 			if(players != null)
 			{
 				gameController.initNewGame(players);
@@ -858,7 +1049,7 @@ public class HeroesGui
 				//sash.setWeights(new int[] { 85, 15 });
 				sash.setWeights(new int[] { 80, 20 });
 			}
-		}
+		//}
 	}
 
 	/**
