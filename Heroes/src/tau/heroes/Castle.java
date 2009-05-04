@@ -50,22 +50,28 @@ public class Castle implements Serializable
 
 	private void enterHeroIntoOwnCastle(Hero hero)
 	{
-		if (GameState.isGUI())
-			HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
-		else
-			HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
+		if (!(player.getName().equals("computer")))
+		{
+			if (GameState.isGUI())
+				HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
+			else
+				HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered his own castle.");
+		}
 	}
 
 	private void enterHeroIntoOccupiedCastle(Hero hero, boolean bIsHeroInCastle)
 	{
 		boolean isGui = GameState.isGUI();
-		if (isGui)
+		if (!(player.getName().equals("computer")))
 		{
-			HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
-					+ "'s castle.");
-		} else {
-			HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
-			+ "'s castle.");
+			if (isGui)
+			{
+				HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
+						+ "'s castle.");
+			} else {
+				HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered " + this.player.getName()
+						+ "'s castle.");
+			}
 		}
 
 		Hero defendingHero;
@@ -98,7 +104,6 @@ public class Castle implements Serializable
 			defendingHero.kill();
 			defendingHero = null;
 		}
-
 	}
 
 	private void enterHeroIntoEmptyCastle(Hero hero)
@@ -153,12 +158,15 @@ public class Castle implements Serializable
 		{
 			this.factories.add(factory);
 
-			if (GameState.isGUI())
-				HeroesGui.displayMessage(this.printLocation() + ": A new " + factory.getName()
-						+ " was added");
-			else
-				HeroesConsole.displayMessage(this.printLocation() + ": A new " + factory.getName()
-						+ " was added");
+			if (!(player.getName().equals("computer")))
+			{
+				if (GameState.isGUI())
+					HeroesGui.displayMessage(this.printLocation() + ": A new " + factory.getName()
+							+ " was added");
+				else
+					HeroesConsole.displayMessage(this.printLocation() + ": A new " + factory.getName()
+							+ " was added");
+			}
 		}
 	}
 
