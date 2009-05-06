@@ -39,12 +39,12 @@ public class HeroesConsole
 
 	private enum CastleCommands
 	{
-		build("Build a creature factory. Usage: build [goblin|soldier]"),
+		build("Build a creature factory. Usage: build [goblin|soldier|dwarf|archer|dragon]"),
 		buildPrices("Get help about creature factory prices"),
-		make("Make a new creature. Usage: make [goblin|soldier]"),
+		make("Make a new creature. Usage: make [goblin|soldier|dwarf|archer|dragon]"),
 		makePrices("Get help about creature prices per unit"),
-		split("Split units from the hero's army to the castle's army. Usage: split [goblin|soldier] numberOfUnits"),
-		join("Join units to the hero's army from the castle's army. Usage: join [goblin|soldier] numberOfUnits"),
+		split("Split units from the hero's army to the castle's army. Usage: split [goblin|soldier|dwarf|archer|dragon] numberOfUnits"),
+		join("Join units to the hero's army from the castle's army. Usage: join [goblin|soldier|dwarf|archer|dragon] numberOfUnits"),
 		help("Get help for the possible commands"),
 		exit("Exit castle menu");
 
@@ -75,7 +75,7 @@ public class HeroesConsole
 	{
 		while (true)
 		{
-			for (int playerIndex = 0 ; playerIndex < this.getGameState().getNumberOfPlayers();)
+			for (int playerIndex = 0; playerIndex < this.getGameState().getNumberOfPlayers();)
 			{
 				this.getGameState().setWhosTurn(playerIndex);
 				Player player = this.getGameState().getPlayers().get(playerIndex);
@@ -83,7 +83,7 @@ public class HeroesConsole
 				if (this.gameController.isThereAWinner() != null)
 					endGame(this.gameController.isThereAWinner());
 
-				if(player.isComputer())
+				if (player.isComputer())
 				{
 					playerIndex = handleComputerMove(playerIndex, player);
 				}
@@ -120,19 +120,20 @@ public class HeroesConsole
 
 		return playerIndex;
 	}
+
 	private int handleComputerMove(int playerIndex, Player player)
 	{
 		Hero hero = player.getHero();
 		String[] computerMove = new String[3];
-		if(hero != null && hero.alive())
+		if (hero != null && hero.alive())
 		{
-			//make a random move:
+			// make a random move:
 			computerMove[0] = commands.move.toString();
-			computerMove[1] = String.valueOf(hero.getXPos() + (int) (Math.random() * 3) -1);
-			computerMove[2] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) -1);
+			computerMove[1] = String.valueOf(hero.getXPos() + (int) (Math.random() * 3) - 1);
+			computerMove[2] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) - 1);
 			playerIndex = switchCommands(playerIndex, player, computerMove);
 		}
-		//end turn:
+		// end turn:
 		computerMove[0] = commands.endTurn.toString();
 		playerIndex = switchCommands(playerIndex, player, computerMove);
 		return playerIndex;
@@ -152,7 +153,8 @@ public class HeroesConsole
 			handleMoveCommand(player, userInput);
 			break;
 		case movesLeft:
-			displayMessage(player.getName() + "`s hero has " + player.getMovesLeft() + " moves left in this turn");
+			displayMessage(player.getName() + "`s hero has " + player.getMovesLeft()
+				+ " moves left in this turn");
 			break;
 		case endTurn:
 			playerIndex = handleEndTurnCommand(playerIndex, player);
@@ -262,8 +264,8 @@ public class HeroesConsole
 		System.out.println("Are you sure yo want to clear the highscore table?");
 		System.out.println("this action can not be reversed");
 		responses = MainModule.getCommandAndParameters(message);
-		if (responses.length > 0 &&
-			(responses[0].startsWith("y") || (responses[0].startsWith("Y"))))
+		if (responses.length > 0
+			&& (responses[0].startsWith("y") || (responses[0].startsWith("Y"))))
 		{
 			Helper.getScoreBoard().clearScoreBoard();
 		}
@@ -375,7 +377,7 @@ public class HeroesConsole
 				System.out.println("Command not recognized !!!");
 			else if (userInput.length > 0)
 			{
-				if(switchCastleCommands(player, theCastle, userInput))
+				if (switchCastleCommands(player, theCastle, userInput))
 					return;
 			}
 		}
@@ -389,7 +391,7 @@ public class HeroesConsole
 	 */
 	private boolean switchCastleCommands(Player player, Castle theCastle, String[] userInput)
 	{
-		switch(CastleCommands.valueOf(userInput[0]))
+		switch (CastleCommands.valueOf(userInput[0]))
 		{
 		case build:
 			handleBuildCommand(player, theCastle, userInput);
@@ -458,12 +460,7 @@ public class HeroesConsole
 	{
 		if (response.length > 1)
 		{
-			CreatureFactory factory = null;
-
-			if (response[1].equals("goblin"))
-				factory = new GoblinFactory();
-			else if (response[1].equals("soldier"))
-				factory = new SoldierFactory();
+			CreatureFactory factory = CreatureFactory.getCreatureFactory(response[1]);
 
 			if (factory != null)
 			{
@@ -477,18 +474,21 @@ public class HeroesConsole
 						theCastle.addFactory(theCastle.buildFactory(factoryClass));
 					else
 					{
-						String msg = theCastle.getPlayer().getName() +
-										" doesn't have enough resources.\n\n" +
-										"Need:\n";
-						
+						String msg = theCastle.getPlayer().getName()
+							+ " doesn't have enough resources.\n\n" + "Need:\n";
+
 						for (ResourceType rType : ResourceType.values())
 						{
-							msg += rType.getTypeName() + ":\t " + factory.getPrice(rType.getTypeName()) + "\n";
+							msg += rType.getTypeName() + ":\t "
+								+ factory.getPrice(rType.getTypeName()) + "\n";
 						}
 						msg += "\nHas only:\n";
 						for (ResourceType rType : ResourceType.values())
 						{
-							msg += rType.getTypeName() + ":\t " + theCastle.getPlayer().getCurrentTreasuryAmount(rType.getTypeName()) + "\n";
+							msg += rType.getTypeName()
+								+ ":\t "
+								+ theCastle.getPlayer().getCurrentTreasuryAmount(rType
+									.getTypeName()) + "\n";
 						}
 						System.out.println(msg);
 					}
@@ -523,20 +523,14 @@ public class HeroesConsole
 				return;
 			}
 
-			Creature creature = null;
-			if (response[1].equals("goblin"))
-			{
-				creature = new Goblin(numberOfUnits);
-			}
-			else if (response[1].equals("soldier"))
-			{
-				creature = new Soldier(numberOfUnits);
-			}
-			else
+			CreatureFactory factory = CreatureFactory.getCreatureFactory(response[1]);
+			if (factory == null)
 			{
 				System.out.println("Unknown creature type!");
 				return;
 			}
+
+			Creature creature = factory.buildCreature(numberOfUnits);
 
 			if (!theCastle.canAddToArmy(creature.getClass()))
 			{
@@ -581,20 +575,14 @@ public class HeroesConsole
 				return;
 			}
 
-			Creature creature = null;
-			if (response[1].equals("goblin"))
-			{
-				creature = new Goblin(numberOfUnits);
-			}
-			else if (response[1].equals("soldier"))
-			{
-				creature = new Soldier(numberOfUnits);
-			}
-			else
+			CreatureFactory factory = CreatureFactory.getCreatureFactory(response[1]);
+			if (factory == null)
 			{
 				System.out.println("Unknown creature type!");
 				return;
 			}
+
+			Creature creature = factory.buildCreature(numberOfUnits);
 
 			if (!hero.canAddToArmy(creature.getClass()))
 			{
@@ -620,12 +608,7 @@ public class HeroesConsole
 	{
 		if (response.length > 1)
 		{
-			Class<? extends Creature> creatureClass = null;
-
-			if (response[1].equals("goblin"))
-				creatureClass = Goblin.class;
-			else if (response[1].equals("soldier"))
-				creatureClass = Soldier.class;
+			Class<? extends Creature> creatureClass = Creature.getCreatureClass(response[1]);
 
 			if (creatureClass != null)
 			{

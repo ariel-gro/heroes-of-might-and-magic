@@ -3,7 +3,6 @@
  */
 package tau.heroes.test;
 
-
 import java.util.Vector;
 
 import junit.framework.TestCase;
@@ -23,7 +22,7 @@ import tau.heroes.ResourceType;
 
 /**
  * @author Amir
- *
+ * 
  */
 public class GameControllerTest extends TestCase
 {
@@ -47,14 +46,14 @@ public class GameControllerTest extends TestCase
 	@Test
 	public void testSaveAndLoad()
 	{
-		String[] userInput = {"player a", "player b"};
+		String[] userInput = { "player a", "player b" };
 		Vector<Player> players = new Vector<Player>();
 		Vector<Hero> heroes = new Vector<Hero>();
 		Vector<Castle> castles = new Vector<Castle>();
 		Vector<Resource> resources = new Vector<Resource>();
 		int numOfPlayers = 2;
 
-		for (int i = 0 ; i < numOfPlayers ; i++)
+		for (int i = 0; i < numOfPlayers; i++)
 		{
 			players.add(new Player(userInput[0]));
 		}
@@ -72,7 +71,7 @@ public class GameControllerTest extends TestCase
 			players.get(i).setHero(heroes.get(i));
 		}
 
-		for (int i = 0 ; i < numOfPlayers ; i++)
+		for (int i = 0; i < numOfPlayers; i++)
 		{
 			for (ResourceType rt : ResourceType.values())
 			{
@@ -84,14 +83,14 @@ public class GameControllerTest extends TestCase
 			}
 		}
 
-		//Start your moves:
+		// Start your moves:
 		Hero hero0 = players.get(0).getHero();
 		Hero hero1 = players.get(1).getHero();
 		int x0 = hero0.getXPos();
 		int y0 = hero0.getYPos();
 		int x1 = hero1.getXPos();
 		int y1 = hero1.getYPos();
-		
+
 		GameController gameController = new GameController(false);
 		gameController.getGameState().setPlayers(players);
 		gameController.getGameState().setHeroes(heroes);
@@ -99,9 +98,9 @@ public class GameControllerTest extends TestCase
 		gameController.getGameState().getResources();
 		gameController.getGameState().setBoard(theBoard);
 		gameController.saveGame("testFile1");
-		
-		hero1.moveTo(x0+1, y0+1, theBoard);
-		
+
+		hero1.moveTo(x0 + 1, y0 + 1, theBoard);
+
 		gameController.loadGame("testFile1");
 		GameState gameState = gameController.getGameState();
 		players = gameState.getPlayers();
@@ -113,7 +112,7 @@ public class GameControllerTest extends TestCase
 		boardSize = theBoard.getSize();
 		Hero newHero0 = players.get(0).getHero();
 		Hero newHero1 = players.get(1).getHero();
-		
+
 		assertEquals(x0, newHero0.getXPos());
 		assertEquals(y0, newHero0.getYPos());
 		assertEquals(x1, newHero1.getXPos());

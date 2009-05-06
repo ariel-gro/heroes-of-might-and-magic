@@ -69,12 +69,12 @@ public class GameController
 
 		for (int i = 0; i < numberOfResources; i++)
 		{
-			for (int ind = 0; ind < ResourceType.values().length; )
+			for (int ind = 0; ind < ResourceType.values().length;)
 			{
 				ResourceType rt = ResourceType.values()[ind];
-				int [] point = randomizeByZone(i);
-				//make sure board is empty at (randomX, randomY)
-				//and only if empty place mine and increment ind.
+				int[] point = randomizeByZone(i);
+				// make sure board is empty at (randomX, randomY)
+				// and only if empty place mine and increment ind.
 				if (this.gameState.getBoard().getBoardState(point[0], point[1]).getIsEmpty())
 				{
 					resources.add(new Resource(rt, this.gameState.getBoard(), point[0], point[1]));
@@ -89,6 +89,7 @@ public class GameController
 	/**
 	 * Removes dead players from game and return all of their belongings to the
 	 * board.
+	 * 
 	 * @return vector of players that were removed
 	 */
 	public Vector<Player> removeDeadPlayers()
@@ -211,28 +212,28 @@ public class GameController
 		switch (playerNum)
 		{
 		case 0:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE / 2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE / 2 - 3)) + 1;
 			break;
 
 		case 1:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE / 2 - 2)) + Constants.BOARD_SIZE / 2;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE / 2 - 2)) + Constants.BOARD_SIZE / 2;
 			break;
 
 		case 2:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE / 2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE / 2 - 2)) + Constants.BOARD_SIZE / 2;
 			break;
 
 		case 3:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 2)) + Constants.BOARD_SIZE/2;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE / 2 - 2)) + Constants.BOARD_SIZE / 2;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE / 2 - 3)) + 1;
 			break;
 
 		default:
-			rt[0] = (int) (randomX * (Constants.BOARD_SIZE/2 - 3)) + 1;
-			rt[1] = (int) (randomY * (Constants.BOARD_SIZE/2 - 3)) + 1;
+			rt[0] = (int) (randomX * (Constants.BOARD_SIZE / 2 - 3)) + 1;
+			rt[1] = (int) (randomY * (Constants.BOARD_SIZE / 2 - 3)) + 1;
 			break;
 		}
 		return rt;
@@ -241,42 +242,36 @@ public class GameController
 	public static String handleBuildPricesCommand()
 	{
 		String msg = "Prices:\n\n";
-		CreatureFactory factory;
-		
-		factory = new GoblinFactory();
-		msg = factory.getName() + ":\n";
-		for (ResourceType rType : ResourceType.values())
+
+		for (CreatureFactory factory : CreatureFactory.getCreatureFactories())
 		{
-			msg += rType.getTypeName() + "\t-\t " + factory.getPrice(rType.getTypeName()) + "\n";
+			msg += factory.getName() + ":\n";
+			for (ResourceType rType : ResourceType.values())
+			{
+				msg += rType.getTypeName() + "\t-\t " + factory.getPrice(rType.getTypeName())
+					+ "\n";
+			}
+			msg += "\n";
 		}
-		factory = new SoldierFactory();
-		msg += "\n\n" + factory.getName() + ":\n";
-		for (ResourceType rType : ResourceType.values())
-		{
-			msg += rType.getTypeName() + "\t-\t " + factory.getPrice(rType.getTypeName()) + "\n";
-		}
-		
+
 		return msg;
 	}
 
 	public static String handleMakePricesCommand()
 	{
-		String msg = "Prices:\n\n";
-		CreatureFactory factory;
-		
-		factory = new GoblinFactory();
-		msg = "1 Goblin unit:\n";
-		for (ResourceType rType : ResourceType.values())
+		String msg = "Prices per creature:\n\n";
+
+		for (CreatureFactory factory : CreatureFactory.getCreatureFactories())
 		{
-			msg += rType.getTypeName() + "\t-\t " + factory.getPricePerUnit(rType.getTypeName()) + "\n";
+			msg += factory.getUnitName() + ":\n";
+			for (ResourceType rType : ResourceType.values())
+			{
+				msg += rType.getTypeName() + "\t-\t "
+					+ factory.getPricePerUnit(rType.getTypeName()) + "\n";
+			}
+			msg += "\n";
 		}
-		factory = new SoldierFactory();
-		msg += "\n\n1 Soldier unit:\n";
-		for (ResourceType rType : ResourceType.values())
-		{
-			msg += rType.getTypeName() + "\t-\t " + factory.getPricePerUnit(rType.getTypeName()) + "\n";
-		}
-		
+
 		return msg;
 	}
 }

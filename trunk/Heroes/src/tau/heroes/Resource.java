@@ -14,7 +14,8 @@ public class Resource implements Serializable
 	private final int yPos;
 	private final ResourceType type;
 
-	public Resource(ResourceType type, Board theBoard, int xPos, int yPos) {
+	public Resource(ResourceType type, Board theBoard, int xPos, int yPos)
+	{
 		this.type = type;
 		this.owner = null;
 		this.xPos = xPos;
@@ -26,17 +27,20 @@ public class Resource implements Serializable
 	public void setOwner(Player player)
 	{
 		String msg;
-		if (this.owner != null) {
-			if (!this.owner.equals(player)) {
+		if (this.owner != null)
+		{
+			if (!this.owner.equals(player))
+			{
 				this.owner.decrementMineQuantity(this.getType().getTypeName());
-				msg = ("player " + this.owner.getName()
-						+ " lost ownership over "
-						+ this.getType().getTypeName() + " at place: ("
-						+ this.getXPos() + ", " + this.getYPos() + ")\n");
-			} else {
+				msg = ("player " + this.owner.getName() + " lost ownership over "
+					+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
+					+ this.getYPos() + ")\n");
+			}
+			else
+			{
 				msg = ("this resource is already yours!");
 			}
-			
+
 			if (GameState.isGUI())
 			{
 				HeroesGui.displayMessage(msg);
@@ -48,16 +52,15 @@ public class Resource implements Serializable
 			if (msg.equals("this resource is already yours!"))
 				return;
 		}
-		
+
 		this.owner = player;
-		if(player == null)
+		if (player == null)
 			return;
 		player.incrementMineQuantity(this.getType().getTypeName());
-		msg = ("player " + this.owner.getName()
-				+ " took ownership over " + this.getType().getTypeName()
-				+ " at place: (" + this.getXPos() + ", " + this.getYPos()
-				+ ")\n");
-		
+		msg = ("player " + this.owner.getName() + " took ownership over "
+			+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
+			+ this.getYPos() + ")\n");
+
 		if (GameState.isGUI())
 		{
 			HeroesGui.displayMessage(msg);
@@ -68,23 +71,28 @@ public class Resource implements Serializable
 		}
 	}
 
-	public boolean checkOwner(Player player) {
+	public boolean checkOwner(Player player)
+	{
 		return (this.getOwner().equals(player));
 	}
 
-	public Player getOwner() {
+	public Player getOwner()
+	{
 		return owner;
 	}
 
-	public int getXPos() {
+	public int getXPos()
+	{
 		return xPos;
 	}
 
-	public int getYPos() {
+	public int getYPos()
+	{
 		return yPos;
 	}
 
-	public ResourceType getType() {
+	public ResourceType getType()
+	{
 		return type;
 	}
 

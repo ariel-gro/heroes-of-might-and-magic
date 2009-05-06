@@ -2,8 +2,6 @@ package tau.heroes;
 
 import java.io.Serializable;
 
-
-
 public class Board implements Serializable
 {
 	/**
@@ -14,17 +12,17 @@ public class Board implements Serializable
 	private BoardState[][] theBoard;
 
 	/**
-	 *
+	 * 
 	 * @param size
 	 */
 	public Board(int size)
 	{
 		theBoard = new BoardState[size][size];
-		for (int i=0; i<size ; i++)
+		for (int i = 0; i < size; i++)
 		{
-			for (int j=0 ; j<size ; j++)
+			for (int j = 0; j < size; j++)
 			{
-				theBoard[i][j]= new BoardState();
+				theBoard[i][j] = new BoardState();
 			}
 		}
 
@@ -39,44 +37,46 @@ public class Board implements Serializable
 		String objectName;
 
 		System.out.print(" ");
-		for (int i=0; i<size+1 ; i++)
-			if(i!=size)
-				System.out.print(i + ((i<10)?" ":""));
+		for (int i = 0; i < size + 1; i++)
+			if (i != size)
+				System.out.print(i + ((i < 10) ? " " : ""));
 
 		System.out.println();
 
-		for (int i=0; i<size+1 ; i++)
+		for (int i = 0; i < size + 1; i++)
 			System.out.print("--");
 
 		System.out.println();
 
-		for (int i=0; i<size ; i++)
+		for (int i = 0; i < size; i++)
 		{
-			for (int j=0 ; j<size+2 ; j++)
+			for (int j = 0; j < size + 2; j++)
 			{
-				if(j==0)
+				if (j == 0)
 				{
 					System.out.print("|");
 				}
-				else if (j==size+1)
+				else if (j == size + 1)
 				{
 					System.out.print("|" + i);
 				}
 				else
 				{
-					objectName="";
-					if(theBoard[j-1][i].getHero() != null)
+					objectName = "";
+					if (theBoard[j - 1][i].getHero() != null)
 						objectName += "H";
-					if(theBoard[j-1][i].getCastle() != null)
+					if (theBoard[j - 1][i].getCastle() != null)
 						objectName += "C";
-					if(theBoard[j-1][i].getResource() != null)
-						objectName += theBoard[j-1][i].getResource().getType().getTypeName().toUpperCase().charAt(0);
-					//mask the board with * - when the player cannot see this part:
-					if(!visible[j-1][i])
+					if (theBoard[j - 1][i].getResource() != null)
+						objectName += theBoard[j - 1][i].getResource().getType().getTypeName()
+							.toUpperCase().charAt(0);
+					// mask the board with * - when the player cannot see this
+					// part:
+					if (!visible[j - 1][i])
 						objectName = "* ";
-					if(objectName.length()==0)
+					if (objectName.length() == 0)
 						System.out.print("  ");
-					else if(objectName.length()==1)
+					else if (objectName.length() == 1)
 						System.out.print(objectName + " ");
 					else
 						System.out.print(objectName);
@@ -85,14 +85,14 @@ public class Board implements Serializable
 			System.out.println();
 		}
 
-		for (int i=0; i<size+1 ; i++)
+		for (int i = 0; i < size + 1; i++)
 			System.out.print("--");
 
 		System.out.println();
 	}
 
 	/**
-	 *
+	 * 
 	 * @return
 	 */
 	public int getSize()
@@ -101,26 +101,25 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param theHero
 	 * @param x
 	 * @param y
 	 */
 	public void placeHero(Hero theHero, int x, int y)
 	{
-		if(     theBoard[x][y].getHero() != null &&
-				theBoard[x][y].getHero().alive() &&
-				!theBoard[x][y].getHero().equals(theHero))
+		if (theBoard[x][y].getHero() != null && theBoard[x][y].getHero().alive()
+			&& !theBoard[x][y].getHero().equals(theHero))
 		{
 			System.out.println("ATTACK!!!");
 			theHero.attack(theBoard[x][y].getHero());
 		}
-		if(theHero.alive())
+		if (theHero.alive())
 			theBoard[x][y].setHero(theHero);
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -130,7 +129,7 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param theResource
 	 * @param x
 	 * @param y
@@ -141,7 +140,7 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -151,7 +150,7 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param theCastle
 	 * @param x
 	 * @param y
@@ -162,7 +161,7 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -172,7 +171,7 @@ public class Board implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
@@ -182,11 +181,9 @@ public class Board implements Serializable
 		return theBoard[x][y];
 	}
 
-	public void printLegend() {
-		System.out.println("H - Hero\n" +
-							"C - castle\n" +
-							"G - Gold mine\n" +
-							"W - Wood saw-mill\n" +
-							"S - Stone quarry\n");
+	public void printLegend()
+	{
+		System.out.println("H - Hero\n" + "C - castle\n" + "G - Gold mine\n"
+			+ "W - Wood saw-mill\n" + "S - Stone quarry\n");
 	}
 }

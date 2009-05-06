@@ -12,9 +12,10 @@ import org.junit.Test;
 
 /**
  * @author ran
- *
+ * 
  */
-public class PlayerTest {
+public class PlayerTest
+{
 
 	Player p;
 	Hero h;
@@ -24,10 +25,11 @@ public class PlayerTest {
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception
+	{
 		p = new Player("Test");
 		board = new Board(20);
-		h = new Hero(p,board,0,0);
+		h = new Hero(p, board, 0, 0);
 
 	}
 
@@ -35,7 +37,8 @@ public class PlayerTest {
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception
+	{
 	}
 
 	/**
@@ -56,10 +59,10 @@ public class PlayerTest {
 		assertNull(p.getHero());
 		p.setHero(h);
 		assertNotNull(p.getHero());
-		assertEquals(h,p.getHero());
-		Hero h1 = new Hero(1,1,null);
+		assertEquals(h, p.getHero());
+		Hero h1 = new Hero(1, 1, null);
 		p.setHero(h1);
-		//hero with no army is dead...
+		// hero with no army is dead...
 		assertNull(p.getHero());
 	}
 
@@ -67,44 +70,46 @@ public class PlayerTest {
 	 * Test method for {@link tau.heroes.Player#getMovesLeft()}.
 	 */
 	@Test
-	public void testGetMovesLeft() {
-		assertEquals(0,p.getMovesLeft());
+	public void testGetMovesLeft()
+	{
+		assertEquals(0, p.getMovesLeft());
 		p.setHero(h);
-		assertEquals(5,p.getMovesLeft());
+		assertEquals(5, p.getMovesLeft());
 	}
 
 	/**
 	 * Test method for {@link tau.heroes.Player#getName()}.
 	 */
 	@Test
-	public void testGetName() {
-		assertEquals("Test",p.getName());
+	public void testGetName()
+	{
+		assertEquals("Test", p.getName());
 	}
-
-
 
 	/**
 	 * Test method for {@link tau.heroes.Player#isAlive()}.
 	 */
 	@Test
-	public void testEndTurn() {
-		//the player has no castle and no heroes - so it dies
+	public void testEndTurn()
+	{
+		// the player has no castle and no heroes - so it dies
 		assertEquals(false, p.isAlive());
-		//now we give the player a dummy hero
+		// now we give the player a dummy hero
 		p.setHero(h);
-		//for the first six days the hero is alive
-		for(int i = 0; i< 6;i++)
+		// for the first six days the hero is alive
+		for (int i = 0; i < 6; i++)
 		{
 			p.endTurn();
-			assertEquals(true,p.isAlive());
+			assertEquals(true, p.isAlive());
 		}
-		//now it should be dead.
+		// now it should be dead.
 		p.endTurn();
-		assertEquals(false,p.isAlive());
+		assertEquals(false, p.isAlive());
 	}
 
 	/**
-	 * Test method for {@link tau.heroes.Player#move(int, int, tau.heroes.Board)}.
+	 * Test method for
+	 * {@link tau.heroes.Player#move(int, int, tau.heroes.Board)}.
 	 */
 	@Test
 	public void testMove1()
@@ -112,8 +117,8 @@ public class PlayerTest {
 		assertFalse(p.move(0, 3, board));
 		p.setHero(h);
 		assertTrue(p.move(0, 3, board));
-		boolean[][] b =  p.getVisibleBoard();
-		//radius 1:
+		boolean[][] b = p.getVisibleBoard();
+		// radius 1:
 		assertTrue(b[0][0]);
 		assertTrue(b[0][1]);
 		assertTrue(b[0][2]);
@@ -124,7 +129,7 @@ public class PlayerTest {
 		assertTrue(b[1][2]);
 		assertTrue(b[1][3]);
 		assertTrue(b[1][4]);
-		//radius 2:
+		// radius 2:
 		assertFalse(b[2][0]);
 		assertFalse(b[2][1]);
 		assertFalse(b[2][2]);
@@ -134,14 +139,15 @@ public class PlayerTest {
 		assertFalse(b[0][5]);
 
 	}
+
 	@Test
 	public void testMove2()
 	{
 		assertFalse(p.move(1, 1, board));
 		p.setHero(h);
 		assertTrue(p.move(1, 1, board));
-		boolean[][] b =  p.getVisibleBoard();
-		//radius 1:
+		boolean[][] b = p.getVisibleBoard();
+		// radius 1:
 		assertTrue(b[0][0]);
 		assertTrue(b[0][1]);
 		assertTrue(b[0][2]);
@@ -151,7 +157,7 @@ public class PlayerTest {
 		assertTrue(b[2][0]);
 		assertTrue(b[2][1]);
 		assertTrue(b[2][2]);
-		//radius 2:
+		// radius 2:
 		assertFalse(b[0][3]);
 		assertFalse(b[1][3]);
 		assertFalse(b[2][3]);

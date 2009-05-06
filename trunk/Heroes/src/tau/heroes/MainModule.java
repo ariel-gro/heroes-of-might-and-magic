@@ -26,8 +26,8 @@ public class MainModule
 			if (args[0].toLowerCase().equals("gui"))
 				return true;
 			else if (args[0].toLowerCase().equals("console"))
-				return false;				
-		
+				return false;
+
 		String message = "Whould you like to play in graphical mode or console mode (g for graphical or c for console): ";
 		String[] responses = getCommandAndParameters(message);
 
@@ -43,8 +43,8 @@ public class MainModule
 	}
 
 	public static HeroesGui runGraphicalView(GameController gameController, Composite c)
-	{	
-		
+	{
+
 		Display d;
 		if (c != null)
 		{
@@ -54,12 +54,12 @@ public class MainModule
 		{
 			d = Display.getCurrent();
 		}
-		
+
 		if (d == null)
 		{
 			d = Display.getDefault();
 		}
-		
+
 		HeroesGui application = new HeroesGui(d, gameController);
 		if (c != null)
 		{
@@ -75,7 +75,7 @@ public class MainModule
 					d.sleep();
 			}
 		}
-		//d.dispose();
+		// d.dispose();
 		return null;
 	}
 
