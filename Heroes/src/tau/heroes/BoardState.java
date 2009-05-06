@@ -2,8 +2,6 @@ package tau.heroes;
 
 import java.io.Serializable;
 
-
-
 public class BoardState implements Serializable
 {
 
@@ -18,7 +16,7 @@ public class BoardState implements Serializable
 
 	public BoardState()
 	{
-		hero =  null;
+		hero = null;
 		resource = null;
 		castle = null;
 		isEmpty = true;
@@ -35,7 +33,7 @@ public class BoardState implements Serializable
 		this.resource = theResource;
 		isEmpty = false;
 	}
-	
+
 	public void setCastle(Castle theCastle)
 	{
 		this.castle = theCastle;
@@ -51,12 +49,12 @@ public class BoardState implements Serializable
 	{
 		return resource;
 	}
-	
+
 	public Castle getCastle()
 	{
 		return castle;
 	}
-	
+
 	public boolean getIsEmpty()
 	{
 		return isEmpty;

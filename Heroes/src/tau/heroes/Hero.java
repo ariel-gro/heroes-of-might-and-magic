@@ -51,11 +51,12 @@ public class Hero implements Serializable
 
 	public Shell visualAttack(Hero defender)
 	{
-		if(_autoFight)
+		if (_autoFight)
 			return null;
-		AttackGUI a = new AttackGUI(this,defender,Display.getCurrent());
+		AttackGUI a = new AttackGUI(this, defender, Display.getCurrent());
 		return a.open();
 	}
+
 	private void consolAttack(Hero defender)
 	{
 		System.out.println("Battle Started");
@@ -79,18 +80,19 @@ public class Hero implements Serializable
 		System.out.println("Battle Ended");
 		System.out.println("**************");
 	}
+
 	// this will start a battle against h. (this - attacker, h - defender).
 	public void attack(Hero defender)
 	{
-		if(GameState.isGUI() && !_autoFight)
+		if (GameState.isGUI() && !_autoFight)
 		{
 			Display d = Display.getCurrent();
 			Shell s = visualAttack(defender);
 			while (s != null && !s.isDisposed())
-	        {
-	                 if (!d.readAndDispatch())
-	                         d.sleep();
-	        }
+			{
+				if (!d.readAndDispatch())
+					d.sleep();
+			}
 		}
 		else
 		{
@@ -102,13 +104,13 @@ public class Hero implements Serializable
 	{
 		for (int i = 0; i < Army.MAX_CREATURES; i++)
 		{
-			if(!defender.alive())
-			{//If the defender is dead then you win
+			if (!defender.alive())
+			{// If the defender is dead then you win
 				System.out.println(defender.toString() + " is dead!");
 				return;
 			}
 			Creature attackerCreature = _army.getCreature(i);
-			if(attackerCreature == null)
+			if (attackerCreature == null)
 				continue;
 			Creature defenderCreature;
 			int defenderInt;
@@ -121,7 +123,7 @@ public class Hero implements Serializable
 					.getCommandAndParameters("Please select the enemy creature you want to attack:");
 				defenderInt = Integer.parseInt(s[0]) - 1;
 				defenderCreature = defender._army.getCreature(defenderInt);
-				if(defenderCreature == null)
+				if (defenderCreature == null)
 				{
 					defenderInt = -1;
 					defenderCreature = defender._army.getFirstCreature();
@@ -132,8 +134,8 @@ public class Hero implements Serializable
 				defenderInt = -1;
 				defenderCreature = defender._army.getFirstCreature();
 			}
-			int totalDamage = attackCreature(i,defender,defenderInt);
-			if(totalDamage<0)
+			int totalDamage = attackCreature(i, defender, defenderInt);
+			if (totalDamage < 0)
 			{// This means the hero has no units, hence it is dead.
 				System.out.println(defender.toString() + " is dead!");
 				defender.kill();
@@ -147,12 +149,14 @@ public class Hero implements Serializable
 			defender.cleanDeadCreatures();// TODO : clean dead army
 		}
 	}
-	public int attackCreature(int myUnit,Hero defender,int defenderUnit)
+
+	public int attackCreature(int myUnit, Hero defender, int defenderUnit)
 	{
 		Creature attackerCreature = _army.getCreature(myUnit);
 		if (attackerCreature == null)
 			return 0;
-		Creature defenderCreature = (defenderUnit != -1) ? defender._army.getCreature(defenderUnit) : defender._army.getFirstCreature();
+		Creature defenderCreature = (defenderUnit != -1) ? defender._army.getCreature(defenderUnit)
+			: defender._army.getFirstCreature();
 		if (defenderCreature != null && defenderCreature.get_numberOfUnits() > 0)
 		{
 			int totalDefense = defenderCreature.get_defenseSkill() + defender._defenseSkill;
@@ -180,7 +184,7 @@ public class Hero implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -211,7 +215,7 @@ public class Hero implements Serializable
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @param theBoard
@@ -271,6 +275,7 @@ public class Hero implements Serializable
 	{
 		return this.yPos;
 	}
+
 	public void cleanDeadCreatures()
 	{
 		_army.cleanDeadCreatures();
@@ -313,6 +318,7 @@ public class Hero implements Serializable
 			return true;
 		}
 	}
+
 	public String toString()
 	{
 		String name = (player != null) ? player.getName() : super.toString();

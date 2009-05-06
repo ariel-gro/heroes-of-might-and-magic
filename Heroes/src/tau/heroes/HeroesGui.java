@@ -69,25 +69,25 @@ public class HeroesGui
 	private static int currentPlayerIndex = 0;
 
 	private static Point currentPoint;
-	
+
 	private static Point newPoint;
-	
+
 	public Composite eclipseComposite;
 
 	private Composite boardComposite;
 
 	private Composite statusComposite;
-	
+
 	private Point[][] boardPoints = null;
 
 	SashForm sash;
 
 	private ScrolledComposite sc1;
-	
+
 	private ScrolledComposite sc2;
-	
+
 	Cursor cursor;;
-	
+
 	Cursor defaultCursor;
 
 	public Display getDisplay()
@@ -104,15 +104,15 @@ public class HeroesGui
 
 	public Shell open()
 	{
-		shell = new Shell(display/*, SWT.APPLICATION_MODAL*/);
+		shell = new Shell(display/* , SWT.APPLICATION_MODAL */);
 		shell.setLayout(new FillLayout());
 		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
-		cursor = new Cursor(display, SWT.CURSOR_NO);	
-		defaultCursor  = new Cursor(display, SWT.NONE);
+		cursor = new Cursor(display, SWT.CURSOR_NO);
+		defaultCursor = new Cursor(display, SWT.NONE);
 		shell.setBackground(black);
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
@@ -138,18 +138,18 @@ public class HeroesGui
 		sc1 = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc1.setBackground(black);
 		sc1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		
+
 		sc2 = new ScrolledComposite(sash, SWT.BORDER | SWT.V_SCROLL);
 		sc2.setBackground(black);
-		//sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		initBlankGame();	
+		// sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+		// 1));
+
+		initBlankGame();
 
 		shell.open();
-		
-		//displayStartWindow();
-		
+
+		// displayStartWindow();
+
 		return shell;
 	}
 
@@ -159,10 +159,10 @@ public class HeroesGui
 		shell = eclipseComposite.getShell();
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
-		cursor = new Cursor(display, SWT.CURSOR_NO);	
-		defaultCursor  = new Cursor(display, SWT.NONE);
+		cursor = new Cursor(display, SWT.CURSOR_NO);
+		defaultCursor = new Cursor(display, SWT.NONE);
 		eclipseComposite.setBackground(black);
-		
+
 		GridLayout layout = new GridLayout();
 		eclipseComposite.setLayout(layout);
 
@@ -177,32 +177,30 @@ public class HeroesGui
 
 		sc1 = new ScrolledComposite(sash, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		sc1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
+
 		sc2 = new ScrolledComposite(sash, SWT.BORDER | SWT.V_SCROLL);
 		sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		
+
 		initBlankGame();
-		
+
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e)
 			{
 				e.doit = close();
 			}
 		});
-		
-		
-		
-		//displayStartWindow();
+
+		// displayStartWindow();
 	}
 
-	public void initBlankGame() {
+	public void initBlankGame()
+	{
 		createBoardWindow(false);
 		createStatusWindow(false);
-		//sash.setWeights(new int[] { 85, 15 });
+		// sash.setWeights(new int[] { 85, 15 });
 		sash.setWeights(new int[] { 80, 20 });
 	}
-	
+
 	public boolean close()
 	{
 		if (isModified)
@@ -216,7 +214,8 @@ public class HeroesGui
 			if (choice == SWT.CANCEL)
 			{
 				return false;
-			} else if (choice == SWT.YES)
+			}
+			else if (choice == SWT.YES)
 			{
 				if (!save())
 					return false;
@@ -224,12 +223,11 @@ public class HeroesGui
 		}
 
 		iconCache.freeResources();
-		
+
 		cursor.dispose();
 		defaultCursor.dispose();
 		white.dispose();
 		black.dispose();
-		
 
 		return true;
 	}
@@ -243,30 +241,40 @@ public class HeroesGui
 			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
 			{
 				return iconCache.heroeInWoodIcon;
-			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("gold"))
+			}
+			else if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals("gold"))
 			{
 				return iconCache.heroInGlodMineIcon;
-			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("stone"))
+			}
+			else if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals("stone"))
 			{
 				return iconCache.heroInStoneIcon;
-			} else if (bs.getCastle() != null)
+			}
+			else if (bs.getCastle() != null)
 			{
 				return iconCache.heroInCastleIcon;
-			} else
+			}
+			else
 				return iconCache.heroIcon;
 
-		} else if ((bs.getCastle()) != null)
+		}
+		else if ((bs.getCastle()) != null)
 		{
 			return iconCache.castleIcon;
-		} else if ((bs.getResource()) != null)
+		}
+		else if ((bs.getResource()) != null)
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
 				return iconCache.woodIcon;
-			} else if (bs.getResource().getType().getTypeName().equals("gold"))
+			}
+			else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
 				return iconCache.goldMineIcon;
-			} else if (bs.getResource().getType().getTypeName().equals("stone"))
+			}
+			else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
 				return iconCache.stoneIcon;
 			}
@@ -283,36 +291,70 @@ public class HeroesGui
 		{
 			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
 			{
-				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
-			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("gold"))
+				return bs.getHero().player.getName()
+					+ "'s Hero in "
+					+ bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
+			}
+			else if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
-			} else if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("stone"))
+				return bs.getHero().player.getName()
+					+ "'s Hero in "
+					+ bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
+			}
+			else if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return bs.getHero().player.getName() + "'s Hero in " + bs.getResource().getType().getTypeName() + " owned by "
-						+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
-			} else if ((bs.getCastle()) != null)
+				return bs.getHero().player.getName()
+					+ "'s Hero in "
+					+ bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
+			}
+			else if ((bs.getCastle()) != null)
 			{
-				return bs.getHero().player.getName() + "'s Hero in " + bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
-			} else
+				return bs.getHero().player.getName() + "'s Hero in "
+					+ bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x
+					+ ", " + y;
+			}
+			else
 				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
 
-		} else if ((bs.getCastle()) != null)
+		}
+		else if ((bs.getCastle()) != null)
 		{
-			return bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", " + y;
-		} else if ((bs.getResource()) != null)
+			return bs.getCastle().getPlayer().getName() + "'s Castle" + "\nLocation: " + x + ", "
+				+ y;
+		}
+		else if ((bs.getResource()) != null)
 		{
 			if (bs.getResource().getType().getTypeName().equals("wood"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
-			} else if (bs.getResource().getType().getTypeName().equals("gold"))
+				return bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
+			}
+			else if (bs.getResource().getType().getTypeName().equals("gold"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
-			} else if (bs.getResource().getType().getTypeName().equals("stone"))
+				return bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
+			}
+			else if (bs.getResource().getType().getTypeName().equals("stone"))
 			{
-				return bs.getResource().getType().getTypeName() + " owned by " + (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner().getName()) + "\nLocation: " + x + ", " + y;
+				return bs.getResource().getType().getTypeName()
+					+ " owned by "
+					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
+						.getName()) + "\nLocation: " + x + ", " + y;
 			}
 		}
 
@@ -328,96 +370,105 @@ public class HeroesGui
 		{
 			boardComposite.dispose();
 		}
-		
+
 		boardComposite = new Composite(sc1, SWT.NONE);
 		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
 
-		if(initBoard)
+		if (initBoard)
 		{
 			this.numOfCells = gameController.getGameState().getBoard().getSize();
-			
+
 			boardPoints = new Point[numOfCells][numOfCells];
 			for (int y = 0; y < numOfCells; y++)
 				for (int x = 0; x < numOfCells; x++)
-					boardPoints[x][y] = new Point(x,y);	
-			
+					boardPoints[x][y] = new Point(x, y);
+
 			GridLayout tableLayout = new GridLayout();
 			tableLayout.numColumns = numOfCells;
 			tableLayout.makeColumnsEqualWidth = true;
 			tableLayout.horizontalSpacing = 0;
 			tableLayout.verticalSpacing = 0;
 			boardComposite.setLayout(tableLayout);
-	
-			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
-	
+
+			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+				.getVisibleBoard();
+
 			MouseListener focusListener = new MouseListener() {
 				public void mouseDown(MouseEvent e)
 				{
 					Label selectedLabel = (Label) e.getSource();
 					currentPoint = (Point) selectedLabel.getData();
 				}
-	
+
 				public void mouseDoubleClick(MouseEvent arg0)
-				{}
-	
+				{
+				}
+
 				public void mouseUp(MouseEvent arg0)
-				{}
+				{
+				}
 			};
-			
+
 			Listener listener = new Listener() {
 				Point point = null;
-				
+
 				public void handleEvent(Event event)
 				{
 					switch (event.type)
 					{
-						case SWT.MouseDown:
-							if (event.button == 1)
-							{
-								point = new Point(event.x, event.y);
-							}
+					case SWT.MouseDown:
+						if (event.button == 1)
+						{
+							point = new Point(event.x, event.y);
+						}
 						break;
-						case SWT.MouseMove:
-							if (point == null)
-								break;
-		
-							int x = point.x - event.x;
-							int y = point.y - event.y;
-							if (Math.abs(x) < 8 && Math.abs(y) < 8)
-								break;			
-	
-							Control control = (Control) event.widget;
-							final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
-							Rectangle rect = control.getBounds();
-							final Rectangle r1 = display.map(control, boardComposite, rect);
-							tracker.setRectangles(new Rectangle[] { r1 });
-							tracker.addListener(SWT.Move, new Listener() {
-								public void handleEvent(Event event)
-								{
-									Rectangle r2 = tracker.getRectangles()[0];								
-									newPoint = new Point(r2.x/r2.width, r2.y/r2.height);
-									
-									if(!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).checkMove((r2.x/r2.width), (r2.y/r2.height), gameController.getGameState().getBoard()))
-										tracker.setCursor(cursor);
-									else
-										tracker.setCursor(defaultCursor);
-								}
-							});
-							
-							if (!tracker.open())
-								break;
-							
-							if(newPoint != null && currentPoint != null && !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
-								handleMoveCommand(new String[]{newPoint.x+"", newPoint.y+""});
-							
-							point = null;
+					case SWT.MouseMove:
+						if (point == null)
+							break;
+
+						int x = point.x - event.x;
+						int y = point.y - event.y;
+						if (Math.abs(x) < 8 && Math.abs(y) < 8)
+							break;
+
+						Control control = (Control) event.widget;
+						final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
+						Rectangle rect = control.getBounds();
+						final Rectangle r1 = display.map(control, boardComposite, rect);
+						tracker.setRectangles(new Rectangle[] { r1 });
+						tracker.addListener(SWT.Move, new Listener() {
+							public void handleEvent(Event event)
+							{
+								Rectangle r2 = tracker.getRectangles()[0];
+								newPoint = new Point(r2.x / r2.width, r2.y / r2.height);
+
+								if (!gameController
+									.getGameState()
+									.getPlayers()
+									.elementAt(currentPlayerIndex)
+									.checkMove((r2.x / r2.width), (r2.y / r2.height), gameController
+										.getGameState().getBoard()))
+									tracker.setCursor(cursor);
+								else
+									tracker.setCursor(defaultCursor);
+							}
+						});
+
+						if (!tracker.open())
+							break;
+
+						if (newPoint != null && currentPoint != null
+							&& !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
+							handleMoveCommand(new String[] { newPoint.x + "", newPoint.y + "" });
+
+						point = null;
 						break;
 					}
 				}
 			};
-	
+
 			for (int y = 0; y < numOfCells; y++)
 			{
 				for (int x = 0; x < numOfCells; x++)
@@ -430,21 +481,24 @@ public class HeroesGui
 					Label l = new Label(b, SWT.NONE);
 					l.setLayoutData(new GridData(GridData.FILL_BOTH));
 					int t = fromBoardToDisplayIcons(x, y);
-	
+
 					if (isVisible[x][y])
 						l.setImage(iconCache.stockImages[t]);
 					else
 						l.setImage(iconCache.stockImages[iconCache.blackIcon]);
-					
+
 					String description;
 					if (t != iconCache.grassIcon && t != iconCache.blackIcon)
 					{
 						description = fromBoardToDisplayDecription(x, y);
 						l.setToolTipText(description);
 					}
-	
-					if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon || t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
-						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+
+					if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon
+						|| t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
+						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
+							.equals(gameController.getGameState().getPlayers()
+								.elementAt(currentPlayerIndex)))
 						{
 							l.setData(boardPoints[x][y]);
 							l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
@@ -453,20 +507,25 @@ public class HeroesGui
 							l.addListener(SWT.MouseMove, listener);
 							currentHero = b;
 						}
-	
+
 					if (t == iconCache.castleIcon)
-						if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+						if (gameController.getGameState().getBoard().getBoardState(x, y)
+							.getCastle().getPlayer().equals(gameController.getGameState()
+								.getPlayers().elementAt(currentPlayerIndex)))
 						{
 							l.setData(boardPoints[x][y]);
 							l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 							l.addMouseListener(focusListener);
-							
-							if(gameController.getGameState().getBoard().getBoardState(x, y).getHero() == null)
-								currentHero = b;			
+
+							if (gameController.getGameState().getBoard().getBoardState(x, y)
+								.getHero() == null)
+								currentHero = b;
 						}
-	
+
 					if (t == iconCache.heroInCastleIcon)
-						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player.equals(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)))
+						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
+							.equals(gameController.getGameState().getPlayers()
+								.elementAt(currentPlayerIndex)))
 						{
 							l.setData(boardPoints[x][y]);
 							l.setMenu(createHeroInCastlePopUpMenu());
@@ -474,15 +533,15 @@ public class HeroesGui
 							l.addListener(SWT.MouseDown, listener);
 							l.addListener(SWT.MouseMove, listener);
 							currentHero = b;
-						}					
+						}
 				}
 			}
-	
+
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
 			sc1.setExpandVertical(true);
 			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
+
 			Rectangle bounds = currentHero.getBounds();
 			Rectangle area = sc1.getClientArea();
 			Point origin = sc1.getOrigin();
@@ -494,11 +553,10 @@ public class HeroesGui
 				origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
 			if (origin.y + area.height < bounds.y + bounds.height)
 				origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
-	
+
 			sc1.setOrigin(origin);
 		}
 	}
-
 
 	private Label createLabel(Composite composite, String text)
 	{
@@ -508,62 +566,63 @@ public class HeroesGui
 		return tempLabel;
 	}
 
+	@SuppressWarnings("unused")
 	private void displayStartWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
-		
-		GridLayout layout1 = new GridLayout (4, true);
+
+		GridLayout layout1 = new GridLayout(4, true);
 		layout1.marginWidth = layout1.marginHeight = 10;
-		shell.setLayout (layout1);
-	
+		shell.setLayout(layout1);
+
 		GridData newGameData = new GridData();
 		newGameData.horizontalSpan = 4;
 		newGameData.grabExcessHorizontalSpace = true;
 		newGameData.grabExcessVerticalSpace = true;
-		final Button newGame = new Button (shell, SWT.RADIO);
+		final Button newGame = new Button(shell, SWT.RADIO);
 		newGame.setSelection(true);
-		newGame.setText ("Start a New Game");
+		newGame.setText("Start a New Game");
 		newGame.setLayoutData(newGameData);
-		
+
 		GridData loadGameData = new GridData();
 		loadGameData.horizontalSpan = 4;
 		loadGameData.grabExcessHorizontalSpace = true;
 		loadGameData.grabExcessVerticalSpace = true;
-		final Button loadGame = new Button (shell, SWT.RADIO);
-		loadGame.setText ("Load a Saved Game");
+		final Button loadGame = new Button(shell, SWT.RADIO);
+		loadGame.setText("Load a Saved Game");
 		loadGame.setLayoutData(loadGameData);
-		
+
 		GridData emptyLabelData1 = new GridData();
 		emptyLabelData1.grabExcessHorizontalSpace = true;
 		emptyLabelData1.horizontalSpan = 4;
 		Label emptyLabel1 = new Label(shell, SWT.None);
 		emptyLabel1.setVisible(false);
 		emptyLabel1.setLayoutData(emptyLabelData1);
-		
+
 		GridData okData = new GridData();
 		okData.grabExcessHorizontalSpace = true;
 		okData.grabExcessVerticalSpace = true;
 		okData.horizontalSpan = 1;
-		Button okButton = new Button (shell, SWT.PUSH);
-		okButton.setText ("    OK    ");
+		Button okButton = new Button(shell, SWT.PUSH);
+		okButton.setText("    OK    ");
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				if(newGame.getSelection())
+				if (newGame.getSelection())
 					startNewGame();
-				else if(loadGame.getSelection())
+				else if (loadGame.getSelection())
 					openFileDlg();
 
 				shell.dispose();
 			}
 		});
 		okButton.setLayoutData(okData);
-		
+
 		GridData cancelData = new GridData();
 		cancelData.grabExcessHorizontalSpace = true;
-		Button cancelButton = new Button (shell, SWT.PUSH);
-		cancelButton.setText (" Cancel ");
+		Button cancelButton = new Button(shell, SWT.PUSH);
+		cancelButton.setText(" Cancel ");
 		cancelButton.setLayoutData(cancelData);
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -571,17 +630,17 @@ public class HeroesGui
 				shell.dispose();
 			}
 		});
-		
+
 		GridData emptyLabelData2 = new GridData();
 		emptyLabelData2.grabExcessHorizontalSpace = true;
 		Label emptyLabel2 = new Label(shell, SWT.None);
 		emptyLabel2.setVisible(false);
 		emptyLabel2.setLayoutData(emptyLabelData2);
-		
+
 		GridData helpData = new GridData();
 		helpData.grabExcessHorizontalSpace = true;
-		Button helpButton = new Button (shell, SWT.PUSH);
-		helpButton.setText ("  Help  ");
+		Button helpButton = new Button(shell, SWT.PUSH);
+		helpButton.setText("  Help  ");
 		helpButton.setLayoutData(helpData);
 		helpButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -589,9 +648,9 @@ public class HeroesGui
 				showGameAssistanceMbox();
 			}
 		});
-		
-		shell.pack ();
-		
+
+		shell.pack();
+
 		shell.open();
 		while (!shell.isDisposed())
 		{
@@ -650,7 +709,6 @@ public class HeroesGui
 		}
 	}
 
-
 	private void createStatusWindow(boolean initStatus)
 	{
 
@@ -658,8 +716,8 @@ public class HeroesGui
 		{
 			statusComposite.dispose();
 		}
-		
-		//statusComposite = new ScrolledComposite(sash, SWT.BORDER);
+
+		// statusComposite = new ScrolledComposite(sash, SWT.BORDER);
 		statusComposite = new Composite(sc2, SWT.BORDER);
 		statusComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
@@ -667,18 +725,16 @@ public class HeroesGui
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
-		
-		if(initStatus)
+
+		if (initStatus)
 			updateStatusWindow();
-		
+
 		sc2.setContent(statusComposite);
 		sc2.setExpandHorizontal(true);
 		sc2.setExpandVertical(true);
-		sc2.setMinSize(statusComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));	
-		
-	}
-		
+		sc2.setMinSize(statusComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
+	}
 
 	private void updateStatusWindow()
 	{
@@ -686,7 +742,7 @@ public class HeroesGui
 		TableItem ti;
 
 		statusComposite.setBackground(white);
-		int statusWidth = (sc2.getSize().x-30);
+		int statusWidth = (sc2.getSize().x - 30);
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
@@ -724,23 +780,23 @@ public class HeroesGui
 			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
 			armyCol1.setText("Slot");
 			armyCol2.setText("Units");
-			//armyCol1.setWidth(40);
-			//armyCol2.setWidth(138);
+			// armyCol1.setWidth(40);
+			// armyCol2.setWidth(138);
 			armyCol1.setWidth(40);
-			armyCol2.setWidth(statusWidth-40);
+			armyCol2.setWidth(statusWidth - 40);
 			armyTable.setHeaderVisible(true);
 			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-			for (Integer j=1 ; j<6 ; ++j)
+			for (Integer j = 1; j < 6; ++j)
 			{
 				ti = new TableItem(armyTable, SWT.NONE);
-				ti.setText (0, j.toString());
-				if (creaturesArray[j-1] != null)
+				ti.setText(0, j.toString());
+				if (creaturesArray[j - 1] != null)
 				{
-					ti.setText (1, creaturesArray[j-1].toString());
+					ti.setText(1, creaturesArray[j - 1].toString());
 				}
 				else
 				{
-					ti.setText (1, "none");
+					ti.setText(1, "none");
 				}
 			}
 		}
@@ -753,17 +809,17 @@ public class HeroesGui
 		minesCol1.setText("Mine");
 		minesCol2.setText("Quantity");
 		minesCol1.setWidth(80);
-		minesCol2.setWidth(statusWidth-80);
+		minesCol2.setWidth(statusWidth - 80);
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
 		Integer stoneNum = p.getMineQuantity("stone");
 		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] {"Wood", woodNum.toString()});
+		ti.setText(new String[] { "Wood", woodNum.toString() });
 		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] {"Gold", goldNum.toString()});
+		ti.setText(new String[] { "Gold", goldNum.toString() });
 		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] {"Stone", stoneNum.toString()});
+		ti.setText(new String[] { "Stone", stoneNum.toString() });
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST  :");
@@ -773,17 +829,17 @@ public class HeroesGui
 		treasursCol1.setText("Resource");
 		treasursCol2.setText("Amount");
 		treasursCol1.setWidth(80);
-		treasursCol2.setWidth(statusWidth-80);
+		treasursCol2.setWidth(statusWidth - 80);
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
 		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
 		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] {"Wood", woodAmount.toString()});
+		ti.setText(new String[] { "Wood", woodAmount.toString() });
 		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] {"Gold", goldAmount.toString()});
+		ti.setText(new String[] { "Gold", goldAmount.toString() });
 		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] {"Stone", stoneAmount.toString()});
+		ti.setText(new String[] { "Stone", stoneAmount.toString() });
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "CASTLES  :");
@@ -791,9 +847,10 @@ public class HeroesGui
 		if (numOfCastles == 0)
 		{
 			createLabel(statusComposite, "You have no castles");
-			createLabel(statusComposite, "Days witout castle  :  " + (p.getDaysWithoutCastles()+1));
+			createLabel(statusComposite, "Days witout castle  :  "
+				+ (p.getDaysWithoutCastles() + 1));
 		}
-		for (int i=0 ; i<numOfCastles ; ++i)
+		for (int i = 0; i < numOfCastles; ++i)
 		{
 			final Castle castle = p.getCastles().get(i);
 			int castleXPos = castle.getXPos();
@@ -810,11 +867,10 @@ public class HeroesGui
 		statusComposite.layout(true, true);
 	}
 
-
 	/**
 	 * Creates the menu at the top of the shell where most of the programs
 	 * functionality is accessed.
-	 *
+	 * 
 	 * @return The <code>Menu</code> widget that was created
 	 */
 	private Menu createMenuBar()
@@ -845,8 +901,6 @@ public class HeroesGui
 		box.open();
 	}
 
-	
-	
 	public Vector<Player> getGameDetails()
 	{
 		final Vector<Player> players = new Vector<Player>();
@@ -854,176 +908,185 @@ public class HeroesGui
 		final Combo pcLevel2;
 		final Combo pcLevel3;
 		final int[] arr = new int[1];
-		
-		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+
+		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL
+			| SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(335, 225);
 		shell1.setText("New game menu");
 		shell1.setImage(iconCache.stockImages[iconCache.appIcon]);
-		
-		Composite form = new Composite(shell1,SWT.FILL); 
-        form.setLayout(new GridLayout(4,false));
-        
-        final Label emptyLabel1 = new Label(form, SWT.NONE);
-        emptyLabel1.setText("      ");
-        final Label namesLabel = new Label(form, SWT.NONE);
-        namesLabel.setText("     Name     ");
-        final Label computer3 = new Label(form, SWT.NONE);
-        computer3.setText(" Computer     ");
-        final Label levelLabel = new Label(form, SWT.NONE);
-        levelLabel.setText("     Level     ");
-        final Label emptyLabel12 = new Label(form, SWT.NONE);
-        emptyLabel12.setText("      ");
-        final Label emptyLabel2 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-        //emptyLabel2.setText("");
-        final Label emptyLabel3 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-        //emptyLabel3.setText("");
-        final Label emptyLabel4 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-        //emptyLabel4.setText("");
-        //final Label emptyLabel88 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
-       
-        
-        
-		final Label player1Label = new Label(form, SWT.NONE);
-        player1Label.setText("Player 1 : ");
-		final Text player1Name = new Text(form, SWT.NONE);
-        final Label emptyLabel5 = new Label(form, SWT.NONE);
-        emptyLabel5.setText("");
-        final Label emptyLabel6 = new Label(form, SWT.NONE);
-        emptyLabel6.setText("");
-        
-        final Label player2Label = new Label(form, SWT.NONE);
-        player2Label.setText("Player 2 : ");
-		final Text player2Name = new Text(form, SWT.NONE);
-        final Button pcButton1 = new Button(form, SWT.CHECK);
-        pcLevel1 = new Combo(form, SWT.NONE);
-        pcLevel1.setText("level");
-        pcLevel1.setItems(new String[] {"Beginner", "Expert"});
-        pcLevel1.setEnabled(false);
-        pcButton1.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(final SelectionEvent arg0) {
-                        if(pcButton1.getSelection()){
-                                pcLevel1.setEnabled(true);
-                        } else {
-                                pcLevel1.setEnabled(false);
-                        }
-                }
-        });
-        
-        final Label player3Label = new Label(form, SWT.NONE);
-        player3Label.setText("Player 3 : ");
-		final Text player3Name = new Text(form, SWT.NONE);
-        final Button pcButton2 = new Button(form, SWT.CHECK);
-        pcLevel2 = new Combo(form, SWT.NONE);
-        pcLevel2.setText("level");
-        pcLevel2.setItems(new String[] {"Beginner", "Expert"});
-        pcLevel2.setEnabled(false);
-        pcButton2.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(final SelectionEvent arg0) {
-                        if(pcButton2.getSelection()){
-                                pcLevel2.setEnabled(true);
-                        } else {
-                                pcLevel2.setEnabled(false);
-                        }
-                }
-        });
-        
-        final Label player4Label = new Label(form, SWT.NONE);
-        player4Label.setText("Player 4 : ");
-		final Text player4Name = new Text(form, SWT.NONE);
-        final Button pcButton3 = new Button(form, SWT.CHECK);
-        pcLevel3 = new Combo(form, SWT.NONE);
-        pcLevel3.setText("level");
-        pcLevel3.setItems(new String[] {"Beginner", "Expert"});
-        pcLevel3.setEnabled(false);
-        pcButton3.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(final SelectionEvent arg0) {
-                        if(pcButton3.getSelection()){
-                                pcLevel3.setEnabled(true);
-                        } else {
-                                pcLevel3.setEnabled(false);
-                        }
-                }
-        });
-        
-        Composite form2 = new Composite(shell1,SWT.FILL); 
-        
-        form2.setLayout(new GridLayout(3,false));
-        Button okButton = new Button(form2, SWT.NONE);
-        okButton.setText("          OK          ");
-        okButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-            		String name1 = player1Name.getText();
-            		String name2 = player2Name.getText();
-            		String name3 = player3Name.getText();
-            		String name4 = player4Name.getText();
-            		if (name1.length() == 0)
-            		{
-            			displayError("You must choose the first player !" );
-            		}
-            		else
-            		{
-            			players.add(new Player(name1));
-            		}
-            		if ((name2.length() > 0) || (pcButton1.getSelection()))
-            		{
-            			if (pcButton1.getSelection())
-            			{
-            				players.add(new Player("computer"));
-            			}
-            			else
-            			{
-            				players.add(new Player(name2));
-            			}
-            		}
-            		if ((name3.length() > 0) || (pcButton2.getSelection()))
-            		{
-            			if (pcButton2.getSelection())
-            			{
-            				players.add(new Player("computer"));
-            			}
-            			else
-            			{
-            				players.add(new Player(name3));
-            			}
-            		}
-            		if ((name4.length() > 0) || (pcButton3.getSelection()))
-            		{
-            			if (pcButton3.getSelection())
-            			{
-            				players.add(new Player("computer"));
-            			}
-            			else
-            			{
-            				players.add(new Player(name4));
-            			}
-            		}
 
-                    if(players.size() < 2)
-                    {
-                            displayError("You must select at least 2 players");
-                            players.removeAllElements();
-                            //return;
-                    }  
-                    else
-                    {
-                    	shell1.dispose();
-                    }
-            }
-            
-    });
-        
-        final Label emptyLabel7 = new Label(form2, SWT.NONE);
-        emptyLabel7.setText("                                   ");
-        
-        Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
-        cancelButton.setText("        Cancel        ");
-        cancelButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-            	arr[0] = 5;
-            	shell1.dispose();	
-            }
-        });		
+		Composite form = new Composite(shell1, SWT.FILL);
+		form.setLayout(new GridLayout(4, false));
+
+		final Label emptyLabel1 = new Label(form, SWT.NONE);
+		emptyLabel1.setText("      ");
+		final Label namesLabel = new Label(form, SWT.NONE);
+		namesLabel.setText("     Name     ");
+		final Label computer3 = new Label(form, SWT.NONE);
+		computer3.setText(" Computer     ");
+		final Label levelLabel = new Label(form, SWT.NONE);
+		levelLabel.setText("     Level     ");
+		final Label emptyLabel12 = new Label(form, SWT.NONE);
+		emptyLabel12.setText("      ");
+		new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+		new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+
+		final Label player1Label = new Label(form, SWT.NONE);
+		player1Label.setText("Player 1 : ");
+		final Text player1Name = new Text(form, SWT.NONE);
+		final Label emptyLabel5 = new Label(form, SWT.NONE);
+		emptyLabel5.setText("");
+		final Label emptyLabel6 = new Label(form, SWT.NONE);
+		emptyLabel6.setText("");
+
+		final Label player2Label = new Label(form, SWT.NONE);
+		player2Label.setText("Player 2 : ");
+		final Text player2Name = new Text(form, SWT.NONE);
+		final Button pcButton1 = new Button(form, SWT.CHECK);
+		pcLevel1 = new Combo(form, SWT.NONE);
+		pcLevel1.setText("level");
+		pcLevel1.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel1.setEnabled(false);
+		pcButton1.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent arg0)
+			{
+				if (pcButton1.getSelection())
+				{
+					pcLevel1.setEnabled(true);
+				}
+				else
+				{
+					pcLevel1.setEnabled(false);
+				}
+			}
+		});
+
+		final Label player3Label = new Label(form, SWT.NONE);
+		player3Label.setText("Player 3 : ");
+		final Text player3Name = new Text(form, SWT.NONE);
+		final Button pcButton2 = new Button(form, SWT.CHECK);
+		pcLevel2 = new Combo(form, SWT.NONE);
+		pcLevel2.setText("level");
+		pcLevel2.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel2.setEnabled(false);
+		pcButton2.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent arg0)
+			{
+				if (pcButton2.getSelection())
+				{
+					pcLevel2.setEnabled(true);
+				}
+				else
+				{
+					pcLevel2.setEnabled(false);
+				}
+			}
+		});
+
+		final Label player4Label = new Label(form, SWT.NONE);
+		player4Label.setText("Player 4 : ");
+		final Text player4Name = new Text(form, SWT.NONE);
+		final Button pcButton3 = new Button(form, SWT.CHECK);
+		pcLevel3 = new Combo(form, SWT.NONE);
+		pcLevel3.setText("level");
+		pcLevel3.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel3.setEnabled(false);
+		pcButton3.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent arg0)
+			{
+				if (pcButton3.getSelection())
+				{
+					pcLevel3.setEnabled(true);
+				}
+				else
+				{
+					pcLevel3.setEnabled(false);
+				}
+			}
+		});
+
+		Composite form2 = new Composite(shell1, SWT.FILL);
+
+		form2.setLayout(new GridLayout(3, false));
+		Button okButton = new Button(form2, SWT.NONE);
+		okButton.setText("          OK          ");
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e)
+			{
+				String name1 = player1Name.getText();
+				String name2 = player2Name.getText();
+				String name3 = player3Name.getText();
+				String name4 = player4Name.getText();
+				if (name1.length() == 0)
+				{
+					displayError("You must choose the first player !");
+				}
+				else
+				{
+					players.add(new Player(name1));
+				}
+				if ((name2.length() > 0) || (pcButton1.getSelection()))
+				{
+					if (pcButton1.getSelection())
+					{
+						players.add(new Player("computer"));
+					}
+					else
+					{
+						players.add(new Player(name2));
+					}
+				}
+				if ((name3.length() > 0) || (pcButton2.getSelection()))
+				{
+					if (pcButton2.getSelection())
+					{
+						players.add(new Player("computer"));
+					}
+					else
+					{
+						players.add(new Player(name3));
+					}
+				}
+				if ((name4.length() > 0) || (pcButton3.getSelection()))
+				{
+					if (pcButton3.getSelection())
+					{
+						players.add(new Player("computer"));
+					}
+					else
+					{
+						players.add(new Player(name4));
+					}
+				}
+
+				if (players.size() < 2)
+				{
+					displayError("You must select at least 2 players");
+					players.removeAllElements();
+					// return;
+				}
+				else
+				{
+					shell1.dispose();
+				}
+			}
+
+		});
+
+		final Label emptyLabel7 = new Label(form2, SWT.NONE);
+		emptyLabel7.setText("                                   ");
+
+		Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
+		cancelButton.setText("        Cancel        ");
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e)
+			{
+				arr[0] = 5;
+				shell1.dispose();
+			}
+		});
 		shell1.open();
 		while (!shell1.isDisposed())
 		{
@@ -1039,29 +1102,26 @@ public class HeroesGui
 			return null;
 		}
 	}
-	
-	
 
 	public void startNewGame()
 	{
-		
-		//getGameDetails();
-		
-		
-		//int numberOfPlayers = getNumberOfPlayers();
-		//if(numberOfPlayers != 0)
-		//{
-			Vector<Player> players = getGameDetails();
-			if(players != null)
-			{
-				gameController.initNewGame(players);
-		
-				createBoardWindow(true);
-				createStatusWindow(true);
-				//sash.setWeights(new int[] { 85, 15 });
-				sash.setWeights(new int[] { 80, 20 });
-			}
-		//}
+
+		// getGameDetails();
+
+		// int numberOfPlayers = getNumberOfPlayers();
+		// if(numberOfPlayers != 0)
+		// {
+		Vector<Player> players = getGameDetails();
+		if (players != null)
+		{
+			gameController.initNewGame(players);
+
+			createBoardWindow(true);
+			createStatusWindow(true);
+			// sash.setWeights(new int[] { 85, 15 });
+			sash.setWeights(new int[] { 80, 20 });
+		}
+		// }
 	}
 
 	/**
@@ -1069,13 +1129,15 @@ public class HeroesGui
 	 */
 	public static int getNumberOfPlayers()
 	{
-		String message = "Enter number of players (" + Constants.MIN_PLAYERS + "-" + Constants.MAX_PLAYERS + "): ";
+		String message = "Enter number of players (" + Constants.MIN_PLAYERS + "-"
+			+ Constants.MAX_PLAYERS + "): ";
 		int numberOfPlayers = Integer.MIN_VALUE;
 		String response = null;
 
 		do
 		{
-			InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Players", message, null, null);
+			InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(),
+				"Number of Players", message, null, null);
 			if (numberInput.open() == Window.OK)
 			{
 				response = numberInput.getValue();
@@ -1086,7 +1148,8 @@ public class HeroesGui
 			if (response != null)
 				numberOfPlayers = Helper.tryParseInt(response);
 
-		} while (!Helper.isIntBetween(numberOfPlayers, Constants.MIN_PLAYERS, Constants.MAX_PLAYERS));
+		} while (!Helper
+			.isIntBetween(numberOfPlayers, Constants.MIN_PLAYERS, Constants.MAX_PLAYERS));
 
 		return numberOfPlayers;
 	}
@@ -1099,14 +1162,17 @@ public class HeroesGui
 
 		for (int i = 0; i < numberOfPlayers;)
 		{
-			message = (i == 0) ? "" : "If you want one of the players will be the computer, enter " + Player.COMPUTER_NAME + " as his name.\n";
+			message = (i == 0) ? "" : "If you want one of the players will be the computer, enter "
+				+ Player.COMPUTER_NAME + " as his name.\n";
 			message += "Please enter player " + (i + 1) + "'s name: ";
 
-			InputDialog stringInput = new InputDialog(Display.getCurrent().getActiveShell(), "Player Name", message, null, null);
+			InputDialog stringInput = new InputDialog(Display.getCurrent().getActiveShell(),
+				"Player Name", message, null, null);
 			if (stringInput.open() == Window.OK)
 			{
 				response = stringInput.getValue();
-			} else
+			}
+			else
 			{
 				return null;
 			}
@@ -1123,11 +1189,12 @@ public class HeroesGui
 
 	public void openFileDlg()
 	{
-	
+
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 
 		fileDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
-		fileDialog.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
+		fileDialog
+			.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
 		String name = fileDialog.open();
 
 		if (name == null)
@@ -1152,14 +1219,14 @@ public class HeroesGui
 
 		if (gameController.getGameState().getBoard() == null)
 		{
-			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n" +
-							"Please try again with a different file");
+			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n"
+				+ "Please try again with a different file");
 			return;
 		}
-		
+
 		createBoardWindow(true);
 		createStatusWindow(true);
-		//sash.setWeights(new int[] { 85, 15 });
+		// sash.setWeights(new int[] { 85, 15 });
 		sash.setWeights(new int[] { 80, 20 });
 
 		shell.setCursor(null);
@@ -1186,10 +1253,11 @@ public class HeroesGui
 
 	public boolean saveAs()
 	{
-	
+
 		FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
 		saveDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
-		saveDialog.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
+		saveDialog
+			.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
 
 		saveDialog.open();
 		String name = saveDialog.getFileName();
@@ -1220,15 +1288,14 @@ public class HeroesGui
 	/**
 	 * Creates all the items located in the File submenu and associate all the
 	 * menu items with their appropriate functions.
-	 *
+	 * 
 	 * @param menuBar
-	 *            Menu the <code>Menu</code> that file contain the File
-	 *            submenu.
+	 *            Menu the <code>Menu</code> that file contain the File submenu.
 	 */
 	private void createFileMenu(Menu menuBar)
 	{
 		final MenuItem saveAsSubItem, saveSubItem;
-		
+
 		// File menu.
 		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
 		item.setText("File");
@@ -1237,14 +1304,14 @@ public class HeroesGui
 
 		menu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{}
+			{
+			}
 		});
 
-		//space reserve for File -> New and File -> Open Saved Game
+		// space reserve for File -> New and File -> Open Saved Game
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
 		MenuItem openSubItem = new MenuItem(menu, SWT.NULL);
 		new MenuItem(menu, SWT.SEPARATOR);
-		
 
 		// File -> Save.
 		saveSubItem = new MenuItem(menu, SWT.NULL);
@@ -1258,7 +1325,6 @@ public class HeroesGui
 			}
 		});
 
-
 		// File -> Save As.
 		saveAsSubItem = new MenuItem(menu, SWT.NULL);
 		saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
@@ -1270,28 +1336,27 @@ public class HeroesGui
 				saveAs();
 			}
 		});
-		
+
 		// File -> New Game
 		subItem.setText("New Game");
 		subItem.setAccelerator(SWT.MOD1 + 'N');
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//TODO: ariel
+				// TODO: ariel
 				startNewGame();
 				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 			}
 		});
-		
-		
+
 		// File -> Open Saved Game
 		openSubItem.setText("Open Saved Game");
 		openSubItem.setAccelerator(SWT.MOD1 + 'O');
 		openSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//TODO: ariel
+				// TODO: ariel
 				openFileDlg();
 				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
@@ -1315,17 +1380,18 @@ public class HeroesGui
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
 	 * items with their appropriate functions.
+	 * 
 	 * @param style
-	 * 			if style == SWT.DROP_DOWN create as drop down menu
-	 * 			else create as pop up menu
-	 *
+	 *            if style == SWT.DROP_DOWN create as drop down menu else create
+	 *            as pop up menu
+	 * 
 	 * @return Menu The created popup menu.
 	 */
-	
+
 	private Menu createHeroPopUpMenu(int style)
 	{
 		Menu popUpMenu;
-		if(eclipseComposite != null)
+		if (eclipseComposite != null)
 		{
 			popUpMenu = new Menu(eclipseComposite);
 		}
@@ -1339,18 +1405,9 @@ public class HeroesGui
 
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{}
+			{
+			}
 		});
-
-		//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		//item.setText("Move");
-		//item.addSelectionListener(new SelectionAdapter() {
-		//	public void widgetSelected(SelectionEvent e)
-		//	{
-		//		moveHero();
-		//	}
-
-	//	});
 
 		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 		item.setText("End Turn");
@@ -1363,21 +1420,21 @@ public class HeroesGui
 
 		return popUpMenu;
 	}
-	
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
 	 * items with their appropriate functions.
+	 * 
 	 * @param style
-	 * 			if style == SWT.DROP_DOWN create as drop down menu
-	 * 			else create as pop up menu
-	 *
+	 *            if style == SWT.DROP_DOWN create as drop down menu else create
+	 *            as pop up menu
+	 * 
 	 * @return Menu The created popup menu.
 	 */
 	private Menu createCastlePopUpMenu(int style)
 	{
 		Menu popUpMenu;
-		if(eclipseComposite != null)
+		if (eclipseComposite != null)
 		{
 			popUpMenu = new Menu(eclipseComposite);
 		}
@@ -1391,32 +1448,27 @@ public class HeroesGui
 
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
-			{}
+			{
+			}
 		});
 
-		if(eclipseComposite!=null)
-		{
-		    final MenuItem goblinBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinBuildItem.setText("Build Goblin factory");
-		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierBuildItem.setText("Build Soldier factory");
-		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    buildPricesItem.setText("Build Prices");
-		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+		if (eclipseComposite != null)
+		{		
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem buildFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
+				buildFactoryItem.setText("Build " + factory.getName());
+				buildFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleBuildCommand(factory.getClass());
+					}
+				});
+			}
+
+			final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+			buildPricesItem.setText("Build Prices");
+			buildPricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1426,40 +1478,34 @@ public class HeroesGui
 					buildPricesShell.setLocation(450, 450);
 					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
 					pricesLable.setText(GameController.handleBuildPricesCommand());
 					buildPricesShell.open();
-					
-					while (!buildPricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
-				}
-			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		    final MenuItem goblinMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinMakeItem.setText("Make Goblin");
-		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("goblin");
+					while (!buildPricesShell.isDisposed())
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
-		    final MenuItem soldierMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierMakeItem.setText("Make Soldier");
-		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    makePricesItem.setText("Unit Prices");
-		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem makeCreatureItem = new MenuItem(popUpMenu, SWT.PUSH);
+				makeCreatureItem.setText("Make " + factory.getUnitName());
+				makeCreatureItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleMakeCommand(factory.getCreatureClass());
+					}
+				});
+			}
+
+			final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+			makePricesItem.setText("Unit Prices");
+			makePricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1469,20 +1515,20 @@ public class HeroesGui
 					makePricesShell.setLocation(450, 450);
 					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
 					pricesLable.setText(GameController.handleMakePricesCommand());
 					makePricesShell.open();
-					
+
 					while (!makePricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
-	
-		    final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
 			item.setText("End Turn");
 			item.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
@@ -1495,35 +1541,30 @@ public class HeroesGui
 		{
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Build");
-	
+
 			Menu buildMenu;
-			if(eclipseComposite != null)
+			if (eclipseComposite != null)
 				buildMenu = new Menu(eclipseComposite);
 			else
 				buildMenu = new Menu(shell, SWT.DROP_DOWN);
-			
+
 			item.setMenu(buildMenu);
-		    final MenuItem goblinBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-		    goblinBuildItem.setText("Goblin factory");
-		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierBuildItem = new MenuItem(buildMenu, SWT.PUSH);
-		    soldierBuildItem.setText("Soldier factory");
-		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem buildPricesItem = new MenuItem(buildMenu, SWT.PUSH);
-		    buildPricesItem.setText("Build Prices");
-		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem buildFactoryItem = new MenuItem(buildMenu, SWT.PUSH);
+				buildFactoryItem.setText(factory.getName());
+				buildFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleBuildCommand(factory.getClass());
+					}
+				});
+			}
+
+			final MenuItem buildPricesItem = new MenuItem(buildMenu, SWT.PUSH);
+			buildPricesItem.setText("Build Prices");
+			buildPricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1533,47 +1574,42 @@ public class HeroesGui
 					buildPricesShell.setLocation(450, 450);
 					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
 					pricesLable.setText(GameController.handleBuildPricesCommand());
 					buildPricesShell.open();
-					
+
 					while (!buildPricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
+
 			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Make");
-	
+
 			Menu makeMenu;
-			if(eclipseComposite != null)
+			if (eclipseComposite != null)
 				makeMenu = new Menu(eclipseComposite);
 			else
 				makeMenu = new Menu(shell, SWT.DROP_DOWN);
 			item.setMenu(makeMenu);
-		    final MenuItem goblinMakeItem = new MenuItem(makeMenu, SWT.PUSH);
-		    goblinMakeItem.setText("Goblin");
-		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierMakeItem = new MenuItem(makeMenu, SWT.PUSH);
-		    soldierMakeItem.setText("Soldier");
-		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem makePricesItem = new MenuItem(makeMenu, SWT.PUSH);
-		    makePricesItem.setText("Unit Prices");
-		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem makeCreatureItem = new MenuItem(makeMenu, SWT.PUSH);
+				makeCreatureItem.setText(factory.getUnitName());
+				makeCreatureItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleMakeCommand(factory.getCreatureClass());
+					}
+				});
+			}
+
+			final MenuItem makePricesItem = new MenuItem(makeMenu, SWT.PUSH);
+			makePricesItem.setText("Unit Prices");
+			makePricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1583,20 +1619,20 @@ public class HeroesGui
 					makePricesShell.setLocation(450, 450);
 					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
 					pricesLable.setText(GameController.handleMakePricesCommand());
 					makePricesShell.open();
-					
+
 					while (!makePricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
-	
-		    item = new MenuItem(popUpMenu, SWT.CASCADE);
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("End Turn");
 			item.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
@@ -1608,19 +1644,17 @@ public class HeroesGui
 
 		return popUpMenu;
 	}
-	
-	
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
 	 * items with their appropriate functions.
-	 *
+	 * 
 	 * @return Menu The created popup menu.
 	 */
 	private Menu createHeroInCastlePopUpMenu()
 	{
 		Menu popUpMenu;
-		if(eclipseComposite != null)
+		if (eclipseComposite != null)
 			popUpMenu = new Menu(eclipseComposite);
 		else
 			popUpMenu = new Menu(shell, SWT.POP_UP);
@@ -1629,26 +1663,15 @@ public class HeroesGui
 		 * Adds a listener to handle enabling and disabling some items in the
 		 * Edit submenu.
 		 */
-	
+
 		popUpMenu.addMenuListener(new MenuAdapter() {
 			public void menuShown(MenuEvent e)
 			{
 			}
 		});
-		
 
-		if(eclipseComposite!=null)
+		if (eclipseComposite != null)
 		{
-			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-			//item.setText("Move");
-			//item.addSelectionListener(new SelectionAdapter() {
-			//	public void widgetSelected(SelectionEvent e)
-				//{
-				//	moveHero();
-				//}
-
-		//	});
-
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("End Turn");
 			item.addSelectionListener(new SelectionAdapter() {
@@ -1657,30 +1680,24 @@ public class HeroesGui
 					handleEndTurnCommand();
 				}
 			});
-			
+
 			new MenuItem(popUpMenu, SWT.SEPARATOR);
-			
-			final MenuItem goblinBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinBuildItem.setText("Build Goblin factory");
-		    goblinBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierBuildItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierBuildItem.setText("Build Soldier factory");
-		    soldierBuildItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleBuildCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    buildPricesItem.setText("Build Prices");
-		    buildPricesItem.addSelectionListener(new SelectionAdapter() {
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem buildFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
+				buildFactoryItem.setText("Build " + factory.getName());
+				buildFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleBuildCommand(factory.getClass());
+					}
+				});
+			}
+
+			final MenuItem buildPricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+			buildPricesItem.setText("Build Prices");
+			buildPricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell buildPricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1690,40 +1707,34 @@ public class HeroesGui
 					buildPricesShell.setLocation(450, 450);
 					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
 					pricesLable.setText(GameController.handleBuildPricesCommand());
 					buildPricesShell.open();
-					
-					while (!buildPricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
-				}
-			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		    final MenuItem goblinMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinMakeItem.setText("Make Goblin");
-		    goblinMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("goblin");
+					while (!buildPricesShell.isDisposed())
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
-		    final MenuItem soldierMakeItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierMakeItem.setText("Make Soldier");
-		    soldierMakeItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleMakeCommand("soldier");
-				}
-			});
-		    
-		    final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    makePricesItem.setText("Unit Prices");
-		    makePricesItem.addSelectionListener(new SelectionAdapter() {
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem makeCreatureItem = new MenuItem(popUpMenu, SWT.PUSH);
+				makeCreatureItem.setText("Make " + factory.getUnitName());
+				makeCreatureItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleMakeCommand(factory.getCreatureClass());
+					}
+				});
+			}
+
+			final MenuItem makePricesItem = new MenuItem(popUpMenu, SWT.PUSH);
+			makePricesItem.setText("Unit Prices");
+			makePricesItem.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					Shell makePricesShell = new Shell(Display.getCurrent().getActiveShell());
@@ -1733,197 +1744,171 @@ public class HeroesGui
 					makePricesShell.setLocation(450, 450);
 					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
-					pricesLable.setBackground(new Color(display, 255,255,255));
+					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
 					pricesLable.setText(GameController.handleMakePricesCommand());
 					makePricesShell.open();
-					
+
 					while (!makePricesShell.isDisposed())
-						 if (!display.readAndDispatch())
-							 display.sleep();
+						if (!display.readAndDispatch())
+							display.sleep();
 				}
 			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem splitFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
+				splitFactoryItem.setText("Split " + factory.getUnitName());
+				splitFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleSplitCommand(factory.getClass());
+					}
+				});
+			}
+
+			new MenuItem(popUpMenu, SWT.SEPARATOR);
 			
-		    final MenuItem goblinSplitItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinSplitItem.setText("Split Goblin");
-		    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleSplitCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierSplitItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierSplitItem.setText("Split Soldier");
-		    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleSplitCommand("soldier");
-				}
-			});
-	
-		    new MenuItem(popUpMenu, SWT.SEPARATOR);
-			
-		    final MenuItem goblinJoinItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    goblinJoinItem.setText("Join Goblin");
-		    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleJoinCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierJoinItem = new MenuItem(popUpMenu, SWT.PUSH);
-		    soldierJoinItem.setText("Join Soldier");
-		    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleJoinCommand("soldier");
-				}
-			});
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem joinFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
+				joinFactoryItem.setText("Join " + factory.getUnitName());
+				joinFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleJoinCommand(factory.getClass());
+					}
+				});
+			}
 		}
 		else
 		{
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-			
+
 			item.setText("Hero Options");
 			item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
-			
+
 			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Castle Options");
 			item.setMenu(createCastlePopUpMenu(SWT.DROP_DOWN));
-			
-			
+
 			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Split");
-	
+
 			Menu splitMenu = new Menu(shell, SWT.DROP_DOWN);
 			item.setMenu(splitMenu);
-		    final MenuItem goblinSplitItem = new MenuItem(splitMenu, SWT.PUSH);
-		    goblinSplitItem.setText("Goblin");
-		    goblinSplitItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleSplitCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierSplitItem = new MenuItem(splitMenu, SWT.PUSH);
-		    soldierSplitItem.setText("Soldier");
-		    soldierSplitItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleSplitCommand("soldier");
-				}
-			});
-	
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem splitFactoryItem = new MenuItem(splitMenu, SWT.PUSH);
+				splitFactoryItem.setText(factory.getUnitName());
+				splitFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleSplitCommand(factory.getClass());
+					}
+				});
+			}
+
 			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Join");
-	
+
 			Menu joinMenu = new Menu(shell, SWT.DROP_DOWN);
 			item.setMenu(joinMenu);
-		    final MenuItem goblinJoinItem = new MenuItem(joinMenu, SWT.PUSH);
-		    goblinJoinItem.setText("Goblin");
-		    goblinJoinItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleJoinCommand("goblin");
-				}
-			});
-	
-		    final MenuItem soldierJoinItem = new MenuItem(joinMenu, SWT.PUSH);
-		    soldierJoinItem.setText("Soldier");
-		    soldierJoinItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleJoinCommand("soldier");
-				}
-			});
+
+			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
+			{
+				final MenuItem joinFactoryItem = new MenuItem(joinMenu, SWT.PUSH);
+				joinFactoryItem.setText(factory.getUnitName());
+				joinFactoryItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e)
+					{
+						handleJoinCommand(factory.getClass());
+					}
+				});
+			}
 		}
 
 		return popUpMenu;
 	}
 
-
-	 /**
-	  * Creates all the items located in the Help submenu and associate all the
-	  * menu items with their appropriate functions.
-	  *
-	  * @param menuBar
-	  *            Menu the <code>Menu</code> that file contain the Help
-	  *            submenu.
-	  */
-	 private void createHelpMenu(Menu menuBar)
-	 {
-
-		 // Help Menu
-		 MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
-		 item.setText("Help");
-		 Menu menu = new Menu(shell, SWT.DROP_DOWN);
-		 item.setMenu(menu);
-
-		 //Help -> Gameplay assistance
-		 MenuItem assistItem = new MenuItem(menu, SWT.NULL);
-		 assistItem.setText("&Gameplay assistance");
-		 assistItem.setAccelerator(SWT.MOD1 + 'G');
-		 assistItem.addSelectionListener(new SelectionAdapter()
-		 {
-			 public void widgetSelected(SelectionEvent e)
-			 {
-				 showGameAssistanceMbox();
-			 }
-		 });
-
-
-		 // Help -> About Text Editor
-		 MenuItem subItem = new MenuItem(menu, SWT.NULL);
-		 subItem.setText("About");
-		 subItem.addSelectionListener(new SelectionAdapter() {
-			 public void widgetSelected(SelectionEvent e)
-			 {
-				 showAboutMbox();
-			 }
-		 });
-	 }
-	 public void showGameAssistanceMbox()
-	 {
-		 String helpString;
-
-		 helpString = "\n" +
-		 "Heroes of Might and Magic (TAU Version)\n" +
-		 "Gameplay assistance\n\n" +
-		 "To move: Right click your hero, or just click hero and click destenation.\n" +
-		 "To end turn: Right click your hero or castle(s) and select 'end turn'\n" +
-		 "Castle menu and options are:\n" +
-		 "Build - build a creature factory\n" +
-		 "Make - make a new creature\n" +
-		 "Split - move units from hero to castle\n" +
-		 "Join - move units from castle to hero\n" +
-		 "\n" +
-		 "Player info is on the right part of the screen (status window)\n\n" +
-		 "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n" +
-		 "Use the Highscores menu to view or reset the highscores table\n\n" +
-		 "Quitting the game is via File -> Exit\n\n\n" +
-		 "Enjoy the game";
-		 displayMessage(helpString);
-	 }
-	 public void showAboutMbox()
-	 {
-		 String aboutString;
-		 aboutString = "\n" +
-		 "Heroes of Might and Magic (TAU Version)\n"+
-		 "(C) 2009 - All right reserved!";
-		 displayMessage(aboutString);
-	 }
 	/**
-	 * creates all the items in the high scores sub-menu, and associates all menu
-	 * items to the right functions
-	 *
+	 * Creates all the items located in the Help submenu and associate all the
+	 * menu items with their appropriate functions.
+	 * 
+	 * @param menuBar
+	 *            Menu the <code>Menu</code> that file contain the Help submenu.
+	 */
+	private void createHelpMenu(Menu menuBar)
+	{
+
+		// Help Menu
+		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
+		item.setText("Help");
+		Menu menu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(menu);
+
+		// Help -> Gameplay assistance
+		MenuItem assistItem = new MenuItem(menu, SWT.NULL);
+		assistItem.setText("&Gameplay assistance");
+		assistItem.setAccelerator(SWT.MOD1 + 'G');
+		assistItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showGameAssistanceMbox();
+			}
+		});
+
+		// Help -> About Text Editor
+		MenuItem subItem = new MenuItem(menu, SWT.NULL);
+		subItem.setText("About");
+		subItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showAboutMbox();
+			}
+		});
+	}
+
+	public void showGameAssistanceMbox()
+	{
+		String helpString;
+
+		helpString = "\n"
+			+ "Heroes of Might and Magic (TAU Version)\n"
+			+ "Gameplay assistance\n\n"
+			+ "To move: Right click your hero, or just click hero and click destenation.\n"
+			+ "To end turn: Right click your hero or castle(s) and select 'end turn'\n"
+			+ "Castle menu and options are:\n"
+			+ "Build - build a creature factory\n"
+			+ "Make - make a new creature\n"
+			+ "Split - move units from hero to castle\n"
+			+ "Join - move units from castle to hero\n"
+			+ "\n"
+			+ "Player info is on the right part of the screen (status window)\n\n"
+			+ "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n"
+			+ "Use the Highscores menu to view or reset the highscores table\n\n"
+			+ "Quitting the game is via File -> Exit\n\n\n" + "Enjoy the game";
+		displayMessage(helpString);
+	}
+
+	public void showAboutMbox()
+	{
+		String aboutString;
+		aboutString = "\n" + "Heroes of Might and Magic (TAU Version)\n"
+			+ "(C) 2009 - All right reserved!";
+		displayMessage(aboutString);
+	}
+
+	/**
+	 * creates all the items in the high scores sub-menu, and associates all
+	 * menu items to the right functions
+	 * 
 	 * @param menuBar
 	 *            Menu the <code>Menu</code> that will contain this sub-menu.
-	 *
+	 * 
 	 */
 	private void createHighScoreMenu(Menu menuBar)
 	{
@@ -1946,20 +1931,24 @@ public class HeroesGui
 		subItem2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				resetHighscores();	
+				resetHighscores();
 			}
 		});
 	}
+
 	public void displayHighscores()
 	{
 		GameScoreBoard board = new GameScoreBoard();
 		board.load();
 		displayTable(board);
 	}
+
 	public void resetHighscores()
 	{
-		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-		messageBox.setMessage("Are you sure you want to clear higscores table?\nThis action can not be reversed");
+		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell(),
+			SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+		messageBox
+			.setMessage("Are you sure you want to clear higscores table?\nThis action can not be reversed");
 		messageBox.setText("Clear Highscores");
 		int response = messageBox.open();
 		if (response == SWT.YES)
@@ -1971,9 +1960,10 @@ public class HeroesGui
 			displayTable(board);
 		}
 	}
+
 	/**
 	 * helper for the high-scores table display
-	 *
+	 * 
 	 * @param board
 	 */
 	private void displayTable(GameScoreBoard board)
@@ -1996,7 +1986,8 @@ public class HeroesGui
 		scoreTable.setHeaderVisible(true);
 
 		TableItem ti;
-		Font newFont = scoreTable.getFont(); //just an initialization for the compiler
+		Font newFont = scoreTable.getFont(); // just an initialization for the
+		// compiler
 
 		for (int i = 0; i < 10; i++)
 		{
@@ -2016,13 +2007,13 @@ public class HeroesGui
 			ti.setText(new String[] { name, score });
 			Font initialFont = ti.getFont();
 			FontData[] fontData = initialFont.getFontData();
-		    for (int k = 0; k < fontData.length; k++)
-		    {
-		      fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
-		      fontData[k].setStyle(SWT.BOLD);
-		    }
-		    newFont = new Font(display, fontData);
-		    ti.setFont(newFont);
+			for (int k = 0; k < fontData.length; k++)
+			{
+				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+				fontData[k].setStyle(SWT.BOLD);
+			}
+			newFont = new Font(display, fontData);
+			ti.setFont(newFont);
 		}
 
 		tableShell.open();
@@ -2034,21 +2025,28 @@ public class HeroesGui
 		newFont.dispose();
 	}
 
+	@SuppressWarnings("unused")
 	private void moveHero()
 	{
-		String message = "Move to X,Y, e.g. 12,31 (Currenly at: " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getXPos() + ","
-				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero().getYPos() + "): ";
+		String message = "Move to X,Y, e.g. 12,31 (Currenly at: "
+			+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero()
+				.getXPos()
+			+ ","
+			+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero()
+				.getYPos() + "): ";
 		String response = null;
 		String[] responseSplit = null;
 		boolean ok = false;
 
 		do
 		{
-			InputDialog numbersInput = new InputDialog(Display.getCurrent().getActiveShell(), "Move to X,Y", message, null, null);
+			InputDialog numbersInput = new InputDialog(Display.getCurrent().getActiveShell(),
+				"Move to X,Y", message, null, null);
 			if (numbersInput.open() == Window.OK)
 			{
 				response = numbersInput.getValue();
-			} else
+			}
+			else
 			{
 				numbersInput.close();
 				break;
@@ -2066,7 +2064,8 @@ public class HeroesGui
 			{
 				if (handleMoveCommand(responseSplit) == true)
 					ok = true;
-			} else
+			}
+			else
 			{
 				displayError("Invallid Input - Try again");
 				continue;
@@ -2089,16 +2088,18 @@ public class HeroesGui
 		if (this.gameController.isThereAWinner() != null)
 			endGame(this.gameController.isThereAWinner());
 
-		currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+		currentPlayerIndex = (currentPlayerIndex + 1)
+			% this.gameController.getGameState().getNumberOfPlayers();
 		this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 		createBoardWindow(true);
 		updateStatusWindow();
 
-		//Here is the computer move.
+		// Here is the computer move.
 		while (p.isComputer())
 		{
-			Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+			Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+				.getHero();
 			if (hero != null)
 			{
 				String[] computerMove = new String[2];
@@ -2106,13 +2107,14 @@ public class HeroesGui
 				computerMove[1] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) - 1);
 				handleMoveCommand(computerMove);
 			}
-			//End turn:
+			// End turn:
 			p.endTurn();
 			removeDeadPlayers();
 			if (this.gameController.isThereAWinner() != null)
 				endGame(this.gameController.isThereAWinner());
 
-			currentPlayerIndex = (currentPlayerIndex + 1) % this.gameController.getGameState().getNumberOfPlayers();
+			currentPlayerIndex = (currentPlayerIndex + 1)
+				% this.gameController.getGameState().getNumberOfPlayers();
 			this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 			createBoardWindow(true);
@@ -2131,7 +2133,8 @@ public class HeroesGui
 		displayMessage("game ended.");
 		if (winner != null)
 		{
-			displayMessage("winner is: " + winner.getName() + " with a score of: " + winner.finalScore());
+			displayMessage("winner is: " + winner.getName() + " with a score of: "
+				+ winner.finalScore());
 			Helper.getScoreBoard().addToScoreBoard(winner, winner.finalScore());
 		}
 		Helper.getScoreBoard().save();
@@ -2148,78 +2151,88 @@ public class HeroesGui
 		newX = Helper.tryParseInt(userInput[0].trim());
 		newY = Helper.tryParseInt(userInput[1].trim());
 
-		if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1) || !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
+		if (!Helper.isIntBetween(newX, 0, Constants.BOARD_SIZE - 1)
+			|| !Helper.isIntBetween(newY, 0, Constants.BOARD_SIZE - 1))
 		{
-			if (!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).isComputer())
+			if (!gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+				.isComputer())
 				displayError("Invallid Input. Outside of board - Try again");
 			return false;
-		} else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
+		}
+		else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+			.move(newX, newY, this.gameController.getGameState().getBoard()))
 		{
 			createBoardWindow(true);
 			updateStatusWindow();
 			return true;
-		} else
+		}
+		else
 		{
-			displayError("Illegal move ! " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getName() + " You can only move " + gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getMovesLeft() + " more step(s) .");
+			displayError("Illegal move ! "
+				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+					.getName()
+				+ " You can only move "
+				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+					.getMovesLeft() + " more step(s) .");
 			return false;
 		}
 	}
 
-	private void handleBuildCommand(String type)
+	private void handleBuildCommand(Class<? extends CreatureFactory> creatureFactoryClass)
 	{
-		CreatureFactory factory = null;
-		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		Castle currentCastle = gameController.getGameState().getBoard()
+			.getBoardState(currentPoint.x, currentPoint.y).getCastle();
 
-		if(currentCastle != null)
+		if (currentCastle != null)
 		{
-			if (type.equals("goblin"))
-				factory = new GoblinFactory();
-			else if (type.equals("soldier"))
-				factory = new SoldierFactory();
-
+			CreatureFactory factory = CreatureFactory.createCreatureFactory(creatureFactoryClass);
 			if (factory != null)
 			{
-				Class<? extends CreatureFactory> factoryClass = factory.getClass();
-
-				if (currentCastle.hasFactory(factoryClass))
+				if (currentCastle.hasFactory(creatureFactoryClass))
 					displayError("There is already a factory of this type in this castle");
 				else
 				{
-					if (currentCastle.canBuildFactory(factoryClass))
-						currentCastle.addFactory(currentCastle.buildFactory(factoryClass));
+					if (currentCastle.canBuildFactory(creatureFactoryClass))
+						currentCastle.addFactory(currentCastle.buildFactory(creatureFactoryClass));
 					else
 					{
-						String msg = currentCastle.getPlayer().getName() +
-										" doesn't have enough resources.\n\n" +
-										"Need:\n";
-						
+						String msg = currentCastle.getPlayer().getName()
+							+ " doesn't have enough resources.\n\n" + "Need:\n";
+
 						for (ResourceType rType : ResourceType.values())
 						{
-							msg += rType.getTypeName() + ":\t " + factory.getPrice(rType.getTypeName()) + "\n";
+							msg += rType.getTypeName() + ":\t "
+								+ factory.getPrice(rType.getTypeName()) + "\n";
 						}
 						msg += "\nHas only:\n";
 						for (ResourceType rType : ResourceType.values())
 						{
-							msg += rType.getTypeName() + ":\t " + currentCastle.getPlayer().getCurrentTreasuryAmount(rType.getTypeName()) + "\n";
+							msg += rType.getTypeName()
+								+ ":\t "
+								+ currentCastle.getPlayer().getCurrentTreasuryAmount(rType
+									.getTypeName()) + "\n";
 						}
 						displayError(msg);
 					}
 				}
-				
-			} else
+
+			}
+			else
 				displayError("Unknown creature type!");
 		}
 		updateStatusWindow();
 	}
 
-	private void handleSplitCommand(String type)
+	private void handleSplitCommand(Class<? extends CreatureFactory> creatureFactoryClass)
 	{
-		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		Castle currentCastle = gameController.getGameState().getBoard()
+			.getBoardState(currentPoint.x, currentPoint.y).getCastle();
 		String message;
 		String response = null;
 		int numberOfUnits = 0;
 
-		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+			.getHero();
 		if (hero == null)
 		{
 			displayError("Sorry, but you don't have a hero.");
@@ -2228,7 +2241,8 @@ public class HeroesGui
 
 		message = "Enter desired number of units to split to the castle: ";
 
-		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(),
+			"Number of Units", message, null, null);
 		if (numberInput.open() == Window.OK)
 		{
 			response = numberInput.getValue();
@@ -2247,28 +2261,26 @@ public class HeroesGui
 			return;
 		}
 
-		Creature creature = null;
-		if (type.equals("goblin"))
-		{
-			creature = new Goblin(numberOfUnits);
-		} else if (type.equals("soldier"))
-		{
-			creature = new Soldier(numberOfUnits);
-		} else
+		CreatureFactory factory = CreatureFactory.createCreatureFactory(creatureFactoryClass);
+		if (factory == null)
 		{
 			displayError("Unknown creature type!");
 			return;
 		}
 
+		Creature creature = factory.buildCreature(numberOfUnits);
+
 		if (!currentCastle.canAddToArmy(creature.getClass()))
 		{
 			displayError("Army in " + currentCastle.printLocation() + " is full.");
 			return;
-		} else if (!hero.removeFromArmy(creature))
+		}
+		else if (!hero.removeFromArmy(creature))
 		{
 			displayError("You dont have enough units to split");
 			return;
-		} else
+		}
+		else
 		{
 			currentCastle.addToArmy(creature);
 			updateStatusWindow();
@@ -2276,14 +2288,16 @@ public class HeroesGui
 		}
 	}
 
-	private void handleJoinCommand(String type)
+	private void handleJoinCommand(Class<? extends CreatureFactory> creatureFactoryClass)
 	{
-		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		Castle currentCastle = gameController.getGameState().getBoard()
+			.getBoardState(currentPoint.x, currentPoint.y).getCastle();
 		String message;
 		String response = null;
 		int numberOfUnits = 0;
 
-		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getHero();
+		Hero hero = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+			.getHero();
 		if (hero == null)
 		{
 			displayError("Sorry, but you don't have a hero.");
@@ -2292,11 +2306,13 @@ public class HeroesGui
 
 		message = "Enter desired number of units to join from the castle: ";
 
-		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+		InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(),
+			"Number of Units", message, null, null);
 		if (numberInput.open() == Window.OK)
 		{
 			response = numberInput.getValue();
-		} else
+		}
+		else
 		{
 			numberInput.close();
 			return;
@@ -2310,28 +2326,26 @@ public class HeroesGui
 			return;
 		}
 
-		Creature creature = null;
-		if (type.equals("goblin"))
-		{
-			creature = new Goblin(numberOfUnits);
-		} else if (type.equals("soldier"))
-		{
-			creature = new Soldier(numberOfUnits);
-		} else
+		CreatureFactory factory = CreatureFactory.createCreatureFactory(creatureFactoryClass);
+		if (factory == null)
 		{
 			displayError("Unknown creature type!");
 			return;
 		}
 
+		Creature creature = factory.buildCreature(numberOfUnits);
+
 		if (!hero.canAddToArmy(creature.getClass()))
 		{
 			displayError("Army of " + hero.toString() + " is full.");
 			return;
-		} else if (!currentCastle.canRemoveFromArmy(creature))
+		}
+		else if (!currentCastle.canRemoveFromArmy(creature))
 		{
 			displayError("You dont have enough units to join.");
 			return;
-		} else
+		}
+		else
 		{
 			currentCastle.removeFromArmy(creature);
 			hero.addToArmy(creature);
@@ -2339,23 +2353,17 @@ public class HeroesGui
 			return;
 		}
 	}
-		
 
-	private void handleMakeCommand(String type)
+	private void handleMakeCommand(Class<? extends Creature> creatureClass)
 	{
-		Class<? extends Creature> creatureClass = null;
-		Castle currentCastle = gameController.getGameState().getBoard().getBoardState(currentPoint.x, currentPoint.y).getCastle();
+		Castle currentCastle = gameController.getGameState().getBoard()
+			.getBoardState(currentPoint.x, currentPoint.y).getCastle();
 		String message;
 		String response = null;
 		int numberOfUnits = 0;
 
 		if (currentCastle != null)
 		{
-			if (type.equals("goblin"))
-				creatureClass = Goblin.class;
-			else if (type.equals("soldier"))
-				creatureClass = Soldier.class;
-
 			if (creatureClass != null)
 			{
 				int maxUnits = currentCastle.getAvailableUnits(creatureClass);
@@ -2364,7 +2372,9 @@ public class HeroesGui
 				{
 					message = "Enter desired number of units (1-" + maxUnits + "): ";
 
-					InputDialog numberInput = new InputDialog(Display.getCurrent().getActiveShell(), "Number of Units", message, null, null);
+					InputDialog numberInput = new InputDialog(
+						Display.getCurrent().getActiveShell(), "Number of Units", message, null,
+						null);
 					if (numberInput.open() == Window.OK)
 					{
 						response = numberInput.getValue();
@@ -2390,7 +2400,8 @@ public class HeroesGui
 				}
 				else
 					displayError("Sorry, but you can't build units.");
-			} else
+			}
+			else
 				displayError("Unknown creature type.");
 		}
 	}

@@ -4,11 +4,14 @@
 package tau.heroes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author yuval eitan
- *
+ * 
  */
 public abstract class CreatureFactory implements Serializable
 {
@@ -16,76 +19,147 @@ public abstract class CreatureFactory implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static HashMap<Class<? extends Creature>, Class<? extends CreatureFactory>> factoryMap;
-	private HashMap<String, Integer> prices;
-	private HashMap<String, Integer> pricesPerUnit;
+	private static Map<Class<? extends Creature>, Class<? extends CreatureFactory>> factoryMap;
+	private Map<String, Integer> prices;
+	private Map<String, Integer> pricesPerUnit;
 	private final int unitsPerWeek;
 	private int unitsAvailable;
-	private int dayOfTheWeek = 1; /** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
+	private int dayOfTheWeek = 1;
+	/** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
 
-	static 
+	static
 	{
 		factoryMap = new HashMap<Class<? extends Creature>, Class<? extends CreatureFactory>>();
 		factoryMap.put(Goblin.class, GoblinFactory.class);
 		factoryMap.put(Soldier.class, SoldierFactory.class);
+		factoryMap.put(Dwarf.class, DwarfFactory.class);
+		factoryMap.put(Archer.class, ArcherFactory.class);
+		factoryMap.put(FireDragon.class, FireDragonFactory.class);
 	}
 
 	public static Class<? extends CreatureFactory> getCreatureFactoryClass(
-			Class<? extends Creature> creatureClass) {
+		Class<? extends Creature> creatureClass)
+	{
 		return factoryMap.get(creatureClass);
 	}
 
-	protected CreatureFactory(int unitsPerWeek) {
+	public static CreatureFactory getCreatureFactory(String creatureName)
+	{
+		CreatureFactory factory = null;
+		creatureName = creatureName.toLowerCase();
+
+		if (creatureName.equals("goblin"))
+			factory = new GoblinFactory();
+		else if (creatureName.equals("soldier"))
+			factory = new SoldierFactory();
+		else if (creatureName.equals("dwarf"))
+			factory = new DwarfFactory();
+		else if (creatureName.equals("archer"))
+			factory = new ArcherFactory();
+		else if (creatureName.equals("dragon"))
+			factory = new FireDragonFactory();
+
+		return factory;
+	}
+
+	public static Collection<Class<? extends CreatureFactory>> getCreatureFactoryClasses()
+	{
+		return factoryMap.values();
+	}
+
+	public static CreatureFactory createCreatureFactory(
+		Class<? extends CreatureFactory> creatureFactoryClass)
+	{
+		try
+		{
+			CreatureFactory factory = creatureFactoryClass.getConstructor().newInstance();
+			return factory;
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	public static Collection<CreatureFactory> getCreatureFactories()
+	{
+		Collection<CreatureFactory> creatureFactories = new ArrayList<CreatureFactory>();
+
+		for (Class<? extends CreatureFactory> creatureFactoryClass : getCreatureFactoryClasses())
+		{
+			CreatureFactory factory = createCreatureFactory(creatureFactoryClass);
+			if (factory != null)
+				creatureFactories.add(factory);
+		}
+
+		return creatureFactories;
+	}
+
+	protected CreatureFactory(int unitsPerWeek)
+	{
 		this.prices = new HashMap<String, Integer>(ResourceType.values().length);
 		this.pricesPerUnit = new HashMap<String, Integer>(ResourceType.values().length);
 		this.unitsPerWeek = unitsPerWeek;
 		this.unitsAvailable = unitsPerWeek;
 		this.dayOfTheWeek = 1;
-		for (int i = 0; i < ResourceType.values().length; i++) {
+		for (int i = 0; i < ResourceType.values().length; i++)
+		{
 			prices.put(ResourceType.values()[i].getTypeName(), 0);
 			pricesPerUnit.put(ResourceType.values()[i].getTypeName(), 0);
 		}
 	}
 
-	public int getUnitsPerWeek() {
+	public int getUnitsPerWeek()
+	{
 		return this.unitsPerWeek;
 	}
 
-	public int getUnitsAvailableToBuild() {
+	public int getUnitsAvailableToBuild()
+	{
 		return this.unitsAvailable;
 	}
 
-	public int getPrice(String type) {
+	public int getPrice(String type)
+	{
 		return this.prices.get(type);
 	}
 
-	protected void setPrice(String type, int amount) {
+	protected void setPrice(String type, int amount)
+	{
 		this.prices.put(type, amount);
 	}
 
-	public int getPricePerUnit(String type) {
+	public int getPricePerUnit(String type)
+	{
 		return this.pricesPerUnit.get(type);
 	}
 
-	protected void setPricePerUnit(String type, int amount) {
+	protected void setPricePerUnit(String type, int amount)
+	{
 		this.pricesPerUnit.put(type, amount);
 	}
 
-	public Creature buildCreature(int numberOfUnits) {
-		numberOfUnits = (numberOfUnits > this.unitsAvailable)?
-				this.unitsAvailable : numberOfUnits;
+	public Creature buildCreature(int numberOfUnits)
+	{
 		this.unitsAvailable -= numberOfUnits;
 		return this.buildCreatureInternal(numberOfUnits);
 	}
 
 	public abstract String getName();
+
+	public abstract String getUnitName();
+
+	public abstract Class<? extends Creature> getCreatureClass();
+
 	protected abstract Creature buildCreatureInternal(int numberOfUnits);
 
-	public HashMap<String, Integer> getPrices() {
+	public Map<String, Integer> getPrices()
+	{
 		return this.prices;
 	}
 
-	public HashMap<String, Integer> getPricesPerUnit() {
+	public Map<String, Integer> getPricesPerUnit()
+	{
 		return this.pricesPerUnit;
 	}
 
@@ -99,7 +173,7 @@ public abstract class CreatureFactory implements Serializable
 		else
 			this.dayOfTheWeek++;
 	}
-	
+
 	public int getDayAsInt()
 	{
 		return this.dayOfTheWeek;
@@ -107,17 +181,6 @@ public abstract class CreatureFactory implements Serializable
 
 	public String getDayAsString()
 	{
-		switch (this.dayOfTheWeek)
-		{
-			case 1: return "Day 1";
-			case 2: return "Day 2";
-			case 3: return "Day 3";
-			case 4: return "Day 4";
-			case 5: return "Day 5";
-			case 6: return "Day 6";
-			case 7: return "Day 7";
-			default:
-				return null;
-		}
+		return "Day " + this.dayOfTheWeek;
 	}
 }

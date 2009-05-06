@@ -37,7 +37,7 @@ public class AttackGUI
 	private int creatureIndex;
 	private Label statusLabel;
 
-	public AttackGUI(Hero h1,Hero h2, Display d)
+	public AttackGUI(Hero h1, Hero h2, Display d)
 	{
 		display = d;
 		heroes = new Hero[2];
@@ -47,9 +47,10 @@ public class AttackGUI
 		creatureIndex = 0;
 		iconCache.initResources(display);
 	}
+
 	public Shell open()
 	{
-		shell = new Shell(display, SWT.CENTER | SWT.BORDER );
+		shell = new Shell(display, SWT.CENTER | SWT.BORDER);
 		shell.setLayout(new FillLayout());
 		shell.setText("Battle");
 		shell.setMaximized(false);
@@ -79,19 +80,21 @@ public class AttackGUI
 
 		createBoardWindow();
 		createStatusWindow();
-		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1)+" (double click on the selected unit to attack)");
+		setStatusLabel("Next move: " + heroes[heroIndex] + " make your move with unit "
+			+ (creatureIndex + 1) + " (double click on the selected unit to attack)");
 		sash.setWeights(new int[] { 85, 15 });
-
 
 		shell.open();
 		return shell;
 	}
+
 	private void finish(Hero winner)
 	{
 		String swinner = (winner.alive()) ? winner.toString() : "";
-		HeroesGui.displayMessage("The fight is over: "+swinner+" won!");
+		HeroesGui.displayMessage("The fight is over: " + swinner + " won!");
 		shell.close();
 	}
+
 	private boolean close()
 	{
 		iconCache.freeResources();
@@ -100,7 +103,7 @@ public class AttackGUI
 
 	private void createBoardWindow()
 	{
-		if(boardComposite != null && boardComposite.isDisposed() == false)
+		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
 			iconCache.freeResources();
@@ -110,7 +113,7 @@ public class AttackGUI
 		boardComposite = new Composite(sash, SWT.NONE);
 		boardComposite.setBackground(black);
 
-		Hero[] tempHeroes = new Hero[]{heroes[0],null,null,null,heroes[1]};
+		Hero[] tempHeroes = new Hero[] { heroes[0], null, null, null, heroes[1] };
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
 		GridLayout tableLayout = new GridLayout();
@@ -122,18 +125,18 @@ public class AttackGUI
 		mouseListeners = new ArrayList<MyMouseListner>();
 		for (int i = 0; i < Army.MAX_CREATURES; i++)
 		{
-			for(int j=0;j<tempHeroes.length;j++)
+			for (int j = 0; j < tempHeroes.length; j++)
 			{
 				int left = (j == 0) ? 0 : 1;
 				Label b = new Label(boardComposite, SWT.NONE);
-				int t = fromBattleToDisplayIcons(tempHeroes[j],i,left);
+				int t = fromBattleToDisplayIcons(tempHeroes[j], i, left);
 				b.setImage(iconCache.stockImages[t]);
 				b.setCursor(iconCache.stockCursors[iconCache.cursorNo]);
 
 				String description;
-				if(t != iconCache.battleGrassIcon)
+				if (t != iconCache.battleGrassIcon)
 				{
-					description = fromBattleToDisplayDecription(tempHeroes[j],i);
+					description = fromBattleToDisplayDecription(tempHeroes[j], i);
 					b.setToolTipText(description);
 					MyMouseListner m = new MyMouseListner();
 					m.defender = tempHeroes[j];
@@ -142,7 +145,7 @@ public class AttackGUI
 					mouseListeners.add(m);
 					b.addMouseListener(m);
 					b.setBackground(white);
-					b.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft+left]);
+					b.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft + left]);
 				}
 			}
 		}
@@ -157,41 +160,46 @@ public class AttackGUI
 		statusComposite.setLayoutData(d);
 		statusLabel = new Label(statusComposite, SWT.NONE);
 		statusLabel.setBackground(white);
-		setStatusLabel( "\t\t\t\t\t\t\t\t\t\t     \n\n\n\n");
+		setStatusLabel("\t\t\t\t\t\t\t\t\t\t     \n\n\n\n");
 
 		GridLayout tempLayout = new GridLayout();
 		statusComposite.setLayout(tempLayout);
 	}
+
 	private void setStatusLabel(String status)
 	{
 		String currentText = statusLabel.getText();
-		status += (currentText == null) ? "\n" : "\n"+currentText;
+		status += (currentText == null) ? "\n" : "\n" + currentText;
 		statusLabel.setText(status);
 	}
-	private int fromBattleToDisplayIcons(Hero h, int i,int left)
+
+	private int fromBattleToDisplayIcons(Hero h, int i, int left)
 	{
-		if(h == null || !h.alive())
+		if (h == null || !h.alive())
 			return iconCache.battleGrassIcon;
+
 		Creature c = h.getArmy().getCreature(i);
-		if(c == null)
+		if (c == null)
 			return iconCache.battleGrassIcon;
-		if(c.get_name().equals(Goblin.GOBLIN_NAME))
-		{
+		if (c.getClass().equals(Goblin.class))
 			return iconCache.goblinFaceRightIcon + left;
-		}
-		if(c.get_name().equals(Soldier.SOLDIER_NAME))
-		{
+		else if (c.getClass().equals(Soldier.class))
 			return iconCache.soldierFaceRightIcon + left;
-		}
+		else if (c.getClass().equals(Dwarf.class))
+			return iconCache.dwarfFaceRightIcon + left;
+		else if (c.getClass().equals(Archer.class))
+			return iconCache.archerFaceRightIcon + left;
+		else if (c.getClass().equals(FireDragon.class))
+			return iconCache.fireDragonFaceRightIcon + left;
 		return iconCache.battleGrassIcon;
 	}
 
 	private String fromBattleToDisplayDecription(Hero h, int i)
 	{
-		if(h == null || !h.alive())
+		if (h == null || !h.alive())
 			return "";
 		Creature c = h.getArmy().getCreature(i);
-		if(c == null)
+		if (c == null)
 			return "";
 		return c.toString();
 	}
@@ -201,75 +209,82 @@ public class AttackGUI
 		do
 		{
 			creatureIndex = (creatureIndex + 1) % Army.MAX_CREATURES;
-			if(creatureIndex == 0)
+			if (creatureIndex == 0)
 				heroIndex = (heroIndex + 1) % 2;
-		}
-		while(heroes[heroIndex].getArmy().getCreature(creatureIndex) == null);
+		} while (heroes[heroIndex].getArmy().getCreature(creatureIndex) == null);
 
 		setNextCreatureAttack();
-		setStatusLabel("Next move: "+heroes[heroIndex]+" make your move with unit "+(creatureIndex+1)+" (double click on the selected unit to attack)");
+		setStatusLabel("Next move: " + heroes[heroIndex] + " make your move with unit "
+			+ (creatureIndex + 1) + " (double click on the selected unit to attack)");
 	}
 
 	private void setNextCreatureAttack()
 	{
-		//the hero that attacks is: heroIndex
-		for(MyMouseListner iter : mouseListeners)
+		// the hero that attacks is: heroIndex
+		for (MyMouseListner iter : mouseListeners)
 		{
 			iter.attacker = heroes[heroIndex];
 			iter.attackUnit = creatureIndex;
-			if(iter.attacker.equals(iter.defender))
+			if (iter.attacker.equals(iter.defender))
 				iter.label.setCursor(iconCache.stockCursors[iconCache.cursorNo]);
 			else
-				iter.label.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft+((heroIndex+1)%2)]);
+				iter.label.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft
+					+ ((heroIndex + 1) % 2)]);
 		}
 	}
 
 	class MyMouseListner implements MouseListener
 	{
 		public int attackUnit, defenderUnit;
-		public Hero attacker,defender;
+		public Hero attacker, defender;
 		public Label label;
 
-		public void mouseDoubleClick(MouseEvent arg0) {
+		public void mouseDoubleClick(MouseEvent arg0)
+		{
 			handleAttack();
 
 		}
 
-		public void mouseDown(MouseEvent arg0) {
+		public void mouseDown(MouseEvent arg0)
+		{
 			// TODO Auto-generated method stub
 
 		}
 
-		public void mouseUp(MouseEvent arg0) {
+		public void mouseUp(MouseEvent arg0)
+		{
 			// TODO Auto-generated method stub
 		}
+
 		private void handleAttack()
 		{
-			if(attacker.equals(defender))
+			if (attacker.equals(defender))
 				return;
 			String status = "Attack move: ";
-			status += attacker+" attacks with unit "+(attackUnit+1)+" at unit "+(defenderUnit+1);
+			status += attacker + " attacks with unit " + (attackUnit + 1) + " at unit "
+				+ (defenderUnit + 1);
 			Creature defenderCreature = defender.getArmy().getCreature(defenderUnit);
 			int totalDamage = attacker.attackCreature(attackUnit, defender, defenderUnit);
-			status +=" and did "+totalDamage+" damage!";
+			status += " and did " + totalDamage + " damage!";
 
 			setStatusLabel(status);
-			if(totalDamage<0 && !defender.alive())
+			if (totalDamage < 0 && !defender.alive())
 			{// This means the hero has no units, hence it is dead.
 				System.out.println(defender.toString() + " is dead!");
 				finish(attacker);
 				return;
 			}
-			if(defenderCreature != null)
+			if (defenderCreature != null)
 				defenderCreature.defendFromAttack(totalDamage);
 
 			defender.cleanDeadCreatures();
-			int t = fromBattleToDisplayIcons(defender,defenderUnit,(heroIndex+1)%2);
+			int t = fromBattleToDisplayIcons(defender, defenderUnit, (heroIndex + 1) % 2);
 			label.setImage(iconCache.stockImages[t]);
-			String description = fromBattleToDisplayDecription(defender,defenderUnit);
+			String description = fromBattleToDisplayDecription(defender, defenderUnit);
 			label.setToolTipText(description);
-			System.out.println("defender = "+defender.alive()+" \nArmy: "+defender.getArmy().toString());
-			if(defender.alive())
+			System.out.println("defender = " + defender.alive() + " \nArmy: "
+				+ defender.getArmy().toString());
+			if (defender.alive())
 				incrementCreature();
 			else
 				finish(attacker);
@@ -277,4 +292,3 @@ public class AttackGUI
 
 	}
 }
-

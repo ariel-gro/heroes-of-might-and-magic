@@ -56,15 +56,15 @@ public class Army implements Serializable
 				_creatures[i] = null;
 		}
 	}
-	
+
 	public int getTotalNumberOfUnits()
 	{
 		int total = 0;
-		
+
 		for (int i = 0; i < MAX_CREATURES; i++)
 			if (this._creatures[i] != null)
 				total += this._creatures[i].get_numberOfUnits();
-		
+
 		return total;
 	}
 
@@ -115,7 +115,7 @@ public class Army implements Serializable
 				&& this._creatures[i].getClass().equals(creature.getClass()))
 			{
 				this._creatures[i].removeUnits(creature.get_numberOfUnits());
-				
+
 				this.cleanDeadCreatures();
 			}
 	}
