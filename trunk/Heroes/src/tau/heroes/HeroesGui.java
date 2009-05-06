@@ -857,28 +857,44 @@ public class HeroesGui
 		
 		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
-		shell1.setSize(430, 190);
+		shell1.setSize(335, 225);
 		shell1.setText("New game menu");
 		shell1.setImage(iconCache.stockImages[iconCache.appIcon]);
 		
 		Composite form = new Composite(shell1,SWT.FILL); 
-        form.setLayout(new GridLayout(5,true));
+        form.setLayout(new GridLayout(4,false));
+        
+        final Label emptyLabel1 = new Label(form, SWT.NONE);
+        emptyLabel1.setText("      ");
+        final Label namesLabel = new Label(form, SWT.NONE);
+        namesLabel.setText("     Name     ");
+        final Label computer3 = new Label(form, SWT.NONE);
+        computer3.setText(" Computer     ");
+        final Label levelLabel = new Label(form, SWT.NONE);
+        levelLabel.setText("     Level     ");
+        final Label emptyLabel12 = new Label(form, SWT.NONE);
+        emptyLabel12.setText("      ");
+        final Label emptyLabel2 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+        //emptyLabel2.setText("");
+        final Label emptyLabel3 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+        //emptyLabel3.setText("");
+        final Label emptyLabel4 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+        //emptyLabel4.setText("");
+        //final Label emptyLabel88 = new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
+       
+        
         
 		final Label player1Label = new Label(form, SWT.NONE);
         player1Label.setText("Player 1 : ");
 		final Text player1Name = new Text(form, SWT.NONE);
-        final Label emptyLabel1 = new Label(form, SWT.NONE);
-        emptyLabel1.setText("");
-        final Label emptyLabel2 = new Label(form, SWT.NONE);
-        emptyLabel2.setText("");
-        final Label emptyLabel3 = new Label(form, SWT.NONE);
-        emptyLabel3.setText("");
+        final Label emptyLabel5 = new Label(form, SWT.NONE);
+        emptyLabel5.setText("");
+        final Label emptyLabel6 = new Label(form, SWT.NONE);
+        emptyLabel6.setText("");
         
         final Label player2Label = new Label(form, SWT.NONE);
         player2Label.setText("Player 2 : ");
 		final Text player2Name = new Text(form, SWT.NONE);
-        final Label computer1 = new Label(form, SWT.NONE);
-        computer1.setText("Computer");
         final Button pcButton1 = new Button(form, SWT.CHECK);
         pcLevel1 = new Combo(form, SWT.NONE);
         pcLevel1.setText("level");
@@ -897,8 +913,6 @@ public class HeroesGui
         final Label player3Label = new Label(form, SWT.NONE);
         player3Label.setText("Player 3 : ");
 		final Text player3Name = new Text(form, SWT.NONE);
-        final Label computer2 = new Label(form, SWT.NONE);
-        computer2.setText("Computer");
         final Button pcButton2 = new Button(form, SWT.CHECK);
         pcLevel2 = new Combo(form, SWT.NONE);
         pcLevel2.setText("level");
@@ -917,8 +931,6 @@ public class HeroesGui
         final Label player4Label = new Label(form, SWT.NONE);
         player4Label.setText("Player 4 : ");
 		final Text player4Name = new Text(form, SWT.NONE);
-        final Label computer3 = new Label(form, SWT.NONE);
-        computer3.setText("Computer");
         final Button pcButton3 = new Button(form, SWT.CHECK);
         pcLevel3 = new Combo(form, SWT.NONE);
         pcLevel3.setText("level");
@@ -1001,8 +1013,8 @@ public class HeroesGui
             
     });
         
-        final Label emptyLabel4 = new Label(form2, SWT.NONE);
-        emptyLabel4.setText("                                                                  ");
+        final Label emptyLabel7 = new Label(form2, SWT.NONE);
+        emptyLabel7.setText("                                   ");
         
         Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
         cancelButton.setText("        Cancel        ");
