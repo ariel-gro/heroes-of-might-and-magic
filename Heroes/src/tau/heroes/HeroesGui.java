@@ -994,6 +994,7 @@ public class HeroesGui
 				if (pcButton1.getSelection())
 				{
 					pcLevel1.setEnabled(true);
+					pcLevel1.setText("Beginner");
 				}
 				else
 				{
@@ -1006,8 +1007,7 @@ public class HeroesGui
 		player3Label.setText("Player 3 : ");
 		final Text player3Name = new Text(form, SWT.NONE);
 		final Button pcButton2 = new Button(form, SWT.CHECK);
-		pcLevel2 = new Combo(form, SWT.NONE);
-		pcLevel2.setText("level");
+		pcLevel2 = new Combo(form, SWT.BEGINNING);
 		pcLevel2.setItems(new String[] { "Beginner", "Expert" });
 		pcLevel2.setEnabled(false);
 		pcButton2.addSelectionListener(new SelectionAdapter() {
@@ -1016,6 +1016,7 @@ public class HeroesGui
 				if (pcButton2.getSelection())
 				{
 					pcLevel2.setEnabled(true);
+					pcLevel2.setText("Beginner");
 				}
 				else
 				{
@@ -1038,6 +1039,7 @@ public class HeroesGui
 				if (pcButton3.getSelection())
 				{
 					pcLevel3.setEnabled(true);
+					pcLevel3.setText("Beginner");
 				}
 				else
 				{
