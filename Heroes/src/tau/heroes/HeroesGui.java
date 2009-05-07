@@ -830,7 +830,7 @@ public class HeroesGui
 		minesCol1.setText("Mine");
 		minesCol2.setText("Quantity");
 		minesCol1.setWidth(80);
-		minesCol2.setWidth(statusWidth - 120);
+		minesCol2.setWidth(statusWidth - 80);
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
