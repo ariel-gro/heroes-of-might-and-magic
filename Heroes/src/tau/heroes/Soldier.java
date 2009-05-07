@@ -19,6 +19,6 @@ public class Soldier extends Creature
 
 	public Soldier(int numberOfUnits)
 	{
-		super(AlignmentType.KNIGHT, 3, 0, 7, 7, 10, 3, SOLDIER_NAME, numberOfUnits);
+		super(AlignmentType.KNIGHT, 3, 0, 8, 8, 15, 7, SOLDIER_NAME, numberOfUnits);
 	}
 }

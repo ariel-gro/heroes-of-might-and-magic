@@ -23,6 +23,6 @@ public class FireDragon extends Creature implements Serializable
 	 */
 	public FireDragon(int numberOfUnits)
 	{
-		super(AlignmentType.BARBARIAN, 2, 0, 6, 8, 12, 4, CREATURE_NAME, numberOfUnits);
+		super(AlignmentType.WARLOCK, 2, 0, 30, 30, 100, 25, CREATURE_NAME, numberOfUnits);
 	}
 }

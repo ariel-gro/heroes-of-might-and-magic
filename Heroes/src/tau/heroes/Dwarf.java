@@ -23,6 +23,7 @@ public class Dwarf extends Creature implements Serializable
 	 */
 	public Dwarf(int numberOfUnits)
 	{
-		super(AlignmentType.BARBARIAN, 2, 0, 6, 8, 12, 4, CREATURE_NAME, numberOfUnits);
+		super(AlignmentType.SORCERESS, 2, 0, 10, 10, 20, 9, CREATURE_NAME, numberOfUnits);
+		
 	}
 }
