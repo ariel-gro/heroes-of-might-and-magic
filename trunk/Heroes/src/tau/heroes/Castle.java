@@ -50,7 +50,7 @@ public class Castle implements Serializable
 
 	private void enterHeroIntoOwnCastle(Hero hero)
 	{
-		if (!(player.getName().equals("computer")))
+		if (!(player.isComputer()))
 		{
 			if (GameState.isGUI())
 				HeroesGui.displayMessage(hero.player.getName()
@@ -64,7 +64,7 @@ public class Castle implements Serializable
 	private void enterHeroIntoOccupiedCastle(Hero hero, boolean bIsHeroInCastle)
 	{
 		boolean isGui = GameState.isGUI();
-		if (!(player.getName().equals("computer")))
+		if (!(player.isComputer()))
 		{
 			if (isGui)
 			{
@@ -162,7 +162,7 @@ public class Castle implements Serializable
 		{
 			this.factories.add(factory);
 
-			if (!(player.getName().equals("computer")))
+			if (!(player.isComputer()))
 			{
 				if (GameState.isGUI())
 					HeroesGui.displayMessage(this.printLocation() + ": A new " + factory.getName()

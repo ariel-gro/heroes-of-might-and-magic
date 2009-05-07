@@ -23,6 +23,6 @@ public class Archer extends Creature implements Serializable
 	 */
 	public Archer(int numberOfUnits)
 	{
-		super(AlignmentType.BARBARIAN, 2, 0, 6, 8, 12, 4, CREATURE_NAME, numberOfUnits);
+		super(AlignmentType.KNIGHT, 2, 10, 12, 12, 25, 15, CREATURE_NAME, numberOfUnits);
 	}
 }

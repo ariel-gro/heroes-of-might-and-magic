@@ -12,6 +12,6 @@ public class Goblin extends Creature implements Serializable
 
 	public Goblin(int numberOfUnits)
 	{
-		super(AlignmentType.BARBARIAN, 2, 0, 6, 8, 12, 4, GOBLIN_NAME, numberOfUnits);
+		super(AlignmentType.BARBARIAN, 2, 0, 4, 4, 10, 5, GOBLIN_NAME, numberOfUnits);
 	}
 }

@@ -11,6 +11,7 @@ public class Hero implements Serializable
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int SKILLS_AFTER_ATTACK = 5;
 	private boolean _alive;
 	private boolean _autoFight;
 	private Army _army;
@@ -84,6 +85,7 @@ public class Hero implements Serializable
 	// this will start a battle against h. (this - attacker, h - defender).
 	public void attack(Hero defender)
 	{
+		
 		if (GameState.isGUI() && !_autoFight)
 		{
 			Display d = Display.getCurrent();
@@ -98,6 +100,12 @@ public class Hero implements Serializable
 		{
 			consolAttack(defender);
 		}
+		//Add skills for the winner 
+		//(We don't need to check who won, the loser will die anyway)
+		this._attackSkill += SKILLS_AFTER_ATTACK;
+		this._defenseSkill += SKILLS_AFTER_ATTACK;
+		defender._attackSkill += SKILLS_AFTER_ATTACK;
+		defender._defenseSkill += SKILLS_AFTER_ATTACK;
 	}
 
 	private void attackRound(Hero defender)
