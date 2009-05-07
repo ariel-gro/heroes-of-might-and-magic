@@ -504,7 +504,7 @@ public class HeroesGui
 								.elementAt(currentPlayerIndex)))
 						{
 							l.setData(boardPoints[x][y]);
-							l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
+							//l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
 							l.addMouseListener(focusListener);
 							l.addListener(SWT.MouseDown, listener);
 							l.addListener(SWT.MouseMove, listener);
@@ -871,6 +871,16 @@ public class HeroesGui
 				}
 			});
 		}
+		
+		Button button = new Button(statusComposite, SWT.NONE);
+		button.setText("End turn");
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleEndTurnCommand();
+			}
+		});
+		
 		statusComposite.layout(true, true);
 	}
 
@@ -1395,6 +1405,7 @@ public class HeroesGui
 	 * @return Menu The created popup menu.
 	 */
 
+	/**
 	private Menu createHeroPopUpMenu(int style)
 	{
 		Menu popUpMenu;
@@ -1427,6 +1438,8 @@ public class HeroesGui
 
 		return popUpMenu;
 	}
+	
+	*/
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
@@ -1533,16 +1546,16 @@ public class HeroesGui
 				}
 			});
 
-			new MenuItem(popUpMenu, SWT.SEPARATOR);
+			//new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-			final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
-			item.setText("End Turn");
-			item.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleEndTurnCommand();
-				}
-			});
+//			final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
+	//		item.setText("End Turn");
+		//	item.addSelectionListener(new SelectionAdapter() {
+			//	public void widgetSelected(SelectionEvent e)
+				//{
+			//				handleEndTurnCommand();
+	//			}
+	//		});
 		}
 		else
 		{
@@ -1637,16 +1650,16 @@ public class HeroesGui
 				}
 			});
 
-			new MenuItem(popUpMenu, SWT.SEPARATOR);
+		//	new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-			item = new MenuItem(popUpMenu, SWT.CASCADE);
-			item.setText("End Turn");
-			item.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleEndTurnCommand();
-				}
-			});
+		//	item = new MenuItem(popUpMenu, SWT.CASCADE);
+		//	item.setText("End Turn");
+		//	item.addSelectionListener(new SelectionAdapter() {
+		//		public void widgetSelected(SelectionEvent e)
+		//		{
+		//			handleEndTurnCommand();
+		//		}
+		//	});
 		}
 
 		return popUpMenu;
@@ -1679,14 +1692,14 @@ public class HeroesGui
 
 		if (eclipseComposite != null)
 		{
-			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-			item.setText("End Turn");
-			item.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e)
-				{
-					handleEndTurnCommand();
-				}
-			});
+			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			//item.setText("End Turn");
+			//item.addSelectionListener(new SelectionAdapter() {
+			//	public void widgetSelected(SelectionEvent e)
+			//	{
+			//		handleEndTurnCommand();
+			//	}
+			//});
 
 			new MenuItem(popUpMenu, SWT.SEPARATOR);
 
@@ -1792,12 +1805,12 @@ public class HeroesGui
 		}
 		else
 		{
+			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+
+			//item.setText("Hero Options");
+			//item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
+
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-
-			item.setText("Hero Options");
-			item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
-
-			item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Castle Options");
 			item.setMenu(createCastlePopUpMenu(SWT.DROP_DOWN));
 
