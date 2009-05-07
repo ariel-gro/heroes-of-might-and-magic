@@ -766,10 +766,28 @@ public class HeroesGui
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(iconCache.stockImages[iconCache.appIcon]);
-		firstLabel.setText("      PLAYER   STATUS");
-
 		String str = p.getName();
-		createLabel(statusComposite, "PLAYER  NAME  :  " + str);
+		firstLabel.setText("          " + str);
+		
+		
+		createLabel(statusComposite, "");
+		Button button = new Button(statusComposite, SWT.CENTER);
+		button.setBackground(red);
+		button.setForeground(white);
+		button.setText("END TURN");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleEndTurnCommand();
+			}
+		});
+		
+		
+		
+
+		
+		//createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "DAY  :  " + p.getDayAsString());
 		createLabel(statusComposite, "");
@@ -878,9 +896,9 @@ public class HeroesGui
 			final Castle castle = p.getCastles().get(i);
 			int castleXPos = castle.getXPos();
 			int castleYPos = castle.getYPos();
-			Button button = new Button(statusComposite, SWT.NONE);
-			button.setText("Castle at  " + castleXPos + " , " + castleYPos);
-			button.addSelectionListener(new SelectionAdapter() {
+			Button button1 = new Button(statusComposite, SWT.NONE);
+			button1.setText("Castle at  " + castleXPos + " , " + castleYPos);
+			button1.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
 					displayCastleInfo(castle);
@@ -888,18 +906,7 @@ public class HeroesGui
 			});
 		}
 
-		createLabel(statusComposite, "");
-		Button button = new Button(statusComposite, SWT.CENTER);
-		button.setBackground(red);
-		button.setForeground(white);
-		button.setText("END TURN");
-		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleEndTurnCommand();
-			}
-		});
+		
 
 		statusComposite.layout(true, true);
 	}
@@ -938,6 +945,10 @@ public class HeroesGui
 		box.open();
 	}
 
+	
+	
+	
+	
 	public Vector<Player> getGameDetails()
 	{
 		final Vector<Player> players = new Vector<Player>();
@@ -986,7 +997,7 @@ public class HeroesGui
 		final Button pcButton1 = new Button(form, SWT.CHECK);
 		pcLevel1 = new Combo(form, SWT.NONE);
 		pcLevel1.setText("level");
-		pcLevel1.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel1.setItems(new String[] { "Novice", "Expert" });
 		pcLevel1.setEnabled(false);
 		pcButton1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent arg0)
@@ -994,7 +1005,7 @@ public class HeroesGui
 				if (pcButton1.getSelection())
 				{
 					pcLevel1.setEnabled(true);
-					pcLevel1.setText("Beginner");
+					pcLevel1.setText("Novice");
 				}
 				else
 				{
@@ -1008,7 +1019,7 @@ public class HeroesGui
 		final Text player3Name = new Text(form, SWT.NONE);
 		final Button pcButton2 = new Button(form, SWT.CHECK);
 		pcLevel2 = new Combo(form, SWT.BEGINNING);
-		pcLevel2.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel2.setItems(new String[] { "Novice", "Expert" });
 		pcLevel2.setEnabled(false);
 		pcButton2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent arg0)
@@ -1016,7 +1027,7 @@ public class HeroesGui
 				if (pcButton2.getSelection())
 				{
 					pcLevel2.setEnabled(true);
-					pcLevel2.setText("Beginner");
+					pcLevel2.setText("Novice");
 				}
 				else
 				{
@@ -1031,7 +1042,7 @@ public class HeroesGui
 		final Button pcButton3 = new Button(form, SWT.CHECK);
 		pcLevel3 = new Combo(form, SWT.NONE);
 		pcLevel3.setText("level");
-		pcLevel3.setItems(new String[] { "Beginner", "Expert" });
+		pcLevel3.setItems(new String[] { "Novice", "Expert" });
 		pcLevel3.setEnabled(false);
 		pcButton3.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent arg0)
@@ -1039,7 +1050,7 @@ public class HeroesGui
 				if (pcButton3.getSelection())
 				{
 					pcLevel3.setEnabled(true);
-					pcLevel3.setText("Beginner");
+					pcLevel3.setText("Novice");
 				}
 				else
 				{
