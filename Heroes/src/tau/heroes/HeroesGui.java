@@ -1004,6 +1004,7 @@ public class HeroesGui
 			{
 				if (pcButton1.getSelection())
 				{
+					player2Name.setEnabled(false);
 					pcLevel1.setEnabled(true);
 					pcLevel1.setText("Novice");
 				}
@@ -1026,6 +1027,7 @@ public class HeroesGui
 			{
 				if (pcButton2.getSelection())
 				{
+					player3Name.setEnabled(false);
 					pcLevel2.setEnabled(true);
 					pcLevel2.setText("Novice");
 				}
@@ -1049,6 +1051,7 @@ public class HeroesGui
 			{
 				if (pcButton3.getSelection())
 				{
+					player4Name.setEnabled(false);
 					pcLevel3.setEnabled(true);
 					pcLevel3.setText("Novice");
 				}
