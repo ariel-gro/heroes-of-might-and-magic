@@ -2,18 +2,15 @@ package tau.heroes;
 
 import java.io.File;
 import java.util.Vector;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MouseEvent;
@@ -32,6 +29,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -43,11 +41,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
 public class HeroesGui
@@ -65,7 +62,7 @@ public class HeroesGui
 	private Color black;
 
 	private Color white;
-	
+
 	private Color red;
 
 	private Display display;
@@ -150,6 +147,13 @@ public class HeroesGui
 
 		sc2 = new ScrolledComposite(sash, SWT.BORDER | SWT.V_SCROLL);
 		sc2.setBackground(black);
+		sc2.addControlListener(new ControlAdapter() {
+			public void controlResized(ControlEvent e)
+			{
+				Rectangle r = sc2.getClientArea();
+				sc2.setMinSize(statusComposite.computeSize(r.width, SWT.DEFAULT));
+			}
+		});
 		// sc2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
 		// 1));
 
@@ -510,7 +514,7 @@ public class HeroesGui
 								.elementAt(currentPlayerIndex)))
 						{
 							l.setData(boardPoints[x][y]);
-							//l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
+							// l.setMenu(createHeroPopUpMenu(SWT.POP_UP));
 							l.addMouseListener(focusListener);
 							l.addListener(SWT.MouseDown, listener);
 							l.addListener(SWT.MouseMove, listener);
@@ -741,7 +745,8 @@ public class HeroesGui
 		sc2.setContent(statusComposite);
 		sc2.setExpandHorizontal(true);
 		sc2.setExpandVertical(true);
-		sc2.setMinSize(statusComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		Rectangle r = sc2.getClientArea();
+		sc2.setMinSize(statusComposite.computeSize(r.width, SWT.DEFAULT));
 
 	}
 
@@ -788,30 +793,30 @@ public class HeroesGui
 			createLabel(statusComposite, "");
 
 			createLabel(statusComposite, "ARMY  :");
-//			Table armyTable = new Table(statusComposite, SWT.BORDER);
-//			TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
-//			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
-//			armyCol1.setText("Slot");
-//			armyCol2.setText("Units");
-//			// armyCol1.setWidth(40);
-//			// armyCol2.setWidth(138);
-//			armyCol1.setWidth(40);
-//			armyCol2.setWidth(statusWidth - 40);
-//			armyTable.setHeaderVisible(true);
-//			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-//			for (Integer j = 1; j < 6; ++j)
-//			{
-//				ti = new TableItem(armyTable, SWT.NONE);
-//				ti.setText(0, j.toString());
-//				if (creaturesArray[j - 1] != null)
-//				{
-//					ti.setText(1, creaturesArray[j - 1].toString());
-//				}
-//				else
-//				{
-//					ti.setText(1, "none");
-//				}
-//			}
+			// Table armyTable = new Table(statusComposite, SWT.BORDER);
+			// TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
+			// TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
+			// armyCol1.setText("Slot");
+			// armyCol2.setText("Units");
+			// // armyCol1.setWidth(40);
+			// // armyCol2.setWidth(138);
+			// armyCol1.setWidth(40);
+			// armyCol2.setWidth(statusWidth - 40);
+			// armyTable.setHeaderVisible(true);
+			// Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
+			// for (Integer j = 1; j < 6; ++j)
+			// {
+			// ti = new TableItem(armyTable, SWT.NONE);
+			// ti.setText(0, j.toString());
+			// if (creaturesArray[j - 1] != null)
+			// {
+			// ti.setText(1, creaturesArray[j - 1].toString());
+			// }
+			// else
+			// {
+			// ti.setText(1, "none");
+			// }
+			// }
 			ArmyView armyView = new ArmyView(statusComposite, SWT.BORDER);
 			armyView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			armyView.setArmy(p.getHero().getArmy());
@@ -882,7 +887,7 @@ public class HeroesGui
 				}
 			});
 		}
-		
+
 		createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.NONE);
 		button.setBackground(red);
@@ -894,7 +899,7 @@ public class HeroesGui
 				handleEndTurnCommand();
 			}
 		});
-		
+
 		statusComposite.layout(true, true);
 	}
 
@@ -932,11 +937,6 @@ public class HeroesGui
 		box.open();
 	}
 
-	
-	
-	
-	
-	
 	public Vector<Player> getGameDetails()
 	{
 		final Vector<Player> players = new Vector<Player>();
@@ -948,7 +948,7 @@ public class HeroesGui
 		final int ExitOK = 6;
 
 		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
-		//, SWT.APPLICATION_MODAL	| SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(335, 225);
 		shell1.setText("New game menu");
@@ -1126,7 +1126,7 @@ public class HeroesGui
 				shell1.dispose();
 			}
 		});
-			
+
 		shell1.open();
 		while (!shell1.isDisposed())
 		{
@@ -1435,40 +1435,21 @@ public class HeroesGui
 	 */
 
 	/**
-	private Menu createHeroPopUpMenu(int style)
-	{
-		Menu popUpMenu;
-		if (eclipseComposite != null)
-		{
-			popUpMenu = new Menu(eclipseComposite);
-		}
-		else
-		{
-			if (style == SWT.DROP_DOWN)
-				popUpMenu = new Menu(shell, SWT.DROP_DOWN);
-			else
-				popUpMenu = new Menu(shell, SWT.POP_UP);
-		}
-
-		popUpMenu.addMenuListener(new MenuAdapter() {
-			public void menuShown(MenuEvent e)
-			{
-			}
-		});
-
-		MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-		item.setText("End Turn");
-		item.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleEndTurnCommand();
-			}
-		});
-
-		return popUpMenu;
-	}
-	
-	*/
+	 * private Menu createHeroPopUpMenu(int style) { Menu popUpMenu; if
+	 * (eclipseComposite != null) { popUpMenu = new Menu(eclipseComposite); }
+	 * else { if (style == SWT.DROP_DOWN) popUpMenu = new Menu(shell,
+	 * SWT.DROP_DOWN); else popUpMenu = new Menu(shell, SWT.POP_UP); }
+	 * 
+	 * popUpMenu.addMenuListener(new MenuAdapter() { public void
+	 * menuShown(MenuEvent e) { } });
+	 * 
+	 * MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+	 * item.setText("End Turn"); item.addSelectionListener(new
+	 * SelectionAdapter() { public void widgetSelected(SelectionEvent e) {
+	 * handleEndTurnCommand(); } });
+	 * 
+	 * return popUpMenu; }
+	 */
 
 	/**
 	 * Creates all items located in the popup menu and associates all the menu
@@ -1502,7 +1483,7 @@ public class HeroesGui
 		});
 
 		if (eclipseComposite != null)
-		{		
+		{
 			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
 			{
 				final MenuItem buildFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
@@ -1575,16 +1556,16 @@ public class HeroesGui
 				}
 			});
 
-			//new MenuItem(popUpMenu, SWT.SEPARATOR);
+			// new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-//			final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
-	//		item.setText("End Turn");
-		//	item.addSelectionListener(new SelectionAdapter() {
-			//	public void widgetSelected(SelectionEvent e)
-				//{
-			//				handleEndTurnCommand();
-	//			}
-	//		});
+			// final MenuItem item = new MenuItem(popUpMenu, SWT.PUSH);
+			// item.setText("End Turn");
+			// item.addSelectionListener(new SelectionAdapter() {
+			// public void widgetSelected(SelectionEvent e)
+			// {
+			// handleEndTurnCommand();
+			// }
+			// });
 		}
 		else
 		{
@@ -1679,16 +1660,16 @@ public class HeroesGui
 				}
 			});
 
-		//	new MenuItem(popUpMenu, SWT.SEPARATOR);
+			// new MenuItem(popUpMenu, SWT.SEPARATOR);
 
-		//	item = new MenuItem(popUpMenu, SWT.CASCADE);
-		//	item.setText("End Turn");
-		//	item.addSelectionListener(new SelectionAdapter() {
-		//		public void widgetSelected(SelectionEvent e)
-		//		{
-		//			handleEndTurnCommand();
-		//		}
-		//	});
+			// item = new MenuItem(popUpMenu, SWT.CASCADE);
+			// item.setText("End Turn");
+			// item.addSelectionListener(new SelectionAdapter() {
+			// public void widgetSelected(SelectionEvent e)
+			// {
+			// handleEndTurnCommand();
+			// }
+			// });
 		}
 
 		return popUpMenu;
@@ -1721,14 +1702,14 @@ public class HeroesGui
 
 		if (eclipseComposite != null)
 		{
-			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
-			//item.setText("End Turn");
-			//item.addSelectionListener(new SelectionAdapter() {
-			//	public void widgetSelected(SelectionEvent e)
-			//	{
-			//		handleEndTurnCommand();
-			//	}
-			//});
+			// MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			// item.setText("End Turn");
+			// item.addSelectionListener(new SelectionAdapter() {
+			// public void widgetSelected(SelectionEvent e)
+			// {
+			// handleEndTurnCommand();
+			// }
+			// });
 
 			new MenuItem(popUpMenu, SWT.SEPARATOR);
 
@@ -1819,7 +1800,7 @@ public class HeroesGui
 			}
 
 			new MenuItem(popUpMenu, SWT.SEPARATOR);
-			
+
 			for (final CreatureFactory factory : CreatureFactory.getCreatureFactories())
 			{
 				final MenuItem joinFactoryItem = new MenuItem(popUpMenu, SWT.PUSH);
@@ -1834,10 +1815,10 @@ public class HeroesGui
 		}
 		else
 		{
-			//MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
+			// MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 
-			//item.setText("Hero Options");
-			//item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
+			// item.setText("Hero Options");
+			// item.setMenu(createHeroPopUpMenu(SWT.DROP_DOWN));
 
 			MenuItem item = new MenuItem(popUpMenu, SWT.CASCADE);
 			item.setText("Castle Options");
