@@ -152,4 +152,30 @@ public class IconCache
 		}
 		return result;
 	}
+
+	public Image getCreatureImage(Class<? extends Creature> creatureClass)
+	{
+		if (creatureClass == null)
+			return stockImages[battleGrassIcon];
+		else if (creatureClass.equals(Goblin.class))
+			return stockImages[goblinFaceRightIcon];
+		else if (creatureClass.equals(Soldier.class))
+			return stockImages[soldierFaceRightIcon];
+		else if (creatureClass.equals(Dwarf.class))
+			return stockImages[dwarfFaceRightIcon];
+		else if (creatureClass.equals(Archer.class))
+			return stockImages[archerFaceRightIcon];
+		else if (creatureClass.equals(FireDragon.class))
+			return stockImages[fireDragonFaceRightIcon];
+		else
+			return stockImages[battleGrassIcon];
+	}
+
+	public Image getCreatureImage(Creature creature)
+	{
+		if (creature != null)
+			return getCreatureImage(creature.getClass());
+		else
+			return getCreatureImage((Class<? extends Creature>) null);
+	}
 }
