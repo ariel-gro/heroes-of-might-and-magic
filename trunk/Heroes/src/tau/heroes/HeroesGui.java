@@ -59,6 +59,8 @@ public class HeroesGui
 	private Color black;
 
 	private Color white;
+	
+	private Color red;
 
 	private Display display;
 
@@ -111,6 +113,7 @@ public class HeroesGui
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
+		red = display.getSystemColor(SWT.COLOR_RED);
 		cursor = new Cursor(display, SWT.CURSOR_NO);
 		defaultCursor = new Cursor(display, SWT.NONE);
 		shell.setBackground(black);
@@ -768,8 +771,12 @@ public class HeroesGui
 		{
 			int xPos = p.getHero().getXPos();
 			int yPos = p.getHero().getYPos();
+			Label movesLabel = new Label(statusComposite, SWT.NONE);
+			movesLabel.setForeground(red);
+			movesLabel.setText("HERO  MOVES  LEFT  :  " + p.getMovesLeft());
+			movesLabel.setBackground(white);
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
-			createLabel(statusComposite, "HERO  MOVES  LEFT  :  " + p.getMovesLeft());
+			createLabel(statusComposite, "");
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK  SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
