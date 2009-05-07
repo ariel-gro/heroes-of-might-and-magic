@@ -889,10 +889,11 @@ public class HeroesGui
 		}
 
 		createLabel(statusComposite, "");
-		Button button = new Button(statusComposite, SWT.NONE);
+		Button button = new Button(statusComposite, SWT.CENTER);
 		button.setBackground(red);
 		button.setForeground(white);
-		button.setText("                         END   TURN                         ");
+		button.setText("END TURN");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
