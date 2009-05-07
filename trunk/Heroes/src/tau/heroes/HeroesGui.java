@@ -1374,7 +1374,7 @@ public class HeroesGui
 		// space reserve for File -> New and File -> Open Saved Game
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
 		MenuItem openSubItem = new MenuItem(menu, SWT.NULL);
-		new MenuItem(menu, SWT.SEPARATOR);
+		//new MenuItem(menu, SWT.SEPARATOR);
 
 		// File -> Save.
 		saveSubItem = new MenuItem(menu, SWT.NULL);
@@ -1414,7 +1414,7 @@ public class HeroesGui
 		});
 
 		// File -> Open Saved Game
-		openSubItem.setText("Open Saved Game");
+		openSubItem.setText("Load Game");
 		openSubItem.setAccelerator(SWT.MOD1 + 'O');
 		openSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
