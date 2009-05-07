@@ -782,30 +782,33 @@ public class HeroesGui
 			createLabel(statusComposite, "");
 
 			createLabel(statusComposite, "ARMY  :");
-			Table armyTable = new Table(statusComposite, SWT.BORDER);
-			TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
-			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
-			armyCol1.setText("Slot");
-			armyCol2.setText("Units");
-			// armyCol1.setWidth(40);
-			// armyCol2.setWidth(138);
-			armyCol1.setWidth(40);
-			armyCol2.setWidth(statusWidth - 40);
-			armyTable.setHeaderVisible(true);
-			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-			for (Integer j = 1; j < 6; ++j)
-			{
-				ti = new TableItem(armyTable, SWT.NONE);
-				ti.setText(0, j.toString());
-				if (creaturesArray[j - 1] != null)
-				{
-					ti.setText(1, creaturesArray[j - 1].toString());
-				}
-				else
-				{
-					ti.setText(1, "none");
-				}
-			}
+//			Table armyTable = new Table(statusComposite, SWT.BORDER);
+//			TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
+//			TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
+//			armyCol1.setText("Slot");
+//			armyCol2.setText("Units");
+//			// armyCol1.setWidth(40);
+//			// armyCol2.setWidth(138);
+//			armyCol1.setWidth(40);
+//			armyCol2.setWidth(statusWidth - 40);
+//			armyTable.setHeaderVisible(true);
+//			Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
+//			for (Integer j = 1; j < 6; ++j)
+//			{
+//				ti = new TableItem(armyTable, SWT.NONE);
+//				ti.setText(0, j.toString());
+//				if (creaturesArray[j - 1] != null)
+//				{
+//					ti.setText(1, creaturesArray[j - 1].toString());
+//				}
+//				else
+//				{
+//					ti.setText(1, "none");
+//				}
+//			}
+			ArmyView armyView = new ArmyView(statusComposite, SWT.BORDER);
+			armyView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			armyView.setArmy(p.getHero().getArmy());
 		}
 
 		createLabel(statusComposite, "");
@@ -816,7 +819,7 @@ public class HeroesGui
 		minesCol1.setText("Mine");
 		minesCol2.setText("Quantity");
 		minesCol1.setWidth(80);
-		minesCol2.setWidth(statusWidth - 80);
+		minesCol2.setWidth(statusWidth - 120);
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
@@ -827,6 +830,7 @@ public class HeroesGui
 		ti.setText(new String[] { "Gold", goldNum.toString() });
 		ti = new TableItem(minesTable, SWT.NONE);
 		ti.setText(new String[] { "Stone", stoneNum.toString() });
+		minesTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST  :");
@@ -847,6 +851,7 @@ public class HeroesGui
 		ti.setText(new String[] { "Gold", goldAmount.toString() });
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] { "Stone", stoneAmount.toString() });
+		treasursTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "CASTLES  :");
