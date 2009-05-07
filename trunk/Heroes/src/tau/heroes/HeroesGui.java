@@ -5,6 +5,12 @@ import java.util.Vector;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -877,8 +883,11 @@ public class HeroesGui
 			});
 		}
 		
+		createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.NONE);
-		button.setText("End turn");
+		button.setBackground(red);
+		button.setForeground(white);
+		button.setText("                         END   TURN                         ");
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -923,16 +932,23 @@ public class HeroesGui
 		box.open();
 	}
 
+	
+	
+	
+	
+	
 	public Vector<Player> getGameDetails()
 	{
 		final Vector<Player> players = new Vector<Player>();
 		final Combo pcLevel1;
 		final Combo pcLevel2;
 		final Combo pcLevel3;
-		final int[] arr = new int[1];
+		final int[] exitHelperArray = new int[1];
+		final int ExitCANCEL = 5;
+		final int ExitOK = 6;
 
-		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell(), SWT.APPLICATION_MODAL
-			| SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
+		//, SWT.APPLICATION_MODAL	| SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(335, 225);
 		shell1.setText("New game menu");
@@ -1037,6 +1053,7 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
+				exitHelperArray[0] = ExitOK;
 				String name1 = player1Name.getText();
 				String name2 = player2Name.getText();
 				String name3 = player3Name.getText();
@@ -1105,17 +1122,24 @@ public class HeroesGui
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
-				arr[0] = 5;
+				exitHelperArray[0] = ExitCANCEL;
 				shell1.dispose();
 			}
 		});
+			
 		shell1.open();
 		while (!shell1.isDisposed())
 		{
 			if (!display.readAndDispatch())
+			{
+				if (exitHelperArray[0] != ExitOK)
+				{
+					exitHelperArray[0] = ExitCANCEL;
+				}
 				display.sleep();
+			}
 		}
-		if (arr[0] != 5)
+		if (exitHelperArray[0] != ExitCANCEL)
 		{
 			return players;
 		}
