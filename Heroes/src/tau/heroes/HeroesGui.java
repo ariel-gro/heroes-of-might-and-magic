@@ -756,7 +756,9 @@ public class HeroesGui
 		TableItem ti;
 
 		statusComposite.setBackground(white);
-		int statusWidth = (sc2.getSize().x - 30);
+		
+		int statusWidth = (sc2.getSize().x - sc2.getVerticalBar().getSize().x - statusComposite.getBorderWidth()*2 - sc2.getBorderWidth()*2);
+			
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
@@ -766,11 +768,13 @@ public class HeroesGui
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(iconCache.stockImages[iconCache.appIcon]);
-		String str = p.getName();
-		firstLabel.setText("          " + str);
+		String str1 = p.getName();
+		String str2 = p.getDayAsString();
+		firstLabel.setText("                " + str1);
+		createLabel(statusComposite, "    " + str2);
 		
 		
-		createLabel(statusComposite, "");
+		//createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.CENTER);
 		button.setBackground(red);
 		button.setForeground(white);
@@ -789,8 +793,8 @@ public class HeroesGui
 		
 		//createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
-		createLabel(statusComposite, "DAY  :  " + p.getDayAsString());
-		createLabel(statusComposite, "");
+		//createLabel(statusComposite, "DAY  :  " + str2);
+		//createLabel(statusComposite, "");
 
 		if (p.getHero() == null)
 		{
@@ -842,13 +846,13 @@ public class HeroesGui
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "MINE  LIST  :");
-		Table minesTable = new Table(statusComposite, SWT.BORDER);
+		Table minesTable = new Table(statusComposite, SWT.BORDER | SWT.FILL);
 		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
 		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
 		minesCol1.setText("Mine");
 		minesCol2.setText("Quantity");
-		minesCol1.setWidth(80);
-		minesCol2.setWidth(statusWidth - 80);
+		minesCol1.setWidth(60);
+		minesCol2.setWidth(statusWidth - 70);
 		minesTable.setHeaderVisible(true);
 		Integer woodNum = p.getMineQuantity("wood");
 		Integer goldNum = p.getMineQuantity("gold");
@@ -868,8 +872,8 @@ public class HeroesGui
 		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
 		treasursCol1.setText("Resource");
 		treasursCol2.setText("Amount");
-		treasursCol1.setWidth(80);
-		treasursCol2.setWidth(statusWidth - 80);
+		treasursCol1.setWidth(60);
+		treasursCol2.setWidth(statusWidth - 70);
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
 		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
