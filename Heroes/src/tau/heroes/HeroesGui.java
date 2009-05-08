@@ -1379,7 +1379,7 @@ public class HeroesGui
 		// File -> Save.
 		saveSubItem = new MenuItem(menu, SWT.NULL);
 		saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
-		saveSubItem.setText("Save Game");
+		saveSubItem.setText("&Save Game\tCtrl+S");
 		saveSubItem.setAccelerator(SWT.MOD1 + 'S');
 		saveSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -1391,7 +1391,7 @@ public class HeroesGui
 		// File -> Save As.
 		saveAsSubItem = new MenuItem(menu, SWT.NULL);
 		saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
-		saveAsSubItem.setText("Save Game as");
+		saveAsSubItem.setText("&Save Game as\tCtrl+A");
 		saveAsSubItem.setAccelerator(SWT.MOD1 + 'A');
 		saveAsSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -1401,7 +1401,7 @@ public class HeroesGui
 		});
 
 		// File -> New Game
-		subItem.setText("New Game");
+		subItem.setText("&New Game\tCtrl+N");
 		subItem.setAccelerator(SWT.MOD1 + 'N');
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -1414,8 +1414,8 @@ public class HeroesGui
 		});
 
 		// File -> Open Saved Game
-		openSubItem.setText("Load Game");
-		openSubItem.setAccelerator(SWT.MOD1 + 'O');
+		openSubItem.setText("&Load Game\tCtrl+L");
+		openSubItem.setAccelerator(SWT.MOD1 + 'L');
 		openSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -1430,7 +1430,8 @@ public class HeroesGui
 
 		// File -> Exit.
 		subItem = new MenuItem(menu, SWT.NULL);
-		subItem.setText("Exit");
+		subItem.setText("&Exit\tCtrl+Q");
+		subItem.setAccelerator(SWT.MOD1 + 'Q');
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -1899,7 +1900,7 @@ public class HeroesGui
 
 		// Help -> Gameplay assistance
 		MenuItem assistItem = new MenuItem(menu, SWT.NULL);
-		assistItem.setText("&Gameplay assistance");
+		assistItem.setText("&Gameplay assistance\tCtrl+G");
 		assistItem.setAccelerator(SWT.MOD1 + 'G');
 		assistItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
