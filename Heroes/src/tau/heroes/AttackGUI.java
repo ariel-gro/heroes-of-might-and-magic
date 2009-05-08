@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Shell;
 
 public class AttackGUI
 {
-	private static IconCache iconCache = new IconCache();
 	private Display display;
 	private Shell shell;
 	private Color black;
@@ -45,7 +44,7 @@ public class AttackGUI
 		heroes[1] = h2;
 		heroIndex = 0;
 		creatureIndex = 0;
-		iconCache.initResources(display);
+		IconCache.initResources(display);
 	}
 
 	public Shell open()
@@ -97,7 +96,6 @@ public class AttackGUI
 
 	private boolean close()
 	{
-		iconCache.freeResources();
 		return true;
 	}
 
@@ -106,8 +104,6 @@ public class AttackGUI
 		if (boardComposite != null && boardComposite.isDisposed() == false)
 		{
 			boardComposite.dispose();
-			iconCache.freeResources();
-			iconCache.initResources(display);
 			mouseListeners.clear();
 		}
 		boardComposite = new Composite(sash, SWT.NONE);
@@ -130,11 +126,11 @@ public class AttackGUI
 				int left = (j == 0) ? 0 : 1;
 				Label b = new Label(boardComposite, SWT.NONE);
 				int t = fromBattleToDisplayIcons(tempHeroes[j], i, left);
-				b.setImage(iconCache.stockImages[t]);
-				b.setCursor(iconCache.stockCursors[iconCache.cursorNo]);
+				b.setImage(IconCache.stockImages[t]);
+				b.setCursor(IconCache.stockCursors[IconCache.cursorNo]);
 
 				String description;
-				if (t != iconCache.battleGrassIcon)
+				if (t != IconCache.battleGrassIcon)
 				{
 					description = fromBattleToDisplayDecription(tempHeroes[j], i);
 					b.setToolTipText(description);
@@ -145,7 +141,7 @@ public class AttackGUI
 					mouseListeners.add(m);
 					b.addMouseListener(m);
 					b.setBackground(white);
-					b.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft + left]);
+					b.setCursor(IconCache.stockCursors[IconCache.cursorAttackLeft + left]);
 				}
 			}
 		}
@@ -176,22 +172,22 @@ public class AttackGUI
 	private int fromBattleToDisplayIcons(Hero h, int i, int left)
 	{
 		if (h == null || !h.alive())
-			return iconCache.battleGrassIcon;
+			return IconCache.battleGrassIcon;
 
 		Creature c = h.getArmy().getCreature(i);
 		if (c == null)
-			return iconCache.battleGrassIcon;
+			return IconCache.battleGrassIcon;
 		if (c.getClass().equals(Goblin.class))
-			return iconCache.goblinFaceRightIcon + left;
+			return IconCache.goblinFaceRightIcon + left;
 		else if (c.getClass().equals(Soldier.class))
-			return iconCache.soldierFaceRightIcon + left;
+			return IconCache.soldierFaceRightIcon + left;
 		else if (c.getClass().equals(Dwarf.class))
-			return iconCache.dwarfFaceRightIcon + left;
+			return IconCache.dwarfFaceRightIcon + left;
 		else if (c.getClass().equals(Archer.class))
-			return iconCache.archerFaceRightIcon + left;
+			return IconCache.archerFaceRightIcon + left;
 		else if (c.getClass().equals(FireDragon.class))
-			return iconCache.fireDragonFaceRightIcon + left;
-		return iconCache.battleGrassIcon;
+			return IconCache.fireDragonFaceRightIcon + left;
+		return IconCache.battleGrassIcon;
 	}
 
 	private String fromBattleToDisplayDecription(Hero h, int i)
@@ -226,9 +222,9 @@ public class AttackGUI
 			iter.attacker = heroes[heroIndex];
 			iter.attackUnit = creatureIndex;
 			if (iter.attacker.equals(iter.defender))
-				iter.label.setCursor(iconCache.stockCursors[iconCache.cursorNo]);
+				iter.label.setCursor(IconCache.stockCursors[IconCache.cursorNo]);
 			else
-				iter.label.setCursor(iconCache.stockCursors[iconCache.cursorAttackLeft
+				iter.label.setCursor(IconCache.stockCursors[IconCache.cursorAttackLeft
 					+ ((heroIndex + 1) % 2)]);
 		}
 	}
@@ -279,7 +275,7 @@ public class AttackGUI
 
 			defender.cleanDeadCreatures();
 			int t = fromBattleToDisplayIcons(defender, defenderUnit, (heroIndex + 1) % 2);
-			label.setImage(iconCache.stockImages[t]);
+			label.setImage(IconCache.stockImages[t]);
 			String description = fromBattleToDisplayDecription(defender, defenderUnit);
 			label.setToolTipText(description);
 			System.out.println("defender = " + defender.alive() + " \nArmy: "

@@ -49,8 +49,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.KeyAddr;
-
 public class HeroesGui
 {
 	private Shell shell;
@@ -58,8 +56,6 @@ public class HeroesGui
 	private String file = null;
 
 	private boolean isModified = false;
-
-	private static IconCache iconCache = new IconCache();
 
 	int numOfCells;
 
@@ -108,14 +104,14 @@ public class HeroesGui
 	{
 		this.display = d;
 		this.gameController = gameController;
-		iconCache.initResources(display);
+		IconCache.initResources(display);
 	}
 
 	public Shell open()
 	{
 		shell = new Shell(display/* , SWT.APPLICATION_MODAL */);
 		shell.setLayout(new FillLayout());
-		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
@@ -239,7 +235,7 @@ public class HeroesGui
 			}
 		}
 
-		iconCache.freeResources();
+		IconCache.freeResources();
 
 		cursor.dispose();
 		defaultCursor.dispose();
@@ -255,49 +251,53 @@ public class HeroesGui
 
 		if ((bs.getHero()) != null)
 		{
-			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
+			if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
-				return iconCache.heroeInWoodIcon;
+				return IconCache.heroeInWoodIcon;
 			}
 			else if (bs.getResource() != null
-				&& bs.getResource().getType().getTypeName().equals("gold"))
+				&& bs.getResource().getType().getTypeName().equals(ResourceType.GOLD.getTypeName()))
 			{
-				return iconCache.heroInGlodMineIcon;
+				return IconCache.heroInGlodMineIcon;
 			}
 			else if (bs.getResource() != null
-				&& bs.getResource().getType().getTypeName().equals("stone"))
+				&& bs.getResource().getType().getTypeName()
+					.equals(ResourceType.STONE.getTypeName()))
 			{
-				return iconCache.heroInStoneIcon;
+				return IconCache.heroInStoneIcon;
 			}
 			else if (bs.getCastle() != null)
 			{
-				return iconCache.heroInCastleIcon;
+				return IconCache.heroInCastleIcon;
 			}
 			else
-				return iconCache.heroIcon;
+				return IconCache.heroIcon;
 
 		}
 		else if ((bs.getCastle()) != null)
 		{
-			return iconCache.castleIcon;
+			return IconCache.castleIcon;
 		}
 		else if ((bs.getResource()) != null)
 		{
-			if (bs.getResource().getType().getTypeName().equals("wood"))
+			if (bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
-				return iconCache.woodIcon;
+				return IconCache.woodIcon;
 			}
-			else if (bs.getResource().getType().getTypeName().equals("gold"))
+			else if (bs.getResource().getType().getTypeName().equals(ResourceType.GOLD
+				.getTypeName()))
 			{
-				return iconCache.goldMineIcon;
+				return IconCache.goldMineIcon;
 			}
-			else if (bs.getResource().getType().getTypeName().equals("stone"))
+			else if (bs.getResource().getType().getTypeName().equals(ResourceType.STONE
+				.getTypeName()))
 			{
-				return iconCache.stoneIcon;
+				return IconCache.stoneIcon;
 			}
 		}
 
-		return iconCache.grassIcon;
+		return IconCache.grassIcon;
 	}
 
 	private String fromBoardToDisplayDecription(int x, int y)
@@ -306,7 +306,8 @@ public class HeroesGui
 
 		if ((bs.getHero()) != null)
 		{
-			if (bs.getResource() != null && bs.getResource().getType().getTypeName().equals("wood"))
+			if (bs.getResource() != null
+				&& bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
 				return bs.getHero().player.getName()
 					+ "'s Hero in "
@@ -316,7 +317,7 @@ public class HeroesGui
 						.getName()) + "\nLocation: " + x + ", " + y;
 			}
 			else if (bs.getResource() != null
-				&& bs.getResource().getType().getTypeName().equals("gold"))
+				&& bs.getResource().getType().getTypeName().equals(ResourceType.GOLD.getTypeName()))
 			{
 				return bs.getHero().player.getName()
 					+ "'s Hero in "
@@ -326,7 +327,8 @@ public class HeroesGui
 						.getName()) + "\nLocation: " + x + ", " + y;
 			}
 			else if (bs.getResource() != null
-				&& bs.getResource().getType().getTypeName().equals("stone"))
+				&& bs.getResource().getType().getTypeName()
+					.equals(ResourceType.STONE.getTypeName()))
 			{
 				return bs.getHero().player.getName()
 					+ "'s Hero in "
@@ -352,21 +354,23 @@ public class HeroesGui
 		}
 		else if ((bs.getResource()) != null)
 		{
-			if (bs.getResource().getType().getTypeName().equals("wood"))
+			if (bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
 				return bs.getResource().getType().getTypeName()
 					+ " owned by "
 					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
 						.getName()) + "\nLocation: " + x + ", " + y;
 			}
-			else if (bs.getResource().getType().getTypeName().equals("gold"))
+			else if (bs.getResource().getType().getTypeName().equals(ResourceType.GOLD
+				.getTypeName()))
 			{
 				return bs.getResource().getType().getTypeName()
 					+ " owned by "
 					+ (bs.getResource().getOwner() == null ? "none" : bs.getResource().getOwner()
 						.getName()) + "\nLocation: " + x + ", " + y;
 			}
-			else if (bs.getResource().getType().getTypeName().equals("stone"))
+			else if (bs.getResource().getType().getTypeName().equals(ResourceType.STONE
+				.getTypeName()))
 			{
 				return bs.getResource().getType().getTypeName()
 					+ " owned by "
@@ -500,19 +504,19 @@ public class HeroesGui
 					int t = fromBoardToDisplayIcons(x, y);
 
 					if (isVisible[x][y])
-						l.setImage(iconCache.stockImages[t]);
+						l.setImage(IconCache.stockImages[t]);
 					else
-						l.setImage(iconCache.stockImages[iconCache.blackIcon]);
+						l.setImage(IconCache.stockImages[IconCache.blackIcon]);
 
 					String description;
-					if (t != iconCache.grassIcon && t != iconCache.blackIcon)
+					if (t != IconCache.grassIcon && t != IconCache.blackIcon)
 					{
 						description = fromBoardToDisplayDecription(x, y);
 						l.setToolTipText(description);
 					}
 
-					if (t == iconCache.heroIcon || t == iconCache.heroInGlodMineIcon
-						|| t == iconCache.heroInStoneIcon || t == iconCache.heroeInWoodIcon)
+					if (t == IconCache.heroIcon || t == IconCache.heroInGlodMineIcon
+						|| t == IconCache.heroInStoneIcon || t == IconCache.heroeInWoodIcon)
 						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
 							.equals(gameController.getGameState().getPlayers()
 								.elementAt(currentPlayerIndex)))
@@ -525,7 +529,7 @@ public class HeroesGui
 							currentHero = b;
 						}
 
-					if (t == iconCache.castleIcon)
+					if (t == IconCache.castleIcon)
 						if (gameController.getGameState().getBoard().getBoardState(x, y)
 							.getCastle().getPlayer().equals(gameController.getGameState()
 								.getPlayers().elementAt(currentPlayerIndex)))
@@ -539,7 +543,7 @@ public class HeroesGui
 								currentHero = b;
 						}
 
-					if (t == iconCache.heroInCastleIcon)
+					if (t == IconCache.heroInCastleIcon)
 						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
 							.equals(gameController.getGameState().getPlayers()
 								.elementAt(currentPlayerIndex)))
@@ -587,7 +591,7 @@ public class HeroesGui
 	private void displayStartWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setImage(iconCache.stockImages[iconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
 
 		GridLayout layout1 = new GridLayout(4, true);
 		layout1.marginWidth = layout1.marginHeight = 10;
@@ -684,7 +688,7 @@ public class HeroesGui
 		shell.setSize(250, 200);
 		shell.setLocation(1012, 555);
 		shell.setText("Castle info");
-		shell.setImage(iconCache.stockImages[iconCache.castleIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.castleIcon]);
 		int xPos = castle.getXPos();
 		int yPos = castle.getYPos();
 		createLabel(shell, "Castle location  :  " + xPos + " , " + yPos);
@@ -740,7 +744,7 @@ public class HeroesGui
 		GridData d = new GridData(GridData.FILL_BOTH);
 		statusComposite.setLayoutData(d);
 
-		GridLayout tempLayout = new GridLayout();
+		GridLayout tempLayout = new GridLayout(1, true);
 		statusComposite.setLayout(tempLayout);
 
 		if (initStatus)
@@ -771,7 +775,7 @@ public class HeroesGui
 
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
-		firstLabel.setImage(iconCache.stockImages[iconCache.appIcon]);
+		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
 		String str1 = p.getName();
 		String str2 = p.getDayAsString();
 		firstLabel.setText("                " + str1);
@@ -819,55 +823,18 @@ public class HeroesGui
 			createLabel(statusComposite, "");
 
 			createLabel(statusComposite, "ARMY  :");
-			// Table armyTable = new Table(statusComposite, SWT.BORDER);
-			// TableColumn armyCol1 = new TableColumn(armyTable, SWT.CENTER);
-			// TableColumn armyCol2 = new TableColumn(armyTable, SWT.CENTER);
-			// armyCol1.setText("Slot");
-			// armyCol2.setText("Units");
-			// // armyCol1.setWidth(40);
-			// // armyCol2.setWidth(138);
-			// armyCol1.setWidth(40);
-			// armyCol2.setWidth(statusWidth - 40);
-			// armyTable.setHeaderVisible(true);
-			// Creature[] creaturesArray = p.getHero().getArmy().getCreatures();
-			// for (Integer j = 1; j < 6; ++j)
-			// {
-			// ti = new TableItem(armyTable, SWT.NONE);
-			// ti.setText(0, j.toString());
-			// if (creaturesArray[j - 1] != null)
-			// {
-			// ti.setText(1, creaturesArray[j - 1].toString());
-			// }
-			// else
-			// {
-			// ti.setText(1, "none");
-			// }
-			// }
+
 			ArmyView armyView = new ArmyView(statusComposite, SWT.BORDER);
 			armyView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			armyView.setArmy(p.getHero().getArmy());
 		}
-
+		
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "MINE  LIST  :");
-		Table minesTable = new Table(statusComposite, SWT.BORDER | SWT.FILL);
-		TableColumn minesCol1 = new TableColumn(minesTable, SWT.CENTER);
-		TableColumn minesCol2 = new TableColumn(minesTable, SWT.CENTER);
-		minesCol1.setText("Mine");
-		minesCol2.setText("Quantity");
-		minesCol1.setWidth(60);
-		minesCol2.setWidth(statusWidth - 70);
-		minesTable.setHeaderVisible(true);
-		Integer woodNum = p.getMineQuantity("wood");
-		Integer goldNum = p.getMineQuantity("gold");
-		Integer stoneNum = p.getMineQuantity("stone");
-		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] { "Wood", woodNum.toString() });
-		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] { "Gold", goldNum.toString() });
-		ti = new TableItem(minesTable, SWT.NONE);
-		ti.setText(new String[] { "Stone", stoneNum.toString() });
-		minesTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		MinesView minesView = new MinesView(statusComposite, SWT.BORDER);
+		minesView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		minesView.setMines(p.getMines());
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST  :");
@@ -879,9 +846,9 @@ public class HeroesGui
 		treasursCol1.setWidth(60);
 		treasursCol2.setWidth(statusWidth - 70);
 		treasursTable.setHeaderVisible(true);
-		Integer woodAmount = p.getCurrentTreasuryAmount("wood");
-		Integer goldAmount = p.getCurrentTreasuryAmount("gold");
-		Integer stoneAmount = p.getCurrentTreasuryAmount("stone");
+		Integer woodAmount = p.getCurrentTreasuryAmount(ResourceType.WOOD.getTypeName());
+		Integer goldAmount = p.getCurrentTreasuryAmount(ResourceType.GOLD.getTypeName());
+		Integer stoneAmount = p.getCurrentTreasuryAmount(ResourceType.STONE.getTypeName());
 		ti = new TableItem(treasursTable, SWT.NONE);
 		ti.setText(new String[] { "Wood", woodAmount.toString() });
 		ti = new TableItem(treasursTable, SWT.NONE);
@@ -972,7 +939,7 @@ public class HeroesGui
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(335, 225);
 		shell1.setText("New game menu");
-		shell1.setImage(iconCache.stockImages[iconCache.appIcon]);
+		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
 
 		Composite form = new Composite(shell1, SWT.FILL);
 		form.setLayout(new GridLayout(4, false));
@@ -1546,7 +1513,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1583,7 +1550,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -1642,7 +1609,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1687,7 +1654,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -1775,7 +1742,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1812,7 +1779,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(iconCache.stockImages[iconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(new Color(display, 255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -2045,7 +2012,7 @@ public class HeroesGui
 		tableShell.setLayout(new FillLayout());
 		tableShell.setSize(300, 300);
 		tableShell.setText("Highscores - The 10 Best Players");
-		tableShell.setImage(iconCache.stockImages[iconCache.highscoreIcon]);
+		tableShell.setImage(IconCache.stockImages[IconCache.highscoreIcon]);
 		Table scoreTable = new Table(tableShell, SWT.CENTER);
 		TableColumn col1 = new TableColumn(scoreTable, SWT.CENTER);
 		TableColumn col2 = new TableColumn(scoreTable, SWT.CENTER);

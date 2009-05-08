@@ -5,9 +5,9 @@ import java.io.Serializable;
 public enum ResourceType implements Serializable
 {
 
-	WOOD("wood", 2),
-	GOLD("gold", 1000),
-	STONE("stone", 2),
+	WOOD("Wood", 2),
+	GOLD("Gold", 1000),
+	STONE("Stone", 2),
 	// GEMS("gems", 1)
 	;
 
