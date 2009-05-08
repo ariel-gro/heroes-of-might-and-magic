@@ -924,7 +924,7 @@ public class HeroesGui
 	
 	
 	
-	public Vector<Player> getGameDetails()
+	public Vector<Player> newGameMenu()
 	{
 		final Vector<Player> players = new Vector<Player>();
 		final Combo pcLevel1;
@@ -1042,24 +1042,9 @@ public class HeroesGui
 		form2.setLayout(new GridLayout(3, false));
 		Button okButton = new Button(form2, SWT.NONE);
 		okButton.setText("          OK          ");
-		
-		// TODO changes 
-		pcLevel1.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent event22)
-		    {
-				event22.doit = true;
-				if (event22.keyCode == SWT.CR)
-				{
-					
-					pcLevel2.setEnabled(true);
-				}
-		    }
-		});
-		
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
-				exitHelperArray[0] = ExitOK;
 				String name1 = player1Name.getText();
 				String name2 = player2Name.getText();
 				String name3 = player3Name.getText();
@@ -1114,6 +1099,7 @@ public class HeroesGui
 				}
 				else
 				{
+					exitHelperArray[0] = ExitOK;
 					shell1.dispose();
 				}
 			}
@@ -1163,7 +1149,7 @@ public class HeroesGui
 		// int numberOfPlayers = getNumberOfPlayers();
 		// if(numberOfPlayers != 0)
 		// {
-		Vector<Player> players = getGameDetails();
+		Vector<Player> players = newGameMenu();
 		if (players != null)
 		{
 			gameController.initNewGame(players);
