@@ -11,6 +11,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MouseEvent;
@@ -46,6 +48,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
+
+import com.sun.corba.se.impl.protocol.giopmsgheaders.KeyAddr;
 
 public class HeroesGui
 {
@@ -1071,6 +1075,20 @@ public class HeroesGui
 		form2.setLayout(new GridLayout(3, false));
 		Button okButton = new Button(form2, SWT.NONE);
 		okButton.setText("          OK          ");
+		
+		// TODO changes 
+		pcLevel1.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent event22)
+		    {
+				event22.doit = true;
+				if (event22.keyCode == SWT.CR)
+				{
+					
+					pcLevel2.setEnabled(true);
+				}
+		    }
+		});
+		
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
