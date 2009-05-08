@@ -3,6 +3,7 @@ package tau.heroes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player implements Serializable
@@ -14,9 +15,9 @@ public class Player implements Serializable
 	private static final long serialVersionUID = 1L;
 	private final String playerName;
 	private Hero hero;
-	private HashMap<String, Integer> mines;
-	private HashMap<String, Integer> treasury;
-	private ArrayList<Castle> castles;
+	private Map<String, Integer> mines;
+	private Map<String, Integer> treasury;
+	private List<Castle> castles;
 	private int daysWithoutCastles;
 	private final static int MAX_MOVES_ALLOWED = 5;
 	private int movesLeft;
@@ -185,7 +186,12 @@ public class Player implements Serializable
 		return maxUnits;
 	}
 
-	public ArrayList<Castle> getCastles()
+	public Map<String, Integer> getMines()
+	{
+		return this.mines;
+	}
+
+	public List<Castle> getCastles()
 	{
 		return this.castles;
 	}
@@ -214,7 +220,7 @@ public class Player implements Serializable
 		for (int i = 0; i < this.castles.size(); i++)
 		{
 			this.castles.get(i).endDay();
-			this.incrementTreasury("gold", Constants.GOLD_PER_CASTLE);
+			this.incrementTreasury(ResourceType.GOLD.getTypeName(), Constants.GOLD_PER_CASTLE);
 		}
 
 		if (this.dayOfTheWeek == 7)
@@ -243,25 +249,7 @@ public class Player implements Serializable
 
 	public String getDayAsString()
 	{
-		switch (this.dayOfTheWeek)
-		{
-		case 1:
-			return "Day 1";
-		case 2:
-			return "Day 2";
-		case 3:
-			return "Day 3";
-		case 4:
-			return "Day 4";
-		case 5:
-			return "Day 5";
-		case 6:
-			return "Day 6";
-		case 7:
-			return "Day 7";
-		default:
-			return null;
-		}
+		return "Day " + this.dayOfTheWeek;
 	}
 
 	public void displayTreasury()

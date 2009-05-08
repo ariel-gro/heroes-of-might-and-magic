@@ -1,6 +1,6 @@
 package tau.heroes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class HeroesConsole
 {
@@ -355,7 +355,7 @@ public class HeroesConsole
 
 	private void castleMenu(Player player)
 	{
-		ArrayList<Castle> playerCastles = player.getCastles();
+		List<Castle> playerCastles = player.getCastles();
 		if (playerCastles.size() == 0)
 		{
 			System.out.println("Sorry, you don't have any castles");
@@ -434,7 +434,7 @@ public class HeroesConsole
 	 * @param playerCastles
 	 * @return
 	 */
-	private Castle handleCastleChoice(ArrayList<Castle> playerCastles)
+	private Castle handleCastleChoice(List<Castle> playerCastles)
 	{
 		Castle theCastle = null;
 
