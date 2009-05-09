@@ -7,6 +7,7 @@ import java.util.Hashtable;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
@@ -30,6 +31,8 @@ public class IconCache
 		archerFactoryIcon = 20, fireDragonFactoryIcon = 22;
 
 	public static final int cursorAttackLeft = 2, cursorAttackRight = 3, cursorNo = 4;
+	
+	public static final int algerianFontIndex = 0;
 
 	public static final String[] stockImageLocations = { "/icons/Heroes-icon.jpg",
 			"/icons/Grass3.jpg", "/icons/knight3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg",
@@ -48,6 +51,10 @@ public class IconCache
 	public static Image stockImages[];
 
 	public static Cursor stockCursors[];
+	
+	public static final String[] stockFontLocations = { "/fonts/ALER.TTF" };
+	
+	public static Font stockFonts[];
 
 	// Cached icons
 	@SuppressWarnings("unchecked")
@@ -94,6 +101,20 @@ public class IconCache
 					new Cursor(display, SWT.CURSOR_UPARROW) };
 		}
 		iconCache = new Hashtable();
+		
+//		if (stockFonts == null)
+//		{
+//			stockFonts = new Font[stockFontLocations.length];
+//			
+//			Font font = createStockFont(display, stockFontLocations[algerianFontIndex], "Algerian", 12);
+//			if (font == null)
+//			{
+//				freeResources();
+//				throw new IllegalStateException("error.CouldNotLoadResources: "	
+//					+ stockFontLocations[algerianFontIndex]);
+//			}
+//			stockFonts[algerianFontIndex] = font;
+//		}
 	}
 
 	/**
@@ -130,6 +151,16 @@ public class IconCache
 			}
 			stockCursors = null;
 		}
+//		if (stockFonts != null)
+//		{
+//			for (int i = 0; i < stockFonts.length; i++)
+//			{
+//				final Font font = stockFonts[i];
+//				if (font != null)
+//					font.dispose();
+//			}
+//			stockFonts = null;
+//		}
 	}
 
 	/**
@@ -155,6 +186,16 @@ public class IconCache
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	private static Font createStockFont(Display display, String path, String fontName, int fontSize)
+	{
+		boolean isFontLoaded = display.loadFont(path);
+		
+		if (isFontLoaded)
+			return new Font(display, fontName, fontSize, SWT.NORMAL);
+		
+		return null;		
 	}
 
 	public static Image getCreatureImage(Class<? extends Creature> creatureClass)

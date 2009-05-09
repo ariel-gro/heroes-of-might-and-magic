@@ -609,6 +609,13 @@ public class HeroesGui
 		tempLabel.setBackground(white);
 		return tempLabel;
 	}
+	
+	private Label createLabel(Composite composite, String text, Font font)
+	{
+		Label tempLabel = createLabel(composite, text);		
+		tempLabel.setFont(font);
+		return tempLabel;
+	}
 
 	@SuppressWarnings("unused")
 	private void displayStartWindow()
