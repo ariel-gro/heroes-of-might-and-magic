@@ -44,6 +44,11 @@ public class AttackGUI
 		heroes[1] = h2;
 		heroIndex = 0;
 		creatureIndex = 0;
+		//if the first hero don't have units in the first location: 
+		while(h1.getArmy().getCreature(creatureIndex) == null && creatureIndex < Army.MAX_CREATURES)
+		{
+			creatureIndex++;
+		}
 		IconCache.initResources(display);
 	}
 

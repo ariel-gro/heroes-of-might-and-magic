@@ -39,7 +39,7 @@ public class GoblinFactory extends CreatureFactory
 	@Override
 	public String getUnitName()
 	{
-		return Goblin.GOBLIN_NAME;
+		return Goblin.CREATURE_NAME;
 	}
 
 	@Override
