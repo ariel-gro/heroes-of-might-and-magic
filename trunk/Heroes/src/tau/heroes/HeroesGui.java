@@ -924,7 +924,7 @@ public class HeroesGui
 	
 	
 	
-	public Vector<Player> newGameMenu()
+	private Vector<Player> newGameMenu()
 	{
 		final Vector<Player> players = new Vector<Player>();
 		final Combo pcLevel1;
@@ -938,7 +938,7 @@ public class HeroesGui
 		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(335, 225);
-		shell1.setText("New game menu");
+		shell1.setText("New Game Menu");
 		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
 
 		Composite form = new Composite(shell1, SWT.FILL);
