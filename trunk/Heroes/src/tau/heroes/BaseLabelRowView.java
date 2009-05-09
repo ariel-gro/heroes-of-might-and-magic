@@ -2,6 +2,8 @@ package tau.heroes;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -12,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 public class BaseLabelRowView extends Composite
 {
 	private CLabel[] labels;
+	private Image[] images;
 	private int imageWidth;
 	private int imageHeight;
 
@@ -26,6 +29,7 @@ public class BaseLabelRowView extends Composite
 		this.setLayout(new RowLayout());
 
 		labels = new CLabel[count];
+		images = new Image[count];
 		this.imageWidth = imageWidth;
 		this.imageHeight = imageHeight;
 		Color foreColor = parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
@@ -49,5 +53,31 @@ public class BaseLabelRowView extends Composite
 		label.setToolTipText(tooltip);
 		image = new Image(getDisplay(), image.getImageData().scaledTo(imageWidth, imageHeight));
 		label.setBackground(image);
+		images[index] = image;
+	}
+	
+	public int getLength()
+	{
+		return labels.length;
+	}
+	
+	public Image getImage(int index)
+	{
+		return images[index];
+	}
+	
+	final String getText(int index)
+	{
+		return labels[index].getToolTipText();
+	}
+	
+	public void addMouseListener(int index, MouseListener listener)
+	{
+		labels[index].addMouseListener(listener);
+	}
+	
+	public void addMouseTrackListener(int index, MouseTrackListener listener)
+	{
+		labels[index].addMouseTrackListener(listener);
 	}
 }

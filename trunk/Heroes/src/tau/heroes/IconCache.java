@@ -26,6 +26,8 @@ public class IconCache
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
 		dwarfFaceRightIcon = 18, dwarfFaceLeftIcon = 19, archerFaceRightIcon = 20,
 		archerFaceLeftIcon = 21, fireDragonFaceRightIcon = 22, fireDragonFaceLeftIcon = 23;
+	public static final int goblinFactoryIcon = 14, soldierFactoryIcon = 16, dwarfFactoryIcon = 18,
+		archerFactoryIcon = 20, fireDragonFactoryIcon = 22;
 
 	public static final int cursorAttackLeft = 2, cursorAttackRight = 3, cursorNo = 4;
 
@@ -193,5 +195,37 @@ public class IconCache
 			return stockImages[stoneIcon];
 		else
 			return stockImages[blackIcon];
+	}
+
+	public static Image getResourceImage(String name)
+	{
+		if (name == null)
+			return stockImages[blackIcon];
+		else if (name.equals(ResourceType.GOLD.getTypeName()))
+			return stockImages[goldMineIcon];
+		else if (name.equals(ResourceType.WOOD.getTypeName()))
+			return stockImages[woodIcon];
+		else if (name.equals(ResourceType.STONE.getTypeName()))
+			return stockImages[stoneIcon];
+		else
+			return stockImages[blackIcon];
+	}
+
+	public static Image getCreatureFactoryImage(Class<? extends CreatureFactory> factoryClass)
+	{
+		if (factoryClass == null)
+			return stockImages[battleGrassIcon];
+		else if (factoryClass.equals(GoblinFactory.class))
+			return stockImages[goblinFactoryIcon];
+		else if (factoryClass.equals(SoldierFactory.class))
+			return stockImages[soldierFactoryIcon];
+		else if (factoryClass.equals(DwarfFactory.class))
+			return stockImages[dwarfFactoryIcon];
+		else if (factoryClass.equals(ArcherFactory.class))
+			return stockImages[archerFactoryIcon];
+		else if (factoryClass.equals(FireDragonFactory.class))
+			return stockImages[fireDragonFactoryIcon];
+		else
+			return stockImages[battleGrassIcon];
 	}
 }

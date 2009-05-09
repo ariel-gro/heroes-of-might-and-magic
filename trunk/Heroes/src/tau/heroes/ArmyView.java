@@ -74,5 +74,8 @@ public class ArmyView extends BaseLabelRowView
 				setLabel(i, image, text, tooltip);
 			}
 		}
+		else
+			for (int i = 0; i < Army.MAX_CREATURES; i++)
+				setLabel(i, IconCache.getCreatureImage((Creature) null), "", "Empty");
 	}
 }

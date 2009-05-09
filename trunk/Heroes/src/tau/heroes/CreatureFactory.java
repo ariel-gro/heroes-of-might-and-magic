@@ -5,8 +5,8 @@ package tau.heroes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +20,7 @@ public abstract class CreatureFactory implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private static Map<Class<? extends Creature>, Class<? extends CreatureFactory>> factoryMap;
+	private static List<Class<? extends CreatureFactory>> factoryList;
 	private Map<String, Integer> prices;
 	private Map<String, Integer> pricesPerUnit;
 	private final int unitsPerWeek;
@@ -35,6 +36,13 @@ public abstract class CreatureFactory implements Serializable
 		factoryMap.put(Dwarf.class, DwarfFactory.class);
 		factoryMap.put(Archer.class, ArcherFactory.class);
 		factoryMap.put(FireDragon.class, FireDragonFactory.class);
+
+		factoryList = new ArrayList<Class<? extends CreatureFactory>>();
+		factoryList.add(GoblinFactory.class);
+		factoryList.add(SoldierFactory.class);
+		factoryList.add(DwarfFactory.class);
+		factoryList.add(ArcherFactory.class);
+		factoryList.add(FireDragonFactory.class);
 	}
 
 	public static Class<? extends CreatureFactory> getCreatureFactoryClass(
@@ -62,9 +70,9 @@ public abstract class CreatureFactory implements Serializable
 		return factory;
 	}
 
-	public static Collection<Class<? extends CreatureFactory>> getCreatureFactoryClasses()
+	public static List<Class<? extends CreatureFactory>> getCreatureFactoryClasses()
 	{
-		return factoryMap.values();
+		return factoryList;
 	}
 
 	public static CreatureFactory createCreatureFactory(
@@ -81,9 +89,9 @@ public abstract class CreatureFactory implements Serializable
 		}
 	}
 
-	public static Collection<CreatureFactory> getCreatureFactories()
+	public static List<CreatureFactory> getCreatureFactories()
 	{
-		Collection<CreatureFactory> creatureFactories = new ArrayList<CreatureFactory>();
+		List<CreatureFactory> creatureFactories = new ArrayList<CreatureFactory>();
 
 		for (Class<? extends CreatureFactory> creatureFactoryClass : getCreatureFactoryClasses())
 		{
