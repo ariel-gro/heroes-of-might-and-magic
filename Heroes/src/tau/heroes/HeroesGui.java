@@ -1457,7 +1457,20 @@ public class HeroesGui
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				// TODO: ariel
+				if (isModified)
+				{
+					// ask user if they want to save current game
+					MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING
+						| SWT.YES | SWT.NO | SWT.CANCEL);
+					box.setText(Display.getCurrent().getActiveShell().getText());
+					box.setMessage("Save game before closing?");
+
+					int choice = box.open();
+					if (choice == SWT.YES)
+					{
+						save();
+					}
+				}
 				startNewGame();
 				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
@@ -1470,7 +1483,20 @@ public class HeroesGui
 		openSubItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				// TODO: ariel
+				if (isModified)
+				{
+					// ask user if they want to save current game
+					MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING
+						| SWT.YES | SWT.NO | SWT.CANCEL);
+					box.setText(Display.getCurrent().getActiveShell().getText());
+					box.setMessage("Save game before closing?");
+
+					int choice = box.open();
+					if (choice == SWT.YES)
+					{
+						save();
+					}
+				}
 				openFileDlg();
 				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
