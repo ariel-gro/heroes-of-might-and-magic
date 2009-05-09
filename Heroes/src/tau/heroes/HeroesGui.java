@@ -1020,7 +1020,7 @@ public class HeroesGui
 				}
 				else
 				{
-					player2Name.setEnabled(true);
+					player3Name.setEnabled(true);
 					pcLevel2.setEnabled(false);
 				}
 			}
@@ -1045,7 +1045,7 @@ public class HeroesGui
 				}
 				else
 				{
-					player2Name.setEnabled(true);
+					player4Name.setEnabled(true);
 					pcLevel3.setEnabled(false);
 				}
 			}
