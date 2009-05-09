@@ -948,7 +948,7 @@ public class HeroesGui
 		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
 		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
-		shell1.setSize(335, 225);
+		shell1.setSize(328, 225);
 		shell1.setText("New Game Menu");
 		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
 
