@@ -898,7 +898,7 @@ public class HeroesGui
 				}
 			});
 		}
-
+		
 		statusComposite.layout(true, true);
 	}
 
