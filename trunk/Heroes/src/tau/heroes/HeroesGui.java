@@ -1070,55 +1070,56 @@ public class HeroesGui
 				}
 				else
 				{
-					players.add(new Player(name1));
-				}
-				if ((name2.length() > 0) || (pcButton1.getSelection()))
-				{
-					if (pcButton1.getSelection())
-					{
-						players.add(new Player("computer"));
-					}
-					else
-					{
-						players.add(new Player(name2));
-					}
-				}
-				if ((name3.length() > 0) || (pcButton2.getSelection()))
-				{
-					if (pcButton2.getSelection())
-					{
-						players.add(new Player("computer"));
-					}
-					else
-					{
-						players.add(new Player(name3));
-					}
-				}
-				if ((name4.length() > 0) || (pcButton3.getSelection()))
-				{
-					if (pcButton3.getSelection())
-					{
-						players.add(new Player("computer"));
-					}
-					else
-					{
-						players.add(new Player(name4));
-					}
-				}
-
-				if (players.size() < 2)
-				{
-					displayError("You must select at least 2 players");
 					players.removeAllElements();
-					// return;
-				}
-				else
-				{
-					exitHelperArray[0] = ExitOK;
-					shell1.dispose();
+					players.add(new Player(name1));
+					
+					if ((name2.length() > 0) || (pcButton1.getSelection()))
+					{
+						if (pcButton1.getSelection())
+						{
+							players.add(new Player("computer"));
+						}
+						else
+						{
+							players.add(new Player(name2));
+						}
+					}
+					if ((name3.length() > 0) || (pcButton2.getSelection()))
+					{
+						if (pcButton2.getSelection())
+						{
+							players.add(new Player("computer"));
+						}
+						else
+						{
+							players.add(new Player(name3));
+						}
+					}
+					if ((name4.length() > 0) || (pcButton3.getSelection()))
+					{
+						if (pcButton3.getSelection())
+						{
+							players.add(new Player("computer"));
+						}
+						else
+						{
+							players.add(new Player(name4));
+						}
+					}
+
+					if (players.size() < 2)
+					{
+						displayError("You must select at least 2 players");
+						players.removeAllElements();
+						// return;
+					}
+					else
+					{
+						exitHelperArray[0] = ExitOK;
+						shell1.dispose();
+					}
 				}
 			}
-
 		});
 
 		final Label emptyLabel7 = new Label(form2, SWT.NONE);
