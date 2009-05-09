@@ -2,6 +2,7 @@ package tau.heroes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -394,5 +395,33 @@ public class Player implements Serializable
 				ret += army.getTotalNumberOfUnits();
 		}
 		return ret;
+	}
+	
+	//This is the AI of the computer.
+	//Not related to moves only for buying creatures and factories.
+	public void AIMove()
+	{
+		if(!isComputer() || castles == null || castles.isEmpty())
+			return;
+		//buy things only in the first day of the week (to allow accumulation of the resources)
+		if(dayOfTheWeek != 1)
+			return;
+		
+		Castle theCastle = castles.get(0);
+		//The logic is first try to buy Factories
+		for( CreatureFactory factory : CreatureFactory.getCreatureFactories())
+		{			
+			Class<? extends CreatureFactory> factoryClass = factory.getClass();	
+			if (theCastle.canBuildFactory(factoryClass))
+				theCastle.addFactory(theCastle.buildFactory(factoryClass));
+		}
+		//Then if you still have resources buy creatures
+		for( CreatureFactory factory : CreatureFactory.getCreatureFactories())
+		{			
+			Class<? extends Creature> creatureClass = factory.getCreatureClass();
+			int availableUnits = theCastle.getAvailableUnits(creatureClass);
+			if (availableUnits > 0)
+				theCastle.makeUnits(creatureClass, availableUnits);	
+		}		
 	}
 }
