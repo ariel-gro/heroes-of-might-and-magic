@@ -1060,10 +1060,13 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
+				boolean wrongLevel = false;
+				Player tempPlayer;
 				String name1 = player1Name.getText();
 				String name2 = player2Name.getText();
 				String name3 = player3Name.getText();
 				String name4 = player4Name.getText();
+				
 				if (name1.length() == 0)
 				{
 					displayError("You must choose the first player !");
@@ -1073,45 +1076,83 @@ public class HeroesGui
 					players.removeAllElements();
 					players.add(new Player(name1));
 					
-					if ((name2.length() > 0) || (pcButton1.getSelection()))
+					if (pcButton1.getSelection())
 					{
-						if (pcButton1.getSelection())
+						tempPlayer = new Player("computer");
+						if (pcLevel1.getText().equals("Novice"))
 						{
-							players.add(new Player("computer"));
+							tempPlayer.setComputerLevel(1);
+							players.add(tempPlayer);
+						}
+						else if (pcLevel1.getText().equals("Expert"))
+						{
+							tempPlayer.setComputerLevel(2);	
+							players.add(tempPlayer);
 						}
 						else
 						{
-							players.add(new Player(name2));
+							wrongLevel = true;
 						}
 					}
-					if ((name3.length() > 0) || (pcButton2.getSelection()))
+					if (pcButton2.getSelection())
 					{
-						if (pcButton2.getSelection())
+						tempPlayer = new Player("computer");
+						if (pcLevel2.getText().equals("Novice"))
 						{
-							players.add(new Player("computer"));
+							tempPlayer.setComputerLevel(1);
+							players.add(tempPlayer);
+						}
+						else if (pcLevel2.getText().equals("Expert"))
+						{
+							tempPlayer.setComputerLevel(2);	
+							players.add(tempPlayer);
 						}
 						else
 						{
-							players.add(new Player(name3));
+							wrongLevel = true;	
 						}
 					}
-					if ((name4.length() > 0) || (pcButton3.getSelection()))
+					if (pcButton3.getSelection())
 					{
-						if (pcButton3.getSelection())
+						tempPlayer = new Player("computer");
+						if (pcLevel3.getText().equals("Novice"))
 						{
-							players.add(new Player("computer"));
+							tempPlayer.setComputerLevel(1);
+							players.add(tempPlayer);
+						}
+						else if (pcLevel3.getText().equals("Expert"))
+						{
+							tempPlayer.setComputerLevel(2);	
+							players.add(tempPlayer);
 						}
 						else
 						{
-							players.add(new Player(name4));
+							wrongLevel = true;
 						}
 					}
-
+					
+					if ((name2.length() > 0) && (!pcButton1.getSelection()))
+					{
+						players.add(new Player(name2));
+					}
+					if ((name3.length() > 0) && (!pcButton2.getSelection()))
+					{
+						players.add(new Player(name3));
+					}
+					if ((name4.length() > 0) && (!pcButton3.getSelection()))
+					{
+						players.add(new Player(name4));
+					}
+					
 					if (players.size() < 2)
 					{
 						displayError("You must select at least 2 players");
-						players.removeAllElements();
+						//players.removeAllElements();
 						// return;
+					}
+					else if (wrongLevel)
+					{
+						displayError("Only Novice or Expert levels are alowed for computer !");
 					}
 					else
 					{
