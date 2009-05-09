@@ -782,14 +782,16 @@ public class HeroesGui
 
 		statusComposite.setBackground(white);
 		
-		int statusWidth = (sc2.getSize().x - sc2.getVerticalBar().getSize().x - statusComposite.getBorderWidth()*2 - sc2.getBorderWidth()*2);
+		int statusWidth = (sc2.getSize().x - sc2.getVerticalBar().getSize().x - 1);
+
+		
 			
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
 			children[i].dispose();
-		}
-
+		}	
+		
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
@@ -797,8 +799,7 @@ public class HeroesGui
 		String str2 = p.getDayAsString();
 		firstLabel.setText("               " + str1);
 		createLabel(statusComposite, "    " + str2);
-		
-		
+				
 		//createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.CENTER);
 		button.setBackground(red);
@@ -861,7 +862,7 @@ public class HeroesGui
 		treasursCol1.setText("Resource");
 		treasursCol2.setText("Amount");
 		treasursCol1.setWidth(60);
-		treasursCol2.setWidth(statusWidth - 53);
+		treasursCol2.setWidth(statusWidth - 60);
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount(ResourceType.WOOD.getTypeName());
 		Integer goldAmount = p.getCurrentTreasuryAmount(ResourceType.GOLD.getTypeName());
