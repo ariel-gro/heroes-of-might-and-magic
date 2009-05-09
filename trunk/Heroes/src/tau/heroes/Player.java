@@ -404,7 +404,7 @@ public class Player implements Serializable
 	//Not related to moves only for buying creatures and factories.
 	public void AIMove()
 	{
-		if(!isComputer() || castles == null || castles.isEmpty())
+		if((computerLevel<2) || castles == null || castles.isEmpty())
 			return;
 		//buy things only in the first day of the week (to allow accumulation of the resources)
 		if(dayOfTheWeek != 1)

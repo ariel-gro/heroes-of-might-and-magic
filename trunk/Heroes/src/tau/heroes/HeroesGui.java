@@ -2206,6 +2206,7 @@ public class HeroesGui
 	private void handleEndTurnCommand()
 	{
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		p.AIMove();
 		p.endTurn();
 
 		removeDeadPlayers();
@@ -2231,6 +2232,7 @@ public class HeroesGui
 				computerMove[1] = String.valueOf(hero.getYPos() + (int) (Math.random() * 3) - 1);
 				handleMoveCommand(computerMove);
 			}
+			p.AIMove();
 			// End turn:
 			p.endTurn();
 			removeDeadPlayers();
