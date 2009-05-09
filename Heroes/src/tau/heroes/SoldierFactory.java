@@ -40,7 +40,7 @@ public class SoldierFactory extends CreatureFactory
 	@Override
 	public String getUnitName()
 	{
-		return Soldier.SOLDIER_NAME;
+		return Soldier.CREATURE_NAME;
 	}
 
 	@Override
