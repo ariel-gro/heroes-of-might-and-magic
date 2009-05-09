@@ -134,6 +134,7 @@ public class HeroesConsole
 			playerIndex = switchCommands(playerIndex, player, computerMove);
 		}
 		// end turn:
+		player.AIMove();
 		computerMove[0] = commands.endTurn.toString();
 		playerIndex = switchCommands(playerIndex, player, computerMove);
 		return playerIndex;
