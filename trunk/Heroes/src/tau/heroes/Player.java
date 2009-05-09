@@ -23,10 +23,9 @@ public class Player implements Serializable
 	private final static int MAX_MOVES_ALLOWED = 5;
 	private int movesLeft;
 	private boolean[][] visibleBoard;
-	private int dayOfTheWeek = 1;
-
-	/** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
-
+	private int dayOfTheWeek = 1;	/** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
+	private int computerLevel = 0; /** 0 = Human, 1 = Novice, 2 = Expert **/
+	
 	public Player(String name)
 	{
 		this.playerName = name;
@@ -423,5 +422,13 @@ public class Player implements Serializable
 			if (availableUnits > 0)
 				theCastle.makeUnits(creatureClass, availableUnits);	
 		}		
+	}
+
+	public void setComputerLevel(int computerLevel) {
+		this.computerLevel = computerLevel;
+	}
+
+	public int getComputerLevel() {
+		return computerLevel;
 	}
 }
