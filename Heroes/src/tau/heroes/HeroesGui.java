@@ -795,7 +795,7 @@ public class HeroesGui
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
 		String str1 = p.getName();
 		String str2 = p.getDayAsString();
-		firstLabel.setText("                " + str1);
+		firstLabel.setText("               " + str1);
 		createLabel(statusComposite, "    " + str2);
 		
 		
