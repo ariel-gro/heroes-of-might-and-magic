@@ -844,7 +844,7 @@ public class HeroesGui
 		treasursCol1.setText("Resource");
 		treasursCol2.setText("Amount");
 		treasursCol1.setWidth(60);
-		treasursCol2.setWidth(statusWidth - 70);
+		treasursCol2.setWidth(statusWidth - 53);
 		treasursTable.setHeaderVisible(true);
 		Integer woodAmount = p.getCurrentTreasuryAmount(ResourceType.WOOD.getTypeName());
 		Integer goldAmount = p.getCurrentTreasuryAmount(ResourceType.GOLD.getTypeName());
@@ -2194,10 +2194,10 @@ public class HeroesGui
 		}
 		else
 		{
-			displayError("Illegal move ! "
+			displayError("Illegal move ! \n"
 				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
 					.getName()
-				+ " You can only move "
+				+ " ,You can only move "
 				+ gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
 					.getMovesLeft() + " more step(s) .");
 			return false;
