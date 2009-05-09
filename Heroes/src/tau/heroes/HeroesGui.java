@@ -217,7 +217,8 @@ public class HeroesGui
 		if (isModified)
 		{
 			// ask user if they want to save current game
-			MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
+			MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING
+				| SWT.YES | SWT.NO | SWT.CANCEL);
 			box.setText(Display.getCurrent().getActiveShell().getText());
 			box.setMessage("Save game before closing?");
 
@@ -394,7 +395,7 @@ public class HeroesGui
 		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
-		
+
 		if (initBoard == false)
 		{
 			final GridLayout gridLayout = new GridLayout();
@@ -407,16 +408,17 @@ public class HeroesGui
 			labelGridDataLayout.verticalAlignment = GridData.CENTER;
 			img_Label.setLayoutData(labelGridDataLayout);
 			img_Label.setImage(IconCache.stockImages[IconCache.heroesStartScreenIcon]);
-			
+
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
 			sc1.setExpandVertical(true);
 			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
-		else // initBoard == true
+		else
+		// initBoard == true
 		{
 			isModified = true;
-			
+
 			this.numOfCells = gameController.getGameState().getBoard().getSize();
 
 			boardPoints = new Point[numOfCells][numOfCells];
@@ -556,7 +558,8 @@ public class HeroesGui
 							l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 							l.addMouseListener(focusListener);
 
-							if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().getHero() == null)
+							if (gameController.getGameState().getBoard().getBoardState(x, y)
+								.getCastle().getPlayer().getHero() == null)
 								currentHero = b;
 						}
 
@@ -580,19 +583,22 @@ public class HeroesGui
 			sc1.setExpandVertical(true);
 			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-			Rectangle bounds = currentHero.getBounds();
-			Rectangle area = sc1.getClientArea();
-			Point origin = sc1.getOrigin();
-			if (origin.x > bounds.x)
-				origin.x = Math.max(0, bounds.x);
-			if (origin.y > bounds.y)
-				origin.y = Math.max(0, bounds.y);
-			if (origin.x + area.width < bounds.x + bounds.width)
-				origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
-			if (origin.y + area.height < bounds.y + bounds.height)
-				origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
+			if (currentHero != null)
+			{
+				Rectangle bounds = currentHero.getBounds();
+				Rectangle area = sc1.getClientArea();
+				Point origin = sc1.getOrigin();
+				if (origin.x > bounds.x)
+					origin.x = Math.max(0, bounds.x);
+				if (origin.y > bounds.y)
+					origin.y = Math.max(0, bounds.y);
+				if (origin.x + area.width < bounds.x + bounds.width)
+					origin.x = Math.max(0, bounds.x + bounds.width - area.width / 2);
+				if (origin.y + area.height < bounds.y + bounds.height)
+					origin.y = Math.max(0, bounds.y + bounds.height - area.height / 2);
 
-			sc1.setOrigin(origin);
+				sc1.setOrigin(origin);
+			}
 		}
 	}
 
@@ -699,52 +705,75 @@ public class HeroesGui
 
 	private void displayCastleInfo(Castle castle)
 	{
-		Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setLayout(new GridLayout());
-		shell.setBackground(white);
-		shell.setSize(250, 200);
-		shell.setLocation(1012, 555);
-		shell.setText("Castle info");
-		shell.setImage(IconCache.stockImages[IconCache.castleIcon]);
-		int xPos = castle.getXPos();
-		int yPos = castle.getYPos();
-		createLabel(shell, "Castle location  :  " + xPos + " , " + yPos);
-		Class<? extends CreatureFactory> soldierFactoryClass = (new SoldierFactory()).getClass();
-		String str;
-		if (castle.hasFactory(soldierFactoryClass))
-		{
-			str = castle.getFactory(soldierFactoryClass).getName();
-			createLabel(shell, "Soldier factories  :  " + str);
-		}
-		else
-		{
-			createLabel(shell, "Soldier factories  :  none");
-		}
-		Class<? extends CreatureFactory> goblinFactoryClass = (new GoblinFactory()).getClass();
-		if (castle.hasFactory(goblinFactoryClass))
-		{
-			str = castle.getFactory(goblinFactoryClass).getName();
-			createLabel(shell, "Goblin factories  :  " + str);
-		}
-		else
-		{
-			createLabel(shell, "Goblin factories  :  none");
-		}
-		if (castle.getArmy() != null)
-		{
-			str = castle.getArmy().toString();
-			createLabel(shell, "Army  :\n" + str);
-		}
-		else
-		{
-			createLabel(shell, "Army  :  none");
-		}
+		// Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		// shell.setLayout(new GridLayout());
+		// shell.setBackground(white);
+		// shell.setSize(250, 200);
+		// shell.setLocation(1012, 555);
+		// shell.setText("Castle info");
+		// shell.setImage(IconCache.stockImages[IconCache.castleIcon]);
+		// int xPos = castle.getXPos();
+		// int yPos = castle.getYPos();
+		// createLabel(shell, "Castle location  :  " + xPos + " , " + yPos);
+		// Class<? extends CreatureFactory> soldierFactoryClass = (new
+		// SoldierFactory()).getClass();
+		// String str;
+		// if (castle.hasFactory(soldierFactoryClass))
+		// {
+		// str = castle.getFactory(soldierFactoryClass).getName();
+		// createLabel(shell, "Soldier factories  :  " + str);
+		// }
+		// else
+		// {
+		// createLabel(shell, "Soldier factories  :  none");
+		// }
+		// Class<? extends CreatureFactory> goblinFactoryClass = (new
+		// GoblinFactory()).getClass();
+		// if (castle.hasFactory(goblinFactoryClass))
+		// {
+		// str = castle.getFactory(goblinFactoryClass).getName();
+		// createLabel(shell, "Goblin factories  :  " + str);
+		// }
+		// else
+		// {
+		// createLabel(shell, "Goblin factories  :  none");
+		// }
+		// if (castle.getArmy() != null)
+		// {
+		// str = castle.getArmy().toString();
+		// createLabel(shell, "Army  :\n" + str);
+		// }
+		// else
+		// {
+		// createLabel(shell, "Army  :  none");
+		// }
+		// shell.open();
+
+		CastleShell shell = new CastleShell(this.shell, SWT.DIALOG_TRIM | SWT.TITLE);
+		
+		// Set the castle
+		shell.setCastle(castle);
+		
+		// Set the hero, if he's in the castle
+		int x = castle.getXPos();
+		int y = castle.getYPos();
+		Hero hero = gameController.getGameState().getBoard().getBoardState(x, y).getHero();
+		if (hero != null)
+			shell.setHero(hero);
+
+		// Open and display castle window
 		shell.open();
+		
+		// Block game while window is open
+		this.shell.setEnabled(false);
 		while (!shell.isDisposed())
 		{
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		
+		// Re-enable game
+		this.shell.setEnabled(true);
 	}
 
 	private void createStatusWindow(boolean initStatus)
@@ -778,14 +807,9 @@ public class HeroesGui
 	private void updateStatusWindow()
 	{
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-		TableItem ti;
 
 		statusComposite.setBackground(white);
-		
-		int statusWidth = (sc2.getSize().x - sc2.getVerticalBar().getSize().x - 1);
 
-		
-			
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
 		{
@@ -799,8 +823,7 @@ public class HeroesGui
 		String str2 = p.getDayAsString();
 		firstLabel.setText("               " + str1);
 		createLabel(statusComposite, "    " + str2);
-				
-		//createLabel(statusComposite, "");
+		// createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.CENTER);
 		button.setBackground(red);
 		button.setForeground(white);
@@ -812,15 +835,11 @@ public class HeroesGui
 				handleEndTurnCommand();
 			}
 		});
-		
-		
-		
 
-		
-		//createLabel(statusComposite, "PLAYER  NAME  :  " + str);
+		// createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
-		//createLabel(statusComposite, "DAY  :  " + str2);
-		//createLabel(statusComposite, "");
+		// createLabel(statusComposite, "DAY  :  " + str2);
+		// createLabel(statusComposite, "");
 
 		if (p.getHero() == null)
 		{
@@ -846,7 +865,7 @@ public class HeroesGui
 			armyView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			armyView.setArmy(p.getHero().getArmy());
 		}
-		
+
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "MINE  LIST  :");
 
@@ -856,25 +875,11 @@ public class HeroesGui
 
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "TREASURY LIST  :");
-		Table treasursTable = new Table(statusComposite, SWT.BORDER);
-		TableColumn treasursCol1 = new TableColumn(treasursTable, SWT.CENTER);
-		TableColumn treasursCol2 = new TableColumn(treasursTable, SWT.CENTER);
-		treasursCol1.setText("Resource");
-		treasursCol2.setText("Amount");
-		treasursCol1.setWidth(60);
-		treasursCol2.setWidth(statusWidth - 60);
-		treasursTable.setHeaderVisible(true);
-		Integer woodAmount = p.getCurrentTreasuryAmount(ResourceType.WOOD.getTypeName());
-		Integer goldAmount = p.getCurrentTreasuryAmount(ResourceType.GOLD.getTypeName());
-		Integer stoneAmount = p.getCurrentTreasuryAmount(ResourceType.STONE.getTypeName());
-		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] { "Wood", woodAmount.toString() });
-		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] { "Gold", goldAmount.toString() });
-		ti = new TableItem(treasursTable, SWT.NONE);
-		ti.setText(new String[] { "Stone", stoneAmount.toString() });
-		treasursTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
+		ResourcesView resourcesView = new ResourcesView(statusComposite, SWT.BORDER);
+		resourcesView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		resourcesView.setResources(p.getCurrentTreasury());
+		
 		createLabel(statusComposite, "");
 		createLabel(statusComposite, "CASTLES  :");
 		int numOfCastles = p.getCastles().size();
@@ -935,7 +940,7 @@ public class HeroesGui
 		box.setMessage(msg);
 		box.open();
 	}
-	
+
 	private Vector<Player> newGameMenu()
 	{
 		final Vector<Player> players = new Vector<Player>();
@@ -1410,7 +1415,7 @@ public class HeroesGui
 		// space reserve for File -> New and File -> Open Saved Game
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
 		MenuItem openSubItem = new MenuItem(menu, SWT.NULL);
-		//new MenuItem(menu, SWT.SEPARATOR);
+		// new MenuItem(menu, SWT.SEPARATOR);
 
 		// File -> Save.
 		saveSubItem = new MenuItem(menu, SWT.NULL);

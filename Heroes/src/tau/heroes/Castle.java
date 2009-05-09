@@ -2,6 +2,7 @@ package tau.heroes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Castle implements Serializable
 {
@@ -140,6 +141,11 @@ public class Castle implements Serializable
 	public void setArmy(Army army)
 	{
 		this.army = army;
+	}
+	
+	public List<CreatureFactory> getFactories()
+	{
+		return this.factories;
 	}
 
 	public CreatureFactory getFactory(Class<? extends CreatureFactory> factoryClass)

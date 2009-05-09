@@ -2,7 +2,6 @@ package tau.heroes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +89,11 @@ public class Player implements Serializable
 	public int getDaysWithoutCastles()
 	{
 		return this.daysWithoutCastles;
+	}
+	
+	public Map<String, Integer> getCurrentTreasury()
+	{
+		return this.treasury;
 	}
 
 	public int getCurrentTreasuryAmount(String type)
