@@ -11,8 +11,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MouseEvent;
@@ -219,9 +217,9 @@ public class HeroesGui
 		if (isModified)
 		{
 			// ask user if they want to save current game
-			MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
-			box.setText(shell.getText());
-			box.setMessage("Close_save");
+			MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
+			box.setText(Display.getCurrent().getActiveShell().getText());
+			box.setMessage("Save game before closing?");
 
 			int choice = box.open();
 			if (choice == SWT.CANCEL)
@@ -396,9 +394,29 @@ public class HeroesGui
 		boardComposite.setBackground(black);
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
-
-		if (initBoard)
+		
+		if (initBoard == false)
 		{
+			final GridLayout gridLayout = new GridLayout();
+			boardComposite.setLayout(gridLayout);
+			final Label img_Label = new Label(boardComposite, SWT.NONE);
+			GridData labelGridDataLayout = new GridData(GridData.FILL_BOTH);
+			labelGridDataLayout.grabExcessHorizontalSpace = true;
+			labelGridDataLayout.grabExcessVerticalSpace = true;
+			labelGridDataLayout.horizontalAlignment = GridData.CENTER;
+			labelGridDataLayout.verticalAlignment = GridData.CENTER;
+			img_Label.setLayoutData(labelGridDataLayout);
+			img_Label.setImage(IconCache.stockImages[IconCache.heroesStartScreenIcon]);
+			
+			sc1.setContent(boardComposite);
+			sc1.setExpandHorizontal(true);
+			sc1.setExpandVertical(true);
+			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		}
+		else // initBoard == true
+		{
+			isModified = true;
+			
 			this.numOfCells = gameController.getGameState().getBoard().getSize();
 
 			boardPoints = new Point[numOfCells][numOfCells];
@@ -538,8 +556,7 @@ public class HeroesGui
 							l.setMenu(createCastlePopUpMenu(SWT.POP_UP));
 							l.addMouseListener(focusListener);
 
-							if (gameController.getGameState().getBoard().getBoardState(x, y)
-								.getHero() == null)
+							if (gameController.getGameState().getBoard().getBoardState(x, y).getCastle().getPlayer().getHero() == null)
 								currentHero = b;
 						}
 
@@ -881,8 +898,6 @@ public class HeroesGui
 			});
 		}
 
-		
-
 		statusComposite.layout(true, true);
 	}
 
@@ -919,10 +934,6 @@ public class HeroesGui
 		box.setMessage(msg);
 		box.open();
 	}
-
-	
-	
-	
 	
 	private Vector<Player> newGameMenu()
 	{
@@ -1159,7 +1170,6 @@ public class HeroesGui
 
 			createBoardWindow(true);
 			createStatusWindow(true);
-			// sash.setWeights(new int[] { 85, 15 });
 			sash.setWeights(new int[] { 80, 20 });
 		}
 		// }
@@ -1267,7 +1277,6 @@ public class HeroesGui
 
 		createBoardWindow(true);
 		createStatusWindow(true);
-		// sash.setWeights(new int[] { 85, 15 });
 		sash.setWeights(new int[] { 80, 20 });
 
 		shell.setCursor(null);
@@ -1413,7 +1422,6 @@ public class HeroesGui
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				close();
 				shell.close();
 			}
 		});

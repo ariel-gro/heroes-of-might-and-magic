@@ -21,7 +21,7 @@ public class IconCache
 	public static final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3,
 		goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, heroInCastleIcon = 7,
 		heroInGlodMineIcon = 8, heroInStoneIcon = 9, heroeInWoodIcon = 10, blackIcon = 11,
-		highscoreIcon = 12;
+		highscoreIcon = 12, heroesStartScreenIcon = 24;
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
 		dwarfFaceRightIcon = 18, dwarfFaceLeftIcon = 19, archerFaceRightIcon = 20,
@@ -39,7 +39,7 @@ public class IconCache
 			"/icons/battle_soldier_face_left.jpg", "/icons/battle_dwarf_face_right.png",
 			"/icons/battle_dwarf_face_left.png", "/icons/battle_archer_face_right.png",
 			"/icons/battle_archer_face_left.png", "/icons/battle_fire_dragon_face_right.png",
-			"/icons/battle_fire_dragon_face_left.png" };
+			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png" };
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 
