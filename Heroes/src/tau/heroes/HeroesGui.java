@@ -832,8 +832,8 @@ public class HeroesGui
 		createLabel(statusComposite, "    " + str2);
 		// createLabel(statusComposite, "");
 		Button button = new Button(statusComposite, SWT.CENTER);
-		button.setBackground(red);
-		button.setForeground(white);
+		//button.setBackground(red);
+		//button.setForeground(white);
 		button.setText("END TURN");
 		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -865,23 +865,26 @@ public class HeroesGui
 			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK  SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
-
-			createLabel(statusComposite, "ARMY  :");
-
+			
+			Label l1 = createLabel(statusComposite, "ARMY");		
+			l1.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 			ArmyView armyView = new ArmyView(statusComposite, SWT.BORDER);
 			armyView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 			armyView.setArmy(p.getHero().getArmy());
 		}
 
 		createLabel(statusComposite, "");
-		createLabel(statusComposite, "MINE  LIST  :");
+		Label l2 = createLabel(statusComposite, "MINES");
+		l2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
 		MinesView minesView = new MinesView(statusComposite, SWT.BORDER);
 		minesView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		minesView.setMines(p.getMines());
 
 		createLabel(statusComposite, "");
-		createLabel(statusComposite, "TREASURY LIST  :");
+		l2 = createLabel(statusComposite, "TREASURES");
+		l2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+		
 
 		ResourcesView resourcesView = new ResourcesView(statusComposite, SWT.BORDER);
 		resourcesView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
