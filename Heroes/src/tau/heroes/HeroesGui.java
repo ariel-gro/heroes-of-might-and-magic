@@ -1061,7 +1061,6 @@ public class HeroesGui
 			public void widgetSelected(final SelectionEvent e)
 			{
 				boolean wrongLevel = false;
-				Player tempPlayer;
 				String name1 = player1Name.getText();
 				String name2 = player2Name.getText();
 				String name3 = player3Name.getText();
@@ -1076,72 +1075,79 @@ public class HeroesGui
 					players.removeAllElements();
 					players.add(new Player(name1));
 					
-					if (pcButton1.getSelection())
+					if ((name2.length() > 0) || (pcButton1.getSelection()))
 					{
-						tempPlayer = new Player("computer");
-						if (pcLevel1.getText().equals("Novice"))
+						if (pcButton1.getSelection())
 						{
-							tempPlayer.setComputerLevel(1);
-							players.add(tempPlayer);
-						}
-						else if (pcLevel1.getText().equals("Expert"))
-						{
-							tempPlayer.setComputerLevel(2);	
-							players.add(tempPlayer);
+							Player tempPlayer1 = new Player("computer");
+							if (pcLevel1.getText().equals("Novice"))
+							{
+								tempPlayer1.setComputerLevel(1);
+								players.add(tempPlayer1);
+							}
+							else if (pcLevel1.getText().equals("Expert"))
+							{
+								tempPlayer1.setComputerLevel(2);	
+								players.add(tempPlayer1);
+							}
+							else
+							{
+								wrongLevel = true;
+							}
 						}
 						else
 						{
-							wrongLevel = true;
-						}
-					}
-					if (pcButton2.getSelection())
-					{
-						tempPlayer = new Player("computer");
-						if (pcLevel2.getText().equals("Novice"))
-						{
-							tempPlayer.setComputerLevel(1);
-							players.add(tempPlayer);
-						}
-						else if (pcLevel2.getText().equals("Expert"))
-						{
-							tempPlayer.setComputerLevel(2);	
-							players.add(tempPlayer);
-						}
-						else
-						{
-							wrongLevel = true;	
-						}
-					}
-					if (pcButton3.getSelection())
-					{
-						tempPlayer = new Player("computer");
-						if (pcLevel3.getText().equals("Novice"))
-						{
-							tempPlayer.setComputerLevel(1);
-							players.add(tempPlayer);
-						}
-						else if (pcLevel3.getText().equals("Expert"))
-						{
-							tempPlayer.setComputerLevel(2);	
-							players.add(tempPlayer);
-						}
-						else
-						{
-							wrongLevel = true;
-						}
+							players.add(new Player(name2));						}
 					}
 					
-					if ((name2.length() > 0) && (!pcButton1.getSelection()))
+					if ((name3.length() > 0) || (pcButton2.getSelection()))
 					{
-						players.add(new Player(name2));
+						if (pcButton2.getSelection())
+						{
+							Player tempPlayer2 = new Player("computer");
+							if (pcLevel2.getText().equals("Novice"))
+							{
+								tempPlayer2.setComputerLevel(1);
+								players.add(tempPlayer2);
+							}
+							else if (pcLevel2.getText().equals("Expert"))
+							{
+								tempPlayer2.setComputerLevel(2);	
+								players.add(tempPlayer2);
+							}
+							else
+							{
+								wrongLevel = true;
+							}
+						}
+						else
+						{
+							players.add(new Player(name3));						}
 					}
-					if ((name3.length() > 0) && (!pcButton2.getSelection()))
+					
+					if ((name4.length() > 0) || (pcButton3.getSelection()))
 					{
-						players.add(new Player(name3));
-					}
-					if ((name4.length() > 0) && (!pcButton3.getSelection()))
-					{
-						players.add(new Player(name4));
+						if (pcButton3.getSelection())
+						{
+							Player tempPlayer3 = new Player("computer");
+							if (pcLevel3.getText().equals("Novice"))
+							{
+								tempPlayer3.setComputerLevel(1);
+								players.add(tempPlayer3);
+							}
+							else if (pcLevel3.getText().equals("Expert"))
+							{
+								tempPlayer3.setComputerLevel(2);	
+								players.add(tempPlayer3);
+							}
+							else
+							{
+								wrongLevel = true;
+							}
+						}
+						else
+						{
+							players.add(new Player(name4));						}
 					}
 					
 					if (wrongLevel)
