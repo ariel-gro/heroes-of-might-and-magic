@@ -41,7 +41,7 @@ public class Resource implements Serializable
 				msg = ("this resource is already yours!");
 			}
 
-			if (!(player.getName().equals("computer")))
+			if (!(player.isComputer()))
 			{
 				if (GameState.isGUI())
 				{
@@ -64,7 +64,7 @@ public class Resource implements Serializable
 			+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
 			+ this.getYPos() + ")\n");
 		
-		if (!(player.getName().equals("computer")))
+		if (!(player.isComputer()))
 		{
 			if (GameState.isGUI())
 			{
