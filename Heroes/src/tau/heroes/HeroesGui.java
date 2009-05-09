@@ -1109,7 +1109,8 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name2));						}
+							players.add(new Player(name2));					
+						}
 					}
 					
 					if ((name3.length() > 0) || (pcButton2.getSelection()))
@@ -1134,7 +1135,8 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name3));						}
+							players.add(new Player(name3));		
+						}
 					}
 					
 					if ((name4.length() > 0) || (pcButton3.getSelection()))
@@ -1159,7 +1161,8 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name4));						}
+							players.add(new Player(name4));		
+						}
 					}
 					
 					if (wrongLevel)

@@ -374,7 +374,7 @@ public class Player implements Serializable
 
 	public boolean isComputer()
 	{
-		return (getName().toLowerCase().equals(COMPUTER_NAME));
+		return (computerLevel != 0);
 	}
 
 	public int finalScore()
