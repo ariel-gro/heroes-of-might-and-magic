@@ -122,7 +122,19 @@ public class MainModule
 			responses = getCommandAndParameters(message);
 			if (responses.length > 0 && responses[0].length() > 0)
 			{
-				players.add(new Player(responses[0]));
+				Player tempPlayer = new Player(responses[0]);
+				if(responses[0].equalsIgnoreCase(Player.COMPUTER_NAME))
+				{
+					message = "Enter the level of the coputer Enter 1 for Novice or 2 for Expert: ";
+					int computerLevel = 0;
+					do
+					{
+						responses = getCommandAndParameters(message);
+						computerLevel = Helper.tryParseInt(responses[0]);
+					}while(!Helper.isIntBetween(computerLevel, 1, 2));
+					tempPlayer.setComputerLevel(computerLevel);
+				}
+				players.add(tempPlayer);
 				i++;
 			}
 		}
