@@ -1144,15 +1144,15 @@ public class HeroesGui
 						players.add(new Player(name4));
 					}
 					
-					if (players.size() < 2)
+					if (wrongLevel)
+					{
+						displayError("Only Novice or Expert levels are alowed for computer !");
+					}
+					else if (players.size() < 2)
 					{
 						displayError("You must select at least 2 players");
 						//players.removeAllElements();
 						// return;
-					}
-					else if (wrongLevel)
-					{
-						displayError("Only Novice or Expert levels are alowed for computer !");
 					}
 					else
 					{
