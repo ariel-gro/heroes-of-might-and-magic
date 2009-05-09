@@ -41,16 +41,19 @@ public class Resource implements Serializable
 				msg = ("this resource is already yours!");
 			}
 
-			if (GameState.isGUI())
+			if (!(player.getName().equals("computer")))
 			{
-				HeroesGui.displayMessage(msg);
+				if (GameState.isGUI())
+				{
+					HeroesGui.displayMessage(msg);
+				}
+				else
+				{
+					HeroesConsole.displayMessage(msg);
+				}
+				if (msg.equals("this resource is already yours!"))
+					return;
 			}
-			else
-			{
-				HeroesConsole.displayMessage(msg);
-			}
-			if (msg.equals("this resource is already yours!"))
-				return;
 		}
 
 		this.owner = player;
@@ -60,14 +63,17 @@ public class Resource implements Serializable
 		msg = ("player " + this.owner.getName() + " took ownership over "
 			+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
 			+ this.getYPos() + ")\n");
-
-		if (GameState.isGUI())
+		
+		if (!(player.getName().equals("computer")))
 		{
-			HeroesGui.displayMessage(msg);
-		}
-		else
-		{
-			HeroesConsole.displayMessage(msg);
+			if (GameState.isGUI())
+			{
+				HeroesGui.displayMessage(msg);
+			}
+			else
+			{
+				HeroesConsole.displayMessage(msg);
+			}
 		}
 	}
 
