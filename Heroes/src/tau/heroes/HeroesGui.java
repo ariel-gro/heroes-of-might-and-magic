@@ -964,7 +964,7 @@ public class HeroesGui
 		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
 		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
-		shell1.setSize(328, 225);
+		shell1.setSize(326, 225);
 		shell1.setText("New Game Menu");
 		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
 
@@ -974,11 +974,11 @@ public class HeroesGui
 		final Label emptyLabel1 = new Label(form, SWT.NONE);
 		emptyLabel1.setText("      ");
 		final Label namesLabel = new Label(form, SWT.NONE);
-		namesLabel.setText("     Name     ");
+		namesLabel.setText("      Name     ");
 		final Label computer3 = new Label(form, SWT.NONE);
-		computer3.setText(" Computer     ");
+		computer3.setText("  Computer     ");
 		final Label levelLabel = new Label(form, SWT.NONE);
-		levelLabel.setText("     Level     ");
+		levelLabel.setText("      Level     ");
 		final Label emptyLabel12 = new Label(form, SWT.NONE);
 		emptyLabel12.setText("      ");
 		new Label(form, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -997,6 +997,7 @@ public class HeroesGui
 		player2Label.setText("Player 2 : ");
 		final Text player2Name = new Text(form, SWT.NONE);
 		final Button pcButton1 = new Button(form, SWT.CHECK);
+		pcButton1.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel1 = new Combo(form, SWT.NONE);
 		pcLevel1.setText("level");
 		pcLevel1.setItems(new String[] { "Novice", "Expert" });
@@ -1022,6 +1023,7 @@ public class HeroesGui
 		player3Label.setText("Player 3 : ");
 		final Text player3Name = new Text(form, SWT.NONE);
 		final Button pcButton2 = new Button(form, SWT.CHECK);
+		pcButton2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel2 = new Combo(form, SWT.BEGINNING);
 		pcLevel2.setItems(new String[] { "Novice", "Expert" });
 		pcLevel2.setEnabled(false);
@@ -1046,6 +1048,7 @@ public class HeroesGui
 		player4Label.setText("Player 4 : ");
 		final Text player4Name = new Text(form, SWT.NONE);
 		final Button pcButton3 = new Button(form, SWT.CHECK);
+		pcButton3.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel3 = new Combo(form, SWT.NONE);
 		pcLevel3.setText("level");
 		pcLevel3.setItems(new String[] { "Novice", "Expert" });
