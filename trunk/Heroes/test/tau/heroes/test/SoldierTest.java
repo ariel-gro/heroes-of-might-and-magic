@@ -68,25 +68,25 @@ public class SoldierTest extends TestCase
 	@Test
 	public void testGet_attackSkill()
 	{
-		assertEquals(s.get_attackSkill(), 7);
+		assertEquals(s.get_attackSkill(), 6);
 	}
 
 	@Test
 	public void testGet_defenseSkill()
 	{
-		assertEquals(s.get_defenseSkill(), 7);
+		assertEquals(s.get_defenseSkill(), 6);
 	}
 
 	@Test
 	public void testGet_hitPoints()
 	{
-		assertEquals(s.get_hitPoints(), 10);
+		assertEquals(15, s.get_hitPoints());
 	}
 
 	@Test
 	public void testGet_damage()
 	{
-		assertEquals(s.get_damage(), 3);
+		assertEquals(s.get_damage(), 6);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class SoldierTest extends TestCase
 	@Test
 	public void testGet_lastUnitHitPoints()
 	{
-		assertEquals(s.get_lastUnitHitPoints(), 10);
+		assertEquals(s.get_lastUnitHitPoints(), 15);
 	}
 
 	@Test
@@ -106,32 +106,32 @@ public class SoldierTest extends TestCase
 	{
 		// Starts with 10 units * 10 hit points
 		assertEquals(s.get_numberOfUnits(), 10);
-		assertEquals(s.get_lastUnitHitPoints(), 10);
+		assertEquals(s.get_lastUnitHitPoints(), 15);
 		s.defendFromAttack(1);
 		assertEquals(s.get_numberOfUnits(), 10);
-		assertEquals(s.get_lastUnitHitPoints(), 9);
-		s.defendFromAttack(9);
+		assertEquals(s.get_lastUnitHitPoints(), 14);
+		s.defendFromAttack(14);
 		assertEquals(s.get_numberOfUnits(), 9);
-		assertEquals(s.get_lastUnitHitPoints(), 10);
+		assertEquals(s.get_lastUnitHitPoints(), 15);
 		s.defendFromAttack(5);
 		assertEquals(s.get_numberOfUnits(), 9);
-		assertEquals(s.get_lastUnitHitPoints(), 5);
-		s.defendFromAttack(8);
+		assertEquals(s.get_lastUnitHitPoints(), 10);
+		s.defendFromAttack(18);
 		assertEquals(s.get_numberOfUnits(), 8);
 		assertEquals(s.get_lastUnitHitPoints(), 7);
 		s.defendFromAttack(40);
-		assertEquals(s.get_numberOfUnits(), 4);
-		assertEquals(s.get_lastUnitHitPoints(), 7);
+		assertEquals(s.get_numberOfUnits(), 5);
+		assertEquals(s.get_lastUnitHitPoints(), 12);
 		s.defendFromAttack(21);
-		assertEquals(s.get_numberOfUnits(), 2);
+		assertEquals(s.get_numberOfUnits(), 4);
 		assertEquals(s.get_lastUnitHitPoints(), 6);
-		s.defendFromAttack(26);
+		s.defendFromAttack(51);
 		assertEquals(s.get_numberOfUnits(), 0);
-		assertEquals(s.get_lastUnitHitPoints(), 10);
+		assertEquals(s.get_lastUnitHitPoints(), 15);
 		// Test attacker bigger than last point
 		s.set_numberOfUnits(2);
-		s.defendFromAttack(24);
+		s.defendFromAttack(30);
 		assertEquals(s.get_numberOfUnits(), 0);
-		assertEquals(s.get_lastUnitHitPoints(), 10);
+		assertEquals(s.get_lastUnitHitPoints(), 15);
 	}
 }

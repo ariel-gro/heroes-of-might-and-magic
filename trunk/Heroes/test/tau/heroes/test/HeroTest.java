@@ -88,8 +88,8 @@ public class HeroTest extends TestCase
 		h1.setAutoFight(true);
 		h2.setAutoFight(true);
 		h1.attack(h2);
-		assertEquals(h1.alive(), true);
-		assertEquals(h2.alive(), false);
+		assertEquals(h2.alive(), true);
+		assertEquals(h1.alive(), false);
 	}
 
 	public void testAttack5()

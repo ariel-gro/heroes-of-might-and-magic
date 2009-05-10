@@ -63,8 +63,8 @@ public class MainModuleTest extends TestCase
 		player1.setHero(hero1);
 		hero1.player = player1;
 
-		player1.incrementMineQuantity("wood");
-		player1.incrementMineQuantity("gold");
+		player1.incrementMineQuantity("Wood");
+		player1.incrementMineQuantity("Gold");
 		assertEquals(true, player1.isAlive());
 		assertEquals(true, player2.isAlive());
 		// int armyCount = player1.getHero().getArmy().getTotalNumberOfUnits();
