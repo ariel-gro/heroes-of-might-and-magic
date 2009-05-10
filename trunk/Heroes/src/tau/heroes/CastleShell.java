@@ -7,9 +7,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -41,6 +44,7 @@ public class CastleShell extends Shell
 	public CastleShell(Shell parent, int style)
 	{
 		super(parent, style);
+		this.setImage(IconCache.stockImages[IconCache.appIcon]);
 
 		setSize(600, 400);
 		setLayout(new GridLayout(2, false));
@@ -78,6 +82,16 @@ public class CastleShell extends Shell
 		{
 			objectInfoView = new ObjectInfoView(rightComposite, SWT.NONE);
 		}
+		
+		Button button = new Button(leftComposite, SWT.PUSH | SWT.CENTER);
+		button.setText("About This Window");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				HeroesGui.diplayHelpByHelpItem("Castle");
+			}
+		});
 	}
 
 	@Override
