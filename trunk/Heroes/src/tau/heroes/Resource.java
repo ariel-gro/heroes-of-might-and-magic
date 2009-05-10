@@ -32,7 +32,7 @@ public class Resource implements Serializable
 			if (!this.owner.equals(player))
 			{
 				this.owner.decrementMineQuantity(this.getType().getTypeName());
-				msg = ("player " + this.owner.getName() + " lost ownership over "
+				msg = (this.owner.getName() + " lost ownership over "
 					+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
 					+ this.getYPos() + ")\n");
 			}
@@ -60,7 +60,7 @@ public class Resource implements Serializable
 		if (player == null)
 			return;
 		player.incrementMineQuantity(this.getType().getTypeName());
-		msg = ("player " + this.owner.getName() + " took ownership over "
+		msg = (this.owner.getName() + " took ownership over "
 			+ this.getType().getTypeName() + " at place: (" + this.getXPos() + ", "
 			+ this.getYPos() + ")\n");
 		
