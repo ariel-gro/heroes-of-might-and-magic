@@ -876,6 +876,7 @@ public class HeroesGui {
 		createLabel(statusComposite, "");
 		button = new Button(statusComposite, SWT.PUSH | SWT.CENTER);
 		button.setText("About This Window");
+		button.setToolTipText("Displays help about this window");
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -1117,6 +1118,7 @@ public class HeroesGui {
 		Button helpButton = new Button(form2, SWT.PUSH | SWT.CENTER);
 		helpButton.setText("About This Window");
 		helpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		helpButton.setToolTipText("Displays help about this window");
 		helpButton.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
