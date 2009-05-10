@@ -805,10 +805,7 @@ public class HeroesGui {
 			}
 		});
 
-		// createLabel(statusComposite, "PLAYER  NAME  :  " + str);
 		createLabel(statusComposite, "");
-		// createLabel(statusComposite, "DAY  :  " + str2);
-		// createLabel(statusComposite, "");
 
 		if (p.getHero() == null) {
 			createLabel(statusComposite, "You  have  no  hero  !!!");
@@ -846,6 +843,7 @@ public class HeroesGui {
 
 		createLabel(statusComposite, "");
 		l2 = createLabel(statusComposite, "TREASURES");
+		//TODO: replace images.
 		l2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
 		ResourcesView resourcesView = new ResourcesView(statusComposite,
@@ -874,6 +872,17 @@ public class HeroesGui {
 				}
 			});
 		}
+		
+		createLabel(statusComposite, "");
+		button = new Button(statusComposite, SWT.PUSH | SWT.CENTER);
+		button.setText("About This Window");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Status Window");
+			}
+		});
 
 		statusComposite.layout(true, true);
 	}
@@ -1104,8 +1113,18 @@ public class HeroesGui {
 			}
 		});
 
-		final Label emptyLabel7 = new Label(form2, SWT.NONE);
-		emptyLabel7.setText("                                   ");
+		/* help button */
+		Button helpButton = new Button(form2, SWT.PUSH | SWT.CENTER);
+		helpButton.setText("About This Window");
+		helpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		helpButton.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Getting Started");
+			}
+		});
+
 
 		Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
 		cancelButton.setText("        Cancel        ");
@@ -1895,31 +1914,176 @@ public class HeroesGui {
 	}
 
 	public void showGameAssistanceMbox() {
-		String helpString;
+		
+		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.verticalSpacing = 5;
+		gridLayout.marginHeight = gridLayout.marginWidth = 25;
+		helpShell.setLayout(gridLayout);
+		helpShell.setText("Heroes of Might and Magic (TAU Version) - Gameplay assistance");
+		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setSize(250, 300);
 
-		helpString = "\n"
-				+ "Heroes of Might and Magic (TAU Version)\n"
-				+ "Gameplay assistance\n\n"
-				+ "To move: Right click your hero, or just click hero and click destenation.\n"
-				+ "To end turn: Right click your hero or castle(s) and select 'end turn'\n"
-				+ "Castle menu and options are:\n"
+		//TODO: ariel
+		/* Getting Started */
+		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Getting Started");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Getting Started");
+			}
+		});
+		
+		/* Army */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Army");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Army");
+			}
+		});
+		
+		/* How to Move */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("How to Move");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("How to Move");
+			}
+		});
+		
+		/* Resources */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Resources");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Resources");
+			}
+		});
+		
+		/* Status Window */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Status Window");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Status Window");
+			}
+		});
+		
+		/* Battles */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Battles");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				diplayHelpByHelpItem("Battles");
+			}
+		});
+		
+		/* About the game */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("About Heroes of Might and Magic");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				showAboutMbox();
+			}
+		});
+		
+		/* Close */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Close");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.dispose();
+			}
+		});
+		
+		
+		//helpShell.pack();
+		helpShell.open();
+		while (!helpShell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+			{
+				display.sleep();
+			}
+		}
+	}
+	
+	static void diplayHelpByHelpItem(String helpItem)
+	{
+		/**TODO: add helpful text
+		 * make use of shell with text in it instead of  displayMessage()
+		 * add more help options for castle window, status window
+		 * 
+		 */ 
+		String defaultHelpString = "helpful text here";
+		String helpString = defaultHelpString;
+
+		if (helpItem.equals("How to Move"))
+			helpString = "To move: Right click your hero,"
+				+ " or just click hero and click destenation.\n";
+		
+		else if(helpItem.equals("Castle"))
+			helpString = "Castle menu and options are:\n"
 				+ "Build - build a creature factory\n"
 				+ "Make - make a new creature\n"
 				+ "Split - move units from hero to castle\n"
 				+ "Join - move units from castle to hero\n"
-				+ "\n"
+				+ "\n";
+		
+		else if (helpItem.equals("Getting Started"))
+			helpString = "To end turn: Right click your hero or castle(s) and select 'end turn'\n"
 				+ "Player info is on the right part of the screen (status window)\n\n"
 				+ "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n"
 				+ "Use the Highscores menu to view or reset the highscores table\n\n"
 				+ "Quitting the game is via File -> Exit\n\n\n"
 				+ "Enjoy the game";
+		
+		else if (helpItem.equals("Battles"))
+			helpString = defaultHelpString;
+		
+		else if (helpItem.equals("Army"))
+			helpString = defaultHelpString;
+
+		else if (helpItem.equals("Resources"))
+			helpString = defaultHelpString;
+		
+		else if (helpItem.equals("Status Window"))
+			helpString = defaultHelpString;
+		
 		displayMessage(helpString);
 	}
+	
 
 	public void showAboutMbox() {
 		String aboutString;
 		aboutString = "\n" + "Heroes of Might and Magic (TAU Version)\n"
-				+ "(C) 2009 - All right reserved!";
+				+ "© 2009 - All right reserved!";
 		displayMessage(aboutString);
 	}
 
