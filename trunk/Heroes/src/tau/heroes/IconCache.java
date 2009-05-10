@@ -46,7 +46,7 @@ public class IconCache
 			"/icons/battle_dwarf_face_left.png", "/icons/battle_archer_face_right.png",
 			"/icons/battle_archer_face_left.png", "/icons/battle_fire_dragon_face_right.png",
 			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png",
-			"/icons/treasure_Gold", "/icons/treasure_Wood", "/icons/treasure_Stone"};
+			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png"};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 
