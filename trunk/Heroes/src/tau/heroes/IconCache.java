@@ -245,11 +245,11 @@ public class IconCache
 		if (name == null)
 			return stockImages[blackIcon];
 		else if (name.equals(ResourceType.GOLD.getTypeName()))
-			return stockImages[goldMineIcon];
+			return stockImages[treasureGold];
 		else if (name.equals(ResourceType.WOOD.getTypeName()))
-			return stockImages[woodIcon];
+			return stockImages[treasureWood];
 		else if (name.equals(ResourceType.STONE.getTypeName()))
-			return stockImages[stoneIcon];
+			return stockImages[treasureStone];
 		else
 			return stockImages[blackIcon];
 	}
