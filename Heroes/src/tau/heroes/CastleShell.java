@@ -85,6 +85,7 @@ public class CastleShell extends Shell
 		
 		Button button = new Button(leftComposite, SWT.PUSH | SWT.CENTER);
 		button.setText("About This Window");
+		button.setToolTipText("Displays help about this window");
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
