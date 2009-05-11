@@ -789,6 +789,7 @@ public class HeroesGui {
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
+		firstLabel.setFont(IconCache.stockFonts[IconCache.titleFontIndex]);
 		String str1 = p.getName();
 		String str2 = p.getDayAsString();
 		firstLabel.setText("               " + str1);

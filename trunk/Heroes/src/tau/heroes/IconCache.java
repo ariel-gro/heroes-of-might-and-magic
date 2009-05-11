@@ -1,7 +1,10 @@
 package tau.heroes;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -32,8 +35,8 @@ public class IconCache
 		archerFactoryIcon = 20, fireDragonFactoryIcon = 22;
 
 	public static final int cursorAttackLeft = 2, cursorAttackRight = 3, cursorNo = 4;
-	
-	public static final int algerianFontIndex = 0;
+
+	public static final int titleFontIndex = 0;
 
 	public static final String[] stockImageLocations = { "/icons/Heroes-icon.jpg",
 			"/icons/Grass3.jpg", "/icons/knight3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg",
@@ -46,16 +49,17 @@ public class IconCache
 			"/icons/battle_dwarf_face_left.png", "/icons/battle_archer_face_right.png",
 			"/icons/battle_archer_face_left.png", "/icons/battle_fire_dragon_face_right.png",
 			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png",
-			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png"};
+			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png" };
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 
 	public static Image stockImages[];
 
 	public static Cursor stockCursors[];
-	
-	public static final String[] stockFontLocations = { "/fonts/ALER.TTF" };
-	
+
+	public static final FontDescriptor[] stockFontDescriptors = { new FontDescriptor(
+		"/fonts/ALGER.TTF", "Algerian", 12, SWT.BOLD) };
+
 	public static Font stockFonts[];
 
 	// Cached icons
@@ -103,20 +107,20 @@ public class IconCache
 					new Cursor(display, SWT.CURSOR_UPARROW) };
 		}
 		iconCache = new Hashtable();
-		
-//		if (stockFonts == null)
-//		{
-//			stockFonts = new Font[stockFontLocations.length];
-//			
-//			Font font = createStockFont(display, stockFontLocations[algerianFontIndex], "Algerian", 12);
-//			if (font == null)
-//			{
-//				freeResources();
-//				throw new IllegalStateException("error.CouldNotLoadResources: "	
-//					+ stockFontLocations[algerianFontIndex]);
-//			}
-//			stockFonts[algerianFontIndex] = font;
-//		}
+
+		if (stockFonts == null)
+		{
+			stockFonts = new Font[stockFontDescriptors.length];
+
+			Font font = createStockFont(display, stockFontDescriptors[titleFontIndex]);
+			if (font == null)
+			{
+				freeResources();
+				throw new IllegalStateException("error.CouldNotLoadResources: "
+					+ stockFontDescriptors[titleFontIndex]);
+			}
+			stockFonts[titleFontIndex] = font;
+		}
 	}
 
 	/**
@@ -135,6 +139,7 @@ public class IconCache
 			}
 			stockImages = null;
 		}
+
 		if (iconCache != null)
 		{
 			for (Enumeration it = iconCache.elements(); it.hasMoreElements();)
@@ -143,6 +148,7 @@ public class IconCache
 				image.dispose();
 			}
 		}
+
 		if (stockCursors != null)
 		{
 			for (int i = 0; i < stockCursors.length; ++i)
@@ -153,16 +159,17 @@ public class IconCache
 			}
 			stockCursors = null;
 		}
-//		if (stockFonts != null)
-//		{
-//			for (int i = 0; i < stockFonts.length; i++)
-//			{
-//				final Font font = stockFonts[i];
-//				if (font != null)
-//					font.dispose();
-//			}
-//			stockFonts = null;
-//		}
+
+		if (stockFonts != null)
+		{
+			for (int i = 0; i < stockFonts.length; i++)
+			{
+				final Font font = stockFonts[i];
+				if (font != null)
+					font.dispose();
+			}
+			stockFonts = null;
+		}
 	}
 
 	/**
@@ -189,15 +196,36 @@ public class IconCache
 		}
 		return result;
 	}
-	
-	private static Font createStockFont(Display display, String path, String fontName, int fontSize)
+
+	/**
+	 * Load a font from the file system
+	 * 
+	 * @param display
+	 *            - The display
+	 * @param fontDesctiptor
+	 *            - Font descriptor
+	 * @return Font object if succeeds, otherwise false
+	 */
+	private static Font createStockFont(Display display, FontDescriptor fontDesctiptor)
 	{
-		boolean isFontLoaded = display.loadFont(path);
-		
-		if (isFontLoaded)
-			return new Font(display, fontName, fontSize, SWT.NORMAL);
-		
-		return null;		
+		// Convert the relative path to an absolute one
+		String path = null;
+		try
+		{
+			URL url = IconCache.class.getResource(fontDesctiptor.path);
+			File file = new File(url.toURI());
+			path = file.getAbsolutePath();
+		}
+		catch (URISyntaxException e)
+		{
+			return null;
+		}
+
+		// Load the font
+		if (display.loadFont(path))
+			return new Font(display, fontDesctiptor.name, fontDesctiptor.size, fontDesctiptor.style);
+
+		return null;
 	}
 
 	public static Image getCreatureImage(Class<? extends Creature> creatureClass)
@@ -270,5 +298,21 @@ public class IconCache
 			return stockImages[fireDragonFactoryIcon];
 		else
 			return stockImages[battleGrassIcon];
+	}
+
+	private static class FontDescriptor
+	{
+		String path;
+		String name;
+		int size;
+		int style;
+
+		FontDescriptor(String path, String name, int size, int style)
+		{
+			this.path = path;
+			this.name = name;
+			this.size = size;
+			this.style = style;
+		}
 	}
 }
