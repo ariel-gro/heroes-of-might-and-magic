@@ -812,6 +812,10 @@ public class HeroesGui {
 
 		// Re-enable game
 		this.shell.setEnabled(true);
+		//update the board view (basically for buying a new hero in the castle).
+		createBoardWindow(true);
+		updateStatusWindow();
+		
 	}
 
 	private void createStatusWindow(boolean initStatus) {

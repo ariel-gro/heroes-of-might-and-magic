@@ -81,12 +81,19 @@ public class Hero implements Serializable
 		System.out.println("Battle Ended");
 		System.out.println("**************");
 	}
-
+  
 	// this will start a battle against h. (this - attacker, h - defender).
 	public void attack(Hero defender)
 	{
+		//save the state of the auto-fight:
+		boolean defenderAuto = defender._autoFight;
+		boolean thisAuto = _autoFight;
+		//if one of them is auto (then both of them are open):
+		boolean auto = _autoFight || defender._autoFight;
+		_autoFight = auto;
+		defender._autoFight = auto;
 		
-		if (GameState.isGUI() && !_autoFight)
+		if (GameState.isGUI() && !auto)
 		{
 			Display d = Display.getCurrent();
 			Shell s = visualAttack(defender);
@@ -97,9 +104,13 @@ public class Hero implements Serializable
 			}
 		}
 		else
-		{
+		{//this is in case of auto fight:
 			consolAttack(defender);
 		}
+		//restore the right state (of the auto fight):
+		defender._autoFight = defenderAuto;
+		_autoFight = thisAuto;
+		
 		//Add skills for the winner 
 		//(We don't need to check who won, the loser will die anyway)
 		this._attackSkill += SKILLS_AFTER_ATTACK;
