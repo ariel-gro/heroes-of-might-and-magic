@@ -335,15 +335,49 @@ public class HeroesGui {
 								.getResource().getOwner().getName())
 						+ "\nLocation: " + x + ", " + y;
 			} else if ((bs.getCastle()) != null) {
+				String s;
+				switch (currentPlayerIndex){
+				case 0: 
+					s = "Castle";
+					break;
+				case 1: 
+					s = "Dungeon";
+					break;
+				case 2: 
+					s = "Rampart";
+					break;
+				case 3: 
+					s = "Tower";
+					break;
+				default:
+					s = "Castle";
+				}
 				return bs.getHero().player.getName() + "'s Hero in "
-						+ bs.getCastle().getPlayer().getName() + "'s Castle"
+						+ bs.getCastle().getPlayer().getName() + "'s " + s
 						+ "\nLocation: " + x + ", " + y;
 			} else
 				return bs.getHero().player.getName() + "'s Hero"
 						+ "\nLocation: " + x + ", " + y;
 
 		} else if ((bs.getCastle()) != null) {
-			return bs.getCastle().getPlayer().getName() + "'s Castle"
+			String s;
+			switch (currentPlayerIndex){
+			case 0: 
+				s = "Castle";
+				break;
+			case 1: 
+				s = "Dungeon";
+				break;
+			case 2: 
+				s = "Rampart";
+				break;
+			case 3: 
+				s = "Tower";
+				break;
+			default:
+				s = "Castle";
+			}
+			return bs.getCastle().getPlayer().getName() + "'s " + s 
 					+ "\nLocation: " + x + ", " + y;
 		} else if ((bs.getResource()) != null) {
 			if (bs.getResource().getType().getTypeName().equals(
@@ -896,7 +930,24 @@ public class HeroesGui {
 			int castleXPos = castle.getXPos();
 			int castleYPos = castle.getYPos();
 			Button button1 = new Button(statusComposite, SWT.NONE);
-			button1.setText("Castle at  " + castleXPos + " , " + castleYPos);
+			String s;
+			switch (currentPlayerIndex){
+			case 0: 
+				s = "Castle";
+				break;
+			case 1: 
+				s = "Dungeon";
+				break;
+			case 2: 
+				s = "Rampart";
+				break;
+			case 3: 
+				s = "Tower";
+				break;
+			default:
+				s = "Castle";
+			}
+			button1.setText(s + " at  " + castleXPos + " , " + castleYPos);
 			button1.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					displayCastleInfo(castle);
