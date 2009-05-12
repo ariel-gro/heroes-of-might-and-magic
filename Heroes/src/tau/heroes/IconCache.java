@@ -22,15 +22,18 @@ import org.eclipse.swt.widgets.Display;
 public class IconCache
 {
 	// Stock images
-	public static final int appIcon = 0, grassIcon = 1, heroIcon = 2, castleIcon = 3,
-		goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, heroInCastleIcon = 7,
-		heroInGlodMineIcon = 8, heroInStoneIcon = 9, heroeInWoodIcon = 10, blackIcon = 11,
+	public static final int appIcon = 0, grassIcon = 1, blueHeroIcon = 2, castleIcon = 3,
+		goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, blueInCastleIcon = 7,
+		blueInGlodMineIcon = 8, blueInStoneIcon = 9, blueInWoodIcon = 10, blackIcon = 11,
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
-		treasureStone = 27;
+		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
+		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33;
+	
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
 		dwarfFaceRightIcon = 18, dwarfFaceLeftIcon = 19, archerFaceRightIcon = 20,
 		archerFaceLeftIcon = 21, fireDragonFaceRightIcon = 22, fireDragonFaceLeftIcon = 23;
+
 	public static final int goblinFactoryIcon = 14, soldierFactoryIcon = 16, dwarfFactoryIcon = 18,
 		archerFactoryIcon = 20, fireDragonFactoryIcon = 22;
 
@@ -39,17 +42,19 @@ public class IconCache
 	public static final int titleFontIndex = 0;
 
 	public static final String[] stockImageLocations = { "/icons/Heroes-icon.jpg",
-			"/icons/Grass3.jpg", "/icons/knight3.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg",
-			"/icons/Stone.jpg", "/icons/Wood.jpg", "/icons/knight3_in_castle.jpg",
-			"/icons/knight3_in_GoldMine.jpg", "/icons/knight3_in_Stone.jpg",
-			"/icons/knight3_in_Wood.jpg", "/icons/Black.jpg", "/icons/HighScores.jpg",
+			"/icons/Grass3.jpg", "/icons/blue_on_grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg",
+			"/icons/Stone.jpg", "/icons/Wood.jpg", "/icons/blue_in_Castle.jpg",
+			"/icons/blue_in_GoldMine.jpg", "/icons/blue_in_Stone.jpg",
+			"/icons/blue_in_Wood.jpg", "/icons/Black.jpg", "/icons/HighScores.jpg",
 			"/icons/battle_grass.jpg", "/icons/battle_goblin_face_right.jpg",
 			"/icons/battle_goblin_face_left.jpg", "/icons/battle_soldier_face_right.jpg",
 			"/icons/battle_soldier_face_left.jpg", "/icons/battle_dwarf_face_right.png",
 			"/icons/battle_dwarf_face_left.png", "/icons/battle_archer_face_right.png",
 			"/icons/battle_archer_face_left.png", "/icons/battle_fire_dragon_face_right.png",
 			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png",
-			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png" };
+			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png",
+			"/icons/Dungeon.png", "/icons/Rampart.png", "/icons/Tower.png", "/icons/blue_in_Dungeon.png",
+			"/icons/blue_in_Rampart.png", "/icons/blue_in_Tower.png"};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 

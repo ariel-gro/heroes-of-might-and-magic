@@ -242,22 +242,47 @@ public class HeroesGui {
 			if (bs.getResource() != null
 					&& bs.getResource().getType().getTypeName().equals(
 							ResourceType.WOOD.getTypeName())) {
-				return IconCache.heroeInWoodIcon;
+				return IconCache.blueInWoodIcon;
 			} else if (bs.getResource() != null
 					&& bs.getResource().getType().getTypeName().equals(
 							ResourceType.GOLD.getTypeName())) {
-				return IconCache.heroInGlodMineIcon;
+				return IconCache.blueInGlodMineIcon;
 			} else if (bs.getResource() != null
 					&& bs.getResource().getType().getTypeName().equals(
 							ResourceType.STONE.getTypeName())) {
-				return IconCache.heroInStoneIcon;
+				return IconCache.blueInStoneIcon;
 			} else if (bs.getCastle() != null) {
-				return IconCache.heroInCastleIcon;
+				switch (currentPlayerIndex){
+				case 0:
+					return IconCache.blueInCastleIcon;
+				case 1:
+					return IconCache.blueInDungeonIcon;
+				case 2:
+					return IconCache.blueInRampartIcon;
+				case 3:
+					return IconCache.blueInTowerIcon;
+					
+				default:
+					return IconCache.blueInDungeonIcon;
+				}
+				
 			} else
-				return IconCache.heroIcon;
+				return IconCache.blueHeroIcon;
 
 		} else if ((bs.getCastle()) != null) {
-			return IconCache.castleIcon;
+			switch (currentPlayerIndex){
+			case 0:
+				return IconCache.castleIcon;
+			case 1:
+				return IconCache.dungeonIcon;
+			case 2:
+				return IconCache.rampartIcon;
+			case 3:
+				return IconCache.towerIcon;
+			
+			default:
+				return IconCache.castleIcon;
+			}
 		} else if ((bs.getResource()) != null) {
 			if (bs.getResource().getType().getTypeName().equals(
 					ResourceType.WOOD.getTypeName())) {
@@ -498,10 +523,10 @@ public class HeroesGui {
 						l.setToolTipText(description);
 					}
 
-					if (t == IconCache.heroIcon
-							|| t == IconCache.heroInGlodMineIcon
-							|| t == IconCache.heroInStoneIcon
-							|| t == IconCache.heroeInWoodIcon)
+					if (t == IconCache.blueHeroIcon
+							|| t == IconCache.blueInGlodMineIcon
+							|| t == IconCache.blueInStoneIcon
+							|| t == IconCache.blueInWoodIcon)
 						if (gameController.getGameState().getBoard()
 								.getBoardState(x, y).getHero().player
 								.equals(gameController.getGameState()
@@ -515,7 +540,10 @@ public class HeroesGui {
 							currentHero = b;
 						}
 
-					if (t == IconCache.castleIcon)
+					if (t == IconCache.castleIcon
+							|| t == IconCache.dungeonIcon
+							|| t == IconCache.rampartIcon
+							|| t == IconCache.towerIcon)
 						if (gameController.getGameState().getBoard()
 								.getBoardState(x, y).getCastle().getPlayer()
 								.equals(
@@ -532,7 +560,10 @@ public class HeroesGui {
 								currentHero = b;
 						}
 
-					if (t == IconCache.heroInCastleIcon)
+					if (t == IconCache.blueInCastleIcon
+							|| t == IconCache.blueInDungeonIcon
+							|| t == IconCache.blueInRampartIcon
+							|| t == IconCache.blueInTowerIcon)
 						if (gameController.getGameState().getBoard()
 								.getBoardState(x, y).getHero().player
 								.equals(gameController.getGameState()
@@ -844,7 +875,6 @@ public class HeroesGui {
 
 		createLabel(statusComposite, "");
 		l2 = createLabel(statusComposite, "TREASURES");
-		//TODO: replace images.
 		l2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
 		ResourcesView resourcesView = new ResourcesView(statusComposite,
@@ -1928,7 +1958,6 @@ public class HeroesGui {
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 		helpShell.setSize(250, 300);
 
-		//TODO: ariel
 		/* Getting Started */
 		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
 		button.setText("Getting Started");
@@ -2041,6 +2070,8 @@ public class HeroesGui {
 	{
 		/**TODO: add helpful text
 		 * make use of shell with text in it instead of  displayMessage()
+		 * shell should be scrollable and composite so we can integrate pictures in it
+		 * 
 		 * add more help options for castle window, status window
 		 * 
 		 */ 
