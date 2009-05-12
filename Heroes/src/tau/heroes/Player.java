@@ -411,6 +411,11 @@ public class Player implements Serializable
 			return;
 		
 		Castle theCastle = castles.get(0);
+		//first buy a hero (if you don't already have one)
+		if(theCastle.CanCreateNewHero())
+		{
+			theCastle.CreateNewHero();
+		}
 		//The logic is first try to buy Factories
 		for( CreatureFactory factory : CreatureFactory.getCreatureFactories())
 		{			
@@ -430,9 +435,5 @@ public class Player implements Serializable
 
 	public void setComputerLevel(int computerLevel) {
 		this.computerLevel = computerLevel;
-	}
-
-	public int getComputerLevel() {
-		return computerLevel;
 	}
 }

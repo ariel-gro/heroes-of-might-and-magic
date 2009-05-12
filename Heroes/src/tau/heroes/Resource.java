@@ -41,7 +41,7 @@ public class Resource implements Serializable
 				msg = ("this resource is already yours!");
 			}
 
-			if (!(player.isComputer()))
+			if (player != null && !player.isComputer())
 			{
 				if (GameState.isGUI())
 				{

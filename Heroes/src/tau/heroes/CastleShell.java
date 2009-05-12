@@ -25,6 +25,7 @@ public class CastleShell extends Shell
 {
 	private Castle castle;
 	private Hero hero;
+	private Button buttonHero;
 
 	private final Composite leftComposite;
 	private final Label castleFactoriesLabel;
@@ -93,6 +94,17 @@ public class CastleShell extends Shell
 				HeroesGui.diplayHelpByHelpItem("Castle");
 			}
 		});
+		
+		buttonHero = new Button(leftComposite, SWT.PUSH | SWT.CENTER);
+		buttonHero.setText("Create Hero ("+Constants.HERO_PRICE_GOLD+" Gold)");
+		buttonHero.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleNewHeroButtonPress();
+			}
+		});
+		
 	}
 
 	@Override
@@ -104,7 +116,9 @@ public class CastleShell extends Shell
 	public void setCastle(Castle castle)
 	{
 		this.castle = castle;
-
+		
+		initNewHeroButton();
+		
 		castleFactoriesView.setFactories(castle.getFactories());
 		castleArmyView.setArmy(castle.getArmy());
 
@@ -122,6 +136,24 @@ public class CastleShell extends Shell
 		heroArmyLabel.setText("Hero's army");
 		heroArmyView.setArmy(hero.getArmy());
 		heroArmyView.setVisible(true);
+
+	}
+	private void handleNewHeroButtonPress() 
+	{
+		Hero h = castle.CreateNewHero();
+		if(h != null)
+		{
+			setHero(h);
+			buttonHero.setEnabled(false);
+		}
+		
+	}
+	private void initNewHeroButton()
+	{
+		String tooltip =  this.castle.CanCreateNewHero() ? "Will create a new Hero for the cost of "+Constants.HERO_PRICE_GOLD+" Gold" :
+			"You have a hero [or you don't have enough Gold ("+Constants.HERO_PRICE_GOLD+")]";
+		buttonHero.setToolTipText(tooltip);
+		buttonHero.setEnabled(this.castle.CanCreateNewHero());
 	}
 
 	private class CreatureFactoryMouseTrackListener extends MouseTrackAdapter
