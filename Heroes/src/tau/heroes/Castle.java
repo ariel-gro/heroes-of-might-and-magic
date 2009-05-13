@@ -142,7 +142,7 @@ public class Castle implements Serializable
 	{
 		this.army = army;
 	}
-	
+
 	public List<CreatureFactory> getFactories()
 	{
 		return this.factories;
@@ -170,10 +170,7 @@ public class Castle implements Serializable
 
 			if (!(player.isComputer()))
 			{
-				if (GameState.isGUI())
-					HeroesGui.displayMessage(this.printLocation() + ": A new " + factory.getName()
-						+ " was added");
-				else
+				if (!GameState.isGUI())
 					HeroesConsole.displayMessage(this.printLocation() + ": A new "
 						+ factory.getName() + " was added");
 			}
@@ -326,21 +323,23 @@ public class Castle implements Serializable
 
 		return s;
 	}
+
 	public boolean CanCreateNewHero()
 	{
-		boolean bCan = player.getHero() == null || !player.getHero().alive(); 
+		boolean bCan = player.getHero() == null || !player.getHero().alive();
 		bCan = bCan && (player.getCurrentTreasuryAmount("Gold") >= Constants.HERO_PRICE_GOLD);
 		return bCan;
 	}
+
 	public Hero CreateNewHero()
 	{
-		if(!this.CanCreateNewHero())
+		if (!this.CanCreateNewHero())
 			return null;
-		this.player.decrementTreasury("Gold",Constants.HERO_PRICE_GOLD );
-		Hero h = new Hero(player,board,xPos,yPos);
+		this.player.decrementTreasury("Gold", Constants.HERO_PRICE_GOLD);
+		Hero h = new Hero(player, board, xPos, yPos);
 		player.setHero(h);
 		board.placeHero(h, xPos, yPos);
-		this.enterHero(h);	
+		this.enterHero(h);
 		return h;
 	}
 

@@ -321,6 +321,16 @@ public class Hero implements Serializable
 		else
 			this._army.add(creature);
 	}
+	
+	public boolean canRemoveFromArmy(Creature creature)
+	{
+		if (_army == null || !_army.canRemove(creature))
+			return false;
+		else if (_army.getTotalNumberOfUnits() <= creature.get_numberOfUnits())
+			return false;
+		else
+			return true;
+	}
 
 	public boolean removeFromArmy(Creature creature)
 	{

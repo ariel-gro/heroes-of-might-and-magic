@@ -60,11 +60,12 @@ public class CreatureFactoriesView extends BaseLabelRowView
 				String text = "";
 				String tooltip = CreatureFactory.createCreatureFactory(factoryClass).getName();
 				Image image = IconCache.getCreatureFactoryImage(factoryClass);
+				int style = SWT.NONE;
 
 				if (foundFactory == null)
-					image = new Image(getDisplay(), image, SWT.IMAGE_GRAY);
+					style = SWT.IMAGE_GRAY;
 
-				setLabel(index, image, text, tooltip);
+				setLabel(index, image, style, text, tooltip);
 				index++;
 			}
 		}

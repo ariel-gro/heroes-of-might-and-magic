@@ -5,6 +5,7 @@ package tau.heroes;
 
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -51,7 +52,7 @@ public class MinesView extends BaseLabelRowView
 				text = mines.get(rType.getTypeName()).toString();
 				tooltip = rType.getTypeName() + " Mine";
 				image = IconCache.getMineImage(rType.getTypeName());
-				setLabel(index, image, text, tooltip);
+				setLabel(index, image, SWT.NONE, text, tooltip);
 				index++;
 			}
 		}

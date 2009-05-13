@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
@@ -28,7 +31,7 @@ public class IconCache
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
 		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33;
-	
+
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
 		dwarfFaceRightIcon = 18, dwarfFaceLeftIcon = 19, archerFaceRightIcon = 20,
@@ -42,9 +45,9 @@ public class IconCache
 	public static final int titleFontIndex = 0;
 
 	public static final String[] stockImageLocations = { "/icons/Heroes-icon.jpg",
-			"/icons/Grass3.jpg", "/icons/blue_on_grass.jpg", "/icons/Castle.jpg", "/icons/GoldMine.jpg",
-			"/icons/Stone.jpg", "/icons/Wood.jpg", "/icons/blue_in_Castle.jpg",
-			"/icons/blue_in_GoldMine.jpg", "/icons/blue_in_Stone.jpg",
+			"/icons/Grass3.jpg", "/icons/blue_on_grass.jpg", "/icons/Castle.jpg",
+			"/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg",
+			"/icons/blue_in_Castle.jpg", "/icons/blue_in_GoldMine.jpg", "/icons/blue_in_Stone.jpg",
 			"/icons/blue_in_Wood.jpg", "/icons/Black.jpg", "/icons/HighScores.jpg",
 			"/icons/battle_grass.jpg", "/icons/battle_goblin_face_right.jpg",
 			"/icons/battle_goblin_face_left.jpg", "/icons/battle_soldier_face_right.jpg",
@@ -53,8 +56,8 @@ public class IconCache
 			"/icons/battle_archer_face_left.png", "/icons/battle_fire_dragon_face_right.png",
 			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png",
 			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png",
-			"/icons/Dungeon.png", "/icons/Rampart.png", "/icons/Tower.png", "/icons/blue_in_Dungeon.png",
-			"/icons/blue_in_Rampart.png", "/icons/blue_in_Tower.png"};
+			"/icons/Dungeon.png", "/icons/Rampart.png", "/icons/Tower.png",
+			"/icons/blue_in_Dungeon.png", "/icons/blue_in_Rampart.png", "/icons/blue_in_Tower.png" };
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 
@@ -70,6 +73,8 @@ public class IconCache
 	// Cached icons
 	@SuppressWarnings("unchecked")
 	private static Hashtable iconCache; /* map Program to Image */
+
+	private static Map<ResizedImageDescriptor, Image> resizedImages;
 
 	private IconCache()
 	{
@@ -126,6 +131,11 @@ public class IconCache
 			}
 			stockFonts[titleFontIndex] = font;
 		}
+
+		if (resizedImages == null)
+		{
+			resizedImages = new HashMap<ResizedImageDescriptor, Image>();
+		}
 	}
 
 	/**
@@ -174,6 +184,15 @@ public class IconCache
 					font.dispose();
 			}
 			stockFonts = null;
+		}
+
+		if (resizedImages != null)
+		{
+			for (Iterator<Image> it = resizedImages.values().iterator(); it.hasNext();)
+			{
+				Image image = it.next();
+				image.dispose();
+			}
 		}
 	}
 
@@ -231,6 +250,40 @@ public class IconCache
 			return new Font(display, fontDesctiptor.name, fontDesctiptor.size, fontDesctiptor.style);
 
 		return null;
+	}
+
+	/**
+	 * Gets a resized version of the original image using provided style.
+	 * Resized images are cached to save memory.
+	 * 
+	 * @param display
+	 *            - The display.
+	 * @param originalImage
+	 *            - Original image.
+	 * @param newWidth
+	 *            - New image width.
+	 * @param newHeight
+	 *            - New image height.
+	 * @param style
+	 *            - New image style.
+	 * @return - Resized image
+	 */
+	public static Image getResizedImage(Display display, Image originalImage, int newWidth,
+		int newHeight, int style)
+	{
+		ResizedImageDescriptor rid = new ResizedImageDescriptor(originalImage, newWidth, newHeight,
+			style);
+
+		if (!resizedImages.containsKey(rid))
+		{
+			Image resizedImage = new Image(display, originalImage.getImageData()
+				.scaledTo(newWidth, newHeight));
+			if (style != SWT.NONE)
+				resizedImage = new Image(display, resizedImage, style);
+			resizedImages.put(rid, resizedImage);
+		}
+
+		return resizedImages.get(rid);
 	}
 
 	public static Image getCreatureImage(Class<? extends Creature> creatureClass)
@@ -318,6 +371,42 @@ public class IconCache
 			this.name = name;
 			this.size = size;
 			this.style = style;
+		}
+	}
+
+	private static class ResizedImageDescriptor
+	{
+		Image originalImage;
+		Integer newWidth;
+		Integer newHeight;
+		Integer style;
+
+		public ResizedImageDescriptor(Image originalImage, int newWidth, int newHeight, int style)
+		{
+			this.originalImage = originalImage;
+			this.newWidth = newWidth;
+			this.newHeight = newHeight;
+			this.style = style;
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (obj instanceof ResizedImageDescriptor)
+			{
+				ResizedImageDescriptor rid = (ResizedImageDescriptor) obj;
+				return this.originalImage.equals(rid.originalImage)
+					&& this.newWidth == rid.newWidth && this.newHeight == rid.newHeight;
+			}
+			else
+				return super.equals(obj);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return this.originalImage.hashCode() ^ this.newWidth.hashCode()
+				^ this.newHeight.hashCode() ^ this.style.hashCode();
 		}
 	}
 }

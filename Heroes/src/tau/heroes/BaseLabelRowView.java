@@ -27,55 +27,66 @@ public class BaseLabelRowView extends Composite
 	{
 		super(parent, style);
 		this.setLayout(new RowLayout());
+		setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		labels = new CLabel[count];
 		images = new Image[count];
 		this.imageWidth = imageWidth;
 		this.imageHeight = imageHeight;
-		Color foreColor = parent.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		for (int i = 0; i < count; i++)
 		{
 			labels[i] = new CLabel(this, SWT.RIGHT);
 			labels[i].setLayoutData(new RowData(imageWidth, imageHeight));
-			labels[i].setForeground(foreColor);
+			labels[i].setForeground(getForeground());
 			labels[i].setFont(new Font(getDisplay(), "Tahoma", 10, SWT.BOLD));
 		}
 
 		IconCache.initResources(parent.getDisplay());
 	}
 
-	protected void setLabel(int index, Image image, String text, String tooltip)
+	@Override
+	public void setForeground(Color color)
+	{
+		super.setForeground(color);
+
+		if (labels != null)
+			for (CLabel label : labels)
+				if (label != null)
+					label.setForeground(color);
+	}
+
+	protected void setLabel(int index, Image image, int imageStyle, String text, String tooltip)
 	{
 		CLabel label = labels[index];
 
 		label.setText(text);
 		label.setToolTipText(tooltip);
-		image = new Image(getDisplay(), image.getImageData().scaledTo(imageWidth, imageHeight));
+		image = IconCache.getResizedImage(getDisplay(), image, imageWidth, imageHeight, imageStyle);
 		label.setBackground(image);
 		images[index] = image;
 	}
-	
+
 	public int getLength()
 	{
 		return labels.length;
 	}
-	
+
 	public Image getImage(int index)
 	{
 		return images[index];
 	}
-	
+
 	final String getText(int index)
 	{
 		return labels[index].getToolTipText();
 	}
-	
+
 	public void addMouseListener(int index, MouseListener listener)
 	{
 		labels[index].addMouseListener(listener);
 	}
-	
+
 	public void addMouseTrackListener(int index, MouseTrackListener listener)
 	{
 		labels[index].addMouseTrackListener(listener);
