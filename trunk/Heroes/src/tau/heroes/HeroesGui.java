@@ -55,6 +55,8 @@ public class HeroesGui
 	private String file = null;
 
 	private boolean isModified = false;
+	
+	private boolean isBoardInit = false;
 
 	int numOfCells;
 
@@ -83,6 +85,10 @@ public class HeroesGui
 	private Composite statusComposite;
 
 	private Point[][] boardPoints = null;
+	
+	private Composite[][] boardSquares = null;
+	
+	private Label[][] boardLabels = null;
 
 	SashForm sash;
 
@@ -453,15 +459,16 @@ public class HeroesGui
 		boolean[][] isVisible;
 		Composite currentHero = null;
 
-		if (boardComposite != null && boardComposite.isDisposed() == false)
-		{
+		if (isBoardInit == false && (boardComposite != null && boardComposite.isDisposed() == false))
 			boardComposite.dispose();
+		
+		if(isBoardInit == false)
+		{
+			boardComposite = new Composite(sc1, SWT.NONE);
+			boardComposite.setBackground(black);
+			GridData d = new GridData(GridData.FILL_BOTH);
+			boardComposite.setLayoutData(d);
 		}
-
-		boardComposite = new Composite(sc1, SWT.NONE);
-		boardComposite.setBackground(black);
-		GridData d = new GridData(GridData.FILL_BOTH);
-		boardComposite.setLayoutData(d);
 
 		sc1.addMouseWheelListener(new ScrollMove() );
 		sc1.forceFocus();
@@ -501,93 +508,31 @@ public class HeroesGui
 			tableLayout.verticalSpacing = 0;
 			boardComposite.setLayout(tableLayout);
 
-			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
-				.getVisibleBoard();
+			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
 
-			MouseListener focusListener = new MouseListener() {
-				public void mouseDown(MouseEvent e)
-				{
-					Label selectedLabel = (Label) e.getSource();
-					currentPoint = (Point) selectedLabel.getData();
-				}
-
-				public void mouseDoubleClick(MouseEvent arg0)
-				{
-				}
-
-				public void mouseUp(MouseEvent arg0)
-				{
-				}
-			};
-
-			Listener listener = new Listener() {
-				Point point = null;
-
-				public void handleEvent(Event event)
-				{
-					switch (event.type)
-					{
-					case SWT.MouseDown:
-						if (event.button == 1)
-						{
-							point = new Point(event.x, event.y);
-						}
-						break;
-					case SWT.MouseMove:
-						if (point == null)
-							break;
-
-						int x = point.x - event.x;
-						int y = point.y - event.y;
-						if (Math.abs(x) < 8 && Math.abs(y) < 8)
-							break;
-
-						Control control = (Control) event.widget;
-						final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
-						Rectangle rect = control.getBounds();
-						final Rectangle r1 = display.map(control, boardComposite, rect);
-						tracker.setRectangles(new Rectangle[] { r1 });
-						tracker.addListener(SWT.Move, new Listener() {
-							public void handleEvent(Event event)
-							{
-								Rectangle r2 = tracker.getRectangles()[0];
-								newPoint = new Point(r2.x / r2.width, r2.y / r2.height);
-
-								if (!gameController
-									.getGameState()
-									.getPlayers()
-									.elementAt(currentPlayerIndex)
-									.checkMove((r2.x / r2.width), (r2.y / r2.height), gameController
-										.getGameState().getBoard()))
-									tracker.setCursor(cursor);
-								else
-									tracker.setCursor(defaultCursor);
-							}
-						});
-
-						if (!tracker.open())
-							break;
-
-						if (newPoint != null && currentPoint != null
-							&& !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
-							handleMoveCommand(new String[] { newPoint.x + "", newPoint.y + "" });
-
-						point = null;
-						break;
-					}
-				}
-			};
-
+			if(isBoardInit == false)
+			{
+				boardSquares = new Composite[numOfCells][numOfCells];
+				boardLabels = new Label[numOfCells][numOfCells];
+			}
+			
 			for (int y = 0; y < numOfCells; y++)
 			{
 				for (int x = 0; x < numOfCells; x++)
 				{
-					Composite b = new Composite(boardComposite, SWT.NONE);
+					if(isBoardInit == false)
+						boardSquares[x][y] = new Composite(boardComposite, SWT.NONE);
+					
+					Composite b = boardSquares[x][y];
 					GridLayout cellLayout = new GridLayout();
 					cellLayout.marginWidth = 0;
 					cellLayout.marginHeight = 0;
 					b.setLayout(cellLayout);
-					Label l = new Label(b, SWT.NONE);
+					
+					if(isBoardInit == false)
+						boardLabels[x][y] = new Label(b, SWT.NONE);
+					
+					Label l = boardLabels[x][y];
 					l.setLayoutData(new GridData(GridData.FILL_BOTH));
 					int t = fromBoardToDisplayIcons(x, y);
 
@@ -647,6 +592,7 @@ public class HeroesGui
 						}
 				}
 			}
+			isBoardInit = true;
 
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
@@ -671,6 +617,81 @@ public class HeroesGui
 			}
 		}
 	}
+	
+
+	MouseListener focusListener = new MouseListener() {
+		public void mouseDown(MouseEvent e)
+		{
+			Label selectedLabel = (Label) e.getSource();
+			currentPoint = (Point) selectedLabel.getData();
+		}
+
+		public void mouseDoubleClick(MouseEvent arg0)
+		{
+		}
+
+		public void mouseUp(MouseEvent arg0)
+		{
+		}
+	};
+
+	Listener listener = new Listener() {
+		Point point = null;
+
+		public void handleEvent(Event event)
+		{
+			switch (event.type)
+			{
+			case SWT.MouseDown:
+				if (event.button == 1)
+				{
+					point = new Point(event.x, event.y);
+				}
+				break;
+			case SWT.MouseMove:
+				if (point == null)
+					break;
+
+				int x = point.x - event.x;
+				int y = point.y - event.y;
+				if (Math.abs(x) < 8 && Math.abs(y) < 8)
+					break;
+
+				Control control = (Control) event.widget;
+				final Tracker tracker = new Tracker(boardComposite, SWT.NONE);
+				Rectangle rect = control.getBounds();
+				final Rectangle r1 = display.map(control, boardComposite, rect);
+				tracker.setRectangles(new Rectangle[] { r1 });
+				tracker.addListener(SWT.Move, new Listener() {
+					public void handleEvent(Event event)
+					{
+						Rectangle r2 = tracker.getRectangles()[0];
+						newPoint = new Point(r2.x / r2.width, r2.y / r2.height);
+
+						if (!gameController
+							.getGameState()
+							.getPlayers()
+							.elementAt(currentPlayerIndex)
+							.checkMove((r2.x / r2.width), (r2.y / r2.height), gameController
+								.getGameState().getBoard()))
+							tracker.setCursor(cursor);
+						else
+							tracker.setCursor(defaultCursor);
+					}
+				});
+
+				if (!tracker.open())
+					break;
+
+				if (newPoint != null && currentPoint != null
+					&& !((newPoint.x == currentPoint.x) && (newPoint.y == currentPoint.y)))
+					handleMoveCommand(new String[] { newPoint.x + "", newPoint.y + "" });
+
+				point = null;
+				break;
+			}
+		}
+	};
 
 	private Label createLabel(Composite composite, String text)
 	{
@@ -1045,7 +1066,7 @@ public class HeroesGui
 
 		final Label player1Label = new Label(form, SWT.NONE);
 		player1Label.setText("Player 1 : ");
-		final Text player1Name = new Text(form, SWT.NONE);
+		final Text player1Name = new Text(form, SWT.BORDER);
 		final Label emptyLabel5 = new Label(form, SWT.NONE);
 		emptyLabel5.setText("");
 		final Label emptyLabel6 = new Label(form, SWT.NONE);
@@ -1053,7 +1074,7 @@ public class HeroesGui
 
 		final Label player2Label = new Label(form, SWT.NONE);
 		player2Label.setText("Player 2 : ");
-		final Text player2Name = new Text(form, SWT.NONE);
+		final Text player2Name = new Text(form, SWT.BORDER);
 		final Button pcButton1 = new Button(form, SWT.CHECK);
 		pcButton1.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel1 = new Combo(form, SWT.NONE);
@@ -1079,7 +1100,7 @@ public class HeroesGui
 
 		final Label player3Label = new Label(form, SWT.NONE);
 		player3Label.setText("Player 3 : ");
-		final Text player3Name = new Text(form, SWT.NONE);
+		final Text player3Name = new Text(form, SWT.BORDER);
 		final Button pcButton2 = new Button(form, SWT.CHECK);
 		pcButton2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel2 = new Combo(form, SWT.BEGINNING);
@@ -1104,7 +1125,7 @@ public class HeroesGui
 
 		final Label player4Label = new Label(form, SWT.NONE);
 		player4Label.setText("Player 4 : ");
-		final Text player4Name = new Text(form, SWT.NONE);
+		final Text player4Name = new Text(form, SWT.BORDER);
 		final Button pcButton3 = new Button(form, SWT.CHECK);
 		pcButton3.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 		pcLevel3 = new Combo(form, SWT.NONE);
