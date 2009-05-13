@@ -15,6 +15,7 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -101,7 +102,7 @@ public class HeroesGui {
 		this.gameController = gameController;
 		IconCache.initResources(display);
 	}
-
+ 
 	public Shell open() {
 		shell = new Shell(display/* , SWT.APPLICATION_MODAL */);
 		shell.setLayout(new FillLayout());
@@ -420,6 +421,8 @@ public class HeroesGui {
 		GridData d = new GridData(GridData.FILL_BOTH);
 		boardComposite.setLayoutData(d);
 
+		sc1.addMouseWheelListener(new ScrollMove() );
+		sc1.forceFocus();
 		if (initBoard == false) {
 			final GridLayout gridLayout = new GridLayout();
 			boardComposite.setLayout(gridLayout);
@@ -436,9 +439,9 @@ public class HeroesGui {
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
 			sc1.setExpandVertical(true);
-			sc1
-					.setMinSize(boardComposite.computeSize(SWT.DEFAULT,
-							SWT.DEFAULT));
+			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT,SWT.DEFAULT));
+
+			
 		} else
 		// initBoard == true
 		{
@@ -616,10 +619,8 @@ public class HeroesGui {
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
 			sc1.setExpandVertical(true);
-			sc1
-					.setMinSize(boardComposite.computeSize(SWT.DEFAULT,
-							SWT.DEFAULT));
-
+			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT,SWT.DEFAULT));
+	
 			if (currentHero != null) {
 				Rectangle bounds = currentHero.getBounds();
 				Rectangle area = sc1.getClientArea();
@@ -2625,5 +2626,22 @@ public class HeroesGui {
 			} else
 				displayError("Unknown creature type.");
 		}
+	}
+	private class ScrollMove implements MouseWheelListener
+	{
+			public void mouseScrolled(MouseEvent e)
+			{
+				try
+				{
+					ScrolledComposite sc = (ScrolledComposite)e.getSource();
+					Point origin = sc.getOrigin();
+					origin.y -= e.count*4;
+					sc.setOrigin(origin);
+				}
+				catch(Exception ex)
+				{
+					System.out.println("ScrollMove: exception = "+ex.getMessage());
+				}
+			}
 	}
 }
