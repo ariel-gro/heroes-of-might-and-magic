@@ -1,12 +1,10 @@
 package tau.heroes.test;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import tau.heroes.Archer;
 import tau.heroes.Army;
@@ -31,12 +29,13 @@ public class AttackGUITest extends TestCase
 	public void tearDown() throws Exception
 	{
 	}
-	
+
 	public void testEmpty()
 	{
-		
+
 	}
-	//in order to test you need to rename the function  testOpen
+
+	// in order to test you need to rename the function testOpen
 	public void not_testOpen()
 	{
 		@SuppressWarnings("unused")
@@ -44,10 +43,10 @@ public class AttackGUITest extends TestCase
 		Player p1 = new Player("Test1");
 		Player p2 = new Player("Test2");
 		Creature[] c1 = new Creature[5];
-	//	c1[0] = new Soldier(12);// 12 will win 11 will lose with 0
-	//	c1[1] = new Dwarf(10);
+		// c1[0] = new Soldier(12);// 12 will win 11 will lose with 0
+		// c1[1] = new Dwarf(10);
 		c1[2] = new FireDragon(9);
-	//	c1[3] = new Archer(12);
+		// c1[3] = new Archer(12);
 		// (addToDamage).
 		Army a1 = new Army(c1);
 		Creature[] c2 = new Creature[5];

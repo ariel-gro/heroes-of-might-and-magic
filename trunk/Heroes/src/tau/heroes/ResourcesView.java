@@ -5,12 +5,13 @@ package tau.heroes;
 
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Yuval & Shira
- *
+ * 
  */
 public class ResourcesView extends BaseLabelRowView
 {
@@ -18,7 +19,7 @@ public class ResourcesView extends BaseLabelRowView
 	private static int IMAGE_HEIGHT = 50;
 
 	private Map<String, Integer> resources;
-	
+
 	/**
 	 * @param parent
 	 * @param style
@@ -26,6 +27,8 @@ public class ResourcesView extends BaseLabelRowView
 	public ResourcesView(Composite parent, int style)
 	{
 		super(parent, style, IMAGE_WIDTH, IMAGE_HEIGHT, ResourceType.values().length);
+
+		setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 	}
 
 	public void setResources(Map<String, Integer> resources)
@@ -50,7 +53,7 @@ public class ResourcesView extends BaseLabelRowView
 				text = resources.get(rType.getTypeName()).toString();
 				tooltip = rType.getTypeName() + ": " + text;
 				image = IconCache.getResourceImage(rType.getTypeName());
-				setLabel(index, image, text, tooltip);
+				setLabel(index, image, SWT.NONE, text, tooltip);
 				index++;
 			}
 		}

@@ -25,6 +25,7 @@ public class ObjectInfoView extends Composite
 	private Label titleLabel;
 	private ResourcesView pricesView;
 	private Label messageLabel;
+	private Label messageLabel2;
 
 	/**
 	 * @param parent
@@ -50,6 +51,9 @@ public class ObjectInfoView extends Composite
 
 		messageLabel = new Label(this, SWT.LEFT);
 		messageLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		messageLabel2 = new Label(this, SWT.LEFT);
+		messageLabel2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 	}
 
 	public void setImage(Image image)
@@ -70,6 +74,17 @@ public class ObjectInfoView extends Composite
 
 	public void setMessage(String message)
 	{
-		this.messageLabel.setText(message);
+		if (message != null)
+			this.messageLabel.setText(message);
+		else
+			this.messageLabel.setText("");
+	}
+	
+	public void setMessage2(String message)
+	{
+		if (message != null)
+			this.messageLabel2.setText(message);
+		else
+			this.messageLabel2.setText("");
 	}
 }

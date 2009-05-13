@@ -3,6 +3,7 @@
  */
 package tau.heroes;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,6 +27,16 @@ public class ArmyView extends BaseLabelRowView
 	public ArmyView(Composite parent, int style)
 	{
 		super(parent, style, IMAGE_WIDTH, IMAGE_HEIGHT, Army.MAX_CREATURES);
+	}
+
+	/**
+	 * Gets the army shown in the view
+	 * 
+	 * @return Army shown in the view
+	 */
+	public Army getArmy()
+	{
+		return army;
 	}
 
 	/**
@@ -71,11 +82,11 @@ public class ArmyView extends BaseLabelRowView
 				// If not null, gets a creature's image, otherwise an empty one
 				image = IconCache.getCreatureImage(creaturesArray[i]);
 				// Call base to set the image
-				setLabel(i, image, text, tooltip);
+				setLabel(i, image, SWT.NONE, text, tooltip);
 			}
 		}
 		else
 			for (int i = 0; i < Army.MAX_CREATURES; i++)
-				setLabel(i, IconCache.getCreatureImage((Creature) null), "", "Empty");
+				setLabel(i, IconCache.getCreatureImage((Creature) null), SWT.NONE, "", "Empty");
 	}
 }
