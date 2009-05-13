@@ -2105,9 +2105,9 @@ public class HeroesGui
 		gridLayout.verticalSpacing = 5;
 		gridLayout.marginHeight = gridLayout.marginWidth = 25;
 		helpShell.setLayout(gridLayout);
-		helpShell.setText("Heroes of Might and Magic (TAU Version) - Gameplay assistance");
+		helpShell.setText("Heroes (TAU Ver.) - Gameplay Assistance");
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
-		helpShell.setSize(250, 330);
+		helpShell.setSize(330, 330);
 
 		/* Getting Started */
 		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
@@ -2195,7 +2195,7 @@ public class HeroesGui
 			public void widgetSelected(SelectionEvent e)
 			{
 				helpShell.setEnabled(false);
-				diplayHelpByHelpItem("Game Score");
+				diplayHelpByHelpItem("Game Score and Highscores");
 				helpShell.setEnabled(true);
 			}
 		});		
@@ -2225,6 +2225,8 @@ public class HeroesGui
 			}
 		});
 		
+		//helpShell.pack();
+		//helpShell.setSize(helpShell.getSize().x + 25, helpShell.getSize().y + 25);
 		helpShell.open();
 		shell.setEnabled(false);
 		while (!helpShell.isDisposed())
@@ -2241,10 +2243,6 @@ public class HeroesGui
 	{
 		/**
 		 * TODO: add helpful text make use of shell with text in it instead of
-		 * displayMessage() shell should be scrollable and composite so we can
-		 * integrate pictures in it
-		 * 
-		 * add more help options for castle window, status window
 		 * 
 		 */
 		String defaultHelpString = "helpful text here";
@@ -2252,7 +2250,7 @@ public class HeroesGui
 
 		if (helpItem.equals("How to Move"))
 			helpString = "To move: Right click your hero,"
-				+ " or just click hero and click destenation.\n";
+						+" or just click hero and click destenation.\n";
 
 		else if (helpItem.equals("Castle"))
 			helpString = "Castle menu and options are:\n" + "Build - build a creature factory\n"
@@ -2294,16 +2292,15 @@ public class HeroesGui
 						+"The Heroes of Might and Magic (TAU Version) Team\n"
 						+ "© 2009";
 		
-		else if (helpItem.equals("Game Score"))
-			helpString = "The Heroes of MIght and Magic (TAU Version) has a score board.\n"
+		else if (helpItem.equals("Game Score and Highscores"))
+			helpString = "The Heroes of MIght and Magic (TAU Version) has a score board.\n\n"
 						+"Only the player who won the scenario (see 'Getting Started' about scenario)\n"
-						+"gets a score at the end of the game.\n"
+						+"gets a score at the end of the game.\n\n"
 						+"The winner's score is calculated like this:\n"
-						+""//TODO: Ariel - continue
+						+"\n\n"//TODO: Ariel - continue
 						+"The High-Score table is available through the 'Highscores' menu on the top menu bar.\n"
 						+"On the 'Highscores' menu you will find the option to view the highscores,\n"
-						+"or reset the highscores table.\n"
-						;
+						+"or reset the highscores table.\n";
 		
 		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
 		helpShell.setText("Help about: " + helpItem);
@@ -2376,7 +2373,9 @@ public class HeroesGui
 		subItem1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				shell.setEnabled(false);
 				displayHighscores();
+				shell.setEnabled(true);
 			}
 		});
 		MenuItem subItem2 = new MenuItem(menu, SWT.NULL);
@@ -2385,6 +2384,17 @@ public class HeroesGui
 			public void widgetSelected(SelectionEvent e)
 			{
 				resetHighscores();
+			}
+		});
+		
+		MenuItem subItem3 = new MenuItem(menu, SWT.NULL);
+		subItem3.setText("&About Highscores");
+		subItem3.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.setEnabled(false);
+				diplayHelpByHelpItem("Game Score and Highscores");
+				shell.setEnabled(true);
 			}
 		});
 	}
