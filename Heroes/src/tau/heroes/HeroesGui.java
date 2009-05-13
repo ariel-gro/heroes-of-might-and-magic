@@ -2107,7 +2107,7 @@ public class HeroesGui
 		helpShell.setLayout(gridLayout);
 		helpShell.setText("Heroes of Might and Magic (TAU Version) - Gameplay assistance");
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
-		helpShell.setSize(250, 300);
+		helpShell.setSize(250, 330);
 
 		/* Getting Started */
 		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
@@ -2186,6 +2186,19 @@ public class HeroesGui
 				helpShell.setEnabled(true);
 			}
 		});
+		
+		/* Scores */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Game Score");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.setEnabled(false);
+				diplayHelpByHelpItem("Game Score");
+				helpShell.setEnabled(true);
+			}
+		});		
 
 		/* About the game */
 		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
@@ -2247,7 +2260,10 @@ public class HeroesGui
 				+ "Join - move units from castle to hero\n" + "\n";
 
 		else if (helpItem.equals("Getting Started"))
-			helpString = "To end turn: Right click your hero or castle(s) and select 'end turn'\n"
+			helpString = "Some Basic Rules:\n"
+				+"=================\n\n"
+				+""
+				+"To end turn: Right click your hero or castle(s) and select 'end turn'\n"
 				+ "Player info is on the right part of the screen (status window)\n\n"
 				+ "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n"
 				+ "Use the Highscores menu to view or reset the highscores table\n\n"
@@ -2278,6 +2294,17 @@ public class HeroesGui
 						+"The Heroes of Might and Magic (TAU Version) Team\n"
 						+ "© 2009";
 		
+		else if (helpItem.equals("Game Score"))
+			helpString = "The Heroes of MIght and Magic (TAU Version) has a score board.\n"
+						+"Only the player who won the scenario (see 'Getting Started' about scenario)\n"
+						+"gets a score at the end of the game.\n"
+						+"The winner's score is calculated like this:\n"
+						+""//TODO: Ariel - continue
+						+"The High-Score table is available through the 'Highscores' menu on the top menu bar.\n"
+						+"On the 'Highscores' menu you will find the option to view the highscores,\n"
+						+"or reset the highscores table.\n"
+						;
+		
 		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
 		helpShell.setText("Help about: " + helpItem);
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
@@ -2292,9 +2319,9 @@ public class HeroesGui
 		Font initialFont = helpLable.getFont();
 		FontData[] fontData = initialFont.getFontData();
 		for (int k = 0; k < fontData.length; k++) {
-			fontData[k].setHeight(3 + initialFont.getFontData()[k]
+			fontData[k].setHeight(2 + initialFont.getFontData()[k]
 					.getHeight());
-			fontData[k].setStyle(SWT.BOLD);
+			//fontData[k].setStyle(SWT.BOLD);
 		}
 		newFont = new Font(display, fontData);
 		helpLable.setFont(newFont);
