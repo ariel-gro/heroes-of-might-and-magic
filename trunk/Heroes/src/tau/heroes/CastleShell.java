@@ -194,7 +194,6 @@ public class CastleShell extends Shell
 			this.index = index;
 		}
 
-		@Override
 		public void mouseEnter(MouseEvent e)
 		{
 			Class<? extends CreatureFactory> factoryClass = CreatureFactory
@@ -234,18 +233,15 @@ public class CastleShell extends Shell
 			objectInfoView.setVisible(true);
 		}
 
-		@Override
 		public void mouseExit(MouseEvent arg0)
 		{
 			objectInfoView.setVisible(false);
 		}
 
-		@Override
 		public void mouseHover(MouseEvent arg0)
 		{
 		}
 
-		@Override
 		public void mouseDoubleClick(MouseEvent e)
 		{
 			Class<? extends CreatureFactory> factoryClass = CreatureFactory
@@ -275,12 +271,10 @@ public class CastleShell extends Shell
 			}
 		}
 
-		@Override
 		public void mouseDown(MouseEvent arg0)
 		{
 		}
 
-		@Override
 		public void mouseUp(MouseEvent arg0)
 		{
 		}
@@ -295,7 +289,6 @@ public class CastleShell extends Shell
 			this.index = index;
 		}
 
-		@Override
 		public void mouseEnter(MouseEvent e)
 		{
 			if (castle != null && castle.getArmy() != null)
@@ -338,18 +331,15 @@ public class CastleShell extends Shell
 				mouseExit(e);
 		}
 
-		@Override
 		public void mouseExit(MouseEvent e)
 		{
 			objectInfoView.setVisible(false);
 		}
 
-		@Override
 		public void mouseHover(MouseEvent e)
 		{
 		}
 
-		@Override
 		public void mouseDoubleClick(MouseEvent e)
 		{
 			if (castle != null && hero != null && castle.getArmy() != null)
@@ -375,12 +365,10 @@ public class CastleShell extends Shell
 			}
 		}
 
-		@Override
 		public void mouseDown(MouseEvent e)
 		{
 		}
 
-		@Override
 		public void mouseUp(MouseEvent e)
 		{
 		}
@@ -395,7 +383,6 @@ public class CastleShell extends Shell
 			this.index = index;
 		}
 
-		@Override
 		public void mouseEnter(MouseEvent e)
 		{
 			if (hero != null && castle != null)
@@ -433,18 +420,15 @@ public class CastleShell extends Shell
 				this.mouseExit(e);
 		}
 
-		@Override
 		public void mouseExit(MouseEvent e)
 		{
 			objectInfoView.setVisible(false);
 		}
 
-		@Override
 		public void mouseHover(MouseEvent e)
 		{
 		}
 
-		@Override
 		public void mouseDoubleClick(MouseEvent e)
 		{
 			if (castle != null && hero != null && hero.getArmy() != null)
@@ -473,12 +457,10 @@ public class CastleShell extends Shell
 			}
 		}
 
-		@Override
 		public void mouseDown(MouseEvent e)
 		{
 		}
 
-		@Override
 		public void mouseUp(MouseEvent e)
 		{
 		}
