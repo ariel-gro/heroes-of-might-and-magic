@@ -64,7 +64,7 @@ public class HeroesGui
 
 	private Color red;
 
-	private Display display;
+	private static Display display;
 
 	static Control currentChild = null;
 
@@ -862,10 +862,9 @@ public class HeroesGui
 		String str2 = p.getDayAsString();
 		firstLabel.setText("               " + str1);
 		createLabel(statusComposite, "    " + str2);
-		// createLabel(statusComposite, "");
+
 		Button button = new Button(statusComposite, SWT.CENTER);
-		// button.setBackground(red);
-		// button.setForeground(white);
+
 		button.setText("END TURN");
 		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -967,7 +966,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				shell.setEnabled(false);
 				diplayHelpByHelpItem("Status Window");
+				shell.setEnabled(true);
 			}
 		});
 
@@ -1255,7 +1256,10 @@ public class HeroesGui
 		helpButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				diplayHelpByHelpItem("Getting Started");
+				shell.setEnabled(false);
+				shell1.setEnabled(false);
+				diplayHelpByHelpItem("New Game Window");
+				shell1.setEnabled(true);
 			}
 		});
 
@@ -1270,11 +1274,12 @@ public class HeroesGui
 		});
 
 		shell1.open();
-		while (!shell1.isDisposed())
+		shell.setEnabled(false);
+		while (!shell1.isDisposed()) 
 		{
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) 
 			{
-				if (exitHelperArray[0] != ExitOK)
+				if (exitHelperArray[0] != ExitOK) 
 				{
 					exitHelperArray[0] = ExitCANCEL;
 				}
@@ -1283,10 +1288,12 @@ public class HeroesGui
 		}
 		if (exitHelperArray[0] != ExitCANCEL)
 		{
+			shell.setEnabled(true);
 			return players;
 		}
 		else
 		{
+			shell.setEnabled(true);
 			return null;
 		}
 	}
@@ -2088,7 +2095,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("Getting Started");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2099,7 +2108,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("Army");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2110,7 +2121,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("How to Move");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2121,7 +2134,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("Resources");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2132,7 +2147,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("Status Window");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2143,7 +2160,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				diplayHelpByHelpItem("Battles");
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2154,7 +2173,9 @@ public class HeroesGui
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				helpShell.setEnabled(false);
 				showAboutMbox();
+				helpShell.setEnabled(true);
 			}
 		});
 
@@ -2166,11 +2187,12 @@ public class HeroesGui
 			public void widgetSelected(SelectionEvent e)
 			{
 				helpShell.dispose();
+				shell.setEnabled(true);
 			}
 		});
-
-		// helpShell.pack();
+		
 		helpShell.open();
+		shell.setEnabled(false);
 		while (!helpShell.isDisposed())
 		{
 			if (!display.readAndDispatch())
@@ -2178,6 +2200,7 @@ public class HeroesGui
 				display.sleep();
 			}
 		}
+		shell.setEnabled(true);
 	}
 
 	static void diplayHelpByHelpItem(String helpItem)
@@ -2220,8 +2243,60 @@ public class HeroesGui
 
 		else if (helpItem.equals("Status Window"))
 			helpString = defaultHelpString;
-
-		displayMessage(helpString);
+		
+		else if (helpItem.equals("New Game Window"))
+			helpString = "Starting a new game is easy:\n"
+						+"The first player must be a user. Use the text box to enter player name.\n"
+						+"A game will have as many players as names entered.\n"
+						+"To add a computer player, just click the chec-box near the text line.\n"
+						+"After checking that box you can decide whether the computer player will be a 'Novice' or an 'Expert' player.\n"
+						+"'Novice' will make random moves on the map, while 'Expert' will also try to build an army.\n"
+						+"If you wish to open a previously saved game of Heroes of Might and Magic, \n"
+						+"close this window, go to File menu and select 'Open Saved Game'\n"
+						+"Good Luck and we hope you enjoy the game.\n"
+						+"The Heroes of Might and Magic (TAU Version) Team\n"
+						+ "© 2009";
+		
+		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
+		helpShell.setText("Help about: " + helpItem);
+		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setLayout(new GridLayout(1, true));
+		helpShell.setLocation(150, 150);
+		
+		Label helpLable = new Label(helpShell, SWT.LEFT);
+		helpLable.setText(helpString);
+		
+		Font newFont = helpLable.getFont(); // just an initialization for the
+		// compiler
+		Font initialFont = helpLable.getFont();
+		FontData[] fontData = initialFont.getFontData();
+		for (int k = 0; k < fontData.length; k++) {
+			fontData[k].setHeight(3 + initialFont.getFontData()[k]
+					.getHeight());
+			fontData[k].setStyle(SWT.BOLD);
+		}
+		newFont = new Font(display, fontData);
+		helpLable.setFont(newFont);
+		
+		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Close");
+		button.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.dispose();
+			}
+		});
+		
+		helpShell.pack();
+		helpShell.setSize(helpShell.getSize().x + 15, helpShell.getSize().y + 15);
+		helpShell.open();
+		
+		while (!helpShell.isDisposed()){
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
 	}
 
 	public void showAboutMbox()
