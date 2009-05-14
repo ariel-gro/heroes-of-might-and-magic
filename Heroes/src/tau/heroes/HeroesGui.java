@@ -911,7 +911,7 @@ public class HeroesGui
 			movesLabel.setBackground(white);
 			createLabel(statusComposite, "HERO  POSITION  :  " + xPos + " , " + yPos);
 			createLabel(statusComposite, "");
-			createLabel(statusComposite, "DEFENCE  SKILL  :  " + p.getHero().getDefenseSkill());
+			createLabel(statusComposite, "DEFENSE  SKILL  :  " + p.getHero().getDefenseSkill());
 			createLabel(statusComposite, "ATTACK  SKILL  :  " + p.getHero().getAttackSkill());
 			createLabel(statusComposite, "");
 
@@ -2380,7 +2380,19 @@ public class HeroesGui
 		}
 		else if (helpItem.equals("Army"))
 		{
-			helpString = defaultHelpString;
+			helpString = "An army is a collection of creature units in a castle or travelling with a hero. To build an army\n"
+						+"you need to have creature factories in your castle(s). For more about building creature\n"
+						+"factories and creature units see the help under castle window.\n\n"
+
+						+"Each creature has unique traits, such as: attack, defense, hit points, damage etc.\n"
+						+"The hit points trait determains how much damage a unit can take before it parishes.\n"
+						+"The demage trait determains how much damage a unit can deal to a target with 0 defense.\n"
+						+"when attacking an enemy creature, the attacking creature's demage is multiplied by the\n"
+						+"amount of units of that same creature in that army.\n"
+						+"The attack trait is a bonus modifier on the demage a unit deals when attacking an enemy creature.\n"
+						+"The defense trait is a bonus modifier that lowers the amount of demage taken by a unit when\n"
+						+"attacked by an enemy creature."
+				;
 		}
 		else if (helpItem.equals("Resources"))
 		{
@@ -2403,8 +2415,8 @@ public class HeroesGui
 						+"it is for your player and the 'End Turn' button. Pressing that button will instantly end your turn and\n"
 						+"give the turn to the next player. Don't press that button if you're not sure you want to end your turn.\n\n"
 
-						+"Under the 'End Turn' button you can see your hero's stats: moves left, position on the map, defence\n"
-						+"skill, attack skill and army. Attack and defence skills gives you better attack and defence against\n"
+						+"Under the 'End Turn' button you can see your hero's stats: moves left, position on the map, defense\n"
+						+"skill, attack skill and army. Attack and defense skills gives you better attack and defense against\n"
 						+"enemy units attacks during battles (for more about battles see 'Battels' under the help section).\n"
 						+"to learn more about a creature in your hero's army put your cursor on the creature's image.\n\n"
 
