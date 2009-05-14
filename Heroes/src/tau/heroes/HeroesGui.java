@@ -881,7 +881,7 @@ public class HeroesGui
 		firstLabel.setFont(IconCache.stockFonts[IconCache.titleFontIndex]);
 		String str1 = p.getName();
 		String str2 = p.getDayAsString();
-		firstLabel.setText("               " + str1);
+		firstLabel.setText("     " + str1);
 		createLabel(statusComposite, "    " + str2);
 
 		Button button = new Button(statusComposite, SWT.CENTER);
@@ -1043,7 +1043,7 @@ public class HeroesGui
 		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
 		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell1.setLayout(new GridLayout());
-		shell1.setSize(326, 225);
+		shell1.setSize(330, 225);
 		shell1.setText("New Game Menu");
 		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
 
@@ -1285,7 +1285,7 @@ public class HeroesGui
 		});
 
 		Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
-		cancelButton.setText("        Cancel        ");
+		cancelButton.setText("       Cancel       ");
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
