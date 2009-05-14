@@ -161,6 +161,7 @@ public class CastleShell extends Shell
 		{
 			setHero(h);
 			createNewHeroButton.setEnabled(false);
+			heroesGui.updateStatusWindow();
 		}
 	}
 
