@@ -2248,33 +2248,108 @@ public class HeroesGui
 		String defaultHelpString = "helpful text here";
 		String helpString = defaultHelpString;
 
-		if (helpItem.equals("How to Move"))
-			helpString = "To move: Right click your hero,"
-						+" or just click hero and click destenation.\n";
+		if (helpItem.equals("Getting Started"))
+			helpString = "Startint to play Heroes of Might and Magic ©  (TAU Version)\n\n"
+						+"This game is a turn based starategy game for 2-4 players. The first player must be\n"
+						+"a user. All the rest can be either user or computer players.\n\n"
+
+						+"The goal of the game is to be the last player left. To do so, you must build an army\n"
+						+"(see more under 'Army'), gather resources (see more under 'Resources'), fight the\n"
+						+"other players in battles (see more under 'Battles') and take over their castles.\n\n"
+
+						+"A player starts with one hero and one castle. The hero starts with a random\n"
+						+"amount of soldier units. A player with no castles gets a 7 day period to try and\n"
+						+"capture a castle. The 7 days timer is reaset when a castle is captured.\n\n"
+
+						+"The map is located in the main part of the view. On the map you can see where\n"
+						+"your castle is, your hero, resource mines and other players' heroes and catles.\n"
+						+"The hero is the knight on a horse icon.\n"
+						+"A player's view is bounded by the places his hero already been to. Each hero has\n"
+						+"a view radius of one square in each direction from where the hero is standing.\n"
+						+"Each turn is a day, and when you end a turn (using the 'End Turn' button) the turn\n"
+						+"passes to the next player. When all players finished their turn by using 'End Turn'\n"
+						+"the turn cycle starts again and a day passed. On each day your hero can move\n"
+						+"up to 5 squares on the map (see more under 'How to Move'). By moving your hero\n"
+						+"on the map you can capture resources and get into battles with other players' heros\n"
+						+"and castles.\n\n"
+
+						+"In order for your hero to win battles, you must have a strong army. To gather a strong\n"
+						+"army you need to build creature factories in your castle(s), and build units in those\n"
+						+"factories. To do so you need to gather resources. When a hero is in the castle, you can\n"
+						+"either move units from the hero to the castle (the hero must have at least 1 unit left) by\n"
+						+"using the 'Split' option in the castle's right-click menu, or move units from the castle to the\n"
+						+"hero using the 'Join' option in the castle's right-click menu (the castle can be left without\n"
+						+"units in it but this will make it easier to capture by enemy heroes). You can also move\n"
+						+"units between hero and castle using the castle window.\n"
+						+"Each creature factory in the castle has a limited amount of units that can be built. This\n"
+						+"quota is regenerated when Day 7 turnes into Day 1. The amount regenerated depends\n"
+						+"on the factory. No units are lost (i.e. if 1 unit was left at the end of Day 7 and 10 units\n"
+						+"regenerated on Day 1 - 11 units will be available on Day 1).\n\n\n"
+						
+						+"Good Luck and we hope you enjoy the game.\n"
+						+"The Heroes of Might and Magic (TAU Version) Team\n"
+						+ "© 2009";
 
 		else if (helpItem.equals("Castle"))
-			helpString = "Castle menu and options are:\n" + "Build - build a creature factory\n"
-				+ "Make - make a new creature\n" + "Split - move units from hero to castle\n"
-				+ "Join - move units from castle to hero\n" + "\n";
+			helpString = defaultHelpString;
+						/*"Castle menu and options are:\n" + "Build - build a creature factory\n"
+						+"Make - make a new creature\n" + "Split - move units from hero to castle\n"
+						+"Join - move units from castle to hero\n" + "\n";*/
 
-		else if (helpItem.equals("Getting Started"))
-			helpString = "Some Basic Rules:\n"
-				+"=================\n\n"
-				+""
-				+"To end turn: Right click your hero or castle(s) and select 'end turn'\n"
-				+ "Player info is on the right part of the screen (status window)\n\n"
-				+ "Use the File menu to save a game,load a game or start a new game (current game will not be saved automatically)\n\n"
-				+ "Use the Highscores menu to view or reset the highscores table\n\n"
-				+ "Quitting the game is via File -> Exit\n\n\n" + "Enjoy the game";
+		else if (helpItem.equals("How to Move"))
+			helpString = "Each hero (the hero icon is the knight on a horse icon) can move 5 squares on each day (see more\n"
+						+"about days under 'Getting Started').\n"
+						+"To move your hero on the map, simply click the hero icon once . After clicking your hero once\n"
+						+"you will notice that the cursor has changed. Move the cursor to the desiered destination square,\n"
+						+"and click that square. The hero will move to that square at once.\n"
+						+"Another way to move your hero is to 'drag and drop' it on the map.\n\n"
+						+"Some map objects will respond when a hero moves to them:\n"
+						+"If you try to move to a castle your hero will enter that castle. If that castle is owned by you,\n"
+						+"you will be able to move units to and from that castle.\n"
+						+"If the castle is not owned by you, you will try to take over it. If it is defended, a battle will start\n"
+						+"automatically (see more about balles under 'Battles'). If it is not defended it will become yours.\n"
+						+"If you try to move your hero to a resource (see more under 'Resources') you will get ownership\n"
+						+"over that resource. If it was already yours, nothing will change.\n"
+						+"If you try to move your hero to another player's hero a battle will start automatically (see more\n"
+						+"under 'Battles')."; 
+			
 
 		else if (helpItem.equals("Battles"))
-			helpString = defaultHelpString;
+			helpString = "To win this game you need to eliminate the other players. To fight another hero,\n"
+						+"just walk up to him (see 'How to Move' for more about moving your hero). To fight\n"
+						+"another player's castle, just move to his castle. If the castle is protected by an army,\n"
+						+"a combat screen will appear automatically. If unguarded you will capture it at once.\n\n"
+
+						+"The Combat Screen:\n"
+						+"When a battle starts, you will see a battle field with your army facing the opponenets\n"
+						+"army. In each turn, one of your creatures can attack an enemy target of your choice.\n"
+						+"For example, if you have 3 different types of creatures you can attack 3 times in each\n"
+						+"round. The cursor will change into a sword pointing to the defending army. To attack\n"
+						+"just double click on your target.\n\n"
+
+						+"Status:\n"
+						+"At the bottom of the screen you will see a status screen. The screen will tell you who's turn\n"
+						+"is it, what happend since the battle started, how much damge was done by an attack etc'.\n"
+						+"You can hover your cursor over a creature to see how much units remains from it.\n\n"
+
+						+"Winning and losing:\n"
+						+"When one hero has no more army units left he is defeated. The other hero is the winner of\n"
+						+"the battle. The defeated hero is remove from the map. If you were fighting for a castle, and\n"
+						+"won you now own the castle, good for you!\n"
+						+"If you lose your hero, a new one can be purchased in a castle for only 3000 gold.\n";
 
 		else if (helpItem.equals("Army"))
 			helpString = defaultHelpString;
 
 		else if (helpItem.equals("Resources"))
-			helpString = defaultHelpString;
+			helpString = "To win the game you should build a strong army. To build an army\n"
+						+"a player must gather resources.\n"
+						+"There are 3 different types of resources in this game: Gold, Wood\n"
+						+"and Stone. When a day (turn) starts you recive 1000 Gold for each\n"
+						+"castle you own, and for each Gold mine you own. You also get 2\n"
+						+"Stone and 2 Wood for each Stone mine and wood-mill you own respectively.\n"
+						+"To get ownership over mines you need to look for them on the map\n"
+						+"(see more about moving in 'How to Move').\n";
 
 		else if (helpItem.equals("Status Window"))
 			helpString = defaultHelpString;
@@ -2287,17 +2362,18 @@ public class HeroesGui
 						+"After checking that box you can decide whether the computer player will be a 'Novice' or an 'Expert' player.\n"
 						+"'Novice' will make random moves on the map, while 'Expert' will also try to build an army.\n"
 						+"If you wish to open a previously saved game of Heroes of Might and Magic, \n"
-						+"close this window, go to File menu and select 'Open Saved Game'\n"
+						+"close this window, go to File menu and select 'Open Saved Game'\n\n"
+						+"For information about how to play the game check 'Getting Started' in the help section.\n\n\n"
 						+"Good Luck and we hope you enjoy the game.\n"
 						+"The Heroes of Might and Magic (TAU Version) Team\n"
 						+ "© 2009";
 		
 		else if (helpItem.equals("Game Score and Highscores"))
 			helpString = "The Heroes of MIght and Magic (TAU Version) has a score board.\n\n"
-						+"Only the player who won the scenario (see 'Getting Started' about scenario)\n"
-						+"gets a score at the end of the game.\n\n"
-						+"The winner's score is calculated like this:\n"
-						+"\n\n"//TODO: Ariel - continue
+						+"Only the player who won the scenario (see 'Getting Started' about scenario) gets a score\n"
+						+"at the end of the game. The winner gets one point for every resource mine, one point for\n"
+						+"each treasury (i.e. 500 Gold equals 500 points) and one point for each unit (in castle\n"
+						+"and with hero)\n"
 						+"The High-Score table is available through the 'Highscores' menu on the top menu bar.\n"
 						+"On the 'Highscores' menu you will find the option to view the highscores,\n"
 						+"or reset the highscores table.\n";
@@ -2347,9 +2423,15 @@ public class HeroesGui
 	public void showAboutMbox()
 	{
 		String aboutString;
-		aboutString = "\n" + "Heroes of Might and Magic (TAU Version)\n"
-			+ "© 2009 - All right reserved!";
-		displayMessage(aboutString);
+		aboutString = "\n" + "Heroes of Might and Magic (TAU Version)\n\n"
+					+ "Developped by the Heroes team for:\n"
+					+ "Advanced development of Java based systemes\n"
+					+ "course at TAU\n\n"
+					+ "© 2009 - All right reserved!";
+		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
+		box.setText("Heroes of Might and Magic (TAU Version)");
+		box.setMessage(aboutString);
+		box.open();
 	}
 
 	/**
