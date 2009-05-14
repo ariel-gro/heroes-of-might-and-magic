@@ -2,7 +2,7 @@
 <feature
       id="heroes.feature"
       label="Heroes Feature"
-      version="1.1.17">
+      version="1.1.18">
 
    <description url="http://www.example.com/description">
       Heroes of Might and Magic
@@ -20,7 +20,7 @@
          id="heroes.plugin"
          download-size="0"
          install-size="0"
-         version="1.1.17"
+         version="1.1.18"
          unpack="false"/>
 
 </feature>
