@@ -2291,7 +2291,41 @@ public class HeroesGui
 						+ "© 2009";
 
 		else if (helpItem.equals("Castle"))
-			helpString = defaultHelpString;
+			helpString = "In this window you can interact with your castle and hero (if one is in it).\n\n"
+
+						+"On the left side of this window you can see the castle's creature facories,\n"
+						+"the castle's army and when a hero is present in the castle you will be able\n"
+						+"to see the hero's army as well. On the bottom of the left side you will notice\n"
+						+"a button 'Create Hero' which will be available if you lose a hero in a battle\n"
+						+"(for more about battales see 'Battels' in the help section).\n"
+						+"On the right side of this window you will get info about parts of the left side\n"
+						+"whenever your cursor is over a part of the left side.\n\n"
+
+						+"Building factories and units:\n"
+						+"To build an army you need to purchase army units. To do so you must have a\n"
+						+"creature factory first. On the creature factories section of the left side window\n"
+						+"you can see the factories available. If a factory is grayed  out that means you\n"
+						+"do not have that factory yet. To build a factory double click the image. If you\n"
+						+"have the needed resources the factory will be built at once (for more about\n"
+						+"resources see 'Resources' under help section).  When the factory image is not\n"
+						+"gray you have that factory - only one of each factory can be built in one castle.\n"
+						+"After having a creature factory you can purchase army units from that factory,\n"
+						+"simply by double clicking the image of the factory. Each double click adds a unit\n"
+						+"to the castle's army.\n"
+						+"Factories and units prices will show on the right part of this window when your\n"
+						+"cursor is over a factory or creature image respectively.\n\n"
+
+						+"Moving units between hero and castle:\n"
+						+"When a hero is present in the castle, you can move units between them. To do so\n"
+						+"simply double click a creature and one unit will be moved. If you double click on\n"
+						+"a creature in the castle a unit will move from the castle to the hero, and vice versa.\n"
+						+"Note that a castle can be left with no creatures in it (though not recommanded since\n"
+						+"it will be open for enemy to capture with no fight), while a hero must have at least\n"
+						+"one unit (of some creature) left at all times.\n\n"
+
+						+"Create Hero button:\n"
+						+"Only if you lose your hero in battle, you can purchase a new hero at the castle using\n"
+						+"the 'Create Hero' button. A new hero costs 3000 Gold.\n";
 						/*"Castle menu and options are:\n" + "Build - build a creature factory\n"
 						+"Make - make a new creature\n" + "Split - move units from hero to castle\n"
 						+"Join - move units from castle to hero\n" + "\n";*/
