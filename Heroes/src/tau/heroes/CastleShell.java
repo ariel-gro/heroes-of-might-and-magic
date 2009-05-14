@@ -86,7 +86,7 @@ public class CastleShell extends Shell
 			castleHelpButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
-					HeroesGui.diplayHelpByHelpItem("Castle");
+					HeroesGui.diplayHelpByHelpItem(GameStringsHelper.CastleWindow);
 				}
 			});
 
