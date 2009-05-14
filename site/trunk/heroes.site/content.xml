@@ -3,9 +3,9 @@
 <repository name='Heroes of might and magic Update site' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1241281482268'/>
+    <property name='p2.timestamp' value='1242339868462'/>
   </properties>
-  <units size='25'>
+  <units size='12'>
     <unit id='tooling.source.default' version='1.0.0' singleton='false'>
       <hostRequirements size='1'>
         <required namespace='org.eclipse.equinox.p2.eclipse.type' name='source' range='0.0.0' optional='true' multiple='true' greedy='false'/>
@@ -93,7 +93,7 @@
         </instructions>
       </touchpointData>
     </unit>
-       <unit id='heroes.plugin' version='1.1.17'>
+    <unit id='heroes.plugin' version='1.1.17'>
       <update id='heroes.plugin' range='[0.0.0,1.1.17)' severity='0'/>
       <properties size='1'>
         <property name='org.eclipse.equinox.p2.name' value='Plugin Plug-in'/>
@@ -340,8 +340,8 @@
       </provides>
       <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
     </unit>
-    <unit id='heroes.feature.feature.group' version='1.1.17' singleton='false'>
-      <update id='heroes.feature.feature.group' range='[0.0.0,1.1.17)' severity='0'/>
+    <unit id='heroes.feature.feature.group' version='1.1.18' singleton='false'>
+      <update id='heroes.feature.feature.group' range='[0.0.0,1.1.18)' severity='0'/>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='Heroes Feature'/>
         <property name='org.eclipse.equinox.p2.description' value='Heroes of Might and Magic'/>
@@ -349,11 +349,11 @@
         <property name='org.eclipse.equinox.p2.type.group' value='true'/>
       </properties>
       <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.group' version='1.1.17'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.group' version='1.1.18'/>
       </provides>
       <requires size='2'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='heroes.plugin' range='[1.1.17,1.1.17]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.jar' range='[1.1.17,1.1.17]'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='heroes.plugin' range='[1.1.18,1.1.18]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.jar' range='[1.1.18,1.1.18]'>
           <filter>
             (org.eclipse.update.install.features=true)
           </filter>
@@ -369,49 +369,23 @@
         (C)2009
       </copyright>
     </unit>
-    <unit id='heroes.plugin' version='1.1.17'>
-      <update id='heroes.plugin' range='[0.0.0,1.1.17)' severity='0'/>
-      <properties size='1'>
-        <property name='org.eclipse.equinox.p2.name' value='Plugin Plug-in'/>
-      </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.plugin' version='1.1.17'/>
-        <provided namespace='osgi.bundle' name='heroes.plugin' version='1.1.17'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='2'>
-        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.17'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: JavaSE-1.6&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime&#xA;Bundle-Activator: heroes.plugin.Activator&#xA;Manifest-Version: 1.0&#xA;Bundle-Version: 1.1.17&#xA;Bundle-SymbolicName: heroes.plugin; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-ClassPath: .,heroes.jar&#xA;Bundle-Name: Plugin Plug-in&#xA;
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
-    <unit id='heroes.feature.feature.jar' version='1.1.17'>
-      <update id='heroes.feature.feature.jar' range='[0.0.0,1.1.17)' severity='0'/>
+    <unit id='heroes.feature.feature.jar' version='1.1.18'>
+      <update id='heroes.feature.feature.jar' range='[0.0.0,1.1.18)' severity='0'/>
       <properties size='3'>
         <property name='org.eclipse.equinox.p2.name' value='Heroes Feature'/>
         <property name='org.eclipse.equinox.p2.description' value='Heroes of Might and Magic'/>
         <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.jar' version='1.1.17'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.feature.feature.jar' version='1.1.18'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='heroes.feature' version='1.1.17'/>
+        <provided namespace='org.eclipse.update.feature' name='heroes.feature' version='1.1.18'/>
       </provides>
       <filter>
         (org.eclipse.update.install.features=true)
       </filter>
       <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.17'/>
+        <artifact classifier='org.eclipse.update.feature' id='heroes.feature' version='1.1.18'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
@@ -429,6 +403,32 @@
       <copyright url='http://www.example.com/copyright'>
         (C)2009
       </copyright>
+    </unit>
+    <unit id='heroes.plugin' version='1.1.18'>
+      <update id='heroes.plugin' range='[0.0.0,1.1.18)' severity='0'/>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.name' value='Plugin Plug-in'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='heroes.plugin' version='1.1.18'/>
+        <provided namespace='osgi.bundle' name='heroes.plugin' version='1.1.18'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='heroes.plugin' version='1.1.18'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: JavaSE-1.6&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime&#xA;Bundle-Activator: heroes.plugin.Activator&#xA;Manifest-Version: 1.0&#xA;Bundle-Version: 1.1.18&#xA;Bundle-SymbolicName: heroes.plugin; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-ClassPath: .,heroes.jar&#xA;Bundle-Name: Plugin Plug-in&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
     </unit>
   </units>
 </repository>
