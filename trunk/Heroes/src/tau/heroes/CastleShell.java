@@ -51,7 +51,7 @@ public class CastleShell extends Shell
 		this.setImage(IconCache.stockImages[IconCache.appIcon]);
 		this.heroesGui = heroesGui;
 
-		setSize(600, 400);
+		setSize(635, 400);
 		setLayout(new GridLayout(2, false));
 
 		leftComposite = new Composite(this, SWT.BORDER);
