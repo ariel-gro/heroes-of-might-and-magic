@@ -863,7 +863,7 @@ public class HeroesGui
 
 	}
 
-	private void updateStatusWindow()
+	public void updateStatusWindow()
 	{
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 
