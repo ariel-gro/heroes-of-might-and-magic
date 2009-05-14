@@ -1,10 +1,10 @@
 package tau.heroes;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -236,11 +236,25 @@ public class IconCache
 		String path = null;
 		try
 		{
-			URL url = IconCache.class.getResource(fontDesctiptor.path);
-			File file = new File(url.toURI());
+			// Copy the font into a temp file
+			InputStream is = IconCache.class.getResourceAsStream(fontDesctiptor.path);
+
+			File file = File.createTempFile("temp", ".tmp");
+			file.deleteOnExit();
+
+			OutputStream os = new FileOutputStream(file);
+
+			int b;
+			while ((b = is.read()) > -1)
+				os.write(b);
+
+			os.close();
+			is.close();
+
+			// Get the temp file's path
 			path = file.getAbsolutePath();
 		}
-		catch (URISyntaxException e)
+		catch (IOException e)
 		{
 			return null;
 		}
