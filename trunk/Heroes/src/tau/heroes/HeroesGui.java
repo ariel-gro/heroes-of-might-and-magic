@@ -49,6 +49,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
+import tau.heroes.db.DataAccess;
+import tau.heroes.db.UserInfo;
+
 public class HeroesGui
 {
 	private Shell shell;
@@ -2908,7 +2911,15 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				/*		ADD RELEVANT METHOD HERE    */
+				String userName = "guest";
+				String passWord = "";
+				if(!loginAsGuestButton.getSelection())
+				{
+					userName = userNameText.getText();
+					passWord = passwordText.getText();
+				}
+				boolean bValid = DataAccess.validateUser(userName ,passWord );
+				//Validate return value!
 				shell.dispose();
 			}
 		});
@@ -3004,6 +3015,20 @@ public class HeroesGui
 		mailTextData.grabExcessHorizontalSpace = true;
 		mailTextData.grabExcessVerticalSpace = true;
 		mailText.setLayoutData(mailTextData);
+		
+		GridData nicknameData = new GridData();
+		nicknameData.horizontalSpan = 2;
+		nicknameData.grabExcessHorizontalSpace = true;
+		nicknameData.grabExcessVerticalSpace = true;
+		final Label nicknameLabel = new Label(shell, SWT.NULL);
+		nicknameLabel.setText("Nickname:");
+		nicknameLabel.setLayoutData(mailData);
+		final Combo nicknameText = new Combo(shell, SWT.NULL);
+		GridData nicknameTextData = new GridData();
+		nicknameTextData.horizontalSpan = 2;
+		nicknameTextData.grabExcessHorizontalSpace = true;
+		nicknameTextData.grabExcessVerticalSpace = true;
+		nicknameText.setLayoutData(nicknameTextData);
 	
 		GridData emptyLabelData1 = new GridData();
 		emptyLabelData1.grabExcessHorizontalSpace = true;
@@ -3021,7 +3046,12 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				/*		ADD RELEVANT METHOD HERE    */
+				UserInfo userInfo = new UserInfo(userNameText.getText(),
+						passwordText.getText(),
+						mailText.getText(),
+						nicknameText.getText());
+				boolean bValid = DataAccess.addUser(userInfo);
+				//Validate return value
 				shell.dispose();
 			}
 		});
