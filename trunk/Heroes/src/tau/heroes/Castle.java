@@ -85,15 +85,22 @@ public class Castle implements Serializable
 
 		// An attack is between two heroes
 		// If the castle doesn't have one make a dummy hero...
-		if (bIsHeroInCastle)
+		if (bIsHeroInCastle) {
 			defendingHero = this.player.getHero();
-		else
+		}
+		else 
 		{
 			defendingHero = new Hero(0, 0, army);
 			defendingHero.player = this.player;
 		}
-		hero.attack(defendingHero);
-		System.out.println("attacker = " + hero.alive() + " defender = " + defendingHero.alive());
+		if (army == null || army.getTotalNumberOfUnits() == 0) {
+			defendingHero.kill();
+		}
+		else {
+			hero.attack(defendingHero);
+			System.out.println("attacker = " + hero.alive() + " defender = " + defendingHero.alive());
+		}
+		
 		if (hero.alive() && !defendingHero.alive())
 		{
 			army = null;
