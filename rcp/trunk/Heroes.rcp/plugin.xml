@@ -56,32 +56,32 @@
             label="Heroes Action Set"
             visible="true">
          <menu
-               id="HeroesRCP.menu3"
+               id="HeroesRCP.menu4"
                label="Help">
          </menu>
          <action
                class="tau.heroes.rcp.AssistanceAction"
                id="HeroesRCP.actions.AssistanceAction"
                label="Gameplay Assistance"
-               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.AssistanceAction"
+               menubarPath="HeroesRCP.menu4/HeroesRCP.actions.AssistanceAction"
                style="push">
          </action>
          <action
                class="tau.heroes.rcp.AboutAction"
                id="HeroesRCP.actions.AboutAction"
                label="About"
-               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.AboutAction"
+               menubarPath="HeroesRCP.menu4/HeroesRCP.actions.AboutAction"
                style="push">
          </action>
          <menu
-               id="HeroesRCP.menu2"
+               id="HeroesRCP.menu3"
                label="Highscores">
          </menu>
          <action
                class="tau.heroes.rcp.DisplayHighscoresAction"
                id="HeroesRCP.actions.DisplayHighscoresAction"
                label="Display Highscores"
-               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.DisplayHighscoresAction"
+               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.DisplayHighscoresAction"
                style="push"
                tooltip="Display the latest highscores table">
          </action>
@@ -89,8 +89,35 @@
                class="tau.heroes.rcp.ResetHighscoresAction"
                id="HeroesRCP.actions.ResetHighscoresAction"
                label="Reset Highscores"
-               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.ResetHighscoresAction"
+               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.ResetHighscoresAction"
                style="push">
+         </action>
+         <action
+               class="tau.heroes.rcp.HelpHighscoresAction"
+               id="HeroesRCP.actions.HelpHighscoresAction"
+               label="Help Highscores"
+               menubarPath="HeroesRCP.menu3/HeroesRCP.actions.HelpHighscoresAction"
+               style="push">
+         </action>
+         <menu
+               id="HeroesRCP.menu2"
+               label="&amp;Network">
+         </menu>
+         <action
+               class="tau.heroes.rcp.LoginNetworkAction"
+               id="HeroesRCP.actions.LoginNetworkAction"
+               label="Login"
+               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.LoginNetworkAction"
+               style="push"
+               tooltip="login with an existing user to the server">
+         </action>
+         <action
+               class="tau.heroes.rcp.CreateUserNetworkAction"
+               id="HeroesRCP.actions.CreateUserNetworkAction"
+               label="Add new User"
+               menubarPath="HeroesRCP.menu2/HeroesRCP.actions.CreateUserNetworkAction"
+               style="push"
+               tooltip="create a new user, in order to connect to the server">
          </action>
          <menu
                id="HeroesRCP.menu1"
