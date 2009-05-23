@@ -51,6 +51,8 @@ import org.eclipse.swt.widgets.Tracker;
 
 import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
+import tau.heroes.net.HeroesClientPeer;
+import tau.heroes.net.HeroesServer;
 
 public class HeroesGui
 {
@@ -2918,7 +2920,8 @@ public class HeroesGui
 					userName = userNameText.getText();
 					passWord = passwordText.getText();
 				}
-				boolean bValid = DataAccess.validateUser(userName ,passWord );
+				//Check the user name:
+				
 				//Validate return value!
 				shell.dispose();
 			}
@@ -3046,11 +3049,8 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				UserInfo userInfo = new UserInfo(userNameText.getText(),
-						passwordText.getText(),
-						mailText.getText(),
-						nicknameText.getText());
-				boolean bValid = DataAccess.addUser(userInfo);
+				//add new user:
+				
 				//Validate return value
 				shell.dispose();
 			}
