@@ -1,10 +1,16 @@
 package tau.heroes.db;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class GameHistory
+public class GameHistory implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Date gameDate;
 	private int gameScore;
 	private List<String> opponentPlayersNames;
