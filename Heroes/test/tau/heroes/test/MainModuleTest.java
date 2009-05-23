@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import tau.heroes.Board;
 import tau.heroes.Castle;
+import tau.heroes.CastleType;
 import tau.heroes.GameScoreBoard;
 import tau.heroes.Hero;
 import tau.heroes.Player;
@@ -56,8 +57,8 @@ public class MainModuleTest extends TestCase
 		player1 = new Player("Jay");
 		player2 = new Player("Silent Bob");
 		hero1 = new Hero(player1, theBoard, 4, 4);
-		castle1 = new Castle(player1, theBoard, 6, 6);
-		castle2 = new Castle(player2, theBoard, 4, 6);
+		castle1 = new Castle(player1, theBoard, 6, 6, CastleType.CASTLE);
+		castle2 = new Castle(player2, theBoard, 4, 6, CastleType.DUNGEON);
 
 		GameScoreBoard score = new GameScoreBoard();
 		player1.setHero(hero1);

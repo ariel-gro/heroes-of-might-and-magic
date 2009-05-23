@@ -38,8 +38,8 @@ public class CastleTest extends TestCase
 		player1 = new Player("Jay");
 		player2 = new Player("Silent Bob");
 		hero1 = new Hero(player1, theBoard, 4, 4);
-		castle1 = new Castle(player1, theBoard, 6, 6);
-		castle2 = new Castle(player2, theBoard, 4, 6);
+		castle1 = new Castle(player1, theBoard, 6, 6, CastleType.DUNGEON);
+		castle2 = new Castle(player2, theBoard, 4, 6, CastleType.TOWER);
 		sFactory = new SoldierFactory();
 		gFactory = new GoblinFactory();
 		sFactoryClass = sFactory.getClass();

@@ -109,6 +109,7 @@ public class HeroesGui
 		return display;
 	}
 
+	@SuppressWarnings("static-access")
 	public HeroesGui(Display d, GameController gameController)
 	{
 		this.display = d;
@@ -279,15 +280,15 @@ public class HeroesGui
 			}
 			else if (bs.getCastle() != null)
 			{
-				switch (currentPlayerIndex)
+				switch (bs.getCastle().getCastleType())
 				{
-				case 0:
+				case CASTLE:
 					return IconCache.blueInCastleIcon;
-				case 1:
+				case DUNGEON:
 					return IconCache.blueInDungeonIcon;
-				case 2:
+				case RAMPART:
 					return IconCache.blueInRampartIcon;
-				case 3:
+				case TOWER:
 					return IconCache.blueInTowerIcon;
 
 				default:
@@ -301,15 +302,15 @@ public class HeroesGui
 		}
 		else if ((bs.getCastle()) != null)
 		{
-			switch (currentPlayerIndex)
+			switch (bs.getCastle().getCastleType())
 			{
-			case 0:
+			case CASTLE:
 				return IconCache.castleIcon;
-			case 1:
+			case DUNGEON:
 				return IconCache.dungeonIcon;
-			case 2:
+			case RAMPART:
 				return IconCache.rampartIcon;
-			case 3:
+			case TOWER:
 				return IconCache.towerIcon;
 
 			default:
@@ -376,27 +377,10 @@ public class HeroesGui
 			}
 			else if ((bs.getCastle()) != null)
 			{
-				String s;
-				switch (currentPlayerIndex)
-				{
-				case 0:
-					s = "Castle";
-					break;
-				case 1:
-					s = "Dungeon";
-					break;
-				case 2:
-					s = "Rampart";
-					break;
-				case 3:
-					s = "Tower";
-					break;
-				default:
-					s = "Castle";
-				}
 				return bs.getHero().player.getName() + "'s Hero in "
-					+ bs.getCastle().getPlayer().getName() + "'s " + s + "\nLocation: " + x + ", "
-					+ y;
+					+ bs.getCastle().getPlayer().getName() + "'s "
+					+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: "
+					+ x + ", " + y;
 			}
 			else
 				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
@@ -404,25 +388,9 @@ public class HeroesGui
 		}
 		else if ((bs.getCastle()) != null)
 		{
-			String s;
-			switch (currentPlayerIndex)
-			{
-			case 0:
-				s = "Castle";
-				break;
-			case 1:
-				s = "Dungeon";
-				break;
-			case 2:
-				s = "Rampart";
-				break;
-			case 3:
-				s = "Tower";
-				break;
-			default:
-				s = "Castle";
-			}
-			return bs.getCastle().getPlayer().getName() + "'s " + s + "\nLocation: " + x + ", " + y;
+			return bs.getCastle().getPlayer().getName() + "'s "
+			+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: "
+			+ x + ", " + y;
 		}
 		else if ((bs.getResource()) != null)
 		{
@@ -701,6 +669,7 @@ public class HeroesGui
 		return tempLabel;
 	}
 
+	@SuppressWarnings("unused")
 	private Label createLabel(Composite composite, String text, Font font)
 	{
 		Label tempLabel = createLabel(composite, text);
@@ -953,25 +922,8 @@ public class HeroesGui
 			int castleXPos = castle.getXPos();
 			int castleYPos = castle.getYPos();
 			Button button1 = new Button(statusComposite, SWT.NONE);
-			String s;
-			switch (currentPlayerIndex)
-			{
-			case 0:
-				s = "Castle";
-				break;
-			case 1:
-				s = "Dungeon";
-				break;
-			case 2:
-				s = "Rampart";
-				break;
-			case 3:
-				s = "Tower";
-				break;
-			default:
-				s = "Castle";
-			}
-			button1.setText(s + " at  " + castleXPos + " , " + castleYPos);
+			button1.setText(castle.getCastleType().castleNameByType()
+							+ " at  " + castleXPos + " , " + castleYPos);
 			button1.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{

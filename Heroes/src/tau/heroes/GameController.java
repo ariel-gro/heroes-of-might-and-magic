@@ -57,7 +57,7 @@ public class GameController
 		{
 			Hero hero = player.getHero();
 			castles.add(new Castle(player, this.gameState.getBoard(), hero.getXPos() + 1, hero
-				.getYPos()));
+				.getYPos(), CastleType.values()[players.indexOf(player)]));
 		}
 
 		this.gameState.setCastles(castles);

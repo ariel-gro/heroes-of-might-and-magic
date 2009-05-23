@@ -14,15 +14,17 @@ public class Castle implements Serializable
 	private Player player;
 	private Army army;
 	private ArrayList<CreatureFactory> factories;
+	private final CastleType castleType;
 	private int xPos;
 	private int yPos;
 
-	public Castle(Player player, Board board, int x, int y)
+	public Castle(Player player, Board board, int x, int y, CastleType castleType)
 	{
 		this.player = player;
 		this.board = board;
 		this.army = null;
 		this.factories = new ArrayList<CreatureFactory>();
+		this.castleType = castleType;
 		this.xPos = x;
 		this.yPos = y;
 
@@ -143,6 +145,11 @@ public class Castle implements Serializable
 		this.army = army;
 	}
 
+	public CastleType getCastleType()
+	{
+		return this.castleType;
+	}
+	
 	public List<CreatureFactory> getFactories()
 	{
 		return this.factories;
