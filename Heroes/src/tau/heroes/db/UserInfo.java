@@ -1,23 +1,37 @@
 package tau.heroes.db;
 
+import java.io.Serializable;
 
-public class UserInfo
+
+public class UserInfo implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String username;
 	private String password;
 	private String email;
 	private String nickname;
 	private int totalScore;
 	private GameHistory gameHistory;
+	private boolean isGuest = false;
+	
+	public UserInfo()
+	{
+		this.totalScore = 0;
+		this.gameHistory = null;		
+	}
 	
 	public UserInfo(String username, String password, String email, String nickname)
 	{
+		this();
+		
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.nickname = nickname;
-		this.totalScore = 0;
-		this.gameHistory = null;		
 	}
 	
 	public String getUsername()
@@ -76,5 +90,15 @@ public class UserInfo
 	public void setGameHistory(GameHistory gameHistory)
 	{
 		this.gameHistory = gameHistory;
+	}
+	
+	public boolean isGuest()
+	{
+		return isGuest;
+	}
+	
+	public void setGuest(boolean isGuest)
+	{
+		this.isGuest = isGuest;
 	}
 }
