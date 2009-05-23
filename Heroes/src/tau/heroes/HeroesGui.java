@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -171,7 +172,7 @@ public class HeroesGui
 
 		shell.open();
 
-		// displayStartWindow();
+		//displayStartWindow();
 
 		return shell;
 	}
@@ -961,6 +962,7 @@ public class HeroesGui
 
 		// create each header and subMenu for the menuBar
 		createFileMenu(menuBar);
+		createNetworkMenu(menuBar);
 		createHighScoreMenu(menuBar);
 		createHelpMenu(menuBar);
 
@@ -2048,6 +2050,44 @@ public class HeroesGui
 		});
 	}
 
+	/**
+	 * Creates all the items located in the Help submenu and associate all the
+	 * menu items with their appropriate functions.
+	 * 
+	 * @param menuBar
+	 *            Menu the <code>Menu</code> that file contain the Help submenu.
+	 */
+	private void createNetworkMenu(Menu menuBar)
+	{
+
+		// Network Menu
+		MenuItem item = new MenuItem(menuBar, SWT.CASCADE);
+		item.setText("Network");
+		Menu menu = new Menu(shell, SWT.DROP_DOWN);
+		item.setMenu(menu);
+
+		// Network -> Login
+		MenuItem loginItem = new MenuItem(menu, SWT.NULL);
+		loginItem.setText("&Login");
+		loginItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				lgoinToServerWindow();
+			}
+		});
+		
+		// Network -> Add New User
+		MenuItem addNewUserItem = new MenuItem(menu, SWT.NULL);
+		addNewUserItem.setText("&Add New User");
+		addNewUserItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				addNewUserToServerWindow();
+			}
+		});
+	}
+	
+	
 	public void showGameAssistanceMbox()
 	{
 
@@ -2767,6 +2807,266 @@ public class HeroesGui
 				displayError("Unknown creature type.");
 		}
 	}
+	
+	private void lgoinToServerWindow()
+	{
+		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+
+		GridLayout layout1 = new GridLayout(4, true);
+		shell.setText("Login to Server");
+		shell.setLayout(layout1);
+
+		GridData loginAsGuestData = new GridData();
+		loginAsGuestData.horizontalSpan = 4;
+		loginAsGuestData.grabExcessHorizontalSpace = true;
+		loginAsGuestData.grabExcessVerticalSpace = true;
+		final Button loginAsGuestButton = new Button(shell, SWT.RADIO);
+		loginAsGuestButton.setSelection(true);
+		loginAsGuestButton.setText("Login as Guest");
+		loginAsGuestButton.setLayoutData(loginAsGuestData);
+		loginAsGuestButton.setSelection(true);
+
+		GridData loginAsUserData = new GridData();
+		loginAsUserData.horizontalSpan = 4;
+		loginAsUserData.grabExcessHorizontalSpace = true;
+		loginAsUserData.grabExcessVerticalSpace = true;
+		final Button loginAsUserButton = new Button(shell, SWT.RADIO);
+		loginAsUserButton.setText("Login as User");
+		loginAsUserButton.setLayoutData(loginAsUserData);
+		
+		GridLayout gridLayout = new GridLayout ();
+		gridLayout.numColumns = 4;
+		gridLayout.makeColumnsEqualWidth = true;
+		
+		final Group userPasswordGroup = new Group(shell, SWT.NULL);
+		userPasswordGroup.setLayout(gridLayout);
+		GridData groupData = new GridData();
+		groupData.horizontalSpan = 4;
+		groupData.grabExcessHorizontalSpace = true;
+		groupData.grabExcessVerticalSpace = true;
+		userPasswordGroup.setLayoutData(groupData);
+		
+		GridData userNameData = new GridData();
+		userNameData.horizontalSpan = 2;
+		userNameData.grabExcessHorizontalSpace = true;
+		userNameData.grabExcessVerticalSpace = true;
+		final Label userNameLabel = new Label(userPasswordGroup, SWT.NULL);
+		userNameLabel.setText("User Name:");
+		userNameLabel.setLayoutData(userNameData);
+		final Combo userNameText = new Combo(userPasswordGroup, SWT.NULL);
+		GridData userNameTextData = new GridData();
+		userNameTextData.horizontalSpan = 2;
+		userNameTextData.grabExcessHorizontalSpace = true;
+		userNameTextData.grabExcessVerticalSpace = true;
+		userNameText.setLayoutData(userNameTextData);
+		userNameText.setEnabled(false);
+		
+		GridData passwordData = new GridData();
+		passwordData.horizontalSpan = 2;
+		passwordData.grabExcessHorizontalSpace = true;
+		passwordData.grabExcessVerticalSpace = true;
+		final Label passwordLabel = new Label(userPasswordGroup, SWT.NULL);
+		passwordLabel.setText("Password:");
+		passwordLabel.setLayoutData(passwordData);
+		final Combo passwordText = new Combo(userPasswordGroup, SWT.NULL);
+		GridData passwordTextData = new GridData();
+		passwordTextData.horizontalSpan = 2;
+		passwordTextData.grabExcessHorizontalSpace = true;
+		passwordTextData.grabExcessVerticalSpace = true;
+		passwordText.setLayoutData(passwordTextData);
+		passwordText.setEnabled(false);
+		
+		loginAsUserButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				if(loginAsGuestButton.getSelection())
+				{
+					userNameText.setEnabled(false);
+					passwordText.setEnabled(false);
+				} else
+				{
+					userNameText.setEnabled(true);
+					passwordText.setEnabled(true);
+				}
+			}
+		});
+
+		GridData emptyLabelData1 = new GridData();
+		emptyLabelData1.grabExcessHorizontalSpace = true;
+		emptyLabelData1.horizontalSpan = 4;
+		Label emptyLabel1 = new Label(shell, SWT.None);
+		emptyLabel1.setVisible(false);
+		emptyLabel1.setLayoutData(emptyLabelData1);
+
+		GridData okData = new GridData();
+		okData.grabExcessHorizontalSpace = true;
+		okData.grabExcessVerticalSpace = true;
+		okData.horizontalSpan = 1;
+		Button okButton = new Button(shell, SWT.PUSH);
+		okButton.setText("    OK    ");
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				/*		ADD RELEVANT METHOD HERE    */
+				shell.dispose();
+			}
+		});
+		okButton.setLayoutData(okData);
+
+		GridData cancelData = new GridData();
+		cancelData.grabExcessHorizontalSpace = true;
+		Button cancelButton = new Button(shell, SWT.PUSH);
+		cancelButton.setText(" Cancel ");
+		cancelButton.setLayoutData(cancelData);
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.dispose();
+			}
+		});
+
+		GridData emptyLabelData2 = new GridData();
+		emptyLabelData2.grabExcessHorizontalSpace = true;
+		Label emptyLabel2 = new Label(shell, SWT.None);
+		emptyLabel2.setVisible(false);
+		emptyLabel2.setLayoutData(emptyLabelData2);
+
+		GridData helpData = new GridData();
+		helpData.grabExcessHorizontalSpace = true;
+		Button helpButton = new Button(shell, SWT.PUSH);
+		helpButton.setText("  Help  ");
+		helpButton.setLayoutData(helpData);
+		helpButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showGameAssistanceMbox();
+			}
+		});
+
+		shell.pack();
+
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	}
+	
+	private void addNewUserToServerWindow()
+	{
+		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+
+		GridLayout layout1 = new GridLayout(4, true);
+		shell.setText("Add New User to Server");
+		shell.setLayout(layout1);
+		
+		GridData userNameData = new GridData();
+		userNameData.horizontalSpan = 2;
+		userNameData.grabExcessHorizontalSpace = true;
+		userNameData.grabExcessVerticalSpace = true;
+		final Label userNameLabel = new Label(shell, SWT.NULL);
+		userNameLabel.setText("User Name:");
+		userNameLabel.setLayoutData(userNameData);
+		final Combo userNameText = new Combo(shell, SWT.NULL);
+		GridData userNameTextData = new GridData();
+		userNameTextData.horizontalSpan = 2;
+		userNameTextData.grabExcessHorizontalSpace = true;
+		userNameTextData.grabExcessVerticalSpace = true;
+		userNameText.setLayoutData(userNameTextData);
+		
+		GridData passwordData = new GridData();
+		passwordData.horizontalSpan = 2;
+		passwordData.grabExcessHorizontalSpace = true;
+		passwordData.grabExcessVerticalSpace = true;
+		final Label passwordLabel = new Label(shell, SWT.NULL);
+		passwordLabel.setText("Password:");
+		passwordLabel.setLayoutData(passwordData);
+		final Combo passwordText = new Combo(shell, SWT.NULL);
+		GridData passwordTextData = new GridData();
+		passwordTextData.horizontalSpan = 2;
+		passwordTextData.grabExcessHorizontalSpace = true;
+		passwordTextData.grabExcessVerticalSpace = true;
+		passwordText.setLayoutData(passwordTextData);
+		
+		GridData mailData = new GridData();
+		mailData.horizontalSpan = 2;
+		mailData.grabExcessHorizontalSpace = true;
+		mailData.grabExcessVerticalSpace = true;
+		final Label mailLabel = new Label(shell, SWT.NULL);
+		mailLabel.setText("Mail Address:");
+		mailLabel.setLayoutData(mailData);
+		final Combo mailText = new Combo(shell, SWT.NULL);
+		GridData mailTextData = new GridData();
+		mailTextData.horizontalSpan = 2;
+		mailTextData.grabExcessHorizontalSpace = true;
+		mailTextData.grabExcessVerticalSpace = true;
+		mailText.setLayoutData(mailTextData);
+	
+		GridData emptyLabelData1 = new GridData();
+		emptyLabelData1.grabExcessHorizontalSpace = true;
+		emptyLabelData1.horizontalSpan = 4;
+		Label emptyLabel1 = new Label(shell, SWT.None);
+		emptyLabel1.setVisible(false);
+		emptyLabel1.setLayoutData(emptyLabelData1);
+
+		GridData okData = new GridData();
+		okData.grabExcessHorizontalSpace = true;
+		okData.grabExcessVerticalSpace = true;
+		okData.horizontalSpan = 1;
+		Button okButton = new Button(shell, SWT.PUSH);
+		okButton.setText("    OK    ");
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				/*		ADD RELEVANT METHOD HERE    */
+				shell.dispose();
+			}
+		});
+		okButton.setLayoutData(okData);
+
+		GridData cancelData = new GridData();
+		cancelData.grabExcessHorizontalSpace = true;
+		Button cancelButton = new Button(shell, SWT.PUSH);
+		cancelButton.setText(" Cancel ");
+		cancelButton.setLayoutData(cancelData);
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.dispose();
+			}
+		});
+
+		GridData emptyLabelData2 = new GridData();
+		emptyLabelData2.grabExcessHorizontalSpace = true;
+		Label emptyLabel2 = new Label(shell, SWT.None);
+		emptyLabel2.setVisible(false);
+		emptyLabel2.setLayoutData(emptyLabelData2);
+
+		GridData helpData = new GridData();
+		helpData.grabExcessHorizontalSpace = true;
+		Button helpButton = new Button(shell, SWT.PUSH);
+		helpButton.setText("  Help  ");
+		helpButton.setLayoutData(helpData);
+		helpButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showGameAssistanceMbox();
+			}
+		});
+
+		shell.pack();
+
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	}
+	
 	private class ScrollMove implements MouseWheelListener
 	{
 			public void mouseScrolled(MouseEvent e)
