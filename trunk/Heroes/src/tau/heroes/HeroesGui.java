@@ -2231,7 +2231,7 @@ public class HeroesGui
 		shell.setEnabled(true);
 	}
 
-	static void diplayHelpByHelpItem(int helpItem)
+	public static void diplayHelpByHelpItem(int helpItem)
 	{
 		String helpString = GameStringsHelper.getStringByIndex(helpItem);
 		String header = GameStringsHelper.getHeaderByIndex(helpItem);
@@ -2808,7 +2808,7 @@ public class HeroesGui
 		}
 	}
 	
-	private void lgoinToServerWindow()
+	public void lgoinToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
@@ -2954,7 +2954,7 @@ public class HeroesGui
 		}
 	}
 	
-	private void addNewUserToServerWindow()
+	public void addNewUserToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
