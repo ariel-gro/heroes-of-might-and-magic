@@ -30,6 +30,8 @@ public class Hero implements Serializable
 		_attackSkill = attack;
 		_defenseSkill = defense;
 		_autoFight = false;
+		this.player = new Player("testing dummy player");
+		this.player.setHero(this);
 	}
 
 	public Hero(Player player, Board theBoard, int X, int Y)
@@ -80,6 +82,12 @@ public class Hero implements Serializable
 		}
 		System.out.println("Battle Ended");
 		System.out.println("**************");
+		String winnerName;
+		if (alive())
+			winnerName = this.player.getName();
+		else
+			winnerName = defender.player.getName();
+		System.out.println("Winner is: " + winnerName + "\n");
 	}
   
 	// this will start a battle against h. (this - attacker, h - defender).
@@ -92,19 +100,30 @@ public class Hero implements Serializable
 		boolean auto = _autoFight || defender._autoFight;
 		_autoFight = auto;
 		defender._autoFight = auto;
-		
-		if (GameState.isGUI() && !auto)
-		{
-			Display d = Display.getCurrent();
-			Shell s = visualAttack(defender);
-			while (s != null && !s.isDisposed())
-			{
-				if (!d.readAndDispatch())
-					d.sleep();
+
+
+		if (GameState.isGUI()) {
+			if (!auto) {
+				Display d = Display.getCurrent();
+				Shell s = visualAttack(defender);
+				while (s != null && !s.isDisposed())
+				{
+					if (!d.readAndDispatch())
+						d.sleep();
+				}
+			}
+			else {
+			//auto fight in GUI game:
+				HeroesGui.displayMessage(this.player.getName() + " attacked "
+						+ defender.player.getName());
+				consolAttack(defender);
+				String winnerName = alive() ? this.player.getName() : defender.player.getName();
+				HeroesGui.displayMessage("The fight is over: " + winnerName + " won!");
 			}
 		}
+		
 		else
-		{//this is in case of auto fight:
+		{//this is in case of console game
 			consolAttack(defender);
 		}
 		//restore the right state (of the auto fight):
@@ -113,6 +132,8 @@ public class Hero implements Serializable
 		
 		//Add skills for the winner 
 		//(We don't need to check who won, the loser will die anyway)
+		
+		//TODO: see if reset when new hero is made
 		this._attackSkill += SKILLS_AFTER_ATTACK;
 		this._defenseSkill += SKILLS_AFTER_ATTACK;
 		defender._attackSkill += SKILLS_AFTER_ATTACK;
