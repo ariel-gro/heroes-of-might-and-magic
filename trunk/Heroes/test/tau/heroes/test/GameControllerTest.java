@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import tau.heroes.Board;
 import tau.heroes.Castle;
+import tau.heroes.CastleType;
 import tau.heroes.GameController;
 import tau.heroes.GameState;
 import tau.heroes.Hero;
@@ -67,7 +68,7 @@ public class GameControllerTest extends TestCase
 			int randomY = (int) (Math.random() * (boardSize - 1));
 			Hero h = new Hero(players.get(i), theBoard, randomX, randomY);
 			heroes.add(h);
-			castles.add(new Castle(players.get(i), theBoard, randomX, randomY));
+			castles.add(new Castle(players.get(i), theBoard, randomX, randomY, CastleType.CASTLE));
 			players.get(i).setHero(heroes.get(i));
 		}
 
