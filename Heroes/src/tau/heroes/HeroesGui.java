@@ -2062,7 +2062,7 @@ public class HeroesGui
 	 * @param menuBar
 	 *            Menu the <code>Menu</code> that file contain the Help submenu.
 	 */
-	private void createNetworkMenu(Menu menuBar)
+	public void createNetworkMenu(Menu menuBar)
 	{
 
 		// Network Menu
@@ -2929,11 +2929,11 @@ public class HeroesGui
 				{
 					userName = userNameText.getText();
 					passWord = passwordText.getText();
-					startNetworkGame(userName, passWord);
 				}
 				//Check the user name:
 					
 				//Validate return value!
+				startNetworkGame(userName, passWord);
 				shell.dispose();
 			}
 		});
@@ -3139,8 +3139,9 @@ public class HeroesGui
 		sendButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				HeroesClientPeer hcp = null;
 				String message = messageText.getText();
-				sendChat(message);
+				Chat.sendChat(message, hcp);
 				shell.dispose();
 			}
 		});
@@ -3192,14 +3193,7 @@ public class HeroesGui
 				display.sleep();
 		}
 	}
-	
-	
-	private void sendChat(String message)
-	{
-		recieveChat("12345", message);
-	}
-	
-	
+		
 	
 	private class ScrollMove implements MouseWheelListener
 	{

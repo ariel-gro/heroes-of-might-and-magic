@@ -2,6 +2,7 @@ package tau.heroes.net;
 
 import java.net.Socket;
 
+import tau.heroes.Chat;
 import tau.heroes.db.UserInfo;
 
 public class HeroesClientPeer extends NetworkPeer
@@ -53,4 +54,12 @@ public class HeroesClientPeer extends NetworkPeer
 		else
 			return new NetworkResult<Boolean>(false, "Unknown Reply");
 	}
+	
+	public void handleIncomingAsyncMessage(Message message)
+	{
+		if (message instanceof ChatMessage)
+		{
+			Chat.recieveChat(message);
+		}
+	}	
 }
