@@ -132,7 +132,6 @@ public class NetworkGUI
 	{
 		roomsCombo.setEnabled(false);
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		// , SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell.setLayout(new GridLayout());
 		shell.setSize(330, 225);
 		shell.setText("Create New Room");
