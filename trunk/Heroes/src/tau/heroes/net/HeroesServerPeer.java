@@ -2,6 +2,7 @@ package tau.heroes.net;
 
 import java.net.Socket;
 
+import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
 
 public class HeroesServerPeer extends NetworkPeer
@@ -86,6 +87,11 @@ public class HeroesServerPeer extends NetworkPeer
 		}
 		else
 		{
+			boolean bRes = DataAccess.validateUser(message.getUserName(), message.getPassword());
+			if(!bRes)
+			{
+				return new ErrorMessage("User isn't registered (or wrong password).");
+			}
 			userInfo = new UserInfo();
 			userInfo.setUsername(message.getUserName());
 			return new LoginOKMessage(userInfo);
@@ -97,7 +103,12 @@ public class HeroesServerPeer extends NetworkPeer
 			return new ErrorMessage("You are already logged in.");
 		
 		userInfo = new UserInfo(message.getUserName(),message.getPassword(),message.getEmail(),message.getNickname());
-	
+	    
+		boolean bRes = DataAccess.addUser(userInfo);
+		if(!bRes)
+		{
+			return new ErrorMessage("Username is already exist, please choose different username.");
+		}
 		return new LoginOKMessage(userInfo);
 		
 	}
