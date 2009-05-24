@@ -142,7 +142,7 @@ public class NetworkGUI
 		form.setLayout(new GridLayout(2, false));
 		
 		final Label roomNameLabel = new Label(form, SWT.NONE);
-		roomNameLabel.setText("Rooms's Name : ");
+		roomNameLabel.setText("Room Name : ");
 		final Text roomNameText = new Text(form, SWT.BORDER);
 		new Label(form, SWT.NONE);
 		new Label(form, SWT.NONE);
