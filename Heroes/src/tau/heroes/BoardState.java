@@ -12,6 +12,7 @@ public class BoardState implements Serializable
 	private Hero hero;
 	private Resource resource;
 	private Castle castle;
+	private MapObject mapObject;
 	private boolean isEmpty;
 
 	public BoardState()
@@ -19,6 +20,7 @@ public class BoardState implements Serializable
 		hero = null;
 		resource = null;
 		castle = null;
+		mapObject = MapObject.GRASS;
 		isEmpty = true;
 	}
 
@@ -53,6 +55,16 @@ public class BoardState implements Serializable
 	public Castle getCastle()
 	{
 		return castle;
+	}
+	
+	public void setMapObject(MapObject mo)
+	{
+		this.mapObject = mo;
+	}
+	
+	public MapObject getMapObject()
+	{
+		return this.mapObject;
 	}
 
 	public boolean getIsEmpty()
