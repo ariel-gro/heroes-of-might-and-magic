@@ -31,7 +31,7 @@ public class IconCache
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
 		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33,
-		fireIcon = 58;
+		fireIcon = 58, rockIcon = 59, treeStumpIcon = 60;
 	
 	public static final int redHeroIcon = 34, blackHeroIcon = 35, purpleHeroIcon = 36,
 				redInCastleIcon = 37, blackInCastleIcon = 38, purpleInCastleIcon = 39,
@@ -84,7 +84,8 @@ public class IconCache
 			"/icons/red_knight_in_Wood.png", "/icons/black_knight_in_Wood.png",
 			"/icons/purple_knight_in_Wood.png",
 			
-			"/icons/fire.png"};
+			"/icons/fire.png", "/icons/rock.png", "/icons/tree_stump.png"
+			};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 

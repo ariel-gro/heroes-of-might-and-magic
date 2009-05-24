@@ -43,12 +43,17 @@ public class GameController
 	{
 		this.gameState.setBoard(new Board(Constants.BOARD_SIZE));
 		int[] point;
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			for (int j=0; j < Constants.MAX_PLAYERS; j++)
 			{
 				point = randomizeByZone(j);
 				this.gameState.getBoard().placeMapObject(MapObject.FIRE, point[0], point[1]);
+				point = randomizeByZone(j);
+				this.gameState.getBoard().placeMapObject(MapObject.ROCK, point[0], point[1]);
+				point = randomizeByZone(j);
+				this.gameState.getBoard().placeMapObject(MapObject.TREESTOMP, point[0], point[1]);
+				
 			}
 			
 		}
