@@ -2090,6 +2090,16 @@ public class HeroesGui
 				addNewUserToServerWindow();
 			}
 		});
+		
+		// Network -> Chat
+		MenuItem chatItem = new MenuItem(menu, SWT.NULL);
+		chatItem.setText("&Chat");
+		chatItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				chatWindow();
+			}
+		});
 	}
 	
 	
@@ -2923,6 +2933,9 @@ public class HeroesGui
 				//Check the user name:
 				
 				//Validate return value!
+				createStatusWindow(false);
+				NetworkGUI networkGUI = new NetworkGUI(statusComposite);
+				networkGUI.init();
 				shell.dispose();
 			}
 		});
@@ -3096,6 +3109,144 @@ public class HeroesGui
 				display.sleep();
 		}
 	}
+	
+	
+	public void chatWindow()
+	{
+		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+
+		GridLayout layout1 = new GridLayout(4, true);
+		shell.setText("Add New User to Server");
+		shell.setLayout(layout1);
+		
+		GridData userNameData = new GridData();
+		userNameData.horizontalSpan = 2;
+		userNameData.grabExcessHorizontalSpace = true;
+		userNameData.grabExcessVerticalSpace = true;
+		final Label userNameLabel = new Label(shell, SWT.NULL);
+		userNameLabel.setText("User Name:");
+		userNameLabel.setLayoutData(userNameData);
+		final Combo userNameText = new Combo(shell, SWT.NULL);
+		GridData userNameTextData = new GridData();
+		userNameTextData.horizontalSpan = 2;
+		userNameTextData.grabExcessHorizontalSpace = true;
+		userNameTextData.grabExcessVerticalSpace = true;
+		userNameText.setLayoutData(userNameTextData);
+		
+		GridData passwordData = new GridData();
+		passwordData.horizontalSpan = 2;
+		passwordData.grabExcessHorizontalSpace = true;
+		passwordData.grabExcessVerticalSpace = true;
+		final Label passwordLabel = new Label(shell, SWT.NULL);
+		passwordLabel.setText("Password:");
+		passwordLabel.setLayoutData(passwordData);
+		final Combo passwordText = new Combo(shell, SWT.NULL);
+		GridData passwordTextData = new GridData();
+		passwordTextData.horizontalSpan = 2;
+		passwordTextData.grabExcessHorizontalSpace = true;
+		passwordTextData.grabExcessVerticalSpace = true;
+		passwordText.setLayoutData(passwordTextData);
+		
+		GridData mailData = new GridData();
+		mailData.horizontalSpan = 2;
+		mailData.grabExcessHorizontalSpace = true;
+		mailData.grabExcessVerticalSpace = true;
+		final Label mailLabel = new Label(shell, SWT.NULL);
+		mailLabel.setText("Mail Address:");
+		mailLabel.setLayoutData(mailData);
+		final Combo mailText = new Combo(shell, SWT.NULL);
+		GridData mailTextData = new GridData();
+		mailTextData.horizontalSpan = 2;
+		mailTextData.grabExcessHorizontalSpace = true;
+		mailTextData.grabExcessVerticalSpace = true;
+		mailText.setLayoutData(mailTextData);
+		
+		GridData nicknameData = new GridData();
+		nicknameData.horizontalSpan = 2;
+		nicknameData.grabExcessHorizontalSpace = true;
+		nicknameData.grabExcessVerticalSpace = true;
+		final Label nicknameLabel = new Label(shell, SWT.NULL);
+		nicknameLabel.setText("Nickname:");
+		nicknameLabel.setLayoutData(mailData);
+		final Combo nicknameText = new Combo(shell, SWT.NULL);
+		GridData nicknameTextData = new GridData();
+		nicknameTextData.horizontalSpan = 2;
+		nicknameTextData.grabExcessHorizontalSpace = true;
+		nicknameTextData.grabExcessVerticalSpace = true;
+		nicknameText.setLayoutData(nicknameTextData);
+	
+		GridData emptyLabelData1 = new GridData();
+		emptyLabelData1.grabExcessHorizontalSpace = true;
+		emptyLabelData1.horizontalSpan = 4;
+		Label emptyLabel1 = new Label(shell, SWT.None);
+		emptyLabel1.setVisible(false);
+		emptyLabel1.setLayoutData(emptyLabelData1);
+
+		GridData okData = new GridData();
+		okData.grabExcessHorizontalSpace = true;
+		okData.grabExcessVerticalSpace = true;
+		okData.horizontalSpan = 1;
+		Button okButton = new Button(shell, SWT.PUSH);
+		okButton.setText("    OK    ");
+		okButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				//add new user:
+				
+				//Validate return value
+				shell.dispose();
+			}
+		});
+		okButton.setLayoutData(okData);
+
+		GridData cancelData = new GridData();
+		cancelData.grabExcessHorizontalSpace = true;
+		Button cancelButton = new Button(shell, SWT.PUSH);
+		cancelButton.setText(" Cancel ");
+		cancelButton.setLayoutData(cancelData);
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.dispose();
+			}
+		});
+
+		GridData emptyLabelData2 = new GridData();
+		emptyLabelData2.grabExcessHorizontalSpace = true;
+		Label emptyLabel2 = new Label(shell, SWT.None);
+		emptyLabel2.setVisible(false);
+		emptyLabel2.setLayoutData(emptyLabelData2);
+
+		GridData helpData = new GridData();
+		helpData.grabExcessHorizontalSpace = true;
+		Button helpButton = new Button(shell, SWT.PUSH);
+		helpButton.setText("  Help  ");
+		helpButton.setLayoutData(helpData);
+		helpButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showGameAssistanceMbox();
+			}
+		});
+
+		shell.pack();
+
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	private class ScrollMove implements MouseWheelListener
 	{
