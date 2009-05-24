@@ -38,6 +38,8 @@ public class NetworkPeer
 	{
 		try
 		{
+			if (!socket.isClosed() && socket.isConnected())
+				asyncSendMessage(new DisconnectMessage());
 			stopListening();
 			socket.close();
 		}
@@ -69,8 +71,7 @@ public class NetworkPeer
 		}
 		catch (InterruptedException e)
 		{
-			System.out.println("InterruptedException caught in stopListening():");
-			e.printStackTrace();
+			
 		}
 	}
 
