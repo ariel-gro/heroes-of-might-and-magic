@@ -174,7 +174,7 @@ public class NetworkGUI
 				if (!roomName.equalsIgnoreCase(""))
 				{
 					createNewRoom(roomName, numOfPlayers, isComputer);
-					roomsCombo.setEnabled(true);
+					roomsCombo.setEnabled(true);				
 					shell.dispose();
 				}
 			}});

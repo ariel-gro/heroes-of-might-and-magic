@@ -39,14 +39,29 @@ public class HeroesServerPeer extends NetworkPeer
 		heroesServer.getPeers().remove(this);
 	}
 	
+	
+	protected void handleChatMessage(Message message)
+	{
+		room.asyncSendMessage(message);
+	}
+	
+	
 	@Override
 	protected void handleIncomingAsyncMessage(AsyncMessage message)
 	{
 		if (message instanceof DisconnectMessage)
+		
 			handleDisconnect();
+		
+		else if (message instanceof ChatMessage)
+			
+			handleChatMessage(message);
+		
 		else
-			super.handleIncomingAsyncMessage(message);
-	}
+		
+			super.handleIncomingAsyncMessage(message);}
+		
+
 
 	@Override
 	protected AsyncMessage handleIncomingSyncMessage(SyncMessage message)
