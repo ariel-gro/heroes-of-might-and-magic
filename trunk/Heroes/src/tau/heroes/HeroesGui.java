@@ -3112,80 +3112,29 @@ public class HeroesGui
 	public void chatWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setSize(300, 160);
 		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
-
-		GridLayout layout1 = new GridLayout(4, true);
-		shell.setText("Add New User to Server");
-		shell.setLayout(layout1);
+		shell.setText("Chat");
+		shell.setLayout(new GridLayout());
 		
-		GridData userNameData = new GridData();
-		userNameData.horizontalSpan = 2;
-		userNameData.grabExcessHorizontalSpace = true;
-		userNameData.grabExcessVerticalSpace = true;
-		final Label userNameLabel = new Label(shell, SWT.NULL);
-		userNameLabel.setText("User Name:");
-		userNameLabel.setLayoutData(userNameData);
-		final Combo userNameText = new Combo(shell, SWT.NULL);
-		GridData userNameTextData = new GridData();
-		userNameTextData.horizontalSpan = 2;
-		userNameTextData.grabExcessHorizontalSpace = true;
-		userNameTextData.grabExcessVerticalSpace = true;
-		userNameText.setLayoutData(userNameTextData);
-		
-		GridData passwordData = new GridData();
-		passwordData.horizontalSpan = 2;
-		passwordData.grabExcessHorizontalSpace = true;
-		passwordData.grabExcessVerticalSpace = true;
-		final Label passwordLabel = new Label(shell, SWT.NULL);
-		passwordLabel.setText("Password:");
-		passwordLabel.setLayoutData(passwordData);
-		final Combo passwordText = new Combo(shell, SWT.NULL);
-		GridData passwordTextData = new GridData();
-		passwordTextData.horizontalSpan = 2;
-		passwordTextData.grabExcessHorizontalSpace = true;
-		passwordTextData.grabExcessVerticalSpace = true;
-		passwordText.setLayoutData(passwordTextData);
-		
-		GridData mailData = new GridData();
-		mailData.horizontalSpan = 2;
-		mailData.grabExcessHorizontalSpace = true;
-		mailData.grabExcessVerticalSpace = true;
-		final Label mailLabel = new Label(shell, SWT.NULL);
-		mailLabel.setText("Mail Address:");
-		mailLabel.setLayoutData(mailData);
-		final Combo mailText = new Combo(shell, SWT.NULL);
-		GridData mailTextData = new GridData();
-		mailTextData.horizontalSpan = 2;
-		mailTextData.grabExcessHorizontalSpace = true;
-		mailTextData.grabExcessVerticalSpace = true;
-		mailText.setLayoutData(mailTextData);
-		
-		GridData nicknameData = new GridData();
-		nicknameData.horizontalSpan = 2;
-		nicknameData.grabExcessHorizontalSpace = true;
-		nicknameData.grabExcessVerticalSpace = true;
-		final Label nicknameLabel = new Label(shell, SWT.NULL);
-		nicknameLabel.setText("Nickname:");
-		nicknameLabel.setLayoutData(mailData);
-		final Combo nicknameText = new Combo(shell, SWT.NULL);
-		GridData nicknameTextData = new GridData();
-		nicknameTextData.horizontalSpan = 2;
-		nicknameTextData.grabExcessHorizontalSpace = true;
-		nicknameTextData.grabExcessVerticalSpace = true;
-		nicknameText.setLayoutData(nicknameTextData);
+		Composite c1 = new Composite(shell, SWT.FILL);
+		c1.setLayout(new GridLayout(2, false));	
+		Label partnerLabel = new Label(c1, SWT.NONE);
+		partnerLabel.setText("Recipient : ");
+		final Text partnerText = new Text(c1, SWT.BORDER);
 	
-		GridData emptyLabelData1 = new GridData();
-		emptyLabelData1.grabExcessHorizontalSpace = true;
-		emptyLabelData1.horizontalSpan = 4;
-		Label emptyLabel1 = new Label(shell, SWT.None);
-		emptyLabel1.setVisible(false);
-		emptyLabel1.setLayoutData(emptyLabelData1);
+		Composite c2 = new Composite(shell, SWT.FILL);
+		c2.setLayout(new GridLayout(1, false));	
+		final Text message = new Text(c2, SWT.BORDER | SWT.FILL);
+		message.setSize(150, 50);
+		//message.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		
+		
+		
 
-		GridData okData = new GridData();
-		okData.grabExcessHorizontalSpace = true;
-		okData.grabExcessVerticalSpace = true;
-		okData.horizontalSpan = 1;
-		Button okButton = new Button(shell, SWT.PUSH);
+		Composite c3 = new Composite(shell, SWT.FILL);
+		c3.setLayout(new GridLayout(2, false));	
+		Button okButton = new Button(c3, SWT.PUSH);
 		okButton.setText("    OK    ");
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
@@ -3196,39 +3145,15 @@ public class HeroesGui
 				shell.dispose();
 			}
 		});
-		okButton.setLayoutData(okData);
 
-		GridData cancelData = new GridData();
-		cancelData.grabExcessHorizontalSpace = true;
-		Button cancelButton = new Button(shell, SWT.PUSH);
+		Button cancelButton = new Button(c3, SWT.PUSH);
 		cancelButton.setText(" Cancel ");
-		cancelButton.setLayoutData(cancelData);
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
 				shell.dispose();
 			}
 		});
-
-		GridData emptyLabelData2 = new GridData();
-		emptyLabelData2.grabExcessHorizontalSpace = true;
-		Label emptyLabel2 = new Label(shell, SWT.None);
-		emptyLabel2.setVisible(false);
-		emptyLabel2.setLayoutData(emptyLabelData2);
-
-		GridData helpData = new GridData();
-		helpData.grabExcessHorizontalSpace = true;
-		Button helpButton = new Button(shell, SWT.PUSH);
-		helpButton.setText("  Help  ");
-		helpButton.setLayoutData(helpData);
-		helpButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				showGameAssistanceMbox();
-			}
-		});
-
-		shell.pack();
 
 		shell.open();
 		while (!shell.isDisposed())
