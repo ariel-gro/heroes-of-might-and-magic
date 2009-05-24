@@ -27,6 +27,60 @@ public enum PlayerColor implements Serializable {
 		}
 	}
 	
+	public int inGoldIcon()
+	{
+		switch (this)
+		{
+			case BLUE:
+				return IconCache.blueInGoldMineIcon;
+			case RED:
+				return IconCache.redInGoldMineIcon;
+			case BLACK:
+				return IconCache.blackInGoldMineIcon;
+			case PURPLE:
+				return IconCache.purpleInGoldMineIcon;
+				
+			default:
+				return IconCache.blueInGoldMineIcon;
+		}
+	}
+	
+	public int inStoneIcon()
+	{
+		switch (this)
+		{
+			case BLUE:
+				return IconCache.blueInStoneIcon;
+			case RED:
+				return IconCache.redInStoneIcon;
+			case BLACK:
+				return IconCache.blackInStoneIcon;
+			case PURPLE:
+				return IconCache.purpleInStoneIcon;
+				
+			default:
+				return IconCache.blueInStoneIcon;
+		}
+	}
+	
+	public int inWoodIcon()
+	{
+		switch (this)
+		{
+			case BLUE:
+				return IconCache.blueInWoodIcon;
+			case RED:
+				return IconCache.redInWoodIcon;
+			case BLACK:
+				return IconCache.blackInWoodIcon;
+			case PURPLE:
+				return IconCache.purpleInWoodIcon;
+				
+			default:
+				return IconCache.blueInWoodIcon;
+		}
+	}
+	
 	public static boolean isHeroIcon(int iconInt)
 	{
 		switch (iconInt)
@@ -35,16 +89,24 @@ public enum PlayerColor implements Serializable {
 			case IconCache.redHeroIcon:
 			case IconCache.blackHeroIcon:
 			case IconCache.purpleHeroIcon:
+				return true;
 			
-			case IconCache.blueInGlodMineIcon:
-				
+			case IconCache.blueInGoldMineIcon:
+			case IconCache.redInGoldMineIcon:
+			case IconCache.blackInGoldMineIcon:
+			case IconCache.purpleInGoldMineIcon:
+				return true;
 			
 			case IconCache.blueInStoneIcon:
-				
+			case IconCache.redInStoneIcon:
+			case IconCache.blackInStoneIcon:
+			case IconCache.purpleInStoneIcon:
+				return true;
 			
 			case IconCache.blueInWoodIcon:
-				
-
+			case IconCache.redInWoodIcon:
+			case IconCache.blackInWoodIcon:
+			case IconCache.purpleInWoodIcon:
 				return true;
 
 			default:

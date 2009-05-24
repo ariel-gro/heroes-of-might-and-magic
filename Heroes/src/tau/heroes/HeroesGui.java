@@ -267,22 +267,22 @@ public class HeroesGui
 		BoardState bs = gameController.getGameState().getBoard().getBoardState(x, y);
 
 		if ((bs.getHero()) != null)
-		{//TODO
+		{
 			if (bs.getResource() != null
 				&& bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
-				return IconCache.blueInWoodIcon;
+				return bs.getHero().player.getPlayerColor().inWoodIcon();
 			}
 			else if (bs.getResource() != null
 				&& bs.getResource().getType().getTypeName().equals(ResourceType.GOLD.getTypeName()))
 			{
-				return IconCache.blueInGlodMineIcon;
+				return bs.getHero().player.getPlayerColor().inGoldIcon();
 			}
 			else if (bs.getResource() != null
 				&& bs.getResource().getType().getTypeName()
 					.equals(ResourceType.STONE.getTypeName()))
 			{
-				return IconCache.blueInStoneIcon;
+				return bs.getHero().player.getPlayerColor().inStoneIcon();
 			}
 			else if (bs.getCastle() != null)
 			{
