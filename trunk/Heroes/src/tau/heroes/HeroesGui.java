@@ -3117,11 +3117,11 @@ public class HeroesGui
 		shell.setText("Chat");
 		shell.setLayout(new GridLayout());
 		
-		Composite c1 = new Composite(shell, SWT.FILL);
-		c1.setLayout(new GridLayout(2, false));	
-		Label partnerLabel = new Label(c1, SWT.NONE);
-		partnerLabel.setText("Recipient : ");
-		final Text partnerText = new Text(c1, SWT.BORDER);
+		//Composite c1 = new Composite(shell, SWT.FILL);
+		//c1.setLayout(new GridLayout(2, false));	
+		//Label partnerLabel = new Label(c1, SWT.NONE);
+		//partnerLabel.setText("Recipient : ");
+		//final Text partnerText = new Text(c1, SWT.BORDER);
 	
 		Composite c2 = new Composite(shell, SWT.FILL);
 		c2.setLayout(new GridLayout(1, false));	
@@ -3139,9 +3139,8 @@ public class HeroesGui
 		sendButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				String partner = partnerText.getText();
 				String message = messageText.getText();
-				sendChat(partner, message);
+				sendChat(message);
 				shell.dispose();
 			}
 		});
@@ -3195,9 +3194,9 @@ public class HeroesGui
 	}
 	
 	
-	private void sendChat(String partner, String message)
+	private void sendChat(String message)
 	{
-		recieveChat(partner, message);
+		recieveChat("12345", message);
 	}
 	
 	
