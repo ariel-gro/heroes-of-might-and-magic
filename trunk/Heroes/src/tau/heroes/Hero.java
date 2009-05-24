@@ -30,7 +30,7 @@ public class Hero implements Serializable
 		_attackSkill = attack;
 		_defenseSkill = defense;
 		_autoFight = false;
-		this.player = new Player("testing dummy player");
+		this.player = new Player("testing dummy player", PlayerColor.BLUE);
 		this.player.setHero(this);
 	}
 

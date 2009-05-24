@@ -122,7 +122,7 @@ public class MainModule
 			responses = getCommandAndParameters(message);
 			if (responses.length > 0 && responses[0].length() > 0)
 			{
-				Player tempPlayer = new Player(responses[0]);
+				Player tempPlayer = new Player(responses[0], PlayerColor.values()[i]);
 				if(responses[0].equalsIgnoreCase(Player.COMPUTER_NAME))
 				{
 					message = "Enter the level of the coputer Enter 1 for Novice or 2 for Expert: ";

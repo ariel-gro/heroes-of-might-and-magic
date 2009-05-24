@@ -35,8 +35,8 @@ public class CastleTest extends TestCase
 	public void setUp() throws Exception
 	{
 		theBoard = new Board(10);
-		player1 = new Player("Jay");
-		player2 = new Player("Silent Bob");
+		player1 = new Player("Jay", PlayerColor.BLUE);
+		player2 = new Player("Silent Bob", PlayerColor.BLUE);
 		hero1 = new Hero(player1, theBoard, 4, 4);
 		castle1 = new Castle(player1, theBoard, 6, 6, CastleType.DUNGEON);
 		castle2 = new Castle(player2, theBoard, 4, 6, CastleType.TOWER);

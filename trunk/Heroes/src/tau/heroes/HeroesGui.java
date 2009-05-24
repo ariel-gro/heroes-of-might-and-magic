@@ -267,7 +267,7 @@ public class HeroesGui
 		BoardState bs = gameController.getGameState().getBoard().getBoardState(x, y);
 
 		if ((bs.getHero()) != null)
-		{
+		{//TODO
 			if (bs.getResource() != null
 				&& bs.getResource().getType().getTypeName().equals(ResourceType.WOOD.getTypeName()))
 			{
@@ -289,21 +289,22 @@ public class HeroesGui
 				switch (bs.getCastle().getCastleType())
 				{
 				case CASTLE:
-					return IconCache.blueInCastleIcon;
+					return bs.getCastle().getPlayer().getPlayerColor().inCastleIcon();
 				case DUNGEON:
-					return IconCache.blueInDungeonIcon;
+					return bs.getCastle().getPlayer().getPlayerColor().inDungeonIcon();
 				case RAMPART:
-					return IconCache.blueInRampartIcon;
+					return bs.getCastle().getPlayer().getPlayerColor().inRampartIcon();
 				case TOWER:
-					return IconCache.blueInTowerIcon;
+					return bs.getCastle().getPlayer().getPlayerColor().inTowerIcon();
 
 				default:
-					return IconCache.blueInDungeonIcon;
+					return bs.getCastle().getPlayer().getPlayerColor().inCastleIcon();
 				}
 
 			}
 			else
-				return IconCache.blueHeroIcon;
+				return bs.getHero().player.getPlayerColor().heroIcon();
+				//return IconCache.blueHeroIcon;
 
 		}
 		else if ((bs.getCastle()) != null)
@@ -340,7 +341,7 @@ public class HeroesGui
 				return IconCache.stoneIcon;
 			}
 		}
-
+		//TODO: add new icons
 		return IconCache.grassIcon;
 	}
 
@@ -521,9 +522,8 @@ public class HeroesGui
 						description = fromBoardToDisplayDecription(x, y);
 						l.setToolTipText(description);
 					}
-
-					if (t == IconCache.blueHeroIcon || t == IconCache.blueInGlodMineIcon
-						|| t == IconCache.blueInStoneIcon || t == IconCache.blueInWoodIcon)
+ 
+					if (PlayerColor.isHeroIcon(t))
 						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
 							.equals(gameController.getGameState().getPlayers()
 								.elementAt(currentPlayerIndex)))
@@ -551,8 +551,7 @@ public class HeroesGui
 								currentHero = b;
 						}
 
-					if (t == IconCache.blueInCastleIcon || t == IconCache.blueInDungeonIcon
-						|| t == IconCache.blueInRampartIcon || t == IconCache.blueInTowerIcon)
+					if (PlayerColor.isInCastleIcon(t))
 						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
 							.equals(gameController.getGameState().getPlayers()
 								.elementAt(currentPlayerIndex)))
@@ -1129,13 +1128,13 @@ public class HeroesGui
 				else
 				{
 					players.removeAllElements();
-					players.add(new Player(name1));
+					players.add(new Player(name1, PlayerColor.BLUE));
 
 					if ((name2.length() > 0) || (pcButton1.getSelection()))
 					{
 						if (pcButton1.getSelection())
 						{
-							Player tempPlayer1 = new Player("computer");
+							Player tempPlayer1 = new Player("computer", PlayerColor.RED);
 							if (pcLevel1.getText().equals("Novice"))
 							{
 								tempPlayer1.setComputerLevel(1);
@@ -1153,7 +1152,7 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name2));
+							players.add(new Player(name2, PlayerColor.RED));
 						}
 					}
 
@@ -1161,7 +1160,7 @@ public class HeroesGui
 					{
 						if (pcButton2.getSelection())
 						{
-							Player tempPlayer2 = new Player("computer");
+							Player tempPlayer2 = new Player("computer", PlayerColor.BLACK);
 							if (pcLevel2.getText().equals("Novice"))
 							{
 								tempPlayer2.setComputerLevel(1);
@@ -1179,7 +1178,7 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name3));
+							players.add(new Player(name3, PlayerColor.BLACK));
 						}
 					}
 
@@ -1187,7 +1186,7 @@ public class HeroesGui
 					{
 						if (pcButton3.getSelection())
 						{
-							Player tempPlayer3 = new Player("computer");
+							Player tempPlayer3 = new Player("computer", PlayerColor.PURPLE);
 							if (pcLevel3.getText().equals("Novice"))
 							{
 								tempPlayer3.setComputerLevel(1);
@@ -1205,7 +1204,7 @@ public class HeroesGui
 						}
 						else
 						{
-							players.add(new Player(name4));
+							players.add(new Player(name4, PlayerColor.PURPLE));
 						}
 					}
 
@@ -1353,7 +1352,7 @@ public class HeroesGui
 
 			if (response.length() > 0)
 			{
-				players.add(new Player(response));
+				players.add(new Player(response, PlayerColor.values()[i]));
 				i++;
 			}
 		}

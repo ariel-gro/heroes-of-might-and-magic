@@ -9,12 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import tau.heroes.Board;
-import tau.heroes.Castle;
-import tau.heroes.CastleType;
-import tau.heroes.GameScoreBoard;
-import tau.heroes.Hero;
-import tau.heroes.Player;
+import tau.heroes.*;
 
 /**
  * @author Amir
@@ -26,7 +21,7 @@ public class MainModuleTest extends TestCase
 	public void testMoveLimits()
 	{
 		Board board = new Board(20);
-		Player player1 = new Player("Liron");
+		Player player1 = new Player("Liron", PlayerColor.BLUE);
 		Hero h1 = new Hero(player1, board, 0, 0);
 		player1.setHero(h1);
 
@@ -54,8 +49,8 @@ public class MainModuleTest extends TestCase
 		Castle castle2;
 
 		theBoard = new Board(10);
-		player1 = new Player("Jay");
-		player2 = new Player("Silent Bob");
+		player1 = new Player("Jay", PlayerColor.BLUE);
+		player2 = new Player("Silent Bob", PlayerColor.BLUE);
 		hero1 = new Hero(player1, theBoard, 4, 4);
 		castle1 = new Castle(player1, theBoard, 6, 6, CastleType.CASTLE);
 		castle2 = new Castle(player2, theBoard, 4, 6, CastleType.DUNGEON);

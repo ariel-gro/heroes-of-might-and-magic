@@ -15,6 +15,7 @@ import tau.heroes.GameState;
 import tau.heroes.Goblin;
 import tau.heroes.Hero;
 import tau.heroes.Player;
+import tau.heroes.PlayerColor;
 import tau.heroes.Soldier;
 
 public class AttackGUITest extends TestCase
@@ -40,8 +41,8 @@ public class AttackGUITest extends TestCase
 	{
 		@SuppressWarnings("unused")
 		GameState state = new GameState(true);
-		Player p1 = new Player("Test1");
-		Player p2 = new Player("Test2");
+		Player p1 = new Player("Test1", PlayerColor.BLUE);
+		Player p2 = new Player("Test2", PlayerColor.BLUE);
 		Creature[] c1 = new Creature[5];
 		// c1[0] = new Soldier(12);// 12 will win 11 will lose with 0
 		// c1[1] = new Dwarf(10);

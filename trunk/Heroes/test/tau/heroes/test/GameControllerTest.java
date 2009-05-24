@@ -10,16 +10,8 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tau.heroes.*;
 
-import tau.heroes.Board;
-import tau.heroes.Castle;
-import tau.heroes.CastleType;
-import tau.heroes.GameController;
-import tau.heroes.GameState;
-import tau.heroes.Hero;
-import tau.heroes.Player;
-import tau.heroes.Resource;
-import tau.heroes.ResourceType;
 
 /**
  * @author Amir
@@ -56,7 +48,7 @@ public class GameControllerTest extends TestCase
 
 		for (int i = 0; i < numOfPlayers; i++)
 		{
-			players.add(new Player(userInput[0]));
+			players.add(new Player(userInput[0], PlayerColor.BLUE));
 		}
 
 		int boardSize = 10;

@@ -31,6 +31,13 @@ public class IconCache
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
 		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33;
+	
+	public static final int redHeroIcon = 34, blackHeroIcon = 35, purpleHeroIcon = 36,
+				redInCastleIcon = 37, blackInCastleIcon = 38, purpleInCastleIcon = 39,
+				redInDungeonIcon = 40, blackInDungeonIcon = 41, purpleInDungeonIcon = 42,
+				redInRampartIcon = 43, blackInRampartIcon = 44, purpleInRampartIcon = 45,
+				redInTowerIcon = 46, blackInTowerIcon = 47, purpleInTowerIcon = 48
+	;
 
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
@@ -57,7 +64,14 @@ public class IconCache
 			"/icons/battle_fire_dragon_face_left.png", "/icons/HeroesAppMain.png",
 			"/icons/treasure_Gold.png", "/icons/treasure_Wood.png", "/icons/treasure_Stone.png",
 			"/icons/Dungeon.png", "/icons/Rampart.png", "/icons/Tower.png",
-			"/icons/blue_in_Dungeon.png", "/icons/blue_in_Rampart.png", "/icons/blue_in_Tower.png" };
+			"/icons/blue_in_Dungeon.png", "/icons/blue_in_Rampart.png",
+			"/icons/blue_in_Tower.png", "/icons/red_knight_on_grass.png",
+			"/icons/black_knight_on_grass.png", "/icons/purple_knight_on_grass.png",
+			"/icons/red_in_Castle.png", "/icons/black_in_Castle.png",
+			"/icons/purple_in_Castle.png", "/icons/red_in_Dungeon.png", "/icons/black_in_Dungeon.png",
+			"/icons/purple_in_Dungeon.png", "/icons/red_in_Rampart.png", "/icons/black_in_Rampart.png",
+			"/icons/purple_in_Rampart.png", "/icons/red_in_Tower.png", "/icons/black_in_Tower.png",
+			"/icons/purple_in_Tower.png"};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 

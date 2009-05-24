@@ -156,7 +156,7 @@ public class HeroTest extends TestCase
 
 	public void testRemoveFromArmy()
 	{
-		Player player = new Player("Test");
+		Player player = new Player("Test", PlayerColor.BLUE);
 		Board board = new Board(10);
 		Hero hero = new Hero(player, board, 4, 6);
 		Army army = hero.getArmy();

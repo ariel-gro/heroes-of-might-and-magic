@@ -5,8 +5,8 @@ import tau.heroes.*;
 
 public class ResourcesTest extends TestCase
 {
-	Player player1 = new Player("Ariel");
-	Player player2 = new Player("Ido");
+	Player player1 = new Player("Ariel", PlayerColor.BLUE);
+	Player player2 = new Player("Ido", PlayerColor.BLUE);
 	Board board = new Board(20);
 	Resource r = new Resource(ResourceType.WOOD, board, 7, 9);
 	Hero h1 = new Hero(player2, board, 1, 1);
