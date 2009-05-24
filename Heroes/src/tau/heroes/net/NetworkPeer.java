@@ -38,7 +38,7 @@ public class NetworkPeer
 	{
 		try
 		{
-			if (!socket.isClosed() && socket.isConnected())
+			if (isConnected())
 				asyncSendMessage(new DisconnectMessage());
 			stopListening();
 			socket.close();
@@ -190,5 +190,10 @@ public class NetworkPeer
 	public Socket getSocket()
 	{
 		return socket;
+	}
+	
+	public boolean isConnected()
+	{
+		return (!socket.isClosed() && socket.isConnected());
 	}
 }

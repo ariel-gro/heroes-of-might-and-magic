@@ -53,6 +53,7 @@ import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
+import tau.heroes.net.NetworkResult;
 
 public class HeroesGui
 {
@@ -1570,7 +1571,7 @@ public class HeroesGui
 		subItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				shell.close();
+				Exit();
 			}
 		});
 	}
@@ -2830,7 +2831,22 @@ public class HeroesGui
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Login to Server");
 		shell.setLayout(layout1);
-
+		
+		GridData ipAddressData = new GridData();
+		ipAddressData.horizontalSpan = 2;
+		ipAddressData.grabExcessHorizontalSpace = true;
+		ipAddressData.grabExcessVerticalSpace = true;
+		final Label ipAddressLabel = new Label(shell, SWT.NULL);
+		ipAddressLabel.setText("IP Address:");
+		ipAddressLabel.setLayoutData(ipAddressData);
+		final Combo ipAddressText = new Combo(shell, SWT.NULL);
+		GridData ipAddressTextData = new GridData();
+		ipAddressTextData.horizontalSpan = 2;
+		ipAddressTextData.grabExcessHorizontalSpace = true;
+		ipAddressTextData.grabExcessVerticalSpace = true;
+		ipAddressText.setLayoutData(ipAddressTextData);
+		ipAddressText.setEnabled(true);
+		
 		GridData loginAsGuestData = new GridData();
 		loginAsGuestData.horizontalSpan = 4;
 		loginAsGuestData.grabExcessHorizontalSpace = true;
@@ -2922,16 +2938,17 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				String userName = "guest";
-				String passWord = "";
-				if(!loginAsGuestButton.getSelection())
-				{
-					userName = userNameText.getText();
-					passWord = passwordText.getText();
-				}
+				String userName = userNameText.getText();
+				String passWord = passwordText.getText();
 				//Check the user name:
-					
+				NetworkResult<Boolean> res = gameController.Login(ipAddressText.getText() , userName, passWord, loginAsGuestButton.getSelection());
 				//Validate return value!
+				if(res.getResult() != true)
+				{
+					displayError(res.getErrorMessage());
+					return;
+				}
+				
 				startNetworkGame(userName, passWord);
 				shell.dispose();
 			}
@@ -2986,6 +3003,21 @@ public class HeroesGui
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Add New User to Server");
 		shell.setLayout(layout1);
+		
+		GridData ipAddressData = new GridData();
+		ipAddressData.horizontalSpan = 2;
+		ipAddressData.grabExcessHorizontalSpace = true;
+		ipAddressData.grabExcessVerticalSpace = true;
+		final Label ipAddressLabel = new Label(shell, SWT.NULL);
+		ipAddressLabel.setText("IP Address:");
+		ipAddressLabel.setLayoutData(ipAddressData);
+		final Combo ipAddressText = new Combo(shell, SWT.NULL);
+		GridData ipAddressTextData = new GridData();
+		ipAddressTextData.horizontalSpan = 2;
+		ipAddressTextData.grabExcessHorizontalSpace = true;
+		ipAddressTextData.grabExcessVerticalSpace = true;
+		ipAddressText.setLayoutData(ipAddressTextData);
+		ipAddressText.setEnabled(true);
 		
 		GridData userNameData = new GridData();
 		userNameData.horizontalSpan = 2;
@@ -3059,9 +3091,21 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//add new user:
+				String ip = ipAddressText.getText();
+				String userName = userNameText.getText();
+				String passWord = passwordText.getText();
+				String email = mailText.getText();
+				String nickname = nicknameText.getText();
 				
-				//Validate return value
+				//Check the user name:
+				NetworkResult<Boolean> res = gameController.Register( ip, userName, passWord, email,nickname);
+				//Validate return value!
+				if(res.getResult() != true)
+				{
+					displayError(res.getErrorMessage());
+					return;
+				}
+				startNetworkGame(userName, passWord);
 				shell.dispose();
 			}
 		});
@@ -3162,7 +3206,12 @@ public class HeroesGui
 		}
 	
 	}
-	
+	public void Exit()
+	{
+		if(gameController != null)
+			gameController.Disconnect();
+		shell.close();
+	}
 	
 	
 	private void startNetworkGame(String userName, String password)

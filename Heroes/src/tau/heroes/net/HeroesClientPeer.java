@@ -54,7 +54,25 @@ public class HeroesClientPeer extends NetworkPeer
 		else
 			return new NetworkResult<Boolean>(false, "Unknown Reply");
 	}
-	
+	public NetworkResult<Boolean> Register(String username, String password, String email, String nickname)
+	{
+		RegisterRequestMessage message = new RegisterRequestMessage(username, password, email, nickname);
+
+		Message reply = syncSendMessage(message);
+
+		if (reply == null)
+			return new NetworkResult<Boolean>(false, "Network Error");
+		else if (reply instanceof LoginOKMessage)
+		{
+			isLoggedIn = true;
+			userInfo = ((LoginOKMessage) reply).getUserInfo();
+			return new NetworkResult<Boolean>(true);
+		}
+		else if (reply instanceof ErrorMessage)
+			return new NetworkResult<Boolean>(false, ((ErrorMessage) reply).getText());
+		else
+			return new NetworkResult<Boolean>(false, "Unknown Reply");
+	}
 	public void handleIncomingAsyncMessage(Message message)
 	{
 		if (message instanceof ChatMessage)
