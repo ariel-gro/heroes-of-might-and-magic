@@ -27,7 +27,7 @@ public class IconCache
 	// Stock images
 	public static final int appIcon = 0, grassIcon = 1, blueHeroIcon = 2, castleIcon = 3,
 		goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, blueInCastleIcon = 7,
-		blueInGlodMineIcon = 8, blueInStoneIcon = 9, blueInWoodIcon = 10, blackIcon = 11,
+		blueInGoldMineIcon = 8, blueInStoneIcon = 9, blueInWoodIcon = 10, blackIcon = 11,
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
 		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33;
@@ -36,7 +36,11 @@ public class IconCache
 				redInCastleIcon = 37, blackInCastleIcon = 38, purpleInCastleIcon = 39,
 				redInDungeonIcon = 40, blackInDungeonIcon = 41, purpleInDungeonIcon = 42,
 				redInRampartIcon = 43, blackInRampartIcon = 44, purpleInRampartIcon = 45,
-				redInTowerIcon = 46, blackInTowerIcon = 47, purpleInTowerIcon = 48
+				redInTowerIcon = 46, blackInTowerIcon = 47, purpleInTowerIcon = 48,
+				
+				redInGoldMineIcon = 49, blackInGoldMineIcon = 50, purpleInGoldMineIcon = 51,
+				redInStoneIcon = 52, blackInStoneIcon = 53, purpleInStoneIcon = 54,
+				redInWoodIcon = 55, blackInWoodIcon = 56, purpleInWoodIcon = 57
 	;
 
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
@@ -71,7 +75,15 @@ public class IconCache
 			"/icons/purple_in_Castle.png", "/icons/red_in_Dungeon.png", "/icons/black_in_Dungeon.png",
 			"/icons/purple_in_Dungeon.png", "/icons/red_in_Rampart.png", "/icons/black_in_Rampart.png",
 			"/icons/purple_in_Rampart.png", "/icons/red_in_Tower.png", "/icons/black_in_Tower.png",
-			"/icons/purple_in_Tower.png"};
+			"/icons/purple_in_Tower.png",
+			
+			"/icons/red_knight_in_GoldMine.png", "/icons/black_knight_in_GoldMine.png",
+			"/icons/purple_knight_in_GoldMine.png",
+			"/icons/red_knight_in_Stone.png", "/icons/black_knight_in_Stone.png",
+			"/icons/purple_knight_in_Stone.png",
+			"/icons/red_knight_in_Wood.png", "/icons/black_knight_in_Wood.png",
+			"/icons/purple_knight_in_Wood.png"
+			};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 
