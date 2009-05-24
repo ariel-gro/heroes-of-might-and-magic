@@ -169,6 +169,11 @@ public class Board implements Serializable
 	{
 		theBoard[x][y].setCastle(null);
 	}
+	
+	public void placeMapObject(MapObject mo, int x, int y)
+	{
+		theBoard[x][y].setMapObject(mo);
+	}
 
 	/**
 	 * 

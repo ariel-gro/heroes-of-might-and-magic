@@ -30,7 +30,8 @@ public class IconCache
 		blueInGoldMineIcon = 8, blueInStoneIcon = 9, blueInWoodIcon = 10, blackIcon = 11,
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
-		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33;
+		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33,
+		fireIcon = 58;
 	
 	public static final int redHeroIcon = 34, blackHeroIcon = 35, purpleHeroIcon = 36,
 				redInCastleIcon = 37, blackInCastleIcon = 38, purpleInCastleIcon = 39,
@@ -40,8 +41,7 @@ public class IconCache
 				
 				redInGoldMineIcon = 49, blackInGoldMineIcon = 50, purpleInGoldMineIcon = 51,
 				redInStoneIcon = 52, blackInStoneIcon = 53, purpleInStoneIcon = 54,
-				redInWoodIcon = 55, blackInWoodIcon = 56, purpleInWoodIcon = 57
-	;
+				redInWoodIcon = 55, blackInWoodIcon = 56, purpleInWoodIcon = 57;
 
 	public static final int battleGrassIcon = 13, goblinFaceRightIcon = 14,
 		goblinFaceLeftIcon = 15, soldierFaceRightIcon = 16, soldierFaceLeftIcon = 17,
@@ -56,7 +56,7 @@ public class IconCache
 	public static final int titleFontIndex = 0;
 
 	public static final String[] stockImageLocations = { "/icons/Heroes-icon.jpg",
-			"/icons/Grass3.jpg", "/icons/blue_on_grass.jpg", "/icons/Castle.jpg",
+			"/icons/grass.png", "/icons/blue_on_grass.jpg", "/icons/Castle.jpg",
 			"/icons/GoldMine.jpg", "/icons/Stone.jpg", "/icons/Wood.jpg",
 			"/icons/blue_in_Castle.jpg", "/icons/blue_in_GoldMine.jpg", "/icons/blue_in_Stone.jpg",
 			"/icons/blue_in_Wood.jpg", "/icons/Black.jpg", "/icons/HighScores.jpg",
@@ -82,8 +82,9 @@ public class IconCache
 			"/icons/red_knight_in_Stone.png", "/icons/black_knight_in_Stone.png",
 			"/icons/purple_knight_in_Stone.png",
 			"/icons/red_knight_in_Wood.png", "/icons/black_knight_in_Wood.png",
-			"/icons/purple_knight_in_Wood.png"
-			};
+			"/icons/purple_knight_in_Wood.png",
+			
+			"/icons/fire.png"};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
 

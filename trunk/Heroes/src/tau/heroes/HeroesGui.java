@@ -49,11 +49,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
-import tau.heroes.db.DataAccess;
-import tau.heroes.db.UserInfo;
-import tau.heroes.net.HeroesClientPeer;
-import tau.heroes.net.HeroesServer;
 import tau.heroes.net.NetworkResult;
+
+import tau.heroes.db.*;
+import tau.heroes.net.*;
 
 public class HeroesGui
 {
@@ -343,7 +342,7 @@ public class HeroesGui
 			}
 		}
 		//TODO: add new icons
-		return IconCache.grassIcon;
+		return bs.getMapObject().mapObjectIcon();
 	}
 
 	private String fromBoardToDisplayDecription(int x, int y)
