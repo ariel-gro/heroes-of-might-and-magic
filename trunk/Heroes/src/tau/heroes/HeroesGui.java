@@ -2929,13 +2929,11 @@ public class HeroesGui
 				{
 					userName = userNameText.getText();
 					passWord = passwordText.getText();
+					startNetworkGame(userName, passWord);
 				}
 				//Check the user name:
-				
+					
 				//Validate return value!
-				createStatusWindow(false);
-				NetworkGUI networkGUI = new NetworkGUI(statusComposite);
-				networkGUI.init();
 				shell.dispose();
 			}
 		});
@@ -3239,6 +3237,15 @@ public class HeroesGui
 				display.sleep();
 		}
 	
+	}
+	
+	
+	
+	private void startNetworkGame(String userName, String password)
+	{
+		createStatusWindow(false);
+		NetworkGUI networkGUI = new NetworkGUI(statusComposite);
+		networkGUI.init();
 	}
 	
 	
