@@ -7,7 +7,7 @@ import org.junit.Test;
 public class BoardTest extends TestCase
 {
 	Board board = new Board(20);
-	Player player1 = new Player("Liron");
+	Player player1 = new Player("Liron", PlayerColor.BLUE);
 
 	Hero h1 = new Hero(player1, board, 0, 0);
 	Castle c1 = new Castle(player1, board, 0, 0, CastleType.CASTLE);

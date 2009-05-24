@@ -24,8 +24,9 @@ public class Player implements Serializable
 	private boolean[][] visibleBoard;
 	private int dayOfTheWeek = 1;	/** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
 	private int computerLevel = 0; /** 0 = Human, 1 = Novice, 2 = Expert **/
+	private final PlayerColor playerColor;
 	
-	public Player(String name)
+	public Player(String name, PlayerColor playerColor)
 	{
 		this.playerName = name;
 		mines = new HashMap<String, Integer>(ResourceType.values().length);
@@ -35,6 +36,7 @@ public class Player implements Serializable
 		movesLeft = MAX_MOVES_ALLOWED;
 		// init to false:
 		visibleBoard = new boolean[40][40];
+		this.playerColor = playerColor;
 
 		for (int i = 0; i < ResourceType.values().length; i++)
 		{
@@ -84,6 +86,11 @@ public class Player implements Serializable
 	public String getName()
 	{
 		return this.playerName;
+	}
+	
+	public PlayerColor getPlayerColor()
+	{
+		return this.playerColor;
 	}
 
 	public int getDaysWithoutCastles()

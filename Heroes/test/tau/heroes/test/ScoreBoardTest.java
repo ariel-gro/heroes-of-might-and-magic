@@ -1,14 +1,13 @@
 package tau.heroes.test;
 
-import tau.heroes.GameScoreBoard;
-import tau.heroes.Player;
+import tau.heroes.*;
 import junit.framework.TestCase;
 
 public class ScoreBoardTest extends TestCase
 {
 
-	Player player1 = new Player("Ido");
-	Player player2 = new Player("Ariel");
+	Player player1 = new Player("Ido", PlayerColor.BLUE);
+	Player player2 = new Player("Ariel", PlayerColor.BLUE);
 	GameScoreBoard board = new GameScoreBoard();
 
 	public void testScoreBoard()

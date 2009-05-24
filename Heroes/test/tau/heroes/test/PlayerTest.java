@@ -27,7 +27,7 @@ public class PlayerTest
 	@Before
 	public void setUp() throws Exception
 	{
-		p = new Player("Test");
+		p = new Player("Test", PlayerColor.BLUE);
 		board = new Board(20);
 		h = new Hero(p, board, 0, 0);
 
@@ -42,7 +42,7 @@ public class PlayerTest
 	}
 
 	/**
-	 * Test method for {@link tau.heroes.Player#Player(java.lang.String)}.
+	 * Test method for {@link tau.heroes.Player#Player(java.lang.String, PlayerColor)}.
 	 */
 	@Test
 	public void testPlayer()
