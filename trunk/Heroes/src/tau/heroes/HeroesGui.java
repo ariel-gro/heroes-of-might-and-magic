@@ -3125,35 +3125,35 @@ public class HeroesGui
 	
 		Composite c2 = new Composite(shell, SWT.FILL);
 		c2.setLayout(new GridLayout(1, false));	
-		final Text message = new Text(c2, SWT.BORDER | SWT.FILL);
-		message.setSize(150, 50);
+		final Text messageText = new Text(c2, SWT.BORDER | SWT.FILL);
+		messageText.setSize(150, 50);
 		//message.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		
 		
 		
 
 		Composite c3 = new Composite(shell, SWT.FILL);
-		c3.setLayout(new GridLayout(2, false));	
-		Button okButton = new Button(c3, SWT.PUSH);
-		okButton.setText("    OK    ");
-		okButton.addSelectionListener(new SelectionAdapter() {
+		c3.setLayout(new GridLayout(1, false));	
+		Button sendButton = new Button(c3, SWT.PUSH);
+		sendButton.setText("    Send  Message    ");
+		sendButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//add new user:
-				
-				//Validate return value
+				String partner = partnerText.getText();
+				String message = messageText.getText();
+				sendChat(partner, message);
 				shell.dispose();
 			}
 		});
 
-		Button cancelButton = new Button(c3, SWT.PUSH);
-		cancelButton.setText(" Cancel ");
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				shell.dispose();
-			}
-		});
+		//Button cancelButton = new Button(c3, SWT.PUSH);
+		//cancelButton.setText(" Cancel ");
+		//cancelButton.addSelectionListener(new SelectionAdapter() {
+		//	public void widgetSelected(SelectionEvent e)
+		//	{
+		//		shell.dispose();
+		//	}
+		//});
 
 		shell.open();
 		while (!shell.isDisposed())
@@ -3176,7 +3176,29 @@ public class HeroesGui
 	
 	
 	
+	private void recieveChat(String sender, String message)
+	{
+		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
+		shell.setSize(300, 160);
+		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setText("Message from " + sender);
+		shell.setLayout(new GridLayout());
+		Label messageLabel = new Label(shell, SWT.FILL);
+		messageLabel.setText(message);
+		
+		shell.open();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+	}
 	
+	
+	private void sendChat(String partner, String message)
+	{
+		recieveChat(partner, message);
+	}
 	
 	
 	
