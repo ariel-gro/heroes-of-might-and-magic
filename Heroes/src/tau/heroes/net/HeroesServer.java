@@ -13,6 +13,8 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import tau.heroes.db.DBConnection;
+import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
 
 public class HeroesServer extends NetworkServer
@@ -29,7 +31,7 @@ public class HeroesServer extends NetworkServer
 	private HeroesServer() throws IOException
 	{
 		super(SERVER_PORT);
-
+		
 		rooms = Collections.synchronizedMap(new TreeMap<UUID, Room>());
 		roomNames = Collections.synchronizedSet(new TreeSet<String>());
 		peers = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
@@ -87,6 +89,8 @@ public class HeroesServer extends NetworkServer
 	{
 		try
 		{
+			if(DataAccess.init())
+				System.out.println("DB is online");
 			HeroesServer server = new HeroesServer();
 			server.startListening();
 			System.out.println("Server started");
