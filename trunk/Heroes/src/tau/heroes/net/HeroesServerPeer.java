@@ -68,6 +68,8 @@ public class HeroesServerPeer extends NetworkPeer
 	{
 		if (message instanceof LoginRequestMessage)
 			return handleLoginRequest((LoginRequestMessage) message);
+		else if(message instanceof RegisterRequestMessage)
+			return handleRegisterRequest((RegisterRequestMessage) message);
 		else
 			return super.handleIncomingSyncMessage(message);
 	}
@@ -88,5 +90,15 @@ public class HeroesServerPeer extends NetworkPeer
 			userInfo.setUsername(message.getUserName());
 			return new LoginOKMessage(userInfo);
 		}
+	}
+	private AsyncMessage handleRegisterRequest(RegisterRequestMessage message)
+	{	
+		if (isLoggedIn)
+			return new ErrorMessage("You are already logged in.");
+		
+		userInfo = new UserInfo(message.getUserName(),message.getPassword(),message.getEmail(),message.getNickname());
+	
+		return new LoginOKMessage(userInfo);
+		
 	}
 }

@@ -9,13 +9,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import tau.heroes.net.ErrorMessage;
+import tau.heroes.net.HeroesClientPeer;
+import tau.heroes.net.HeroesServer;
+import tau.heroes.net.LoginOKMessage;
+import tau.heroes.net.LoginRequestMessage;
+import tau.heroes.net.Message;
+import tau.heroes.net.NetworkResult;
+import tau.heroes.net.RegisterRequestMessage;
+
 public class GameController
 {
 	private GameState gameState;
+	private HeroesClientPeer client;
 
 	public GameController(boolean isGUI)
 	{
 		this.gameState = new GameState(isGUI);
+		client = new HeroesClientPeer();
 	}
 
 	public void initNewGame(Vector<Player> players)
@@ -273,5 +284,30 @@ public class GameController
 		}
 
 		return msg;
+	}
+	//Network controler
+	public NetworkResult<Boolean> Login(String ip, String username, String password, boolean asGuest)
+	{
+		if(!client.isConnected())
+		{
+			if(!client.connect(ip, HeroesServer.SERVER_PORT))
+				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
+		}
+		return client.Login(username, password, asGuest);
+	}
+	public NetworkResult<Boolean> Register(String ip, String username, String password, String email, String nickname)
+	{
+		if(!client.isConnected())
+		{
+			if(!client.connect(ip, HeroesServer.SERVER_PORT))
+				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
+		}
+		return client.Register(username, password, email, nickname);
+	}
+	
+	public void Disconnect()
+	{
+		if(client != null && client.isConnected())
+			client.disconnect();
 	}
 }
