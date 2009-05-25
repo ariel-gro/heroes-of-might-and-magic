@@ -1,6 +1,9 @@
 package tau.heroes.net;
 
+import java.net.Inet4Address;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
@@ -11,12 +14,27 @@ public class HeroesServerPeer extends NetworkPeer
 	private Room room;
 	private boolean isLoggedIn = false;
 	private UserInfo userInfo = null;
+	private String serverPeerName;
+	private static AtomicInteger debugCounter = new AtomicInteger(1);
 
 	public HeroesServerPeer(HeroesServer heroesServer, Socket socket)
 	{
 		super(socket);
 
 		this.heroesServer = heroesServer;
+
+		serverPeerName = "Peer " + debugCounter.getAndAdd(1);
+
+		try
+		{
+			InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
+			Inet4Address ia = (Inet4Address) isa.getAddress();
+			System.out.println(serverPeerName + ": New connection from " + ia.getHostAddress()
+				+ ":" + isa.getPort());
+		}
+		catch (Exception e)
+		{
+		}
 	}
 
 	public Room getRoom()
@@ -30,86 +48,95 @@ public class HeroesServerPeer extends NetworkPeer
 	}
 
 	@Override
-	protected void handleDisconnect()
+	protected void handleDisconnect(boolean sendDisconnectMessage)
 	{
-		super.handleDisconnect();
-		
+		super.handleDisconnect(sendDisconnectMessage);
+
 		if (room != null)
 			room.removeMember(this);
-		
+
 		heroesServer.getPeers().remove(this);
+
+		System.out.println(serverPeerName + ": Disconnected (" + sendDisconnectMessage + ")");
 	}
-	
-	
+
 	protected void handleChatMessage(Message message)
 	{
 		room.asyncSendMessage(message);
+
+		System.out.println(serverPeerName + ": Chat message received");
 	}
-	
-	
+
 	@Override
 	protected void handleIncomingAsyncMessage(AsyncMessage message)
 	{
 		if (message instanceof DisconnectMessage)
-		
-			handleDisconnect();
-		
+			handleDisconnect(false);
 		else if (message instanceof ChatMessage)
-			
 			handleChatMessage(message);
-		
 		else
-		
-			super.handleIncomingAsyncMessage(message);}
-		
-
+			super.handleIncomingAsyncMessage(message);
+	}
 
 	@Override
 	protected AsyncMessage handleIncomingSyncMessage(SyncMessage message)
 	{
 		if (message instanceof LoginRequestMessage)
 			return handleLoginRequest((LoginRequestMessage) message);
-		else if(message instanceof RegisterRequestMessage)
+		else if (message instanceof RegisterRequestMessage)
 			return handleRegisterRequest((RegisterRequestMessage) message);
 		else
 			return super.handleIncomingSyncMessage(message);
 	}
 
 	private AsyncMessage handleLoginRequest(LoginRequestMessage message)
-	{	
+	{
+		System.out.println(serverPeerName + ": Login requested");
+
 		if (isLoggedIn)
 			return new ErrorMessage("You are already logged in.");
-		
+
 		if (message.isAsGuest())
 		{
 			userInfo = heroesServer.createGuestUser();
-			return new LoginOKMessage(userInfo);
 		}
 		else
 		{
 			boolean bRes = DataAccess.validateUser(message.getUserName(), message.getPassword());
-			if(!bRes)
+			if (!bRes)
 			{
 				return new ErrorMessage("User isn't registered (or wrong password).");
 			}
 			userInfo = new UserInfo();
 			userInfo.setUsername(message.getUserName());
-			return new LoginOKMessage(userInfo);
 		}
+
+		isLoggedIn = true;
+		heroesServer.getLobby().addMember(this);
+
+		System.out.println(serverPeerName + ": Login OK");
+
+		return new LoginOKMessage(userInfo);
 	}
+
 	private AsyncMessage handleRegisterRequest(RegisterRequestMessage message)
-	{	
+	{
+		System.out.println(serverPeerName + ": Register requested");
+
 		if (isLoggedIn)
 			return new ErrorMessage("You are already logged in.");
-		
-		userInfo = new UserInfo(message.getUserName(),message.getPassword(),message.getEmail(),message.getNickname());
-	    
+
+		userInfo = new UserInfo(message.getUserName(), message.getPassword(), message.getEmail(),
+			message.getNickname());
+
 		boolean bRes = DataAccess.addUser(userInfo);
-		if(!bRes)
+		if (!bRes)
 		{
 			return new ErrorMessage("Username is already exist, please choose different username.");
 		}
-		return new LoginOKMessage(userInfo);
 		
+		System.out.println(serverPeerName + ": Register OK");
+		
+		return new LoginOKMessage(userInfo);
 	}
 }

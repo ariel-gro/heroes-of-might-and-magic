@@ -9,14 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
-import tau.heroes.net.ErrorMessage;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
-import tau.heroes.net.LoginOKMessage;
-import tau.heroes.net.LoginRequestMessage;
-import tau.heroes.net.Message;
 import tau.heroes.net.NetworkResult;
-import tau.heroes.net.RegisterRequestMessage;
 
 public class GameController
 {

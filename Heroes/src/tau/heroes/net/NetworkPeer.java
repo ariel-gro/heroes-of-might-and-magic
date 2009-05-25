@@ -33,15 +33,20 @@ public class NetworkPeer
 			return false;
 		}
 	}
-
+	
 	public void disconnect()
+	{
+		disconnect(true);
+	}
+
+	public void disconnect(boolean sendDisconnectMessage)
 	{
 		try
 		{
-			if (isConnected())
+			if (isConnected() && sendDisconnectMessage)
 				asyncSendMessage(new DisconnectMessage());
-			stopListening();
 			socket.close();
+			stopListening();
 		}
 		catch (IOException e)
 		{
@@ -82,22 +87,25 @@ public class NetworkPeer
 			Message message = null;
 			try
 			{
+				if (socket.isClosed() || !socket.isConnected())
+					break;
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 				message = (Message) ois.readObject();
 			}
 			catch (EOFException e)
 			{
-				handleDisconnect();
+				handleDisconnect(false);
 				break;
 			}
 			catch (SocketException e)
 			{
-				handleDisconnect();
+				if (!e.getMessage().equalsIgnoreCase("socket closed"))
+					handleDisconnect(false);
 				break;
 			}
 			catch (IOException e)
 			{
-				handleDisconnect();
+				handleDisconnect(false);
 				break;
 			}
 			catch (ClassNotFoundException e)
@@ -121,9 +129,9 @@ public class NetworkPeer
 		}
 	}
 
-	protected void handleDisconnect()
+	protected void handleDisconnect(boolean sendDisconnectMessage)
 	{
-		disconnect();
+		disconnect(sendDisconnectMessage);
 	}
 
 	private void handleIncomingMessage(Message message)
