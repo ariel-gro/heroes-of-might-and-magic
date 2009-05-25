@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import tau.heroes.db.DBConnection;
 import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
 
@@ -84,18 +83,32 @@ public class HeroesServer extends NetworkServer
 		
 		return userInfo;
 	}
-
+	
 	public static void main(String[] args)
 	{
 		try
 		{
 			if(DataAccess.init())
 				System.out.println("DB is online");
+			else
+			{
+				System.out.println("DB is offline");
+				return;
+			}
+			
 			HeroesServer server = new HeroesServer();
 			server.startListening();
 			System.out.println("Server started");
+			
+			if (args != null && args.length > 0 && args[0].equalsIgnoreCase("deamon"))
+			{
+				System.out.println("Running in deamon mode");
+				return;
+			}
+			
+			System.out.println("Enter 'quit' to quit...");
 			Scanner scanner = new Scanner(System.in);
-			scanner.next();
+			while (!scanner.next().equalsIgnoreCase("quit"));
 			server.stopListening();
 			System.out.println("Server stopped");
 		}

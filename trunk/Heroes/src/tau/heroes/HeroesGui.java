@@ -49,10 +49,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
+import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.NetworkResult;
-
-import tau.heroes.db.*;
-import tau.heroes.net.*;
 
 public class HeroesGui
 {
