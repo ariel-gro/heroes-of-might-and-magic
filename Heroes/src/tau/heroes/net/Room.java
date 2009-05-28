@@ -58,10 +58,18 @@ public class Room
 	
 	public void asyncSendMessage(Message message)
 	{
+		
+		int index =0;
 		for (HeroesServerPeer member : members)
 		{
+			if(message instanceof GameStateMessage)
+			{
+				((GameStateMessage)message).setIndex(index);
+			}
 			member.asyncSendMessage(message);
+			index++;
 			System.out.println(member.getName() + ": Chat message sent");
 		}
+		
 	}
 }
