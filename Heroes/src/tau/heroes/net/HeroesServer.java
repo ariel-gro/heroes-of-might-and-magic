@@ -70,6 +70,7 @@ public class HeroesServer extends NetworkServer
 		HeroesServerPeer newPeer = new HeroesServerPeer(this, newSocket);
 		newPeer.startListening();
 		peers.add(newPeer);
+
 	}
 	
 	public UserInfo createGuestUser()

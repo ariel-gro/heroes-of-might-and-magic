@@ -13,7 +13,7 @@ public class HeroesServerPeer extends NetworkPeer
 	private HeroesServer heroesServer;
 	private Room room;
 	private boolean isLoggedIn = false;
-	private UserInfo userInfo = null;
+	public UserInfo userInfo = null;
 	private String serverPeerName;
 	private static AtomicInteger debugCounter = new AtomicInteger(1);
 
@@ -62,9 +62,11 @@ public class HeroesServerPeer extends NetworkPeer
 
 	protected void handleChatMessage(Message message)
 	{
+		System.out.println(serverPeerName + ": Chat message received");
+		
 		room.asyncSendMessage(message);
 
-		System.out.println(serverPeerName + ": Chat message received");
+		
 	}
 
 	@Override
@@ -138,5 +140,9 @@ public class HeroesServerPeer extends NetworkPeer
 		System.out.println(serverPeerName + ": Register OK");
 		
 		return new LoginOKMessage(userInfo);
+	}
+	public String getName()
+	{
+		return serverPeerName;
 	}
 }

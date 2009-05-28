@@ -59,6 +59,9 @@ public class Room
 	public void asyncSendMessage(Message message)
 	{
 		for (HeroesServerPeer member : members)
+		{
 			member.asyncSendMessage(message);
+			System.out.println(member.getName() + ": Chat message sent");
+		}
 	}
 }
