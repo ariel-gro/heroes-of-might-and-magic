@@ -15,11 +15,11 @@ public class GameHistory implements Serializable
 	private int gameScore;
 	private List<String> opponentPlayersNames;
 	
-	public GameHistory(Date gameDate, int gameScore, List<String> opponentPlayersNames)
+	public GameHistory()
 	{
-		this.gameDate = gameDate;
-		this.gameScore = gameScore;
-		this.opponentPlayersNames = opponentPlayersNames;
+		this.gameDate = null;
+		this.gameScore = 0;
+		this.opponentPlayersNames = null;
 	}
 	
 	public Date getGameDate()
