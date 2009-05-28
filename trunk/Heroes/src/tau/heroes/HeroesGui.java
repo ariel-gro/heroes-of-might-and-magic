@@ -53,7 +53,6 @@ import tau.heroes.net.ChatEvent;
 import tau.heroes.net.ChatListener;
 import tau.heroes.net.GameStateEvent;
 import tau.heroes.net.GameStateListener;
-import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.NetworkResult;
 
 public class HeroesGui
@@ -63,7 +62,7 @@ public class HeroesGui
 	private String file = null;
 
 	private boolean isModified = false;
-	
+
 	private boolean isBoardInit = false;
 
 	int numOfCells;
@@ -93,9 +92,9 @@ public class HeroesGui
 	private Composite statusComposite;
 
 	private Point[][] boardPoints = null;
-	
+
 	private Composite[][] boardSquares = null;
-	
+
 	private Label[][] boardLabels = null;
 
 	SashForm sash;
@@ -109,7 +108,7 @@ public class HeroesGui
 	Cursor defaultCursor;
 
 	public ResourcesView resourcesView;
-	
+
 	public ArmyView armyView;
 
 	public Display getDisplay()
@@ -122,24 +121,24 @@ public class HeroesGui
 	{
 		this.display = d;
 		this.gameController = gameController;
-		this.gameController.addChatListener(new ChatListener()
-		{
+		this.gameController.addChatListener(new ChatListener() {
 			@Override
-			public void chatMessageArrived(ChatEvent e) {
+			public void chatMessageArrived(ChatEvent e)
+			{
 				handleIncomingChat(e);
 			}
 		});
-		this.gameController.addGameStateListener(new GameStateListener()
-		{
+		this.gameController.addGameStateListener(new GameStateListener() {
 			@Override
-			public void gameStateMessageArrived(GameStateEvent e) {
+			public void gameStateMessageArrived(GameStateEvent e)
+			{
 				handleIncomingGameState(e);
 			}
 		});
-		
+
 		IconCache.initResources(display);
 	}
- 
+
 	public Shell open()
 	{
 		shell = new Shell(display/* , SWT.APPLICATION_MODAL */);
@@ -194,7 +193,7 @@ public class HeroesGui
 
 		shell.open();
 
-		//displayStartWindow();
+		// displayStartWindow();
 
 		return shell;
 	}
@@ -276,6 +275,9 @@ public class HeroesGui
 		white.dispose();
 		black.dispose();
 
+		if (gameController != null)
+			gameController.Disconnect();
+
 		return true;
 	}
 
@@ -321,7 +323,7 @@ public class HeroesGui
 			}
 			else
 				return bs.getHero().player.getPlayerColor().heroIcon();
-				//return IconCache.blueHeroIcon;
+			// return IconCache.blueHeroIcon;
 
 		}
 		else if ((bs.getCastle()) != null)
@@ -358,7 +360,7 @@ public class HeroesGui
 				return IconCache.stoneIcon;
 			}
 		}
-		//TODO: add new icons
+		// TODO: add new icons
 		return bs.getMapObject().mapObjectIcon();
 	}
 
@@ -403,8 +405,8 @@ public class HeroesGui
 			{
 				return bs.getHero().player.getName() + "'s Hero in "
 					+ bs.getCastle().getPlayer().getName() + "'s "
-					+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: "
-					+ x + ", " + y;
+					+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: " + x + ", "
+					+ y;
 			}
 			else
 				return bs.getHero().player.getName() + "'s Hero" + "\nLocation: " + x + ", " + y;
@@ -413,8 +415,7 @@ public class HeroesGui
 		else if ((bs.getCastle()) != null)
 		{
 			return bs.getCastle().getPlayer().getName() + "'s "
-			+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: "
-			+ x + ", " + y;
+				+ bs.getCastle().getCastleType().castleNameByType() + "\nLocation: " + x + ", " + y;
 		}
 		else if ((bs.getResource()) != null)
 		{
@@ -451,10 +452,11 @@ public class HeroesGui
 		boolean[][] isVisible;
 		Composite currentHero = null;
 
-		if (isBoardInit == false && (boardComposite != null && boardComposite.isDisposed() == false))
+		if (isBoardInit == false
+			&& (boardComposite != null && boardComposite.isDisposed() == false))
 			boardComposite.dispose();
-		
-		if(isBoardInit == false)
+
+		if (isBoardInit == false)
 		{
 			boardComposite = new Composite(sc1, SWT.NONE);
 			boardComposite.setBackground(black);
@@ -462,9 +464,10 @@ public class HeroesGui
 			boardComposite.setLayoutData(d);
 		}
 
-		sc1.addMouseWheelListener(new ScrollMove() );
+		sc1.addMouseWheelListener(new ScrollMove());
 		sc1.forceFocus();
-		if (initBoard == false) {
+		if (initBoard == false)
+		{
 			final GridLayout gridLayout = new GridLayout();
 			boardComposite.setLayout(gridLayout);
 			final Label img_Label = new Label(boardComposite, SWT.NONE);
@@ -500,30 +503,31 @@ public class HeroesGui
 			tableLayout.verticalSpacing = 0;
 			boardComposite.setLayout(tableLayout);
 
-			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).getVisibleBoard();
+			isVisible = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
+				.getVisibleBoard();
 
-			if(isBoardInit == false)
+			if (isBoardInit == false)
 			{
 				boardSquares = new Composite[numOfCells][numOfCells];
 				boardLabels = new Label[numOfCells][numOfCells];
 			}
-			
+
 			for (int y = 0; y < numOfCells; y++)
 			{
 				for (int x = 0; x < numOfCells; x++)
 				{
-					if(isBoardInit == false)
+					if (isBoardInit == false)
 						boardSquares[x][y] = new Composite(boardComposite, SWT.NONE);
-					
+
 					Composite b = boardSquares[x][y];
 					GridLayout cellLayout = new GridLayout();
 					cellLayout.marginWidth = 0;
 					cellLayout.marginHeight = 0;
 					b.setLayout(cellLayout);
-					
-					if(isBoardInit == false)
+
+					if (isBoardInit == false)
 						boardLabels[x][y] = new Label(b, SWT.NONE);
-					
+
 					Label l = boardLabels[x][y];
 					l.setLayoutData(new GridData(GridData.FILL_BOTH));
 					int t = fromBoardToDisplayIcons(x, y);
@@ -539,7 +543,7 @@ public class HeroesGui
 						description = fromBoardToDisplayDecription(x, y);
 						l.setToolTipText(description);
 					}
- 
+
 					if (PlayerColor.isHeroIcon(t))
 						if (gameController.getGameState().getBoard().getBoardState(x, y).getHero().player
 							.equals(gameController.getGameState().getPlayers()
@@ -587,8 +591,8 @@ public class HeroesGui
 			sc1.setContent(boardComposite);
 			sc1.setExpandHorizontal(true);
 			sc1.setExpandVertical(true);
-			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT,SWT.DEFAULT));
-	
+			sc1.setMinSize(boardComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
 			if (currentHero != null)
 			{
 				Rectangle bounds = currentHero.getBounds();
@@ -607,7 +611,6 @@ public class HeroesGui
 			}
 		}
 	}
-	
 
 	MouseListener focusListener = new MouseListener() {
 		public void mouseDown(MouseEvent e)
@@ -658,9 +661,7 @@ public class HeroesGui
 						Rectangle r2 = tracker.getRectangles()[0];
 						newPoint = new Point(r2.x / r2.width, r2.y / r2.height);
 
-						if (!gameController
-							.getGameState()
-							.getPlayers()
+						if (!gameController.getGameState().getPlayers()
 							.elementAt(currentPlayerIndex)
 							.checkMove((r2.x / r2.width), (r2.y / r2.height), gameController
 								.getGameState().getBoard()))
@@ -944,8 +945,8 @@ public class HeroesGui
 			int castleXPos = castle.getXPos();
 			int castleYPos = castle.getYPos();
 			Button button1 = new Button(statusComposite, SWT.NONE);
-			button1.setText(castle.getCastleType().castleNameByType()
-							+ " at  " + castleXPos + " , " + castleYPos);
+			button1.setText(castle.getCastleType().castleNameByType() + " at  " + castleXPos
+				+ " , " + castleYPos);
 			button1.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
@@ -1271,11 +1272,11 @@ public class HeroesGui
 
 		shell1.open();
 		shell.setEnabled(false);
-		while (!shell1.isDisposed()) 
+		while (!shell1.isDisposed())
 		{
-			if (!display.readAndDispatch()) 
+			if (!display.readAndDispatch())
 			{
-				if (exitHelperArray[0] != ExitOK) 
+				if (exitHelperArray[0] != ExitOK)
 				{
 					exitHelperArray[0] = ExitCANCEL;
 				}
@@ -1401,25 +1402,24 @@ public class HeroesGui
 			return;
 		}
 
-
 		this.gameController.loadGame(name);
 		handleUpdateGameState();
-			
 
-		
 	}
 
-	private boolean handleUpdateGameState() {
+	private boolean handleUpdateGameState()
+	{
 		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
 		shell.setCursor(waitCursor);
-		
+
 		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
-		if(gameController.getNetworkIndex() != GameController.LOACL_GAME_INDEX && gameController.getNetworkIndex() != currentPlayerIndex)
-		{//This is a network game, and not my turn:
-			//we can add a timers or progress bar or info...
-			return false;		
+		if (gameController.getNetworkIndex() != GameController.LOACL_GAME_INDEX
+			&& gameController.getNetworkIndex() != currentPlayerIndex)
+		{// This is a network game, and not my turn:
+			// we can add a timers or progress bar or info...
+			return false;
 		}
-		
+
 		if (gameController.getGameState().getBoard() == null)
 		{
 			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n"
@@ -1430,7 +1430,7 @@ public class HeroesGui
 		createBoardWindow(true);
 		createStatusWindow(true);
 		sash.setWeights(new int[] { 80, 20 });
-		
+
 		shell.setCursor(null);
 		waitCursor.dispose();
 		return true;
@@ -2110,7 +2110,7 @@ public class HeroesGui
 				lgoinToServerWindow();
 			}
 		});
-		
+
 		// Network -> Add New User
 		MenuItem addNewUserItem = new MenuItem(menu, SWT.NULL);
 		addNewUserItem.setText("&Add New User");
@@ -2120,7 +2120,7 @@ public class HeroesGui
 				addNewUserToServerWindow();
 			}
 		});
-		
+
 		// Network -> Chat
 		MenuItem chatItem = new MenuItem(menu, SWT.NULL);
 		chatItem.setText("&Chat");
@@ -2131,8 +2131,7 @@ public class HeroesGui
 			}
 		});
 	}
-	
-	
+
 	public void showGameAssistanceMbox()
 	{
 
@@ -2223,7 +2222,7 @@ public class HeroesGui
 				helpShell.setEnabled(true);
 			}
 		});
-		
+
 		/* Scores */
 		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
 		button.setText("Game Score");
@@ -2235,7 +2234,7 @@ public class HeroesGui
 				diplayHelpByHelpItem(GameStringsHelper.Highscores);
 				helpShell.setEnabled(true);
 			}
-		});		
+		});
 
 		/* About the game */
 		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
@@ -2261,9 +2260,10 @@ public class HeroesGui
 				shell.setEnabled(true);
 			}
 		});
-		
-		//helpShell.pack();
-		//helpShell.setSize(helpShell.getSize().x + 25, helpShell.getSize().y + 25);
+
+		// helpShell.pack();
+		// helpShell.setSize(helpShell.getSize().x + 25, helpShell.getSize().y +
+		// 25);
 		helpShell.open();
 		shell.setEnabled(false);
 		while (!helpShell.isDisposed())
@@ -2281,44 +2281,43 @@ public class HeroesGui
 		String helpString = GameStringsHelper.getStringByIndex(helpItem);
 		String header = GameStringsHelper.getHeaderByIndex(helpItem);
 
-		
 		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
 		helpShell.setText(header);
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
 		helpShell.setLayout(new GridLayout(1, true));
 		helpShell.setLocation(150, 150);
-		
+
 		Label helpLable = new Label(helpShell, SWT.LEFT);
 		helpLable.setText(helpString);
-		
+
 		Font newFont = helpLable.getFont(); // just an initialization for the
 		// compiler
 		Font initialFont = helpLable.getFont();
 		FontData[] fontData = initialFont.getFontData();
-		for (int k = 0; k < fontData.length; k++) {
-			fontData[k].setHeight(2 + initialFont.getFontData()[k]
-					.getHeight());
-			//fontData[k].setStyle(SWT.BOLD);
+		for (int k = 0; k < fontData.length; k++)
+		{
+			fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+			// fontData[k].setStyle(SWT.BOLD);
 		}
 		newFont = new Font(display, fontData);
 		helpLable.setFont(newFont);
-		
+
 		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
 		button.setText("Close");
 		button.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
-		button.addSelectionListener(new SelectionAdapter()
-		{
+		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
 				helpShell.dispose();
 			}
 		});
-		
+
 		helpShell.pack();
 		helpShell.setSize(helpShell.getSize().x + 15, helpShell.getSize().y + 15);
 		helpShell.open();
-		
-		while (!helpShell.isDisposed()){
+
+		while (!helpShell.isDisposed())
+		{
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
@@ -2368,7 +2367,7 @@ public class HeroesGui
 				resetHighscores();
 			}
 		});
-		
+
 		MenuItem subItem3 = new MenuItem(menu, SWT.NULL);
 		subItem3.setText("&About Highscores");
 		subItem3.addSelectionListener(new SelectionAdapter() {
@@ -2852,7 +2851,7 @@ public class HeroesGui
 				displayError("Unknown creature type.");
 		}
 	}
-	
+
 	public void lgoinToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
@@ -2861,7 +2860,7 @@ public class HeroesGui
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Login to Server");
 		shell.setLayout(layout1);
-		
+
 		GridData ipAddressData = new GridData();
 		ipAddressData.horizontalSpan = 2;
 		ipAddressData.grabExcessHorizontalSpace = true;
@@ -2877,7 +2876,7 @@ public class HeroesGui
 		ipAddressText.setLayoutData(ipAddressTextData);
 		ipAddressText.setEnabled(true);
 		ipAddressText.setText("127.0.0.1");
-		
+
 		GridData loginAsGuestData = new GridData();
 		loginAsGuestData.horizontalSpan = 4;
 		loginAsGuestData.grabExcessHorizontalSpace = true;
@@ -2895,11 +2894,11 @@ public class HeroesGui
 		final Button loginAsUserButton = new Button(shell, SWT.RADIO);
 		loginAsUserButton.setText("Login as User");
 		loginAsUserButton.setLayoutData(loginAsUserData);
-		
-		GridLayout gridLayout = new GridLayout ();
+
+		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		gridLayout.makeColumnsEqualWidth = true;
-		
+
 		final Group userPasswordGroup = new Group(shell, SWT.NULL);
 		userPasswordGroup.setLayout(gridLayout);
 		GridData groupData = new GridData();
@@ -2907,7 +2906,7 @@ public class HeroesGui
 		groupData.grabExcessHorizontalSpace = true;
 		groupData.grabExcessVerticalSpace = true;
 		userPasswordGroup.setLayoutData(groupData);
-		
+
 		GridData userNameData = new GridData();
 		userNameData.horizontalSpan = 2;
 		userNameData.grabExcessHorizontalSpace = true;
@@ -2922,7 +2921,7 @@ public class HeroesGui
 		userNameTextData.grabExcessVerticalSpace = true;
 		userNameText.setLayoutData(userNameTextData);
 		userNameText.setEnabled(false);
-		
+
 		GridData passwordData = new GridData();
 		passwordData.horizontalSpan = 2;
 		passwordData.grabExcessHorizontalSpace = true;
@@ -2937,15 +2936,16 @@ public class HeroesGui
 		passwordTextData.grabExcessVerticalSpace = true;
 		passwordText.setLayoutData(passwordTextData);
 		passwordText.setEnabled(false);
-		
+
 		loginAsUserButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				if(loginAsGuestButton.getSelection())
+				if (loginAsGuestButton.getSelection())
 				{
 					userNameText.setEnabled(false);
 					passwordText.setEnabled(false);
-				} else
+				}
+				else
 				{
 					userNameText.setEnabled(true);
 					passwordText.setEnabled(true);
@@ -2971,15 +2971,17 @@ public class HeroesGui
 			{
 				String userName = userNameText.getText();
 				String passWord = passwordText.getText();
-				//Check the user name:
-				NetworkResult<Boolean> res = gameController.Login(ipAddressText.getText() , userName, passWord, loginAsGuestButton.getSelection());
-				//Validate return value!
-				if(res.getResult() != true)
+				// Check the user name:
+				NetworkResult<Boolean> res = gameController
+					.Login(ipAddressText.getText(), userName, passWord, loginAsGuestButton
+						.getSelection());
+				// Validate return value!
+				if (res.getResult() != true)
 				{
 					displayError(res.getErrorMessage());
 					return;
 				}
-				
+
 				startNetworkGame(userName, passWord);
 				shell.dispose();
 			}
@@ -3025,7 +3027,7 @@ public class HeroesGui
 				display.sleep();
 		}
 	}
-	
+
 	public void addNewUserToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
@@ -3034,7 +3036,7 @@ public class HeroesGui
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Add New User to Server");
 		shell.setLayout(layout1);
-		
+
 		GridData ipAddressData = new GridData();
 		ipAddressData.horizontalSpan = 2;
 		ipAddressData.grabExcessHorizontalSpace = true;
@@ -3049,7 +3051,7 @@ public class HeroesGui
 		ipAddressTextData.grabExcessVerticalSpace = true;
 		ipAddressText.setLayoutData(ipAddressTextData);
 		ipAddressText.setEnabled(true);
-		
+
 		GridData userNameData = new GridData();
 		userNameData.horizontalSpan = 2;
 		userNameData.grabExcessHorizontalSpace = true;
@@ -3063,7 +3065,7 @@ public class HeroesGui
 		userNameTextData.grabExcessHorizontalSpace = true;
 		userNameTextData.grabExcessVerticalSpace = true;
 		userNameText.setLayoutData(userNameTextData);
-		
+
 		GridData passwordData = new GridData();
 		passwordData.horizontalSpan = 2;
 		passwordData.grabExcessHorizontalSpace = true;
@@ -3077,7 +3079,7 @@ public class HeroesGui
 		passwordTextData.grabExcessHorizontalSpace = true;
 		passwordTextData.grabExcessVerticalSpace = true;
 		passwordText.setLayoutData(passwordTextData);
-		
+
 		GridData mailData = new GridData();
 		mailData.horizontalSpan = 2;
 		mailData.grabExcessHorizontalSpace = true;
@@ -3091,7 +3093,7 @@ public class HeroesGui
 		mailTextData.grabExcessHorizontalSpace = true;
 		mailTextData.grabExcessVerticalSpace = true;
 		mailText.setLayoutData(mailTextData);
-		
+
 		GridData nicknameData = new GridData();
 		nicknameData.horizontalSpan = 2;
 		nicknameData.grabExcessHorizontalSpace = true;
@@ -3105,7 +3107,7 @@ public class HeroesGui
 		nicknameTextData.grabExcessHorizontalSpace = true;
 		nicknameTextData.grabExcessVerticalSpace = true;
 		nicknameText.setLayoutData(nicknameTextData);
-	
+
 		GridData emptyLabelData1 = new GridData();
 		emptyLabelData1.grabExcessHorizontalSpace = true;
 		emptyLabelData1.horizontalSpan = 4;
@@ -3127,11 +3129,12 @@ public class HeroesGui
 				String passWord = passwordText.getText();
 				String email = mailText.getText();
 				String nickname = nicknameText.getText();
-				
-				//Check the user name:
-				NetworkResult<Boolean> res = gameController.Register( ip, userName, passWord, email,nickname);
-				//Validate return value!
-				if(res.getResult() != true)
+
+				// Check the user name:
+				NetworkResult<Boolean> res = gameController
+					.Register(ip, userName, passWord, email, nickname);
+				// Validate return value!
+				if (res.getResult() != true)
 				{
 					displayError(res.getErrorMessage());
 					return;
@@ -3181,8 +3184,7 @@ public class HeroesGui
 				display.sleep();
 		}
 	}
-	
-	
+
 	public void chatWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
@@ -3190,44 +3192,41 @@ public class HeroesGui
 		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
 		shell.setText("Chat");
 		shell.setLayout(new GridLayout());
-		
-		//Composite c1 = new Composite(shell, SWT.FILL);
-		//c1.setLayout(new GridLayout(2, false));	
-		//Label partnerLabel = new Label(c1, SWT.NONE);
-		//partnerLabel.setText("Recipient : ");
-		//final Text partnerText = new Text(c1, SWT.BORDER);
-	
+
+		// Composite c1 = new Composite(shell, SWT.FILL);
+		// c1.setLayout(new GridLayout(2, false));
+		// Label partnerLabel = new Label(c1, SWT.NONE);
+		// partnerLabel.setText("Recipient : ");
+		// final Text partnerText = new Text(c1, SWT.BORDER);
+
 		Composite c2 = new Composite(shell, SWT.FILL);
-		c2.setLayout(new GridLayout(1, false));	
+		c2.setLayout(new GridLayout(1, false));
 		final Text messageText = new Text(c2, SWT.BORDER | SWT.FILL);
 		messageText.setSize(150, 50);
-		//message.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		
-		
-		
+		// message.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		Composite c3 = new Composite(shell, SWT.FILL);
-		c3.setLayout(new GridLayout(1, false));	
+		c3.setLayout(new GridLayout(1, false));
 		Button sendButton = new Button(c3, SWT.PUSH);
 		sendButton.setText("    Send  Message    ");
 		sendButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-			
+
 				String message = messageText.getText();
 				gameController.sendChat(message);
 				shell.dispose();
 			}
 		});
 
-		//Button cancelButton = new Button(c3, SWT.PUSH);
-		//cancelButton.setText(" Cancel ");
-		//cancelButton.addSelectionListener(new SelectionAdapter() {
-		//	public void widgetSelected(SelectionEvent e)
-		//	{
-		//		shell.dispose();
-		//	}
-		//});
+		// Button cancelButton = new Button(c3, SWT.PUSH);
+		// cancelButton.setText(" Cancel ");
+		// cancelButton.addSelectionListener(new SelectionAdapter() {
+		// public void widgetSelected(SelectionEvent e)
+		// {
+		// shell.dispose();
+		// }
+		// });
 
 		shell.open();
 		while (!shell.isDisposed())
@@ -3235,26 +3234,21 @@ public class HeroesGui
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-	
+
 	}
+
 	public void Exit()
 	{
-		if(gameController != null)
-			gameController.Disconnect();
 		shell.close();
 	}
-	
-	
+
 	private void startNetworkGame(String userName, String password)
 	{
 		createStatusWindow(false);
-		NetworkGUI networkGUI = new NetworkGUI(statusComposite);
+		NetworkGUI networkGUI = new NetworkGUI(statusComposite, gameController);
 		networkGUI.init();
 	}
-	
-	
-	
-	
+
 	private void recieveChat(String sender, String message)
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
@@ -3264,7 +3258,7 @@ public class HeroesGui
 		shell.setLayout(new GridLayout());
 		Label messageLabel = new Label(shell, SWT.FILL);
 		messageLabel.setText(message);
-		
+
 		shell.open();
 		while (!shell.isDisposed())
 		{
@@ -3272,40 +3266,42 @@ public class HeroesGui
 				display.sleep();
 		}
 	}
-		
-	
+
 	private class ScrollMove implements MouseWheelListener
 	{
-			public void mouseScrolled(MouseEvent e)
+		public void mouseScrolled(MouseEvent e)
+		{
+			try
 			{
-				try
-				{
-					ScrolledComposite sc = (ScrolledComposite)e.getSource();
-					Point origin = sc.getOrigin();
-					origin.y -= e.count*4;
-					sc.setOrigin(origin);
-				}
-				catch(Exception ex)
-				{
-					System.out.println("ScrollMove: exception = "+ex.getMessage());
-				}
+				ScrolledComposite sc = (ScrolledComposite) e.getSource();
+				Point origin = sc.getOrigin();
+				origin.y -= e.count * 4;
+				sc.setOrigin(origin);
 			}
+			catch (Exception ex)
+			{
+				System.out.println("ScrollMove: exception = " + ex.getMessage());
+			}
+		}
 	}
-	
+
 	private void handleIncomingChat(final ChatEvent e)
 	{
 		shell.getDisplay().syncExec(new Runnable() {
 			@Override
-			public void run() {
+			public void run()
+			{
 				displayMessage(e.getChatMessage().getText());
 			}
 		});
 	}
+
 	private void handleIncomingGameState(final GameStateEvent e)
 	{
 		shell.getDisplay().syncExec(new Runnable() {
 			@Override
-			public void run() {
+			public void run()
+			{
 				gameController.setNetworkIndex(e.getGameStateMessage().getIndex());
 				gameController.setGameState(e.getGameStateMessage().getGameState());
 				handleUpdateGameState();

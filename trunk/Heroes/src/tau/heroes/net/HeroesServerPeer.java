@@ -47,6 +47,11 @@ public class HeroesServerPeer extends NetworkPeer
 		this.room = room;
 	}
 
+	public UserInfo getUserInfo()
+	{
+		return userInfo;
+	}
+
 	@Override
 	protected void handleDisconnect(boolean sendDisconnectMessage)
 	{
@@ -86,6 +91,8 @@ public class HeroesServerPeer extends NetworkPeer
 			return handleLoginRequest((LoginRequestMessage) message);
 		else if (message instanceof RegisterRequestMessage)
 			return handleRegisterRequest((RegisterRequestMessage) message);
+		else if (message instanceof RoomListRequestMessage)
+			return handleRoomListRequest((RoomListRequestMessage) message);
 		else
 			return super.handleIncomingSyncMessage(message);
 	}
@@ -135,11 +142,17 @@ public class HeroesServerPeer extends NetworkPeer
 		{
 			return new ErrorMessage("Username is already exist, please choose different username.");
 		}
-		
+
 		System.out.println(serverPeerName + ": Register OK");
-		
+
 		return new LoginOKMessage(userInfo);
 	}
+
+	private AsyncMessage handleRoomListRequest(RoomListRequestMessage message)
+	{
+		return new RoomListResponseMessage(heroesServer.getRoomInfos());
+	}
+	
 	public String getName()
 	{
 		return serverPeerName;
