@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import tau.heroes.db.DataAccess;
@@ -19,7 +20,6 @@ import tau.heroes.db.UserInfo;
 public class HeroesServer extends NetworkServer
 {
 	public static int SERVER_PORT = 40111;
-	public static String LOBBY_ROOM_NAME = "Lobby";
 	private static AtomicInteger guestCounter;
 
 	private Room lobby;
@@ -36,7 +36,7 @@ public class HeroesServer extends NetworkServer
 		peers = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
 		guestCounter = new AtomicInteger(1);
 		
-		lobby = new Room(LOBBY_ROOM_NAME);
+		lobby = new Lobby();
 		addRoom(lobby);
 	}
 
@@ -60,6 +60,17 @@ public class HeroesServer extends NetworkServer
 	public List<HeroesServerPeer> getPeers()
 	{
 		return peers;
+	}
+	
+	public List<RoomInfo> getRoomInfos()
+	{
+		List<RoomInfo> roomInfos = new Vector<RoomInfo>();
+		roomInfos.add(lobby.getRoomInfo());
+		for (Room room : rooms.values())
+			if (room != lobby)
+				roomInfos.add(room.getRoomInfo());
+		
+		return roomInfos;
 	}
 	
 	@Override

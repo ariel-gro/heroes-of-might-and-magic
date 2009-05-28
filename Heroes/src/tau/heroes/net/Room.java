@@ -72,4 +72,15 @@ public class Room
 		}
 		
 	}
+	
+	public RoomInfo getRoomInfo()
+	{
+		RoomInfo roomInfo = new RoomInfo(id, name);
+		for (HeroesServerPeer peer : members)
+			roomInfo.getMembers().add(peer.getUserInfo());
+		if (creator != null)
+			roomInfo.setOwner(creator.getUserInfo());
+		
+		return roomInfo;
+	}
 }

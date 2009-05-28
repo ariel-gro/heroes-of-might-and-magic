@@ -7,29 +7,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Vector;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-
-import tau.heroes.net.ChatEvent;
 import tau.heroes.net.ChatListener;
 import tau.heroes.net.ChatMessage;
 import tau.heroes.net.GameStateListener;
 import tau.heroes.net.GameStateMessage;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
-import tau.heroes.net.Message;
 import tau.heroes.net.NetworkResult;
+import tau.heroes.net.RoomInfo;
 
 public class GameController
 {
 	private GameState gameState;
 	private HeroesClientPeer serverProxy;
 	private int networkIndex;
-	
+
 	public static final int LOACL_GAME_INDEX = -1;
 
 	public GameController(boolean isGUI)
@@ -55,7 +50,7 @@ public class GameController
 		int[] point;
 		for (int i = 0; i < 2; i++)
 		{
-			for (int j=0; j < Constants.MAX_PLAYERS; j++)
+			for (int j = 0; j < Constants.MAX_PLAYERS; j++)
 			{
 				point = randomizeByZone(j);
 				this.gameState.getBoard().placeMapObject(MapObject.FIRE, point[0], point[1]);
@@ -63,9 +58,9 @@ public class GameController
 				this.gameState.getBoard().placeMapObject(MapObject.ROCK, point[0], point[1]);
 				point = randomizeByZone(j);
 				this.gameState.getBoard().placeMapObject(MapObject.TREESTOMP, point[0], point[1]);
-				
+
 			}
-			
+
 		}
 	}
 
@@ -310,58 +305,77 @@ public class GameController
 
 		return msg;
 	}
-	public int getNetworkIndex() {
+
+	public int getNetworkIndex()
+	{
 		return networkIndex;
 	}
 
-	public void setNetworkIndex(int networkIndex) {
+	public void setNetworkIndex(int networkIndex)
+	{
 		this.networkIndex = networkIndex;
 	}
-	//Network controler
+
+	// Network controler
 	public NetworkResult<Boolean> Login(String ip, String username, String password, boolean asGuest)
 	{
-		if(!serverProxy.isConnected())
+		if (!serverProxy.isConnected())
 		{
-			if(!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
-				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
+			if (!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
+				return new NetworkResult<Boolean>(false, "Error opening connection to server on "
+					+ ip + ":" + HeroesServer.SERVER_PORT);
 		}
 		return serverProxy.Login(username, password, asGuest);
 	}
-	public NetworkResult<Boolean> Register(String ip, String username, String password, String email, String nickname)
+
+	public NetworkResult<Boolean> Register(String ip, String username, String password,
+		String email, String nickname)
 	{
-		if(!serverProxy.isConnected())
+		if (!serverProxy.isConnected())
 		{
-			if(!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
-				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
+			if (!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
+				return new NetworkResult<Boolean>(false, "Error opening connection to server on "
+					+ ip + ":" + HeroesServer.SERVER_PORT);
 		}
 		return serverProxy.Register(username, password, email, nickname);
 	}
-	
+
 	public void Disconnect()
 	{
-		if(serverProxy != null && serverProxy.isConnected())
+		if (serverProxy != null && serverProxy.isConnected())
 			serverProxy.disconnect();
 	}
+
+	public NetworkResult<List<RoomInfo>> getRoomsFromServer()
+	{
+		if (!serverProxy.isConnected())
+			return null;
+
+		return serverProxy.getRooms();
+	}
+
 	public void sendChat(String message)
 	{
 		ChatMessage chatMessage = new ChatMessage(message);
 		serverProxy.asyncSendMessage(chatMessage);
 	}
+
 	public void sendGameState(GameState gs)
 	{
 		GameStateMessage gsMessage = new GameStateMessage(gs);
 		serverProxy.asyncSendMessage(gsMessage);
 	}
-	
+
 	public void addChatListener(ChatListener listener)
 	{
 		serverProxy.addChatListener(listener);
 	}
+
 	public void addGameStateListener(GameStateListener listener)
 	{
 		serverProxy.addGameStateListener(listener);
 	}
-	//new game:
-	//setNetworkIndex = what you get...
-	
+	// new game:
+	// setNetworkIndex = what you get...
+
 }
