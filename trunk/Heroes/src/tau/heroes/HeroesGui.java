@@ -49,6 +49,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
+import tau.heroes.net.ChatEvent;
+import tau.heroes.net.ChatListener;
+import tau.heroes.net.GameStateEvent;
+import tau.heroes.net.GameStateListener;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.NetworkResult;
 
@@ -118,6 +122,21 @@ public class HeroesGui
 	{
 		this.display = d;
 		this.gameController = gameController;
+		this.gameController.addChatListener(new ChatListener()
+		{
+			@Override
+			public void chatMessageArrived(ChatEvent e) {
+				handleIncomingChat(e);
+			}
+		});
+		this.gameController.addGameStateListener(new GameStateListener()
+		{
+			@Override
+			public void gameStateMessageArrived(GameStateEvent e) {
+				handleIncomingGameState(e);
+			}
+		});
+		
 		IconCache.initResources(display);
 	}
  
@@ -1386,21 +1405,26 @@ public class HeroesGui
 		shell.setCursor(waitCursor);
 
 		this.gameController.loadGame(name);
-		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
+		if(!handleUpdateGameState())
+			return;
 
+		shell.setCursor(null);
+		waitCursor.dispose();
+	}
+
+	private boolean handleUpdateGameState() {
+		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
 		if (gameController.getGameState().getBoard() == null)
 		{
 			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n"
 				+ "Please try again with a different file");
-			return;
+			return false;
 		}
 
 		createBoardWindow(true);
 		createStatusWindow(true);
 		sash.setWeights(new int[] { 80, 20 });
-
-		shell.setCursor(null);
-		waitCursor.dispose();
+		return true;
 	}
 
 	public boolean save()
@@ -2843,6 +2867,7 @@ public class HeroesGui
 		ipAddressTextData.grabExcessVerticalSpace = true;
 		ipAddressText.setLayoutData(ipAddressTextData);
 		ipAddressText.setEnabled(true);
+		ipAddressText.setText("127.0.0.1");
 		
 		GridData loginAsGuestData = new GridData();
 		loginAsGuestData.horizontalSpan = 4;
@@ -3179,9 +3204,9 @@ public class HeroesGui
 		sendButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				HeroesClientPeer hcp = null;
+			
 				String message = messageText.getText();
-				Chat.sendChat(message, hcp);
+				gameController.sendChat(message);
 				shell.dispose();
 			}
 		});
@@ -3256,5 +3281,25 @@ public class HeroesGui
 					System.out.println("ScrollMove: exception = "+ex.getMessage());
 				}
 			}
+	}
+	
+	private void handleIncomingChat(final ChatEvent e)
+	{
+		shell.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				displayMessage(e.getChatMessage().getText());
+			}
+		});
+	}
+	private void handleIncomingGameState(final GameStateEvent e)
+	{
+		shell.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				gameController.setGameState(e.getGameStateMessage().getGameState());
+				handleUpdateGameState();
+			}
+		});
 	}
 }

@@ -191,6 +191,7 @@ public class NetworkPeer
 		}
 		catch (IOException e)
 		{
+			System.out.println("Exception in NetworkPeer.asyncSendMessage: ");
 			e.printStackTrace();
 		}
 	}

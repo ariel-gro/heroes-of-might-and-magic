@@ -9,19 +9,31 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+
+import tau.heroes.net.ChatEvent;
+import tau.heroes.net.ChatListener;
+import tau.heroes.net.ChatMessage;
+import tau.heroes.net.GameStateListener;
+import tau.heroes.net.GameStateMessage;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
+import tau.heroes.net.Message;
 import tau.heroes.net.NetworkResult;
 
 public class GameController
 {
 	private GameState gameState;
-	private HeroesClientPeer client;
+	private HeroesClientPeer serverProxy;
+	
 
 	public GameController(boolean isGUI)
 	{
 		this.gameState = new GameState(isGUI);
-		client = new HeroesClientPeer();
+		serverProxy = new HeroesClientPeer();
 	}
 
 	public void initNewGame(Vector<Player> players)
@@ -298,26 +310,46 @@ public class GameController
 	//Network controler
 	public NetworkResult<Boolean> Login(String ip, String username, String password, boolean asGuest)
 	{
-		if(!client.isConnected())
+		if(!serverProxy.isConnected())
 		{
-			if(!client.connect(ip, HeroesServer.SERVER_PORT))
+			if(!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
 				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
 		}
-		return client.Login(username, password, asGuest);
+		return serverProxy.Login(username, password, asGuest);
 	}
 	public NetworkResult<Boolean> Register(String ip, String username, String password, String email, String nickname)
 	{
-		if(!client.isConnected())
+		if(!serverProxy.isConnected())
 		{
-			if(!client.connect(ip, HeroesServer.SERVER_PORT))
+			if(!serverProxy.connect(ip, HeroesServer.SERVER_PORT))
 				return new NetworkResult<Boolean>(false,"Error opening connection to server on "+ip+":"+HeroesServer.SERVER_PORT);
 		}
-		return client.Register(username, password, email, nickname);
+		return serverProxy.Register(username, password, email, nickname);
 	}
 	
 	public void Disconnect()
 	{
-		if(client != null && client.isConnected())
-			client.disconnect();
+		if(serverProxy != null && serverProxy.isConnected())
+			serverProxy.disconnect();
 	}
+	public void sendChat(String message)
+	{
+		ChatMessage chatMessage = new ChatMessage(message);
+		serverProxy.asyncSendMessage(chatMessage);
+	}
+	public void sendGameState(GameState gs)
+	{
+		GameStateMessage gsMessage = new GameStateMessage(gs);
+		serverProxy.asyncSendMessage(gsMessage);
+	}
+	
+	public void addChatListener(ChatListener listener)
+	{
+		serverProxy.addChatListener(listener);
+	}
+	public void addGameStateListener(GameStateListener listener)
+	{
+		serverProxy.addGameStateListener(listener);
+	}
+	
 }
