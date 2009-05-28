@@ -2,20 +2,18 @@ package tau.heroes;
 
 
 
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 import tau.heroes.net.Room;
 
@@ -187,5 +185,45 @@ public class NetworkGUI
 	
 	public void joinExistingRoom(String roomName)
 	{	
-	}	
+	}
+	
+	//TODO adjust to lobby
+	private void displayTable(Vector<RoomInfo> roomList)
+	{
+		Table roomsTable = new Table(networkComposite, SWT.CENTER);
+		TableColumn col1 = new TableColumn(roomsTable, SWT.CENTER);
+		TableColumn col2 = new TableColumn(roomsTable, SWT.CENTER);
+		TableColumn col3 = new TableColumn(roomsTable, SWT.CENTER);
+		col1.setText("Room Name");
+		col2.setText("Owner");
+		col3.setText("Number Of Players");
+		col1.setResizable(true);
+		col2.setResizable(true);
+		col3.setResizable(true);
+		roomsTable.setSortColumn(col1);
+		roomsTable.setHeaderVisible(true);
+
+		TableItem ti;
+		Font newFont = roomsTable.getFont(); // just an initialization for the
+		// compiler
+
+		for (int i = 0; i < roomList.size(); i++)
+		{
+			ti = new TableItem(roomsTable, SWT.CENTER);
+
+			RoomInfo room = roomList.get(i);
+			ti.setText(new String[] { room.getName(), room.getOwner().getName(), room.getMembers().size() });
+			Font initialFont = ti.getFont();
+			FontData[] fontData = initialFont.getFontData();
+			for (int k = 0; k < fontData.length; k++)
+			{
+				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+				fontData[k].setStyle(SWT.BOLD);
+			}
+			newFont = new Font(display, fontData);
+			ti.setFont(newFont);
+		}
+
+		newFont.dispose();
+	}
 }
