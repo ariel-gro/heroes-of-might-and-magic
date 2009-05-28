@@ -60,22 +60,21 @@ public class HeroesServerPeer extends NetworkPeer
 		System.out.println(serverPeerName + ": Disconnected (" + sendDisconnectMessage + ")");
 	}
 
-	protected void handleChatMessage(Message message)
+	protected void handleRoomMessage(Message message)
 	{
 		System.out.println(serverPeerName + ": Chat message received");
 		
 		room.asyncSendMessage(message);
-
-		
 	}
+
 
 	@Override
 	protected void handleIncomingAsyncMessage(AsyncMessage message)
 	{
 		if (message instanceof DisconnectMessage)
 			handleDisconnect(false);
-		else if (message instanceof ChatMessage)
-			handleChatMessage(message);
+		else if ((message instanceof ChatMessage) || (message instanceof GameStateMessage))
+			handleRoomMessage(message);
 		else
 			super.handleIncomingAsyncMessage(message);
 	}

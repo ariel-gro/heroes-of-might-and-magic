@@ -1401,19 +1401,25 @@ public class HeroesGui
 			return;
 		}
 
-		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-		shell.setCursor(waitCursor);
 
 		this.gameController.loadGame(name);
-		if(!handleUpdateGameState())
-			return;
+		handleUpdateGameState();
+			
 
-		shell.setCursor(null);
-		waitCursor.dispose();
+		
 	}
 
 	private boolean handleUpdateGameState() {
+		Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
+		shell.setCursor(waitCursor);
+		
 		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
+		if(gameController.getNetworkIndex() != GameController.LOACL_GAME_INDEX && gameController.getNetworkIndex() != currentPlayerIndex)
+		{//This is a network game, and not my turn:
+			//we can add a timers or progress bar or info...
+			return false;		
+		}
+		
 		if (gameController.getGameState().getBoard() == null)
 		{
 			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n"
@@ -1424,6 +1430,9 @@ public class HeroesGui
 		createBoardWindow(true);
 		createStatusWindow(true);
 		sash.setWeights(new int[] { 80, 20 });
+		
+		shell.setCursor(null);
+		waitCursor.dispose();
 		return true;
 	}
 
@@ -3297,6 +3306,7 @@ public class HeroesGui
 		shell.getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				gameController.setNetworkIndex(e.getGameStateMessage().getIndex());
 				gameController.setGameState(e.getGameStateMessage().getGameState());
 				handleUpdateGameState();
 			}

@@ -28,12 +28,15 @@ public class GameController
 {
 	private GameState gameState;
 	private HeroesClientPeer serverProxy;
+	private int networkIndex;
 	
+	public static final int LOACL_GAME_INDEX = -1;
 
 	public GameController(boolean isGUI)
 	{
 		this.gameState = new GameState(isGUI);
 		serverProxy = new HeroesClientPeer();
+		networkIndex = LOACL_GAME_INDEX;
 	}
 
 	public void initNewGame(Vector<Player> players)
@@ -307,6 +310,13 @@ public class GameController
 
 		return msg;
 	}
+	public int getNetworkIndex() {
+		return networkIndex;
+	}
+
+	public void setNetworkIndex(int networkIndex) {
+		this.networkIndex = networkIndex;
+	}
 	//Network controler
 	public NetworkResult<Boolean> Login(String ip, String username, String password, boolean asGuest)
 	{
@@ -351,5 +361,7 @@ public class GameController
 	{
 		serverProxy.addGameStateListener(listener);
 	}
+	//new game:
+	//setNetworkIndex = what you get...
 	
 }
