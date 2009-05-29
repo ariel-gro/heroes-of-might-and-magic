@@ -30,12 +30,12 @@ public class HeroesServer extends NetworkServer
 	private HeroesServer() throws IOException
 	{
 		super(SERVER_PORT);
-		
+
 		rooms = Collections.synchronizedMap(new TreeMap<UUID, Room>());
 		roomNames = Collections.synchronizedSet(new TreeSet<String>());
 		peers = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
 		guestCounter = new AtomicInteger(1);
-		
+
 		lobby = new Lobby();
 		addRoom(lobby);
 	}
@@ -51,17 +51,17 @@ public class HeroesServer extends NetworkServer
 		rooms.remove(room.getId());
 		roomNames.remove(room.getName());
 	}
-	
+
 	public Room getLobby()
 	{
 		return lobby;
 	}
-	
+
 	public List<HeroesServerPeer> getPeers()
 	{
 		return peers;
 	}
-	
+
 	public List<RoomInfo> getRoomInfos()
 	{
 		List<RoomInfo> roomInfos = new Vector<RoomInfo>();
@@ -69,58 +69,60 @@ public class HeroesServer extends NetworkServer
 		for (Room room : rooms.values())
 			if (room != lobby)
 				roomInfos.add(room.getRoomInfo());
-		
+
 		return roomInfos;
 	}
-	
+
 	@Override
 	protected void handleNewPeer(Socket newSocket)
 	{
 		super.handleNewPeer(newSocket);
-		
+
 		HeroesServerPeer newPeer = new HeroesServerPeer(this, newSocket);
 		newPeer.startListening();
 		peers.add(newPeer);
 
 	}
-	
+
 	public UserInfo createGuestUser()
 	{
 		int count = guestCounter.getAndAdd(1);
 		String username = "Guest " + count;
-		
+
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUsername(username);
+		userInfo.setNickname(username);
 		userInfo.setGuest(true);
-		
+
 		return userInfo;
 	}
-	
+
 	public static void main(String[] args)
 	{
 		try
 		{
-			if(DataAccess.init())
+			if (DataAccess.init())
 				System.out.println("DB is online");
 			else
 			{
 				System.out.println("DB is offline");
 				return;
 			}
-			
+
 			HeroesServer server = new HeroesServer();
 			server.startListening();
 			System.out.println("Server started");
-			
+
 			if (args != null && args.length > 0 && args[0].equalsIgnoreCase("deamon"))
 			{
 				System.out.println("Running in deamon mode");
 				return;
 			}
-			
+
 			System.out.println("Enter 'quit' to quit...");
 			Scanner scanner = new Scanner(System.in);
-			while (!scanner.next().equalsIgnoreCase("quit"));
+			while (!scanner.next().equalsIgnoreCase("quit"))
+				;
 			server.stopListening();
 			System.out.println("Server stopped");
 		}
