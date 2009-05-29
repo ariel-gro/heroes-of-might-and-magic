@@ -172,14 +172,14 @@ public class NetworkGUI
 
 	public List<RoomInfo> getRoomsFromServer()
 	{
-		NetworkResult<List<RoomInfo>> result = 
-			gameController.getRoomsFromServer();
-		
+		NetworkResult<List<RoomInfo>> result = gameController.getRoomsFromServer();
+
 		if (result.getResult() == null)
 		{
-			//TODO: Display error...
+			HeroesGui.displayError("Error getting room list from server: "
+				+ result.getErrorMessage());
 		}
-		
+
 		return result.getResult();
 	}
 
@@ -195,19 +195,22 @@ public class NetworkGUI
 	// TODO adjust to lobby
 	private void displayTable(List<RoomInfo> roomList)
 	{
-		Table roomsTable = new Table(networkComposite, SWT.CENTER);
+		Table roomsTable = new Table(networkComposite, SWT.BORDER);
 		TableColumn col1 = new TableColumn(roomsTable, SWT.CENTER);
 		TableColumn col2 = new TableColumn(roomsTable, SWT.CENTER);
 		TableColumn col3 = new TableColumn(roomsTable, SWT.CENTER);
 		col1.setText("Room Name");
 		col2.setText("Owner");
-		col3.setText("Number Of Players");
+		col3.setText("Members");
+		col1.setWidth(80);
+		col2.setWidth(60);
+		col3.setWidth(60);
 		col1.setResizable(true);
 		col2.setResizable(true);
 		col3.setResizable(true);
 		roomsTable.setSortColumn(col1);
 		roomsTable.setHeaderVisible(true);
-		roomsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		roomsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		TableItem ti;
 		Font newFont = roomsTable.getFont(); // just an initialization for the
