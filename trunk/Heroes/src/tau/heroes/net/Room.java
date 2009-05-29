@@ -76,8 +76,7 @@ public class Room
 	public RoomInfo getRoomInfo()
 	{
 		RoomInfo roomInfo = new RoomInfo(id, name);
-		for (HeroesServerPeer peer : members)
-			roomInfo.getMembers().add(peer.getUserInfo());
+		roomInfo.setMemberCount(members.size());
 		if (creator != null)
 			roomInfo.setOwner(creator.getUserInfo());
 		

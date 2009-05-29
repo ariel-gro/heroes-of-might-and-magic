@@ -13,7 +13,7 @@ public class HeroesServerPeer extends NetworkPeer
 	private HeroesServer heroesServer;
 	private Room room;
 	private boolean isLoggedIn = false;
-	public UserInfo userInfo = null;
+	private UserInfo userInfo = null;
 	private String serverPeerName;
 	private static AtomicInteger debugCounter = new AtomicInteger(1);
 
@@ -29,8 +29,7 @@ public class HeroesServerPeer extends NetworkPeer
 		{
 			InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
 			Inet4Address ia = (Inet4Address) isa.getAddress();
-			System.out.println(serverPeerName + ": New connection from " + ia.getHostAddress()
-				+ ":" + isa.getPort());
+			printDebug("New connection from " + ia.getHostAddress() + ":" + isa.getPort());
 		}
 		catch (Exception e)
 		{
@@ -62,16 +61,15 @@ public class HeroesServerPeer extends NetworkPeer
 
 		heroesServer.getPeers().remove(this);
 
-		System.out.println(serverPeerName + ": Disconnected (" + sendDisconnectMessage + ")");
+		printDebug("Disconnected (" + sendDisconnectMessage + ")");
 	}
 
 	protected void handleRoomMessage(Message message)
 	{
-		System.out.println(serverPeerName + ": Chat message received");
-		
+		printDebug("Chat message received");
+
 		room.asyncSendMessage(message);
 	}
-
 
 	@Override
 	protected void handleIncomingAsyncMessage(AsyncMessage message)
@@ -99,7 +97,7 @@ public class HeroesServerPeer extends NetworkPeer
 
 	private AsyncMessage handleLoginRequest(LoginRequestMessage message)
 	{
-		System.out.println(serverPeerName + ": Login requested");
+		printDebug("Login requested");
 
 		if (isLoggedIn)
 			return new ErrorMessage("You are already logged in.");
@@ -122,14 +120,14 @@ public class HeroesServerPeer extends NetworkPeer
 		isLoggedIn = true;
 		heroesServer.getLobby().addMember(this);
 
-		System.out.println(serverPeerName + ": Login OK");
+		printDebug("Login OK");
 
 		return new LoginOKMessage(userInfo);
 	}
 
 	private AsyncMessage handleRegisterRequest(RegisterRequestMessage message)
 	{
-		System.out.println(serverPeerName + ": Register requested");
+		printDebug("Register requested");
 
 		if (isLoggedIn)
 			return new ErrorMessage("You are already logged in.");
@@ -143,16 +141,26 @@ public class HeroesServerPeer extends NetworkPeer
 			return new ErrorMessage("Username is already exist, please choose different username.");
 		}
 
-		System.out.println(serverPeerName + ": Register OK");
+		printDebug("Register OK");
 
 		return new LoginOKMessage(userInfo);
 	}
 
+	private void printDebug(String msg)
+	{
+		System.out.println(serverPeerName + ": " + msg);
+	}
+
 	private AsyncMessage handleRoomListRequest(RoomListRequestMessage message)
 	{
+		printDebug("Room list requested");
+		
+		if (!isLoggedIn)
+			return new ErrorMessage("You must be logged in.");
+
 		return new RoomListResponseMessage(heroesServer.getRoomInfos());
 	}
-	
+
 	public String getName()
 	{
 		return serverPeerName;

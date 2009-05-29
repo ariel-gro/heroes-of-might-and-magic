@@ -222,7 +222,7 @@ public class NetworkGUI
 
 			RoomInfo room = roomList.get(i);
 			ti.setText(new String[] { room.getName(), room.getOwner().getNickname(),
-					String.valueOf(room.getMembers().size()) });
+					String.valueOf(room.getMemberCount()) });
 			Font initialFont = ti.getFont();
 			FontData[] fontData = initialFont.getFontData();
 			for (int k = 0; k < fontData.length; k++)

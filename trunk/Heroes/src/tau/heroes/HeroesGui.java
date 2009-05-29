@@ -2884,6 +2884,8 @@ public class HeroesGui
 		ipAddressTextData.grabExcessVerticalSpace = true;
 		ipAddressText.setLayoutData(ipAddressTextData);
 		ipAddressText.setEnabled(true);
+		ipAddressText.add("127.0.0.1");
+		ipAddressText.add("kite.cs.tau.ac.il");
 		ipAddressText.setText("127.0.0.1");
 
 		GridData loginAsGuestData = new GridData();
