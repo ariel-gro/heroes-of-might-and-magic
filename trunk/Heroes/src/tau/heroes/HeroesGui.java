@@ -122,14 +122,14 @@ public class HeroesGui
 		this.display = d;
 		this.gameController = gameController;
 		this.gameController.addChatListener(new ChatListener() {
-			@Override
+		
 			public void chatMessageArrived(ChatEvent e)
 			{
 				handleIncomingChat(e);
 			}
 		});
 		this.gameController.addGameStateListener(new GameStateListener() {
-			@Override
+			
 			public void gameStateMessageArrived(GameStateEvent e)
 			{
 				handleIncomingGameState(e);
@@ -2914,7 +2914,7 @@ public class HeroesGui
 		final Label userNameLabel = new Label(userPasswordGroup, SWT.NULL);
 		userNameLabel.setText("User Name:");
 		userNameLabel.setLayoutData(userNameData);
-		final Combo userNameText = new Combo(userPasswordGroup, SWT.NULL);
+		final Text userNameText = new Text(userPasswordGroup, SWT.BORDER);
 		GridData userNameTextData = new GridData();
 		userNameTextData.horizontalSpan = 2;
 		userNameTextData.grabExcessHorizontalSpace = true;
@@ -2929,7 +2929,8 @@ public class HeroesGui
 		final Label passwordLabel = new Label(userPasswordGroup, SWT.NULL);
 		passwordLabel.setText("Password:");
 		passwordLabel.setLayoutData(passwordData);
-		final Combo passwordText = new Combo(userPasswordGroup, SWT.NULL);
+		final Text passwordText = new Text(userPasswordGroup, SWT.BORDER);
+		passwordText.setEchoChar('*');
 		GridData passwordTextData = new GridData();
 		passwordTextData.horizontalSpan = 2;
 		passwordTextData.grabExcessHorizontalSpace = true;
@@ -2971,6 +2972,8 @@ public class HeroesGui
 			{
 				String userName = userNameText.getText();
 				String passWord = passwordText.getText();
+				
+				System.out.println("Password is: " + passWord);
 				// Check the user name:
 				NetworkResult<Boolean> res = gameController
 					.Login(ipAddressText.getText(), userName, passWord, loginAsGuestButton
@@ -3059,7 +3062,7 @@ public class HeroesGui
 		final Label userNameLabel = new Label(shell, SWT.NULL);
 		userNameLabel.setText("User Name:");
 		userNameLabel.setLayoutData(userNameData);
-		final Combo userNameText = new Combo(shell, SWT.NULL);
+		final Text userNameText = new Text(shell, SWT.BORDER);
 		GridData userNameTextData = new GridData();
 		userNameTextData.horizontalSpan = 2;
 		userNameTextData.grabExcessHorizontalSpace = true;
@@ -3073,7 +3076,8 @@ public class HeroesGui
 		final Label passwordLabel = new Label(shell, SWT.NULL);
 		passwordLabel.setText("Password:");
 		passwordLabel.setLayoutData(passwordData);
-		final Combo passwordText = new Combo(shell, SWT.NULL);
+		final Text passwordText = new Text(shell, SWT.BORDER);
+		passwordText.setEchoChar('*');
 		GridData passwordTextData = new GridData();
 		passwordTextData.horizontalSpan = 2;
 		passwordTextData.grabExcessHorizontalSpace = true;
@@ -3129,6 +3133,8 @@ public class HeroesGui
 				String passWord = passwordText.getText();
 				String email = mailText.getText();
 				String nickname = nicknameText.getText();
+				
+				System.out.println("Password is: " + passWord);
 
 				// Check the user name:
 				NetworkResult<Boolean> res = gameController
@@ -3288,7 +3294,7 @@ public class HeroesGui
 	private void handleIncomingChat(final ChatEvent e)
 	{
 		shell.getDisplay().syncExec(new Runnable() {
-			@Override
+			
 			public void run()
 			{
 				displayMessage(e.getChatMessage().getText());
@@ -3299,7 +3305,7 @@ public class HeroesGui
 	private void handleIncomingGameState(final GameStateEvent e)
 	{
 		shell.getDisplay().syncExec(new Runnable() {
-			@Override
+			
 			public void run()
 			{
 				gameController.setNetworkIndex(e.getGameStateMessage().getIndex());
