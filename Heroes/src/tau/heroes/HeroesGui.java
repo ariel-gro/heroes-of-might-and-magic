@@ -1002,8 +1002,15 @@ public class HeroesGui
 
 	public static void displayMessage(String msg)
 	{
-		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_INFORMATION);
-		box.setText(Display.getCurrent().getActiveShell().getText());
+		Display display = Display.getCurrent();
+		Shell shell = display.getActiveShell();
+		displayMessage(shell, msg);
+	}
+	
+	public static void displayMessage(Shell shell, String msg)
+	{
+		MessageBox box = new MessageBox(shell, SWT.ICON_INFORMATION);
+		box.setText(shell.getText());
 		box.setMessage(msg);
 		box.open();
 	}
@@ -3272,25 +3279,7 @@ public class HeroesGui
 		NetworkGUI networkGUI = new NetworkGUI(statusComposite, gameController);
 		networkGUI.init();
 	}
-
-	private void recieveChat(String sender, String message)
-	{
-		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setSize(300, 160);
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
-		shell.setText("Message from " + sender);
-		shell.setLayout(new GridLayout());
-		Label messageLabel = new Label(shell, SWT.FILL);
-		messageLabel.setText(message);
-
-		shell.open();
-		while (!shell.isDisposed())
-		{
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-	}
-
+	
 	private class ScrollMove implements MouseWheelListener
 	{
 		public void mouseScrolled(MouseEvent e)
@@ -3315,7 +3304,7 @@ public class HeroesGui
 			
 			public void run()
 			{
-				displayMessage(e.getChatMessage().getText());
+				displayMessage(shell, e.getChatMessage().getText());
 			}
 		});
 	}

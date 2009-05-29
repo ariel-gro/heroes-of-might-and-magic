@@ -1,58 +1,36 @@
 package tau.heroes.net;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-import java.util.Iterator;
 
 public class NetworkServer
 {
-	private ServerSocketChannel serverSocketChannel;
-	private int serverPort;
+	private ServerSocket serverSocket;
 	private Thread listenThread;
 
 	public NetworkServer(int port) throws IOException
 	{
-		serverPort = port;
-		serverSocketChannel = ServerSocketChannel.open();
-		serverSocketChannel.configureBlocking(false);
+		serverSocket = new ServerSocket(port);
 	}
 
 	private void listen()
 	{
-		Selector selector;
 		try
 		{
-			selector = Selector.open();
-			serverSocketChannel.socket().bind(new InetSocketAddress(serverPort));
-			serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-
 			while (true)
 			{
-				int count = selector.select();
-				if (count == 0)
-					break;
-				Iterator<SelectionKey> it = selector.selectedKeys().iterator();
-				while (it.hasNext())
-				{
-					SelectionKey selKey = it.next();
-					it.remove();
-					if (selKey.isAcceptable())
-					{
-						SocketChannel sChannel = serverSocketChannel.accept();
-						handleNewPeer(sChannel.socket());
-					}
-				}
+				Socket socket = serverSocket.accept();
+				handleNewPeer(socket);
 			}
 		}
 		catch (IOException e)
 		{
-			System.out.println("IOException caught in listen():");
-			e.printStackTrace();
+			if (!e.getMessage().equalsIgnoreCase("socket closed"))
+			{
+				System.out.println("IOException caught in listen():");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -75,7 +53,16 @@ public class NetworkServer
 
 	public void stopListening()
 	{
+		try
+		{
+			serverSocket.close();
+		}
+		catch (IOException e)
+		{
+		}
+		
 		listenThread.interrupt();
+		
 		try
 		{
 			listenThread.join();
