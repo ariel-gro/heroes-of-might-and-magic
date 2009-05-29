@@ -12,7 +12,7 @@ public class UserInfoTest
 {
 	UserInfo userInfo1;
 	UserInfo userInfo2;
-	
+
 	@Before
 	public void setUp() throws Exception
 	{
@@ -24,7 +24,7 @@ public class UserInfoTest
 	public void tearDown() throws Exception
 	{
 	}
-	
+
 	@Test
 	public void testGetUsername()
 	{

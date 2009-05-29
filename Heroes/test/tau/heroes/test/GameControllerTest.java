@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import tau.heroes.*;
 
-
 /**
  * @author Amir
  * 

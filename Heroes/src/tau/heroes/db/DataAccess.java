@@ -34,10 +34,14 @@ public class DataAccess
 		}
 		catch (ClassNotFoundException e)
 		{
+			System.out.println("ClassNotFoundException caught in init():");
+			e.printStackTrace();
 			return false;
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in init():");
+			e.printStackTrace();
 			return false;
 		}
 
@@ -70,6 +74,8 @@ public class DataAccess
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in initUsersTable():");
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -79,7 +85,7 @@ public class DataAccess
 		try
 		{
 			ResultSet historyTableExists = dbConnection.getConnection().getMetaData()
-				.getTables(null, null, "GameHistory", null);
+				.getTables(null, null, "GAMEHISTORY", null);
 
 			if (!historyTableExists.next())
 			{
@@ -99,6 +105,8 @@ public class DataAccess
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in initGameHistoryTable():");
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -108,7 +116,7 @@ public class DataAccess
 		try
 		{
 			ResultSet opponentsTableExists = dbConnection.getConnection().getMetaData()
-				.getTables(null, null, "Opponents", null);
+				.getTables(null, null, "OPPONENTS", null);
 
 			if (!opponentsTableExists.next())
 			{
@@ -116,7 +124,7 @@ public class DataAccess
 					.execute("CREATE TABLE Opponents ("
 						+ "OpponentID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
 						+ "HistoryID INT NOT NULL, "
-						+ "Nickname VARCHAR(20) NOT NULL, PRIMARY KEY (OpponenetID))");
+						+ "Nickname VARCHAR(20) NOT NULL, PRIMARY KEY (OpponentID))");
 
 				opponentsTableExists = dbConnection.getConnection().getMetaData()
 					.getTables(null, null, "GameHistory", null);
@@ -128,6 +136,8 @@ public class DataAccess
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in initOpponenetsTable():");
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -206,7 +216,7 @@ public class DataAccess
 	public static List<GameHistory> getGameHistory(int userID)
 	{
 		List<GameHistory> gameHistoryList = new ArrayList<GameHistory>();
-		
+
 		String sql = "SELECT HistoryID, GameDate, GameScore FROM GameHistory WHERE UserID = ?";
 
 		try
@@ -222,8 +232,8 @@ public class DataAccess
 
 				gameHistory.setGameDate(gameHistoryRS.getDate("GameDate"));
 				gameHistory.setGameScore(gameHistoryRS.getInt("GameScore"));
-				gameHistory.setOpponentPlayersNames(
-					getOpponents(gameHistoryRS.getInt("HistoryID")));
+				gameHistory
+					.setOpponentPlayersNames(getOpponents(gameHistoryRS.getInt("HistoryID")));
 
 				gameHistoryList.add(gameHistory);
 			}
@@ -232,33 +242,33 @@ public class DataAccess
 		{
 			// TODO: handle exception
 		}
-		
+
 		return gameHistoryList;
 	}
 
 	private static List<String> getOpponents(int historyID)
 	{
 		List<String> opponentsNames = new ArrayList<String>();
-		
+
 		String sql = "SELECT Nickname FROM Opponents WHERE HistoryID = ?";
-		
+
 		try
 		{
 			PreparedStatement getOpponentsSts = prepareGeneralStatement(sql);
 			getOpponentsSts.setInt(1, historyID);
-			
+
 			ResultSet opponentsRS = getOpponentsSts.executeQuery();
-			
+
 			while (opponentsRS.next())
 			{
 				opponentsNames.add(opponentsRS.getString("Nickname"));
 			}
-			
-			return opponentsNames;			
+
+			return opponentsNames;
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			return null;
-		}		
+		}
 	}
 }

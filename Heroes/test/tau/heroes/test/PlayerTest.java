@@ -42,7 +42,8 @@ public class PlayerTest
 	}
 
 	/**
-	 * Test method for {@link tau.heroes.Player#Player(java.lang.String, PlayerColor)}.
+	 * Test method for
+	 * {@link tau.heroes.Player#Player(java.lang.String, PlayerColor)}.
 	 */
 	@Test
 	public void testPlayer()
