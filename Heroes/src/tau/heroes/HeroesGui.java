@@ -2,6 +2,8 @@ package tau.heroes;
 
 import java.io.File;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -3132,18 +3134,24 @@ public class HeroesGui
 				String passWord = passwordText.getText();
 				String email = mailText.getText();
 				String nickname = nicknameText.getText();
-
-				// Check the user name:
-				NetworkResult<Boolean> res = gameController
-					.Register(ip, userName, passWord, email, nickname);
-				// Validate return value!
-				if (res.getResult() != true)
-				{
-					displayError(res.getErrorMessage());
-					return;
+				
+				if(isMailValid(email))
+				{	
+					// Check the user name:
+					NetworkResult<Boolean> res = gameController.Register(ip, userName, passWord, email, nickname);
+					// Validate return value!
+					if (res.getResult() != true)
+					{
+						displayError(res.getErrorMessage());
+						return;
+					}
+					startNetworkGame(userName, passWord);
+					shell.dispose();
 				}
-				startNetworkGame(userName, passWord);
-				shell.dispose();
+				else
+				{
+					displayError("Mail Address provided is illegal !!!");
+				}
 			}
 		});
 		okButton.setLayoutData(okData);
@@ -3186,6 +3194,19 @@ public class HeroesGui
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+	}
+	
+	private boolean isMailValid(String theMailAddress)
+	{
+		String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+		
+		Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(theMailAddress);
+		
+		if(matcher.matches())
+			return true;
+		else
+			return false;
 	}
 
 	public void chatWindow()
