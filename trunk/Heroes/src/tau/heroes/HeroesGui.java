@@ -2973,7 +2973,6 @@ public class HeroesGui
 				String userName = userNameText.getText();
 				String passWord = passwordText.getText();
 				
-				System.out.println("Password is: " + passWord);
 				// Check the user name:
 				NetworkResult<Boolean> res = gameController
 					.Login(ipAddressText.getText(), userName, passWord, loginAsGuestButton
@@ -3133,8 +3132,6 @@ public class HeroesGui
 				String passWord = passwordText.getText();
 				String email = mailText.getText();
 				String nickname = nicknameText.getText();
-				
-				System.out.println("Password is: " + passWord);
 
 				// Check the user name:
 				NetworkResult<Boolean> res = gameController
