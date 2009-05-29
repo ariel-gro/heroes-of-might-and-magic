@@ -28,7 +28,7 @@ import tau.heroes.net.RoomInfo;
 public class NetworkGUI
 {
 	private Composite networkComposite;
-	private Color black, white, red;
+	private Color white;
 	private Display display;
 	private Combo roomsCombo, numOfPlayersCombo;
 	private GameController gameController;
@@ -39,9 +39,7 @@ public class NetworkGUI
 		this.gameController = gameController;
 		display = networkComposite.getDisplay();
 
-		black = display.getSystemColor(SWT.COLOR_BLACK);
 		white = display.getSystemColor(SWT.COLOR_WHITE);
-		red = display.getSystemColor(SWT.COLOR_RED);
 
 		networkComposite.setBackground(white);
 	}
