@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class DataAccess
 {
 	private static DBConnection dbConnection;
@@ -16,12 +17,12 @@ public class DataAccess
 
 	}
 
-	public static Statement createGeneralStatment() throws SQLException
+	private static Statement createGeneralStatment() throws SQLException
 	{
 		return dbConnection.getConnection().createStatement();
 	}
 
-	public static PreparedStatement prepareGeneralStatement(String sql) throws SQLException
+	private static PreparedStatement prepareGeneralStatement(String sql) throws SQLException
 	{
 		return dbConnection.getConnection().prepareStatement(sql);
 	}
@@ -67,7 +68,8 @@ public class DataAccess
 				usersTableExists = dbConnection.getConnection().getMetaData()
 					.getTables(null, null, "USERS", null);
 
-				return (usersTableExists.next());
+				boolean res = usersTableExists.next();
+				return res;
 			}
 
 			return true;
@@ -90,15 +92,16 @@ public class DataAccess
 			if (!historyTableExists.next())
 			{
 				createGeneralStatment()
-					.execute("CREATE TABLE GameHistory ("
+					.execute("CREATE TABLE GAMEHISTORY ("
 						+ "HistoryID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
 						+ "UserID INT NOT NULL, " + "GameDate DATE NOT NULL, "
 						+ "GameScore INT NOT NULL, PRIMARY KEY (HistoryID))");
 
 				historyTableExists = dbConnection.getConnection().getMetaData()
-					.getTables(null, null, "GameHistory", null);
+					.getTables(null, null, "GAMEHISTORY", null);
 
-				return (historyTableExists.next());
+				boolean res = historyTableExists.next();
+				return res;
 			}
 
 			return true;
@@ -121,15 +124,16 @@ public class DataAccess
 			if (!opponentsTableExists.next())
 			{
 				createGeneralStatment()
-					.execute("CREATE TABLE Opponents ("
+					.execute("CREATE TABLE OPPONENTS ("
 						+ "OpponentID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
 						+ "HistoryID INT NOT NULL, "
 						+ "Nickname VARCHAR(20) NOT NULL, PRIMARY KEY (OpponentID))");
 
 				opponentsTableExists = dbConnection.getConnection().getMetaData()
-					.getTables(null, null, "GameHistory", null);
+					.getTables(null, null, "OPPONENTS", null);
 
-				return (opponentsTableExists.next());
+				boolean res = opponentsTableExists.next();
+				return res;
 			}
 
 			return true;
@@ -144,14 +148,19 @@ public class DataAccess
 
 	public static boolean addUser(UserInfo userInfo)
 	{
+		if (validateUser(userInfo.getUsername(), userInfo.getPassword()))
+			return true;
+		
 		try
 		{
-			String sql = "INSERT INTO USERS(Username, Password, Email, Nickname) VALUES(?, ?, ?, ?)";
+			String sql = "INSERT INTO USERS(Username, Password, Email, Nickname, TotalScore) "
+				+ "VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement addUserStatement = prepareGeneralStatement(sql);
 			addUserStatement.setString(1, userInfo.getUsername());
 			addUserStatement.setString(2, userInfo.getPassword());
 			addUserStatement.setString(3, userInfo.getEmail());
 			addUserStatement.setString(4, userInfo.getNickname());
+			addUserStatement.setInt(5, userInfo.getTotalScore());
 
 			return (addUserStatement.executeUpdate() == 1);
 		}
@@ -183,8 +192,7 @@ public class DataAccess
 
 	public static UserInfo getUserInfo(String username)
 	{
-		String sql = "SELECT UserID, Email, Nickname, TotalScore "
-			+ "FROM USERS WHERE Username = ?";
+		String sql = "SELECT UserID, Email, Nickname, TotalScore FROM USERS WHERE Username = ?";
 
 		try
 		{
@@ -196,7 +204,8 @@ public class DataAccess
 			if (userInfoRS.next())
 			{
 				UserInfo userInfo = new UserInfo();
-
+				
+				userInfo.setUsername(username);
 				userInfo.setUserID(userInfoRS.getInt("UserID"));
 				userInfo.setEmail(userInfoRS.getString("Email"));
 				userInfo.setNickname(userInfoRS.getString("Nickname"));
@@ -217,7 +226,7 @@ public class DataAccess
 	{
 		List<GameHistory> gameHistoryList = new ArrayList<GameHistory>();
 
-		String sql = "SELECT HistoryID, GameDate, GameScore FROM GameHistory WHERE UserID = ?";
+		String sql = "SELECT HistoryID, GameDate, GameScore FROM GAMEHISTORY WHERE UserID = ?";
 
 		try
 		{
@@ -240,7 +249,7 @@ public class DataAccess
 		}
 		catch (Exception e)
 		{
-			// TODO: handle exception
+			return null;
 		}
 
 		return gameHistoryList;
@@ -250,7 +259,7 @@ public class DataAccess
 	{
 		List<String> opponentsNames = new ArrayList<String>();
 
-		String sql = "SELECT Nickname FROM Opponents WHERE HistoryID = ?";
+		String sql = "SELECT Nickname FROM OPPONENTS WHERE HistoryID = ?";
 
 		try
 		{
@@ -271,4 +280,70 @@ public class DataAccess
 			return null;
 		}
 	}
+		
+	public static boolean insertGameHistory(int userID, GameHistory gameHistory)
+	{
+		String sql = "INSERT INTO GAMEHISTORY(UserID, GameDate, GameScore) VALUES(?, ?, ?)";
+		
+		try
+		{
+			PreparedStatement insertGameHistorySts = prepareGeneralStatement(sql);
+			insertGameHistorySts.setInt(1, userID);
+			insertGameHistorySts.setDate(2, gameHistory.getGameDate());
+			insertGameHistorySts.setInt(3, gameHistory.getGameScore());
+			
+			if (insertGameHistorySts.executeUpdate() == 1)
+			{
+				int historyID = getLastIdentity();
+				
+				if (historyID != 0)
+					insertOpponents(historyID, gameHistory.getOpponentPlayersNames());
+				
+				return true;
+			}
+			
+			return false;
+		}
+		catch (Exception e) 
+		{
+			return false;
+		}
+	}
+
+	private static void insertOpponents(int historyID, List<String> opponentPlayersNames)
+	{
+		String sql = "INSERT INTO OPPONENTS(HistoryID, Nickname) VALUES(?, ?)";
+		
+		try
+			{
+			PreparedStatement insertOpponentSts = prepareGeneralStatement(sql);
+			insertOpponentSts.setInt(1, historyID);
+			
+			for (int i = 0; i < opponentPlayersNames.size(); i++)
+			{
+				insertOpponentSts.setString(2, opponentPlayersNames.get(i));
+				
+				insertOpponentSts.executeUpdate();
+			}
+		}
+		catch (Exception e) 
+		{
+			return;
+		}
+		
+	}
+
+	public static int getLastIdentity() throws SQLException
+	{
+		String sql = "VALUES IDENTITY_VAL_LOCAL()";
+		
+		PreparedStatement getLastIdentitySts = prepareGeneralStatement(sql);
+		ResultSet lastIdentityRS = getLastIdentitySts.executeQuery();
+						
+		if (lastIdentityRS.next())
+			return(lastIdentityRS.getInt(1));
+		else
+			return 0;
+	}
+	
 }
