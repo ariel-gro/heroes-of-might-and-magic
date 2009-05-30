@@ -1,6 +1,7 @@
 package tau.heroes.db;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,14 +18,14 @@ public class UserInfo implements Serializable
 	private String email;
 	private String nickname;
 	private int totalScore;
-	private List<GameHistory> gameHistory;
+	private List<GameHistory> gameHistoryList;
 	private boolean isGuest = false;
 	
 	public UserInfo()
 	{
 		this.userID = 0;
 		this.totalScore = 0;
-		this.gameHistory = null;		
+		this.gameHistoryList = new ArrayList<GameHistory>();		
 	}
 	
 	public UserInfo(String username, String password, String email, String nickname)
@@ -99,12 +100,12 @@ public class UserInfo implements Serializable
 	
 	public List<GameHistory> getGameHistory()
 	{
-		return gameHistory;
+		return gameHistoryList;
 	}
 	
-	public void setGameHistory(List<GameHistory> gameHistory)
+	public boolean addGameHistory(GameHistory gameHistory)
 	{
-		this.gameHistory = gameHistory;
+		return(this.gameHistoryList.add(gameHistory));
 	}
 	
 	public boolean isGuest()
