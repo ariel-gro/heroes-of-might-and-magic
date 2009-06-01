@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DataAccess
 {
 	private static DBConnection dbConnection;
@@ -27,7 +26,7 @@ public class DataAccess
 		return dbConnection.getConnection().prepareStatement(sql);
 	}
 
-	public static boolean init()
+	public synchronized static boolean init()
 	{
 		try
 		{
@@ -146,11 +145,11 @@ public class DataAccess
 		}
 	}
 
-	public static boolean addUser(UserInfo userInfo)
+	public synchronized static boolean addUser(UserInfo userInfo)
 	{
 		if (validateUser(userInfo.getUsername(), userInfo.getPassword()))
 			return true;
-		
+
 		try
 		{
 			String sql = "INSERT INTO USERS(Username, Password, Email, Nickname, TotalScore) "
@@ -166,11 +165,13 @@ public class DataAccess
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in addUser():");
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public static boolean validateUser(String username, String password)
+	public synchronized static boolean validateUser(String username, String password)
 	{
 		String sql = "SELECT UserID FROM USERS WHERE Username = ? and Password = ?";
 
@@ -186,11 +187,13 @@ public class DataAccess
 		}
 		catch (SQLException e)
 		{
+			System.out.println("SQLException caught in validateUser():");
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public static UserInfo getUserInfo(String username)
+	public synchronized static UserInfo getUserInfo(String username)
 	{
 		String sql = "SELECT UserID, Email, Nickname, TotalScore FROM USERS WHERE Username = ?";
 
@@ -204,7 +207,7 @@ public class DataAccess
 			if (userInfoRS.next())
 			{
 				UserInfo userInfo = new UserInfo();
-				
+
 				userInfo.setUsername(username);
 				userInfo.setUserID(userInfoRS.getInt("UserID"));
 				userInfo.setEmail(userInfoRS.getString("Email"));
@@ -216,13 +219,15 @@ public class DataAccess
 		}
 		catch (Exception e)
 		{
+			System.out.println("SQLException caught in getUserInfo():");
+			e.printStackTrace();
 			return null;
 		}
 
 		return null;
 	}
 
-	public static List<GameHistory> getGameHistory(int userID)
+	public synchronized static List<GameHistory> getGameHistory(int userID)
 	{
 		List<GameHistory> gameHistoryList = new ArrayList<GameHistory>();
 
@@ -249,6 +254,8 @@ public class DataAccess
 		}
 		catch (Exception e)
 		{
+			System.out.println("SQLException caught in getGameHistory():");
+			e.printStackTrace();
 			return null;
 		}
 
@@ -277,35 +284,39 @@ public class DataAccess
 		}
 		catch (Exception e)
 		{
+			System.out.println("SQLException caught in getOpponents():");
+			e.printStackTrace();
 			return null;
 		}
 	}
-		
-	public static boolean insertGameHistory(int userID, GameHistory gameHistory)
+
+	public synchronized static boolean insertGameHistory(int userID, GameHistory gameHistory)
 	{
 		String sql = "INSERT INTO GAMEHISTORY(UserID, GameDate, GameScore) VALUES(?, ?, ?)";
-		
+
 		try
 		{
 			PreparedStatement insertGameHistorySts = prepareGeneralStatement(sql);
 			insertGameHistorySts.setInt(1, userID);
 			insertGameHistorySts.setDate(2, gameHistory.getGameDate());
 			insertGameHistorySts.setInt(3, gameHistory.getGameScore());
-			
+
 			if (insertGameHistorySts.executeUpdate() == 1)
 			{
 				int historyID = getLastIdentity();
-				
+
 				if (historyID != 0)
 					insertOpponents(historyID, gameHistory.getOpponentPlayersNames());
-				
+
 				return true;
 			}
-			
+
 			return false;
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
+			System.out.println("SQLException caught in insertGameHistory():");
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -313,37 +324,37 @@ public class DataAccess
 	private static void insertOpponents(int historyID, List<String> opponentPlayersNames)
 	{
 		String sql = "INSERT INTO OPPONENTS(HistoryID, Nickname) VALUES(?, ?)";
-		
+
 		try
-			{
+		{
 			PreparedStatement insertOpponentSts = prepareGeneralStatement(sql);
 			insertOpponentSts.setInt(1, historyID);
-			
+
 			for (int i = 0; i < opponentPlayersNames.size(); i++)
 			{
 				insertOpponentSts.setString(2, opponentPlayersNames.get(i));
-				
+
 				insertOpponentSts.executeUpdate();
 			}
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
+			System.out.println("SQLException caught in insertOpponents():");
+			e.printStackTrace();
 			return;
 		}
-		
 	}
 
-	public static int getLastIdentity() throws SQLException
+	private static int getLastIdentity() throws SQLException
 	{
 		String sql = "VALUES IDENTITY_VAL_LOCAL()";
-		
+
 		PreparedStatement getLastIdentitySts = prepareGeneralStatement(sql);
 		ResultSet lastIdentityRS = getLastIdentitySts.executeQuery();
-						
+
 		if (lastIdentityRS.next())
-			return(lastIdentityRS.getInt(1));
+			return (lastIdentityRS.getInt(1));
 		else
 			return 0;
 	}
-	
 }
