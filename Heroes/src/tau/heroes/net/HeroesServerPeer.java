@@ -147,33 +147,33 @@ public class HeroesServerPeer extends NetworkPeer
 		return new LoginOKMessage(userInfo);
 	}
 
-	
 	private AsyncMessage handleRoomListRequest(RoomListRequestMessage message)
 	{
 		printDebug("Room list requested");
-		
+
 		if (!isLoggedIn)
 			return new ErrorMessage("You must be logged in.");
 
-		return new RoomListResponseMessage(heroesServer.getRoomInfos());
+		return new RoomListResponseMessage(heroesServer.getRoomInfos(), room.getRoomInfo(), room
+			.getUserInfos());
 	}
-	
+
 	private AsyncMessage handleRoomMembersRequest(RoomMembersRequestMessage message)
 	{
 		printDebug("Room members list requested");
-		
+
 		if (!isLoggedIn)
 			return new ErrorMessage("You must be logged in.");
-		
+
 		Room room;
 		if (message.getId() == null)
 			room = this.room;
 		else
 			room = heroesServer.getRoom(message.getId());
-		
+
 		if (room == null)
 			return new ErrorMessage("Room not found.");
-		
+
 		return new RoomMembersResponseMessage(room.getUserInfos());
 	}
 
@@ -181,7 +181,7 @@ public class HeroesServerPeer extends NetworkPeer
 	{
 		System.out.println(serverPeerName + ": " + msg);
 	}
-	
+
 	public String getName()
 	{
 		return serverPeerName;

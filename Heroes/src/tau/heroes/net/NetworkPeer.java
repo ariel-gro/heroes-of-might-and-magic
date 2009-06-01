@@ -206,8 +206,11 @@ public class NetworkPeer
 	{
 		try
 		{
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.writeObject(message);
+			if (!socket.isClosed())
+			{
+				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+				oos.writeObject(message);
+			}
 		}
 		catch (IOException e)
 		{

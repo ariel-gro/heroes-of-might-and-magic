@@ -1,7 +1,5 @@
 package tau.heroes.net;
 
-import java.util.List;
-
 import tau.heroes.db.UserInfo;
 
 /**
@@ -24,13 +22,13 @@ public class RoomUpdateMessage extends AsyncMessage
 
 	private RoomEventType roomEventType;
 	private RoomInfo roomInfo;
-	private List<UserInfo> members;
+	private UserInfo member;
 
-	public RoomUpdateMessage(RoomEventType roomEventType, RoomInfo roomInfo, List<UserInfo> members)
+	public RoomUpdateMessage(RoomEventType roomEventType, RoomInfo roomInfo, UserInfo member)
 	{
 		this.roomEventType = roomEventType;
 		this.roomInfo = roomInfo;
-		this.members = members;
+		this.member = member;
 	}
 
 	public RoomEventType getRoomEventType()
@@ -43,8 +41,8 @@ public class RoomUpdateMessage extends AsyncMessage
 		return roomInfo;
 	}
 
-	public List<UserInfo> getMembers()
+	public UserInfo getMember()
 	{
-		return members;
+		return member;
 	}
 }

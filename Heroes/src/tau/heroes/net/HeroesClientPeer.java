@@ -25,6 +25,8 @@ public class HeroesClientPeer extends NetworkPeer
 		chatListeners = new LinkedList<ChatListener>();
 		gameSateListeners = new LinkedList<GameStateListener>();
 		roomUpdateListeners = new LinkedList<RoomUpdateListener>();
+
+		registerInternalListeners();
 	}
 
 	public boolean isLoggedIn()
@@ -115,6 +117,8 @@ public class HeroesClientPeer extends NetworkPeer
 		else if (reply instanceof RoomListResponseMessage)
 		{
 			roomsList = ((RoomListResponseMessage) reply).getRooms();
+			roomInfo = ((RoomListResponseMessage) reply).getRoomInfo();
+			roomMembers = ((RoomListResponseMessage) reply).getMembers();
 			return new NetworkResult<List<RoomInfo>>(roomsList);
 		}
 		else if (reply instanceof ErrorMessage)
@@ -164,7 +168,7 @@ public class HeroesClientPeer extends NetworkPeer
 		for (GameStateListener listener : gameSateListeners)
 			listener.gameStateMessageArrived(new GameStateEvent(message));
 	}
-	
+
 	private void handleIncomingRoomUpdateMessage(RoomUpdateMessage message)
 	{
 		for (RoomUpdateListener listener : roomUpdateListeners)
@@ -180,7 +184,7 @@ public class HeroesClientPeer extends NetworkPeer
 	{
 		gameSateListeners.add(listener);
 	}
-	
+
 	public void addRoomUpdateListener(RoomUpdateListener listener)
 	{
 		roomUpdateListeners.add(listener);
@@ -189,5 +193,43 @@ public class HeroesClientPeer extends NetworkPeer
 	public void removeRoomUpdateListener(RoomUpdateListener listener)
 	{
 		roomUpdateListeners.remove(listener);
+	}
+
+	private void registerInternalListeners()
+	{
+		addRoomUpdateListener(new RoomUpdateListener() {
+			@Override
+			public void roomUpdated(RoomUpdateEvent e)
+			{
+				RoomUpdateMessage message = e.getMessage();
+				int index = -1;
+				if (roomsList != null)
+					index = roomsList.indexOf(message.getRoomInfo());
+
+				switch (message.getRoomEventType())
+				{
+				case MemberAdded:
+					if (index != -1)
+						roomsList.set(index, message.getRoomInfo());
+					if (message.getMember().equals(userInfo))
+						roomInfo = message.getRoomInfo();
+					if (roomInfo != null && roomInfo.equals(message.getRoomInfo()))
+						roomMembers.add(message.getMember());
+					break;
+				case MemberRemoved:
+					if (index != -1)
+						roomsList.set(index, message.getRoomInfo());
+					if (roomInfo != null && roomInfo.equals(message.getRoomInfo()))
+						roomMembers.remove(message.getMember());
+					if (message.getMember().equals(userInfo))
+						roomInfo = null;
+					break;
+				case RoomOpened:
+					break;
+				case RoomClosed:
+					break;
+				}
+			}
+		});
 	}
 }
