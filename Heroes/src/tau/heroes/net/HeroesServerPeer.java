@@ -3,8 +3,12 @@ package tau.heroes.net;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import tau.heroes.GameController;
+import tau.heroes.Player;
+import tau.heroes.PlayerColor;
 import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
 
@@ -64,11 +68,30 @@ public class HeroesServerPeer extends NetworkPeer
 		printDebug("Disconnected (" + sendDisconnectMessage + ")");
 	}
 
-	protected void handleRoomMessage(Message message)
+	protected void handleRoomMessage(AsyncMessage message)
 	{
 		printDebug("Chat message received");
 
 		room.asyncSendMessage(message);
+	}
+	private AsyncMessage handleNewGameRequest(NewGameMessage message)
+	{
+		printDebug("new game requested");
+		GameController gc = new GameController(true);
+		Vector<Player> players = new Vector<Player>();
+		int i = 0;
+		PlayerColor[] colors = PlayerColor.values();
+		for(HeroesServerPeer peer : room.getMembers())
+		{
+			players.add(new Player(peer.userInfo.getNickname(),colors[i]));
+			i++;
+		}		
+		gc.initNewGame(players);
+		//dispatch the message to all:
+		room.asyncSendMessage(new GameStateMessage(gc.getGameState()));
+		
+		return new OKMessage();
+
 	}
 
 	@Override
@@ -78,6 +101,8 @@ public class HeroesServerPeer extends NetworkPeer
 			handleDisconnect(false);
 		else if ((message instanceof ChatMessage) || (message instanceof GameStateMessage))
 			handleRoomMessage(message);
+		else if (message instanceof NewGameMessage)
+			handleNewGameRequest((NewGameMessage)message);
 		else
 			super.handleIncomingAsyncMessage(message);
 	}
@@ -181,6 +206,7 @@ public class HeroesServerPeer extends NetworkPeer
 	{
 		System.out.println(serverPeerName + ": " + msg);
 	}
+
 
 	public String getName()
 	{

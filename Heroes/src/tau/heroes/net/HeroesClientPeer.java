@@ -145,6 +145,10 @@ public class HeroesClientPeer extends NetworkPeer
 		else
 			return new NetworkResult<List<UserInfo>>(null, "Unknown Reply");
 	}
+	public void startNewNetworkGame()
+	{
+		asyncSendMessage(new NewGameMessage()); 
+	}
 
 	@Override
 	public void handleIncomingAsyncMessage(AsyncMessage message)

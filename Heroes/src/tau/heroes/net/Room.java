@@ -64,22 +64,17 @@ public class Room
 		this.creator = creator;
 	}
 
-	public void asyncSendMessage(Message message)
+	public void asyncSendMessage(AsyncMessage message)
 	{
-		int index = 0;
 		for (HeroesServerPeer member : members)
 		{
-			if (message instanceof GameStateMessage)
-			{
-				((GameStateMessage) message).setIndex(index);
-			}
 			member.asyncSendMessage(message);
-			index++;
-			System.out.println(member.getName() + ": Chat message sent");
+			System.out.println(member.getName()+": send message to the room "+this.getName());
 		}
 
 	}
 
+	
 	public RoomInfo getRoomInfo()
 	{
 		RoomInfo roomInfo = new RoomInfo(id, name);

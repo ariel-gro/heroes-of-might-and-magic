@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Vector;
 
+import tau.heroes.db.UserInfo;
 import tau.heroes.net.ChatListener;
 import tau.heroes.net.ChatMessage;
 import tau.heroes.net.GameStateListener;
@@ -17,6 +18,7 @@ import tau.heroes.net.GameStateMessage;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
 import tau.heroes.net.NetworkResult;
+import tau.heroes.net.NewGameMessage;
 import tau.heroes.net.RoomInfo;
 import tau.heroes.net.RoomUpdateListener;
 
@@ -400,7 +402,15 @@ public class GameController
 		return serverProxy.getRoomsList();
 	}
 	
-	// new game:
-	// setNetworkIndex = what you get...
+	public UserInfo getUserInfo()
+	{
+		return serverProxy.getUserInfo();
+	}
+
+	public NetworkResult<Boolean> startNewNetworkGame() {
+		 serverProxy.startNewNetworkGame();
+		 NetworkResult<Boolean> retVal = new NetworkResult<Boolean>(true,"OK");
+		 return retVal;
+	}
 
 }

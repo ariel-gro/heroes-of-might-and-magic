@@ -95,6 +95,16 @@ public class NetworkGUI
 			}
 		});
 
+		Button newGameButton = new Button(networkComposite, SWT.CENTER);
+		newGameButton.setText("Create  New  Network Game ");
+		newGameButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		newGameButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleNewNetworkGame();
+			}
+		});
+
 		createLabel("");
 		createLabel("Existing Rooms :");
 		List<RoomInfo> roomList = getRoomsFromServer();
@@ -104,6 +114,9 @@ public class NetworkGUI
 		}
 
 		networkComposite.layout(true, true);
+
+		
+
 
 		roomUpdateListener = new RoomUpdateListener() {
 			@Override
@@ -121,6 +134,7 @@ public class NetworkGUI
 				gameController.removeRoomUpdateListener(roomUpdateListener);
 			}
 		});
+
 	}
 
 	private void handleNewRoomCommand()
@@ -268,6 +282,12 @@ public class NetworkGUI
 		newFont.dispose();
 	}
 
+	private void handleNewNetworkGame() {
+		gameController.startNewNetworkGame();
+		
+	}
+
+
 	private void handleRoomUpdated(RoomUpdateEvent e)
 	{
 		final RoomUpdateMessage message = e.getMessage();
@@ -298,4 +318,5 @@ public class NetworkGUI
 			}
 		});
 	}
+
 }

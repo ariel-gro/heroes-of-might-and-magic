@@ -154,7 +154,7 @@ public class NetworkPeer
 			handleIncomingAsyncMessage((AsyncMessage) message);
 		else
 		{
-			Message reply = handleIncomingSyncMessage((SyncMessage) message);
+			AsyncMessage reply = handleIncomingSyncMessage((SyncMessage) message);
 			reply.setReplyID(((SyncMessage) message).getMessageID());
 			asyncSendMessage(reply);
 		}
@@ -202,7 +202,7 @@ public class NetworkPeer
 		return null;
 	}
 
-	public void asyncSendMessage(Message message)
+	public void asyncSendMessage(AsyncMessage message)
 	{
 		try
 		{
