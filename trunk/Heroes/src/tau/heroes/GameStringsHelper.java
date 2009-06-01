@@ -208,7 +208,11 @@ public class GameStringsHelper {
 		+ "© 2009 - All right reserved!",
 		
 		/* The Network Game */
-		"\n" + "how network game works\n",
+		"\n" + "The network game is the same as the single player game,\n"
+		+ "and the only difference is that all the player are connected\n"
+		+ "through server. the game is a bit different, because you can chat\n"
+		+ "with other players, and join different game rooms.\n"
+		+ "check the other Network Help assitence for more details\n",
 	};
 	
 	public static final String[] headerStrings =
