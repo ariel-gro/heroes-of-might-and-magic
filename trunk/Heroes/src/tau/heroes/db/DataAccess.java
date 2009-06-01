@@ -357,5 +357,24 @@ public class DataAccess
 			e.printStackTrace();
 			return false;
 		}
-	}	
+	}
+	
+	public static boolean updateTotalScore(int userId)
+	{
+		String sql = "UPDATE USERS SET TotalScore = TotalScore + 1 WHERE UserID = ?";
+		
+		try
+		{
+			PreparedStatement updateTotalScoreSts = prepareGeneralStatement(sql);
+			updateTotalScoreSts.setInt(1, userId);
+			
+			return (updateTotalScoreSts.executeUpdate() == 1);			
+		}
+		catch (Exception e) 
+		{
+			System.out.println("SQLException caught in updateTotalScore():");
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

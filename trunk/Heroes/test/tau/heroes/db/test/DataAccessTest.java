@@ -145,4 +145,12 @@ public class DataAccessTest
 		assertFalse(DataAccess.checkUsernameExists("no way"));
 	}
 	
+	@Test
+	public void testUpdateTotalScore()
+	{
+		UserInfo tempUser = DataAccess.getUserInfo(user1.getUsername());
+		assertTrue(DataAccess.updateTotalScore(tempUser.getUserID()));
+		assertEquals(1, DataAccess.getUserInfo(tempUser.getUsername()).getTotalScore());		
+	}
+	
 }
