@@ -1426,7 +1426,7 @@ public class HeroesGui
 			&& gameController.getNetworkIndex() != currentPlayerIndex)
 		{// This is a network game, and not my turn:
 			// we can add a timers or progress bar or info...
-			return false;
+		//	return false;
 		}
 
 		if (gameController.getGameState().getBoard() == null)
@@ -2151,7 +2151,9 @@ public class HeroesGui
 				chatWindow();
 			}
 		});
+		
 	}
+	
 
 	public void showGameAssistanceMbox()
 	{
@@ -2953,7 +2955,7 @@ public class HeroesGui
 		ipAddressText.setEnabled(true);
 		ipAddressText.add("127.0.0.1");
 		ipAddressText.add("kite.cs.tau.ac.il");
-		ipAddressText.setText("kite.cs.tau.ac.il");
+		ipAddressText.setText("127.0.0.1");
 
 		GridData loginAsGuestData = new GridData();
 		loginAsGuestData.horizontalSpan = 4;
@@ -3385,9 +3387,28 @@ public class HeroesGui
 			
 			public void run()
 			{
-				gameController.setNetworkIndex(e.getGameStateMessage().getIndex());
-				gameController.setGameState(e.getGameStateMessage().getGameState());
-				handleUpdateGameState();
+				try
+			
+			
+				{
+					GameState gs = e.getGameStateMessage().getGameState();
+					gameController.setGameState(gs);
+					int i=0;
+					for(Player p : gs.getPlayers())
+					{
+						if(p.getName() == gameController.getUserInfo().getNickname())
+						{
+							gameController.setNetworkIndex(i);
+						}
+						i++;
+					}
+					handleUpdateGameState();
+				
+				}
+				catch(Exception e)
+				{
+					displayError(e.getMessage());
+				}
 			}
 		});
 	}
