@@ -37,7 +37,7 @@ public class AttackGUITest extends TestCase
 	}
 
 	// in order to test you need to rename the function testOpen
-	public void testOpen()
+	public void tes_tOpen()
 	{
 		@SuppressWarnings("unused")
 		GameState state = new GameState(true);
