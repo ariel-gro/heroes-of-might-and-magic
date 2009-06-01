@@ -106,7 +106,9 @@ public class UserInfoTest
 	@Test
 	public void testGetGameHistory()
 	{
-		assertEquals(null, userInfo1.getGameHistory());
-		assertEquals(null, userInfo2.getGameHistory());
+		assertNotNull(userInfo1.getGameHistory());
+		assertNotNull(userInfo2.getGameHistory());
+		
+		assertEquals(0, userInfo1.getGameHistory().size());
 	}
 }

@@ -7,17 +7,26 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
 
 public class NetworkPeer
 {
 	private Socket socket;
 	private Thread readThread;
-	private boolean isWaiting;
-	private Message waitingMessage;
+	private Map<UUID, WaitEntry> waitEntries;
+
+	private class WaitEntry
+	{
+		Object latch = new Object();
+		Message reply;
+	}
 
 	public NetworkPeer(Socket socket)
 	{
 		this.socket = socket;
+		this.waitEntries = new TreeMap<UUID, WaitEntry>();
 	}
 
 	public boolean connect(String host, int port)
@@ -33,7 +42,7 @@ public class NetworkPeer
 			return false;
 		}
 	}
-	
+
 	public void disconnect()
 	{
 		disconnect(true);
@@ -76,7 +85,7 @@ public class NetworkPeer
 		}
 		catch (InterruptedException e)
 		{
-			
+
 		}
 	}
 
@@ -115,16 +124,21 @@ public class NetworkPeer
 
 			if (message != null)
 			{
-				synchronized (this)
+				WaitEntry waitEntry = null;
+				synchronized (waitEntries)
 				{
-					if (isWaiting)
-					{
-						waitingMessage = message;
-						notify();
-					}
-					else
-						handleIncomingMessage(message);
+					if (message.getReplyID() != null)
+						waitEntry = waitEntries.remove(message.getReplyID());
 				}
+
+				if (waitEntry != null)
+					synchronized (waitEntry.latch)
+					{
+						waitEntry.reply = message;
+						waitEntry.latch.notify();
+					}
+				else
+					handleIncomingMessage(message);
 			}
 		}
 	}
@@ -141,13 +155,14 @@ public class NetworkPeer
 		else
 		{
 			Message reply = handleIncomingSyncMessage((SyncMessage) message);
-			asyncSendMessage(reply);			
+			reply.setReplyID(((SyncMessage) message).getMessageID());
+			asyncSendMessage(reply);
 		}
 	}
 
 	protected void handleIncomingAsyncMessage(AsyncMessage message)
 	{
-		
+
 	}
 
 	protected AsyncMessage handleIncomingSyncMessage(SyncMessage message)
@@ -155,19 +170,24 @@ public class NetworkPeer
 		return new OKMessage();
 	}
 
-	public Message syncSendMessage(Message message)
+	public Message syncSendMessage(SyncMessage message)
 	{
 		try
 		{
-			synchronized (this)
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			WaitEntry waitEntry = new WaitEntry();
+			message.setMessageID(UUID.randomUUID());
+
+			synchronized (waitEntries)
 			{
-				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-				waitingMessage = null;
-				isWaiting = true;
+				waitEntries.put(message.getMessageID(), waitEntry);
+			}
+
+			synchronized (waitEntry.latch)
+			{
 				oos.writeObject(message);
-				wait();
-				isWaiting = false;
-				return waitingMessage;
+				waitEntry.latch.wait();
+				return waitEntry.reply;
 			}
 		}
 		catch (IOException e)
@@ -195,12 +215,7 @@ public class NetworkPeer
 			e.printStackTrace();
 		}
 	}
-	
-	public Socket getSocket()
-	{
-		return socket;
-	}
-	
+
 	public boolean isConnected()
 	{
 		return (!socket.isClosed() && socket.isConnected());

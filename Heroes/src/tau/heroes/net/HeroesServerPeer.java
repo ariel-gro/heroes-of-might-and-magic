@@ -91,6 +91,8 @@ public class HeroesServerPeer extends NetworkPeer
 			return handleRegisterRequest((RegisterRequestMessage) message);
 		else if (message instanceof RoomListRequestMessage)
 			return handleRoomListRequest((RoomListRequestMessage) message);
+		else if (message instanceof RoomMembersRequestMessage)
+			return handleRoomMembersRequest((RoomMembersRequestMessage) message);
 		else
 			return super.handleIncomingSyncMessage(message);
 	}
@@ -113,8 +115,7 @@ public class HeroesServerPeer extends NetworkPeer
 			{
 				return new ErrorMessage("User isn't registered (or wrong password).");
 			}
-			userInfo = new UserInfo();
-			userInfo.setUsername(message.getUserName());
+			userInfo = DataAccess.getUserInfo(message.getUserName());
 		}
 
 		isLoggedIn = true;
@@ -146,11 +147,7 @@ public class HeroesServerPeer extends NetworkPeer
 		return new LoginOKMessage(userInfo);
 	}
 
-	private void printDebug(String msg)
-	{
-		System.out.println(serverPeerName + ": " + msg);
-	}
-
+	
 	private AsyncMessage handleRoomListRequest(RoomListRequestMessage message)
 	{
 		printDebug("Room list requested");
@@ -160,7 +157,31 @@ public class HeroesServerPeer extends NetworkPeer
 
 		return new RoomListResponseMessage(heroesServer.getRoomInfos());
 	}
+	
+	private AsyncMessage handleRoomMembersRequest(RoomMembersRequestMessage message)
+	{
+		printDebug("Room members list requested");
+		
+		if (!isLoggedIn)
+			return new ErrorMessage("You must be logged in.");
+		
+		Room room;
+		if (message.getId() == null)
+			room = this.room;
+		else
+			room = heroesServer.getRoom(message.getId());
+		
+		if (room == null)
+			return new ErrorMessage("Room not found.");
+		
+		return new RoomMembersResponseMessage(room.getUserInfos());
+	}
 
+	private void printDebug(String msg)
+	{
+		System.out.println(serverPeerName + ": " + msg);
+	}
+	
 	public String getName()
 	{
 		return serverPeerName;

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import tau.heroes.db.UserInfo;
+
 public class Room
 {
 	private UUID id;
@@ -23,12 +25,12 @@ public class Room
 	{
 		return id;
 	}
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public List<HeroesServerPeer> getMembers()
 	{
 		return members;
@@ -38,48 +40,59 @@ public class Room
 	{
 		members.add(member);
 		member.setRoom(this);
+		this.asyncSendMessage(new RoomUpdateMessage(RoomUpdateMessage.RoomEventType.MemberAdded,
+			getRoomInfo(), getUserInfos()));
 	}
 
 	public void removeMember(HeroesServerPeer member)
 	{
 		members.remove(member);
 		member.setRoom(null);
+		this.asyncSendMessage(new RoomUpdateMessage(RoomUpdateMessage.RoomEventType.MemberRemoved,
+			getRoomInfo(), getUserInfos()));
 	}
-	
+
 	public HeroesServerPeer getCreator()
 	{
 		return creator;
 	}
-	
+
 	public void setCreator(HeroesServerPeer creator)
 	{
 		this.creator = creator;
 	}
-	
+
 	public void asyncSendMessage(Message message)
 	{
-		
-		int index =0;
+		int index = 0;
 		for (HeroesServerPeer member : members)
 		{
-			if(message instanceof GameStateMessage)
+			if (message instanceof GameStateMessage)
 			{
-				((GameStateMessage)message).setIndex(index);
+				((GameStateMessage) message).setIndex(index);
 			}
 			member.asyncSendMessage(message);
 			index++;
 			System.out.println(member.getName() + ": Chat message sent");
 		}
-		
+
 	}
-	
+
 	public RoomInfo getRoomInfo()
 	{
 		RoomInfo roomInfo = new RoomInfo(id, name);
 		roomInfo.setMemberCount(members.size());
 		if (creator != null)
 			roomInfo.setOwner(creator.getUserInfo());
-		
+
 		return roomInfo;
+	}
+
+	public List<UserInfo> getUserInfos()
+	{
+		List<UserInfo> userInfos = new LinkedList<UserInfo>();
+		for (HeroesServerPeer member : members)
+			userInfos.add(member.getUserInfo());
+		return userInfos;
 	}
 }

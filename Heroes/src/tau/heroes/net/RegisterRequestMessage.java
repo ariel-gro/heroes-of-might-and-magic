@@ -1,6 +1,7 @@
 package tau.heroes.net;
 
-public class RegisterRequestMessage extends SyncMessage {
+public class RegisterRequestMessage extends SyncMessage
+{
 	/**
 	 * 
 	 */
@@ -8,35 +9,32 @@ public class RegisterRequestMessage extends SyncMessage {
 
 	private String userName = "";
 	private String password = "";
-	private String email 	= "";
+	private String email = "";
 	private String nickname = "";
-	
 
-	
-	public RegisterRequestMessage(String userName, String password,String email,String nickname)
+	public RegisterRequestMessage(String userName, String password, String email, String nickname)
 	{
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
 		this.nickname = nickname;
 	}
-	
-	
+
 	public String getUserName()
 	{
 		return userName;
 	}
-	
+
 	public String getPassword()
 	{
 		return password;
 	}
-	
+
 	public String getEmail()
 	{
 		return email;
 	}
-	
+
 	public String getNickname()
 	{
 		return nickname;

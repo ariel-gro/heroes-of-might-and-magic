@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -24,6 +26,9 @@ import org.eclipse.swt.widgets.Text;
 
 import tau.heroes.net.NetworkResult;
 import tau.heroes.net.RoomInfo;
+import tau.heroes.net.RoomUpdateEvent;
+import tau.heroes.net.RoomUpdateListener;
+import tau.heroes.net.RoomUpdateMessage;
 
 public class NetworkGUI
 {
@@ -31,17 +36,25 @@ public class NetworkGUI
 	private Color white;
 	private Display display;
 	private Combo roomsCombo, numOfPlayersCombo;
+	private Table roomsTable;
 	private GameController gameController;
+	private RoomUpdateListener roomUpdateListener;
 
 	public NetworkGUI(Composite statusComposite, GameController gameController)
 	{
-		networkComposite = statusComposite;
+		this.networkComposite = new Composite(statusComposite, SWT.NONE);
 		this.gameController = gameController;
 		display = networkComposite.getDisplay();
 
 		white = display.getSystemColor(SWT.COLOR_WHITE);
 
 		networkComposite.setBackground(white);
+		statusComposite.setBackground(white);
+		networkComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		GridLayout layout = new GridLayout(1, true);
+		layout.marginHeight = layout.marginWidth = 0;
+		networkComposite.setLayout(layout);
 	}
 
 	private Label createLabel(String text)
@@ -89,7 +102,25 @@ public class NetworkGUI
 		{
 			displayTable(roomList);
 		}
+
 		networkComposite.layout(true, true);
+
+		roomUpdateListener = new RoomUpdateListener() {
+			@Override
+			public void roomUpdated(RoomUpdateEvent e)
+			{
+				handleRoomUpdated(e);
+			}
+		};
+		gameController.addRoomUpdateListener(roomUpdateListener);
+
+		networkComposite.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent arg0)
+			{
+				gameController.removeRoomUpdateListener(roomUpdateListener);
+			}
+		});
 	}
 
 	private void handleNewRoomCommand()
@@ -195,7 +226,7 @@ public class NetworkGUI
 	// TODO adjust to lobby
 	private void displayTable(List<RoomInfo> roomList)
 	{
-		Table roomsTable = new Table(networkComposite, SWT.BORDER);
+		roomsTable = new Table(networkComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		TableColumn col1 = new TableColumn(roomsTable, SWT.CENTER);
 		TableColumn col2 = new TableColumn(roomsTable, SWT.CENTER);
 		TableColumn col3 = new TableColumn(roomsTable, SWT.CENTER);
@@ -235,5 +266,36 @@ public class NetworkGUI
 		}
 
 		newFont.dispose();
+	}
+
+	private void handleRoomUpdated(RoomUpdateEvent e)
+	{
+		final RoomUpdateMessage message = e.getMessage();
+
+		display.syncExec(new Runnable() {
+			public void run()
+			{
+				int index;
+				switch (message.getRoomEventType())
+				{
+				case MemberAdded:
+					index = gameController.roomsList().indexOf(message.getRoomInfo());
+					if (index >= 0 && index < roomsTable.getItemCount())
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
+							.getMemberCount()));
+					break;
+				case MemberRemoved:
+					index = gameController.roomsList().indexOf(message.getRoomInfo());
+					if (index >= 0 && index < roomsTable.getItemCount())
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
+							.getMemberCount()));
+					break;
+				case RoomOpened:
+					break;
+				case RoomClosed:
+					break;
+				}
+			}
+		});
 	}
 }
