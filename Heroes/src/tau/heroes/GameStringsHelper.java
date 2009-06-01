@@ -5,6 +5,7 @@ public class GameStringsHelper {
 	public static final int GettingStarted = 0, CastleWindow = 1, HowToMove = 2, Battles = 3,
 			Army = 4, Resources = 5, StatusWindow = 6, NewGameWindow = 7, Highscores = 8,
 			About = 9;
+	public static final int theNetworkGame = 10;
 	
 	public static final String  DefaultHelpString = "helpful text";
 	
@@ -205,13 +206,16 @@ public class GameStringsHelper {
 		+ "Advanced development of Java based systemes\n"
 		+ "course at TAU\n\n"
 		+ "© 2009 - All right reserved!",
+		
+		/* The Network Game */
+		"\n" + "how network game works\n",
 	};
 	
 	public static final String[] headerStrings =
 	{
 		"Getting Started", "Castle Window", "How to Move", "Battles and Battle Window",
 		"Army", "Resources", "Status Window", "New Game Window", "Game Score and Highscores",
-		"Heroes of Might and Magic (TAU Version)",
+		"Heroes of Might and Magic (TAU Version)", "The Network Game"
 	};
 	
 	public static String getStringByIndex(int StringInd){
