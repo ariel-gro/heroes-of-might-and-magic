@@ -13,12 +13,14 @@ public class Room
 	private String name;
 	private HeroesServerPeer creator;
 	private List<HeroesServerPeer> members;
+	private final HeroesServer heroesServer;
 
-	public Room(String name)
+	public Room(String name, HeroesServer heroesServer)
 	{
 		this.id = UUID.randomUUID();
 		this.name = name;
 		this.members = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
+		this.heroesServer = heroesServer;
 	}
 
 	public UUID getId()
@@ -40,16 +42,16 @@ public class Room
 	{
 		members.add(member);
 		member.setRoom(this);
-		this.asyncSendMessage(new RoomUpdateMessage(RoomUpdateMessage.RoomEventType.MemberAdded,
-			getRoomInfo(), getUserInfos()));
+		heroesServer.asyncSendMessage(new RoomUpdateMessage(
+			RoomUpdateMessage.RoomEventType.MemberAdded, getRoomInfo(), getUserInfos()));
 	}
 
 	public void removeMember(HeroesServerPeer member)
 	{
 		members.remove(member);
 		member.setRoom(null);
-		this.asyncSendMessage(new RoomUpdateMessage(RoomUpdateMessage.RoomEventType.MemberRemoved,
-			getRoomInfo(), getUserInfos()));
+		heroesServer.asyncSendMessage(new RoomUpdateMessage(
+			RoomUpdateMessage.RoomEventType.MemberRemoved, getRoomInfo(), getUserInfos()));
 	}
 
 	public HeroesServerPeer getCreator()

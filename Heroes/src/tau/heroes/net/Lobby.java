@@ -8,9 +8,9 @@ public class Lobby extends Room
 	private static String LOBBY_NICKNAME = "Lobby";
 	private UserInfo dummyUser;
 
-	public Lobby()
+	public Lobby(HeroesServer heroesServer)
 	{
-		super(LOBBY_ROOM_NAME);
+		super(LOBBY_ROOM_NAME, heroesServer);
 		
 		dummyUser = new UserInfo();
 		dummyUser.setNickname(LOBBY_NICKNAME);
