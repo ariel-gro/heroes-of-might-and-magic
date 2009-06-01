@@ -2953,7 +2953,7 @@ public class HeroesGui
 		ipAddressText.setEnabled(true);
 		ipAddressText.add("127.0.0.1");
 		ipAddressText.add("kite.cs.tau.ac.il");
-		ipAddressText.setText("127.0.0.1");
+		ipAddressText.setText("kite.cs.tau.ac.il");
 
 		GridData loginAsGuestData = new GridData();
 		loginAsGuestData.horizontalSpan = 4;
