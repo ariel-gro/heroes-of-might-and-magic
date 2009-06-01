@@ -1422,11 +1422,12 @@ public class HeroesGui
 		shell.setCursor(waitCursor);
 
 		currentPlayerIndex = this.gameController.getGameState().getWhosTurn();
-		if (gameController.getNetworkIndex() != GameController.LOACL_GAME_INDEX
+		if (gameController.isNetworkGame()
 			&& gameController.getNetworkIndex() != currentPlayerIndex)
 		{// This is a network game, and not my turn:
 			// we can add a timers or progress bar or info...
-		//	return false;
+			displayMessage(gameController.getUserInfo().getNickname()+ " Not your turn");
+			return false;
 		}
 
 		if (gameController.getGameState().getBoard() == null)
@@ -2644,7 +2645,9 @@ public class HeroesGui
 			createBoardWindow(true);
 			updateStatusWindow();
 		}
+		handleNetworkEndTurn();
 	}
+
 
 	private void removeDeadPlayers()
 	{
@@ -3380,6 +3383,12 @@ public class HeroesGui
 			}
 		});
 	}
+	private void handleNetworkEndTurn() {
+		if(!gameController.isNetworkGame())
+			return;
+		gameController.sendGameState();
+		
+	}
 
 	private void handleIncomingGameState(final GameStateEvent e)
 	{
@@ -3387,28 +3396,18 @@ public class HeroesGui
 			
 			public void run()
 			{
-				try
-			
-			
+				GameState gs = e.getGameStateMessage().getGameState();
+				gameController.setGameState(gs);
+				int i=0;
+				for(Player p : gs.getPlayers())
 				{
-					GameState gs = e.getGameStateMessage().getGameState();
-					gameController.setGameState(gs);
-					int i=0;
-					for(Player p : gs.getPlayers())
+					if(p.getName().equals(gameController.getUserInfo().getNickname()))
 					{
-						if(p.getName() == gameController.getUserInfo().getNickname())
-						{
-							gameController.setNetworkIndex(i);
-						}
-						i++;
+						gameController.setNetworkIndex(i);
 					}
-					handleUpdateGameState();
-				
+					i++;
 				}
-				catch(Exception e)
-				{
-					displayError(e.getMessage());
-				}
+				handleUpdateGameState();
 			}
 		});
 	}

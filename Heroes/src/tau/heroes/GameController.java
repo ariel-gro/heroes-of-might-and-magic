@@ -371,9 +371,9 @@ public class GameController
 		serverProxy.asyncSendMessage(chatMessage);
 	}
 
-	public void sendGameState(GameState gs)
+	public void sendGameState()
 	{
-		GameStateMessage gsMessage = new GameStateMessage(gs);
+		GameStateMessage gsMessage = new GameStateMessage(gameState);
 		serverProxy.asyncSendMessage(gsMessage);
 	}
 
