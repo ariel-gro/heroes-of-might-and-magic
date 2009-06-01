@@ -2082,6 +2082,18 @@ public class HeroesGui
 				showGameAssistanceMbox();
 			}
 		});
+		
+		// Help -> Network assistance
+		MenuItem networkAssistItem = new MenuItem(menu, SWT.NULL);
+		networkAssistItem.setText("&Network assistance\tCtrl+N");
+		networkAssistItem.setAccelerator(SWT.MOD1 + 'N');
+		networkAssistItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				showNetworkAssistanceMbox();
+			}
+
+		});
 
 		// Help -> About Text Editor
 		MenuItem subItem = new MenuItem(menu, SWT.NULL);
@@ -2285,6 +2297,61 @@ public class HeroesGui
 		shell.setEnabled(true);
 	}
 
+	public void showNetworkAssistanceMbox() 
+	{
+		// TODO fill the help menu
+		
+		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.verticalSpacing = 5;
+		gridLayout.marginHeight = gridLayout.marginWidth = 25;
+		helpShell.setLayout(gridLayout);
+		helpShell.setText("Heroes (TAU Ver.) - Network Assistance");
+		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setSize(330, 330);
+
+		/* The Network Game */
+		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("The Network Game");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.setEnabled(false);
+				diplayHelpByHelpItem(GameStringsHelper.theNetworkGame);
+				helpShell.setEnabled(true);
+			}
+		});
+
+
+		/* Close */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Close");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.dispose();
+				shell.setEnabled(true);
+			}
+		});
+
+		// helpShell.pack();
+		// helpShell.setSize(helpShell.getSize().x + 25, helpShell.getSize().y +
+		// 25);
+		helpShell.open();
+		shell.setEnabled(false);
+		while (!helpShell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+			{
+				display.sleep();
+			}
+		}
+		shell.setEnabled(true);
+	}
+	
 	public static void diplayHelpByHelpItem(int helpItem)
 	{
 		String helpString = GameStringsHelper.getStringByIndex(helpItem);
