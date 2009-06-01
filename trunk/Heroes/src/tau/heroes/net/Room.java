@@ -43,7 +43,7 @@ public class Room
 		members.add(member);
 		member.setRoom(this);
 		heroesServer.asyncSendMessage(new RoomUpdateMessage(
-			RoomUpdateMessage.RoomEventType.MemberAdded, getRoomInfo(), getUserInfos()));
+			RoomUpdateMessage.RoomEventType.MemberAdded, getRoomInfo(), member.getUserInfo()));
 	}
 
 	public void removeMember(HeroesServerPeer member)
@@ -51,7 +51,7 @@ public class Room
 		members.remove(member);
 		member.setRoom(null);
 		heroesServer.asyncSendMessage(new RoomUpdateMessage(
-			RoomUpdateMessage.RoomEventType.MemberRemoved, getRoomInfo(), getUserInfos()));
+			RoomUpdateMessage.RoomEventType.MemberRemoved, getRoomInfo(), member.getUserInfo()));
 	}
 
 	public HeroesServerPeer getCreator()
