@@ -3064,6 +3064,7 @@ public class HeroesGui
 
 				startNetworkGame(userName, passWord);
 				shell.dispose();
+				statusComposite.layout(true, true);
 			}
 		});
 		okButton.setLayoutData(okData);

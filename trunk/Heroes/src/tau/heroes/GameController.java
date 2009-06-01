@@ -18,6 +18,7 @@ import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
 import tau.heroes.net.NetworkResult;
 import tau.heroes.net.RoomInfo;
+import tau.heroes.net.RoomUpdateListener;
 
 public class GameController
 {
@@ -375,6 +376,22 @@ public class GameController
 	{
 		serverProxy.addGameStateListener(listener);
 	}
+	
+	public void addRoomUpdateListener(RoomUpdateListener listener)
+	{
+		serverProxy.addRoomUpdateListener(listener);
+	}
+	
+	public void removeRoomUpdateListener(RoomUpdateListener listener)
+	{
+		serverProxy.removeRoomUpdateListener(listener);
+	}
+	
+	public List<RoomInfo> roomsList()
+	{
+		return serverProxy.getRoomsList();
+	}
+	
 	// new game:
 	// setNetworkIndex = what you get...
 

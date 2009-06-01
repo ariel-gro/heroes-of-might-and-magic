@@ -52,4 +52,13 @@ public class RoomInfo implements Serializable
 	{
 		this.memberCount = memberCount;
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof RoomInfo)
+			return id.equals(((RoomInfo)obj).id);
+		else
+			return super.equals(obj);
+	}
 }

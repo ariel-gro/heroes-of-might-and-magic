@@ -51,6 +51,11 @@ public class HeroesServer extends NetworkServer
 		rooms.remove(room.getId());
 		roomNames.remove(room.getName());
 	}
+	
+	public Room getRoom(UUID roomID)
+	{
+		return rooms.get(roomID);
+	}
 
 	public Room getLobby()
 	{
@@ -90,6 +95,7 @@ public class HeroesServer extends NetworkServer
 		String username = "Guest " + count;
 
 		UserInfo userInfo = new UserInfo();
+		userInfo.setUserID(-count);
 		userInfo.setUsername(username);
 		userInfo.setNickname(username);
 		userInfo.setGuest(true);
