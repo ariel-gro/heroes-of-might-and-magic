@@ -27,12 +27,14 @@ public class GameController
 	private int networkIndex;
 
 	public static final int LOACL_GAME_INDEX = -1;
+	public static boolean isNetwork;
 
 	public GameController(boolean isGUI)
 	{
 		this.gameState = new GameState(isGUI);
 		serverProxy = new HeroesClientPeer();
 		networkIndex = LOACL_GAME_INDEX;
+		this.isNetwork = this.isNetworkGame();
 	}
 
 	public void initNewGame(Vector<Player> players)
@@ -43,6 +45,11 @@ public class GameController
 		placeHeroes(players);
 		placeCastles(players);
 		placeResources(players.size());
+	}
+	
+	public boolean isNetworkGame()
+	{
+		return (this.getNetworkIndex() != this.LOACL_GAME_INDEX);
 	}
 
 	private void initBoard()
@@ -315,6 +322,7 @@ public class GameController
 	public void setNetworkIndex(int networkIndex)
 	{
 		this.networkIndex = networkIndex;
+		this.isNetwork = this.isNetworkGame();
 	}
 
 	// Network controler
