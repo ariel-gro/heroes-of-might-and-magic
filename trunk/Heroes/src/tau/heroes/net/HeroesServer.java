@@ -36,7 +36,7 @@ public class HeroesServer extends NetworkServer
 		peers = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
 		guestCounter = new AtomicInteger(1);
 
-		lobby = new Lobby();
+		lobby = new Lobby(this);
 		addRoom(lobby);
 	}
 
@@ -60,6 +60,12 @@ public class HeroesServer extends NetworkServer
 	public Room getLobby()
 	{
 		return lobby;
+	}
+	
+	public void asyncSendMessage(AsyncMessage message)
+	{
+		for (HeroesServerPeer peer : peers)
+			peer.asyncSendMessage(message);
 	}
 
 	public List<HeroesServerPeer> getPeers()
