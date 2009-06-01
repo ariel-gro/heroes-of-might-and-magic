@@ -137,4 +137,12 @@ public class DataAccessTest
 		assertEquals(tempGameHistory.getGameScore(), gameHistory2.getGameScore());
 		assertEquals(tempGameHistory.getOpponentPlayersNames(), gameHistory2.getOpponentPlayersNames());
 	}
+	
+	@Test
+	public void testCheckUsernameExists()
+	{
+		assertTrue(DataAccess.checkUsernameExists(user1.getUsername()));
+		assertFalse(DataAccess.checkUsernameExists("no way"));
+	}
+	
 }
