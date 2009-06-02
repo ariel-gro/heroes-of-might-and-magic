@@ -119,7 +119,7 @@ public class NetworkGUI
 
 
 		roomUpdateListener = new RoomUpdateListener() {
-			@Override
+			
 			public void roomUpdated(RoomUpdateEvent e)
 			{
 				handleRoomUpdated(e);
@@ -128,7 +128,7 @@ public class NetworkGUI
 		gameController.addRoomUpdateListener(roomUpdateListener);
 
 		networkComposite.addDisposeListener(new DisposeListener() {
-			@Override
+			
 			public void widgetDisposed(DisposeEvent arg0)
 			{
 				gameController.removeRoomUpdateListener(roomUpdateListener);

@@ -202,7 +202,7 @@ public class HeroesClientPeer extends NetworkPeer
 	private void registerInternalListeners()
 	{
 		addRoomUpdateListener(new RoomUpdateListener() {
-			@Override
+			
 			public void roomUpdated(RoomUpdateEvent e)
 			{
 				RoomUpdateMessage message = e.getMessage();
