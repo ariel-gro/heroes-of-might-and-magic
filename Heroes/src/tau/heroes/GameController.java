@@ -34,7 +34,7 @@ public class GameController
 	public GameController(boolean isGUI)
 	{
 		this.gameState = new GameState(isGUI);
-		serverProxy = new HeroesClientPeer();
+		serverProxy = HeroesClientPeer.instance();
 		networkIndex = LOACL_GAME_INDEX;
 		this.isNetwork = this.isNetworkGame();
 	}

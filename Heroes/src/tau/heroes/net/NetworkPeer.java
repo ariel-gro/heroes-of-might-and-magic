@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class NetworkPeer
 {
-	private Socket socket;
+	private Socket socket = null;
 	private Thread readThread;
 	private Map<UUID, WaitEntry> waitEntries;
 
@@ -23,22 +23,30 @@ public class NetworkPeer
 		Message reply;
 	}
 
+	public NetworkPeer()
+	{
+		this.waitEntries = new TreeMap<UUID, WaitEntry>();
+	}
+	
 	public NetworkPeer(Socket socket)
 	{
+		this();
+		
 		this.socket = socket;
-		this.waitEntries = new TreeMap<UUID, WaitEntry>();
 	}
 
 	public boolean connect(String host, int port)
 	{
 		try
 		{
+			socket = new Socket();
 			socket.connect(new InetSocketAddress(host, port));
 			startListening();
 			return true;
 		}
 		catch (IOException e)
 		{
+			socket = null;
 			return false;
 		}
 	}
@@ -221,6 +229,6 @@ public class NetworkPeer
 
 	public boolean isConnected()
 	{
-		return (!socket.isClosed() && socket.isConnected());
+		return (socket != null && !socket.isClosed() && socket.isConnected());
 	}
 }
