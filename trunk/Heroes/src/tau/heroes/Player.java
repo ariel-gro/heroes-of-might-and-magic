@@ -25,6 +25,7 @@ public class Player implements Serializable
 	private int dayOfTheWeek = 1;	/** 1 = Day 1, 2 = Day 2,...., 7 = Day 7 */
 	private int computerLevel = 0; /** 0 = Human, 1 = Novice, 2 = Expert **/
 	private final PlayerColor playerColor;
+	private boolean autoFight = false;
 	
 	public Player(String name, PlayerColor playerColor)
 	{
@@ -48,6 +49,7 @@ public class Player implements Serializable
 	public void setHero(Hero theHero)
 	{
 		this.hero = theHero;
+		this.hero.setAutoFight(autoFight);
 		if (hero != null)
 			setVisibleBoard(hero.getXPos(), hero.getYPos(), 1);
 	}
@@ -438,5 +440,13 @@ public class Player implements Serializable
 
 	public void setComputerLevel(int computerLevel) {
 		this.computerLevel = computerLevel;
+		if(isComputer())
+			this.setAutoFight(true);
+	}
+	public void setAutoFight(boolean bAuto)
+	{
+		autoFight = bAuto;
+		if(hero != null)
+			hero.setAutoFight(autoFight);
 	}
 }
