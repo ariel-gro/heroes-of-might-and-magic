@@ -2947,7 +2947,7 @@ public class HeroesGui
 		ipAddressData.grabExcessHorizontalSpace = true;
 		ipAddressData.grabExcessVerticalSpace = true;
 		final Label ipAddressLabel = new Label(shell, SWT.NULL);
-		ipAddressLabel.setText("IP Address:");
+		ipAddressLabel.setText("Host/IP:");
 		ipAddressLabel.setLayoutData(ipAddressData);
 		final Combo ipAddressText = new Combo(shell, SWT.NULL);
 		GridData ipAddressTextData = new GridData();
@@ -3136,7 +3136,7 @@ public class HeroesGui
 		ipAddressData.grabExcessHorizontalSpace = true;
 		ipAddressData.grabExcessVerticalSpace = true;
 		final Label ipAddressLabel = new Label(shell, SWT.NULL);
-		ipAddressLabel.setText("IP Address:");
+		ipAddressLabel.setText("Host/IP:");
 		ipAddressLabel.setLayoutData(ipAddressData);
 		final Combo ipAddressText = new Combo(shell, SWT.NULL);
 		GridData ipAddressTextData = new GridData();
@@ -3145,6 +3145,9 @@ public class HeroesGui
 		ipAddressTextData.grabExcessVerticalSpace = true;
 		ipAddressText.setLayoutData(ipAddressTextData);
 		ipAddressText.setEnabled(true);
+		ipAddressText.add("127.0.0.1");
+		ipAddressText.add("kite.cs.tau.ac.il");
+		ipAddressText.setText("127.0.0.1");
 
 		GridData userNameData = new GridData();
 		userNameData.horizontalSpan = 2;
@@ -3180,7 +3183,7 @@ public class HeroesGui
 		mailData.grabExcessHorizontalSpace = true;
 		mailData.grabExcessVerticalSpace = true;
 		final Label mailLabel = new Label(shell, SWT.NULL);
-		mailLabel.setText("Mail Address:");
+		mailLabel.setText("Mail:");
 		mailLabel.setLayoutData(mailData);
 		final Combo mailText = new Combo(shell, SWT.NULL);
 		GridData mailTextData = new GridData();
@@ -3311,18 +3314,16 @@ public class HeroesGui
 			return false;
 	}
 	
-	/**
-	 * The method will return true if the ip is valid ip.
-	 * @param theIp - the ip as string
-	 */
 	private boolean isValidIp(String theIp)
 	{
-		if (theIp == null) return false;
+		if (theIp == null || theIp == "") return false;
 
 		String[] fields = theIp.split("\\.");
 
+		if (fields.length < 2) return false;
+		
+		/*
 		if (fields.length != 4) return false;
-
 		if (fields[0].equals("0")) return false;
 
 		try
@@ -3337,6 +3338,7 @@ public class HeroesGui
 		{
 			return false;
 		}
+		*/
 		return true;
 	}
 
