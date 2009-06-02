@@ -95,7 +95,7 @@ public class AttackGUI
 	private void finish(Hero winner)
 	{
 		String swinner = (winner.alive()) ? winner.toString() : "";
-		HeroesGui.displayMessage("The fight is over: " + swinner + " won!");
+		GameController.handleMessage("The fight is over: " + swinner + " won!");
 		shell.close();
 	}
 

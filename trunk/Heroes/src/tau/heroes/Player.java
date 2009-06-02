@@ -152,11 +152,7 @@ public class Player implements Serializable
 
 			if (!(this.isComputer()))
 			{
-				if (GameState.isGUI())
-					HeroesGui.displayMessage(this.playerName + " lost the castle at ("
-						+ castle.getXPos() + ", " + castle.getYPos() + ")");
-				else
-					HeroesConsole.displayMessage(this.playerName + " lost the castle at ("
+					GameController.handleMessage(this.playerName + " lost the castle at ("
 						+ castle.getXPos() + ", " + castle.getYPos() + ")");
 			}
 		}

@@ -66,19 +66,10 @@ public class Castle implements Serializable
 
 	private void enterHeroIntoOccupiedCastle(Hero hero, boolean bIsHeroInCastle)
 	{
-		boolean isGui = GameState.isGUI();
 		if (!(player.isComputer()))
 		{
-			if (isGui)
-			{
-				HeroesGui.displayMessage(hero.player.getName() + "'s hero has entered "
+			GameController.handleMessage(hero.player.getName() + "'s hero has entered "
 					+ this.player.getName() + "'s castle.");
-			}
-			else
-			{
-				HeroesConsole.displayMessage(hero.player.getName() + "'s hero has entered "
-					+ this.player.getName() + "'s castle.");
-			}
 		}
 
 		Hero defendingHero;
