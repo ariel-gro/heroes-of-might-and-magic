@@ -328,7 +328,7 @@ public class GameController
 		}
 		if (GameController.isNetwork)
 		{
-			//TODO send message trough chat
+			HeroesClientPeer.instance().asyncSendMessage(new ChatMessage("serever: " + msg));
 		}
 	}
 
