@@ -6,6 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MenuAdapter;
+import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -17,13 +19,18 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import tau.heroes.db.UserInfo;
 import tau.heroes.net.NetworkResult;
 import tau.heroes.net.RoomInfo;
 import tau.heroes.net.RoomUpdateEvent;
@@ -35,8 +42,8 @@ public class NetworkGUI
 	private Composite networkComposite;
 	private Color white;
 	private Display display;
-	private Combo roomsCombo, numOfPlayersCombo;
-	private Table roomsTable;
+	private Combo numOfPlayersCombo;
+	private Table roomsTable, roomsDetailsTable;
 	private GameController gameController;
 	private RoomUpdateListener roomUpdateListener;
 
@@ -110,13 +117,19 @@ public class NetworkGUI
 		List<RoomInfo> roomList = getRoomsFromServer();
 		if (roomList != null)
 		{
-			displayTable(roomList);
+			displayRoomsTable(roomList);
 		}
 
-		networkComposite.layout(true, true);
+		createLabel("");
+		createLabel("Room Details :");
 
+		if (roomList != null)
+		{
+			displayRoomDetailsTable(roomList);
+		}
 		
-
+		
+		networkComposite.layout(true, true);
 
 		roomUpdateListener = new RoomUpdateListener() {
 			
@@ -139,15 +152,15 @@ public class NetworkGUI
 
 	private void handleNewRoomCommand()
 	{
-		roomsCombo.setEnabled(false);
+		//roomsCombo.setEnabled(false);
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setLayout(new GridLayout());
-		shell.setSize(330, 225);
+		shell.setSize(225, 160);
 		shell.setText("Create New Room");
 		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
 
 		Composite form = new Composite(shell, SWT.FILL);
-		form.setLayout(new GridLayout(2, false));
+		form.setLayout(new GridLayout(2, true));
 
 		final Label roomNameLabel = new Label(form, SWT.NONE);
 		roomNameLabel.setText("Room Name : ");
@@ -163,14 +176,6 @@ public class NetworkGUI
 
 		new Label(form, SWT.NONE);
 		new Label(form, SWT.NONE);
-		Label isComputerLabel = new Label(form, SWT.NONE);
-		isComputerLabel.setText("Is one of the players a Computer ? ");
-		final Button pcButton = new Button(form, SWT.CHECK);
-
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
 
 		Button okButton = new Button(form, SWT.PUSH);
 		okButton.setText("     OK     ");
@@ -179,11 +184,9 @@ public class NetworkGUI
 			{
 				String roomName = roomNameText.getText();
 				Integer numOfPlayers = Integer.parseInt(numOfPlayersCombo.getText());
-				boolean isComputer = pcButton.getSelection();
 				if (!roomName.equalsIgnoreCase(""))
 				{
-					createNewRoom(roomName, numOfPlayers, isComputer);
-					roomsCombo.setEnabled(true);
+					createNewRoom(roomName, numOfPlayers);				
 					shell.dispose();
 				}
 			}
@@ -194,7 +197,6 @@ public class NetworkGUI
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e)
 			{
-				roomsCombo.setEnabled(true);
 				shell.dispose();
 			}
 		});
@@ -205,14 +207,12 @@ public class NetworkGUI
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-
-		roomsCombo.setEnabled(true);
 	}
 
 	private void handleJoinRoomCommand()
 	{
-		String roomName = roomsCombo.getText();
-		joinExistingRoom(roomName);
+		//String roomName = roomsCombo.getText();
+		//joinExistingRoom(roomName);
 	}
 
 	public List<RoomInfo> getRoomsFromServer()
@@ -221,24 +221,22 @@ public class NetworkGUI
 
 		if (result.getResult() == null)
 		{
-			HeroesGui.displayError("Error getting room list from server: "
-				+ result.getErrorMessage());
+			HeroesGui.displayError("Error getting room list from server: " + result.getErrorMessage());
 		}
 
 		return result.getResult();
 	}
 
-	public void createNewRoom(String roomName, int numOfPlayers, boolean isComputer)
+	public void createNewRoom(String roomName, int numOfPlayers)
 	{
-
+		
 	}
 
 	public void joinExistingRoom(String roomName)
 	{
 	}
 
-	// TODO adjust to lobby
-	private void displayTable(List<RoomInfo> roomList)
+	private void displayRoomsTable(List<RoomInfo> roomList)
 	{
 		roomsTable = new Table(networkComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		TableColumn col1 = new TableColumn(roomsTable, SWT.CENTER);
@@ -255,7 +253,15 @@ public class NetworkGUI
 		col3.setResizable(true);
 		roomsTable.setSortColumn(col1);
 		roomsTable.setHeaderVisible(true);
+		roomsTable.setToolTipText("Right click to join group");
 		roomsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		roomsTable.setMenu(createJoinRoomPopUpMenu());
+		roomsTable.addListener(SWT.Selection, new Listener() {
+		      public void handleEvent(Event event) {
+		    	  
+		    	  updateRoomDetailsTable((RoomInfo)event.item.getData());
+		      }
+		    });
 
 		TableItem ti;
 		Font newFont = roomsTable.getFont(); // just an initialization for the
@@ -266,8 +272,103 @@ public class NetworkGUI
 			ti = new TableItem(roomsTable, SWT.CENTER);
 
 			RoomInfo room = roomList.get(i);
-			ti.setText(new String[] { room.getName(), room.getOwner().getNickname(),
-					String.valueOf(room.getMemberCount()) });
+			ti.setText(new String[] { room.getName(), room.getOwner().getNickname(), String.valueOf(room.getMemberCount()) });
+			ti.setData(room);
+			Font initialFont = ti.getFont();
+			FontData[] fontData = initialFont.getFontData();
+			for (int k = 0; k < fontData.length; k++)
+			{
+				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+				fontData[k].setStyle(SWT.BOLD);
+			}
+			newFont = new Font(display, fontData);
+			ti.setFont(newFont);
+		}
+		
+		roomsTable.setSelection(0);
+
+		newFont.dispose();
+	}
+	
+	private Menu createJoinRoomPopUpMenu()
+	{
+		Menu popUpMenu;
+
+		popUpMenu = new Menu(roomsTable);
+
+		popUpMenu.addMenuListener(new MenuAdapter() {
+			public void menuShown(MenuEvent e)
+			{
+			}
+		});
+
+		final MenuItem joinRoomItem = new MenuItem(popUpMenu, SWT.PUSH);
+		joinRoomItem.setText("Join Room");
+		joinRoomItem.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+
+
+			}
+		});
+		
+		return popUpMenu;
+	}
+	
+	private void displayRoomDetailsTable(List<RoomInfo> roomList)
+	{
+		roomsDetailsTable = new Table(networkComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		TableColumn col1 = new TableColumn(roomsDetailsTable, SWT.CENTER);
+		TableColumn col2 = new TableColumn(roomsDetailsTable, SWT.CENTER);
+		col1.setText("User");
+		col2.setText("Score");
+		col1.setWidth(80);
+		col2.setWidth(60);
+		col1.setResizable(true);
+		col2.setResizable(true);
+		roomsDetailsTable.setSortColumn(col1);
+		roomsDetailsTable.setHeaderVisible(true);
+		roomsDetailsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomList.get(0).getId()).getResult();
+		
+		TableItem ti;
+		Font newFont = roomsTable.getFont(); // just an initialization for the compiler
+
+		for (int i = 0; i < roomMembersList.size(); i++)
+		{
+			ti = new TableItem(roomsDetailsTable, SWT.CENTER);
+
+			UserInfo user = roomMembersList.get(0);		
+			ti.setText(new String[] { user.getNickname(), user.getTotalScore()+"" });
+			Font initialFont = ti.getFont();
+			FontData[] fontData = initialFont.getFontData();
+			for (int k = 0; k < fontData.length; k++)
+			{
+				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
+				fontData[k].setStyle(SWT.BOLD);
+			}
+			newFont = new Font(display, fontData);
+			ti.setFont(newFont);
+		}
+
+		newFont.dispose();
+	}
+	
+	private void updateRoomDetailsTable(RoomInfo roomInfo)
+	{
+		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomInfo.getId()).getResult();
+		
+		TableItem ti;
+		Font newFont = roomsDetailsTable.getFont(); // just an initialization for the compiler
+
+		roomsDetailsTable.removeAll();
+		for (int i = 0; i < roomMembersList.size(); i++)
+		{
+			ti = new TableItem(roomsDetailsTable, SWT.CENTER);
+
+			UserInfo user = roomMembersList.get(0);		
+			ti.setText(new String[] { user.getNickname(), user.getTotalScore()+"" });
 			Font initialFont = ti.getFont();
 			FontData[] fontData = initialFont.getFontData();
 			for (int k = 0; k < fontData.length; k++)
@@ -301,14 +402,16 @@ public class NetworkGUI
 				case MemberAdded:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
 					if (index >= 0 && index < roomsTable.getItemCount())
-						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
-							.getMemberCount()));
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo().getMemberCount()));
+					if(roomsDetailsTable.getSelectionIndex() == index)
+						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case MemberRemoved:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
 					if (index >= 0 && index < roomsTable.getItemCount())
-						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
-							.getMemberCount()));
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo().getMemberCount()));
+					if(roomsDetailsTable.getSelectionIndex() == index)
+						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case RoomOpened:
 					break;
