@@ -3053,23 +3053,31 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				String ip = ipAddressText.getText();
 				String userName = userNameText.getText();
 				String passWord = passwordText.getText();
 				
-				// Check the user name:
-				NetworkResult<Boolean> res = gameController
-					.Login(ipAddressText.getText(), userName, passWord, loginAsGuestButton
-						.getSelection());
-				// Validate return value!
-				if (res.getResult() != true)
+				if(isValidIp(ip))
 				{
-					displayError(res.getErrorMessage());
-					return;
+					// Check the user name:
+					NetworkResult<Boolean> res = gameController
+						.Login(ipAddressText.getText(), userName, passWord, loginAsGuestButton
+							.getSelection());
+					// Validate return value!
+					if (res.getResult() != true)
+					{
+						displayError(res.getErrorMessage());
+						return;
+					}
+	
+					startNetworkGame(userName, passWord);
+					shell.dispose();
+					statusComposite.layout(true, true);
 				}
-
-				startNetworkGame(userName, passWord);
-				shell.dispose();
-				statusComposite.layout(true, true);
+				else
+				{
+					displayError("IP Address provided is illegal !!!");
+				}
 			}
 		});
 		okButton.setLayoutData(okData);
@@ -3211,13 +3219,17 @@ public class HeroesGui
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
+				boolean mailValid, ipValid;
 				String ip = ipAddressText.getText();
 				String userName = userNameText.getText();
 				String passWord = passwordText.getText();
 				String email = mailText.getText();
 				String nickname = nicknameText.getText();
 				
-				if(isMailValid(email))
+				mailValid = isMailValid(email);
+				ipValid = isValidIp(ip);
+				
+				if(mailValid && ipValid)
 				{	
 					// Check the user name:
 					NetworkResult<Boolean> res = gameController.Register(ip, userName, passWord, email, nickname);
@@ -3232,7 +3244,15 @@ public class HeroesGui
 				}
 				else
 				{
-					displayError("Mail Address provided is illegal !!!");
+					if(!mailValid && !ipValid)
+						displayError("IP Address and Mail Address provided are illegal !!!");
+					else
+					{
+						if(! mailValid )
+							displayError("Mail Address provided is illegal !!!");
+						if(!isValidIp(ip))
+							displayError("IP Address provided is illegal !!!");
+					}
 				}
 			}
 		});
@@ -3289,6 +3309,35 @@ public class HeroesGui
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * The method will return true if the ip is valid ip.
+	 * @param theIp - the ip as string
+	 */
+	private boolean isValidIp(String theIp)
+	{
+		if (theIp == null) return false;
+
+		String[] fields = theIp.split("\\.");
+
+		if (fields.length != 4) return false;
+
+		if (fields[0].equals("0")) return false;
+
+		try
+		{
+			for (int i = 0; i < fields.length; i++)
+			{
+				int num = Integer.parseInt(fields[i]);
+				if (num > 255 || num < 0) return false;
+			}
+		}
+		catch (NumberFormatException e)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public void chatWindow()
