@@ -3456,6 +3456,9 @@ public class HeroesGui
 					{
 						gameController.setNetworkIndex(i);
 					}
+					//network game is played with auto fight:
+					p.setAutoFight(true);
+					
 					i++;
 				}
 				handleUpdateGameState();
