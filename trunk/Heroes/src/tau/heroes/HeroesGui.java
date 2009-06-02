@@ -465,7 +465,7 @@ public class HeroesGui
 			GridData d = new GridData(GridData.FILL_BOTH);
 			boardComposite.setLayoutData(d);
 		}
-
+		boardComposite.setEnabled(true);
 		sc1.addMouseWheelListener(new ScrollMove());
 		sc1.forceFocus();
 		if (initBoard == false)
@@ -862,6 +862,7 @@ public class HeroesGui
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 
 		statusComposite.setBackground(white);
+		statusComposite.setEnabled(true);
 
 		Control[] children = statusComposite.getChildren();
 		for (int i = 0; i < children.length; i++)
@@ -1427,6 +1428,8 @@ public class HeroesGui
 		{// This is a network game, and not my turn:
 			// we can add a timers or progress bar or info...
 			displayMessage(gameController.getUserInfo().getNickname()+ " Not your turn");
+			boardComposite.setEnabled(false);
+			statusComposite.setEnabled(false);
 			return false;
 		}
 
@@ -2610,8 +2613,10 @@ public class HeroesGui
 
 		removeDeadPlayers();
 		if (this.gameController.isThereAWinner() != null)
+		{
 			endGame(this.gameController.isThereAWinner());
-
+			return;
+		}
 		currentPlayerIndex = (currentPlayerIndex + 1)
 			% this.gameController.getGameState().getNumberOfPlayers();
 		this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
@@ -2636,8 +2641,10 @@ public class HeroesGui
 			p.endTurn();
 			removeDeadPlayers();
 			if (this.gameController.isThereAWinner() != null)
+			{
 				endGame(this.gameController.isThereAWinner());
-
+				return;
+			}
 			currentPlayerIndex = (currentPlayerIndex + 1)
 				% this.gameController.getGameState().getNumberOfPlayers();
 			this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
@@ -2665,7 +2672,10 @@ public class HeroesGui
 			Helper.getScoreBoard().addToScoreBoard(winner, winner.finalScore());
 		}
 		Helper.getScoreBoard().save();
-		System.exit(0);
+		boardComposite.setEnabled(false);
+		statusComposite.setEnabled(false);
+	//	System.exit(0);
+		
 	}
 
 	/**
