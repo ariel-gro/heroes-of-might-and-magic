@@ -11,7 +11,7 @@ public class HeroesClientConsoleTest
 		String host = "127.0.0.1";
 		int port = HeroesServer.SERVER_PORT;
 		
-		HeroesClientPeer client = new HeroesClientPeer();
+		HeroesClientPeer client = HeroesClientPeer.instance();
 		if (client.connect(host, port))
 			System.out.println("Connected to server!");	
 		

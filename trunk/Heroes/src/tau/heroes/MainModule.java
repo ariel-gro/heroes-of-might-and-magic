@@ -8,16 +8,30 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import tau.heroes.net.HeroesClientPeer;
+
 public class MainModule
 {
 	public static void main(String[] args)
 	{
-		boolean isGUI = selectView(args);
-		GameController gameController = new GameController(isGUI);
-		if (isGUI)
-			runGraphicalView(gameController, null);
-		else
-			runConsoleView(gameController);
+		try
+		{
+			boolean isGUI = selectView(args);
+			GameController gameController = new GameController(isGUI);
+			if (isGUI)
+				runGraphicalView(gameController, null);
+			else
+				runConsoleView(gameController);
+		}
+		catch (RuntimeException e)
+		{
+			// In case of runtime exception in main thread, disconnect from server
+			// so the program can exit
+			if (HeroesClientPeer.instance().isConnected())
+				HeroesClientPeer.instance().disconnect();
+			
+			throw e;
+		}
 	}
 
 	private static boolean selectView(String[] args)
@@ -123,7 +137,7 @@ public class MainModule
 			if (responses.length > 0 && responses[0].length() > 0)
 			{
 				Player tempPlayer = new Player(responses[0], PlayerColor.values()[i]);
-				if(responses[0].equalsIgnoreCase(Player.COMPUTER_NAME))
+				if (responses[0].equalsIgnoreCase(Player.COMPUTER_NAME))
 				{
 					message = "Enter the level of the coputer Enter 1 for Novice or 2 for Expert: ";
 					int computerLevel = 0;
@@ -131,7 +145,7 @@ public class MainModule
 					{
 						responses = getCommandAndParameters(message);
 						computerLevel = Helper.tryParseInt(responses[0]);
-					}while(!Helper.isIntBetween(computerLevel, 1, 2));
+					} while (!Helper.isIntBetween(computerLevel, 1, 2));
 					tempPlayer.setComputerLevel(computerLevel);
 				}
 				players.add(tempPlayer);

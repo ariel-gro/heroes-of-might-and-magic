@@ -1,6 +1,5 @@
 package tau.heroes.net;
 
-import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -18,9 +17,19 @@ public class HeroesClientPeer extends NetworkPeer
 	private List<GameStateListener> gameSateListeners;
 	private List<RoomUpdateListener> roomUpdateListeners;
 
-	public HeroesClientPeer()
+	private static HeroesClientPeer instance;
+	
+	public synchronized static HeroesClientPeer instance()
 	{
-		super(new Socket());
+		if (instance == null)
+			instance = new HeroesClientPeer();
+		
+		return instance;
+	}
+	
+	private HeroesClientPeer()
+	{
+		super();
 
 		chatListeners = new LinkedList<ChatListener>();
 		gameSateListeners = new LinkedList<GameStateListener>();
