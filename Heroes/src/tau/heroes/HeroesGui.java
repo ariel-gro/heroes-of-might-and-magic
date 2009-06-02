@@ -2652,7 +2652,7 @@ public class HeroesGui
 	private void removeDeadPlayers()
 	{
 		for (Player player : this.gameController.removeDeadPlayers())
-			displayMessage(player.getName() + " is out of the game.");
+			GameController.handleMessage(player.getName() + " is out of the game.");
 	}
 
 	private void endGame(Player winner)

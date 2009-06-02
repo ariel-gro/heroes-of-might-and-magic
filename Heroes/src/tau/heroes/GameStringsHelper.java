@@ -9,7 +9,7 @@ public class GameStringsHelper {
 	
 	public static final String  DefaultHelpString = "helpful text";
 	
-	public static final String[] helpStrings =
+	private static final String[] helpStrings =
 	{
 		/*GettingStarted*/
 		"Startint to play Heroes of Might and Magic ©  (TAU Version)\n\n"
@@ -215,7 +215,7 @@ public class GameStringsHelper {
 		+ "check the other Network Help assitence for more details\n",
 	};
 	
-	public static final String[] headerStrings =
+	private static final String[] headerStrings =
 	{
 		"Getting Started", "Castle Window", "How to Move", "Battles and Battle Window",
 		"Army", "Resources", "Status Window", "New Game Window", "Game Score and Highscores",

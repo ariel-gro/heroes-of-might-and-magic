@@ -315,6 +315,22 @@ public class GameController
 
 		return msg;
 	}
+	
+	public static void handleMessage (String msg)
+	{
+		if (GameState.isGUI())
+		{
+			HeroesGui.displayMessage(msg);
+		}
+		else
+		{
+			HeroesConsole.displayMessage(msg);
+		}
+		if (GameController.isNetwork)
+		{
+			//TODO send message trough chat
+		}
+	}
 
 	public int getNetworkIndex()
 	{

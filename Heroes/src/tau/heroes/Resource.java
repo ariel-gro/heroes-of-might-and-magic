@@ -43,14 +43,7 @@ public class Resource implements Serializable
 
 			if (player != null && !player.isComputer())
 			{
-				if (GameState.isGUI())
-				{
-					HeroesGui.displayMessage(msg);
-				}
-				else
-				{
-					HeroesConsole.displayMessage(msg);
-				}
+				HeroesGui.displayMessage(msg);
 				if (msg.equals("this resource is already yours!"))
 					return;
 			}
