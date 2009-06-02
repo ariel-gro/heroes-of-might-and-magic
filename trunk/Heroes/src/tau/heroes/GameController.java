@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
 
 import tau.heroes.db.UserInfo;
@@ -416,6 +417,11 @@ public class GameController
 	public List<RoomInfo> roomsList()
 	{
 		return serverProxy.getRoomsList();
+	}
+	
+	public NetworkResult<List<UserInfo>> getRoomsMemebrs(UUID roomID)
+	{
+		return serverProxy.getRoomMembers(roomID);
 	}
 	
 	public UserInfo getUserInfo()
