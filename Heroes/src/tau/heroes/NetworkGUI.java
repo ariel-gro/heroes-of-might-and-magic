@@ -2,6 +2,8 @@ package tau.heroes;
 
 import java.util.List;
 
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
@@ -16,7 +18,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -24,11 +25,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 
 import tau.heroes.db.UserInfo;
 import tau.heroes.net.NetworkResult;
@@ -41,8 +40,7 @@ public class NetworkGUI
 {
 	private Composite networkComposite;
 	private Color white;
-	private Display display;
-	private Combo numOfPlayersCombo;
+	private Display display;	
 	private Table roomsTable, roomsDetailsTable;
 	private GameController gameController;
 	private RoomUpdateListener roomUpdateListener;
@@ -78,7 +76,7 @@ public class NetworkGUI
 		firstLabel.setBackground(white);
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
 		firstLabel.setFont(IconCache.stockFonts[IconCache.titleFontIndex]);
-		firstLabel.setText("     NETWORK   MENU");
+		firstLabel.setText("     NETWORK MENU");
 
 		createLabel("");
 		Button newRoomButton = new Button(networkComposite, SWT.CENTER);
@@ -90,28 +88,7 @@ public class NetworkGUI
 				handleNewRoomCommand();
 			}
 		});
-
-		createLabel("");
-		Button existingRoomButton = new Button(networkComposite, SWT.CENTER);
-		existingRoomButton.setText("Join Existing Room ");
-		existingRoomButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		existingRoomButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleJoinRoomCommand();
-			}
-		});
-
-		Button newGameButton = new Button(networkComposite, SWT.CENTER);
-		newGameButton.setText("Create  New  Network Game ");
-		newGameButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		newGameButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-				handleNewNetworkGame();
-			}
-		});
-
+		
 		createLabel("");
 		createLabel("Existing Rooms :");
 		List<RoomInfo> roomList = getRoomsFromServer();
@@ -128,84 +105,52 @@ public class NetworkGUI
 			displayRoomDetailsTable(roomList);
 		}
 		
+		createLabel("");
+		Button newGameButton = new Button(networkComposite, SWT.CENTER);
+		newGameButton.setText("Create  New  Network Game ");
+		newGameButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		newGameButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				handleNewNetworkGame();
+			}
+		});
 		
 		networkComposite.layout(true, true);
 
 		roomUpdateListener = new RoomUpdateListener() {
-			
 			public void roomUpdated(RoomUpdateEvent e)
 			{
 				handleRoomUpdated(e);
 			}
 		};
+		
 		gameController.addRoomUpdateListener(roomUpdateListener);
 
 		networkComposite.addDisposeListener(new DisposeListener() {
-			
 			public void widgetDisposed(DisposeEvent arg0)
 			{
 				gameController.removeRoomUpdateListener(roomUpdateListener);
 			}
 		});
-
 	}
 
 	private void handleNewRoomCommand()
-	{
-		//roomsCombo.setEnabled(false);
-		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setLayout(new GridLayout());
-		shell.setSize(225, 160);
-		shell.setText("Create New Room");
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
-
-		Composite form = new Composite(shell, SWT.FILL);
-		form.setLayout(new GridLayout(2, true));
-
-		final Label roomNameLabel = new Label(form, SWT.NONE);
-		roomNameLabel.setText("Room Name : ");
-		final Text roomNameText = new Text(form, SWT.BORDER);
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-
-		Label numOfPlayersLabel = new Label(form, SWT.NONE);
-		numOfPlayersLabel.setText("Number of Players : ");
-		numOfPlayersCombo = new Combo(form, SWT.NONE);
-		numOfPlayersCombo.setItems(new String[] { "2", "3", "4" });
-		numOfPlayersCombo.setText("2");
-
-		new Label(form, SWT.NONE);
-		new Label(form, SWT.NONE);
-
-		Button okButton = new Button(form, SWT.PUSH);
-		okButton.setText("     OK     ");
-		okButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e)
-			{
-				String roomName = roomNameText.getText();
-				Integer numOfPlayers = Integer.parseInt(numOfPlayersCombo.getText());
-				if (!roomName.equalsIgnoreCase(""))
-				{
-					createNewRoom(roomName, numOfPlayers);				
-					shell.dispose();
-				}
-			}
-		});
-
-		Button cancelButton = new Button(form, SWT.PUSH);
-		cancelButton.setText("     Cancel     ");
-		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e)
-			{
-				shell.dispose();
-			}
-		});
-
-		shell.open();
-		while (!shell.isDisposed())
+	{		
+		InputDialog createNewRoomID = new InputDialog(display.getActiveShell(), 
+			"Create New Room", "Enter Room Name: ", "", null);
+				
+		if (createNewRoomID.open() == Window.OK)
 		{
-			if (!display.readAndDispatch())
-				display.sleep();
+			String roomName = createNewRoomID.getValue();
+			
+			if (roomName.isEmpty())
+			{
+				HeroesGui.displayError("You must enter a room name");
+				
+				return;
+			}
+			createNewRoom(roomName);
 		}
 	}
 
@@ -227,9 +172,8 @@ public class NetworkGUI
 		return result.getResult();
 	}
 
-	public void createNewRoom(String roomName, int numOfPlayers)
-	{
-		
+	public void createNewRoom(String roomName)
+	{		
 	}
 
 	public void joinExistingRoom(String roomName)
