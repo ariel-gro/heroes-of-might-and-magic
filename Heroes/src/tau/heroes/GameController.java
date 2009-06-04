@@ -177,10 +177,7 @@ public class GameController
 
 	public Player isThereAWinner()
 	{
-		if (this.gameState.getPlayers().size() == 1)
-			return this.gameState.getPlayers().firstElement();
-		else
-			return null;
+		return this.gameState.isWinner();
 	}
 
 	public boolean saveGame(String fileName)
