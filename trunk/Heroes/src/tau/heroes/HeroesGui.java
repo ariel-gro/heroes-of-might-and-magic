@@ -1427,7 +1427,7 @@ public class HeroesGui
 			&& gameController.getNetworkIndex() != currentPlayerIndex)
 		{// This is a network game, and not my turn:
 			// we can add a timers or progress bar or info...
-			displayMessage(gameController.getUserInfo().getNickname()+ " Not your turn");
+	//		displayMessage(gameController.getUserInfo().getNickname()+ " Not your turn");
 			boardComposite.setEnabled(false);
 			statusComposite.setEnabled(false);
 			return false;

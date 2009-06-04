@@ -83,7 +83,13 @@ public class GameState implements Serializable
 	{
 		return this.players.size();
 	}
-
+	public Player isWinner()
+	{
+		if (this.getPlayers().size() == 1)
+			return this.getPlayers().firstElement();
+		else
+			return null;
+	}
 	public static boolean isGUI()
 	{
 		return isGUI;

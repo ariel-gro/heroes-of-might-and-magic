@@ -3,6 +3,7 @@ package tau.heroes.net;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -68,15 +69,20 @@ public class HeroesServerPeer extends NetworkPeer
 		printDebug("Disconnected (" + sendDisconnectMessage + ")");
 	}
 
-	protected void handleRoomMessage(AsyncMessage message)
+	protected void handleChatMessage(AsyncMessage message)
 	{
 		printDebug("Chat message received");
 
 		room.asyncSendMessage(message);
 	}
+	private void handleGameStateMessage(GameStateMessage message) 
+	{
+		printDebug("game state message recieved");
+		room.handleGameStateMessage(message);
+	}
+	
 	private AsyncMessage handleNewGameRequest(NewGameMessage message)
 	{
-		printDebug("new game requested");
 		GameController gc = new GameController(true);
 		Vector<Player> players = new Vector<Player>();
 		int i = 0;
@@ -88,6 +94,7 @@ public class HeroesServerPeer extends NetworkPeer
 		}		
 		gc.initNewGame(players);
 		//dispatch the message to all:
+		room.startGame();
 		room.asyncSendMessage(new GameStateMessage(gc.getGameState()));
 		
 		return new OKMessage();
@@ -99,13 +106,16 @@ public class HeroesServerPeer extends NetworkPeer
 	{
 		if (message instanceof DisconnectMessage)
 			handleDisconnect(false);
-		else if ((message instanceof ChatMessage) || (message instanceof GameStateMessage))
-			handleRoomMessage(message);
+		else if (message instanceof ChatMessage) 
+			handleChatMessage(message);
+		else if (message instanceof GameStateMessage)
+			handleGameStateMessage((GameStateMessage)message);
 		else if (message instanceof NewGameMessage)
 			handleNewGameRequest((NewGameMessage)message);
 		else
 			super.handleIncomingAsyncMessage(message);
 	}
+
 
 	@Override
 	protected AsyncMessage handleIncomingSyncMessage(SyncMessage message)
