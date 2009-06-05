@@ -5,7 +5,7 @@ public class GameStringsHelper {
 	public static final int GettingStarted = 0, CastleWindow = 1, HowToMove = 2, Battles = 3,
 			Army = 4, Resources = 5, StatusWindow = 6, NewGameWindow = 7, Highscores = 8,
 			About = 9;
-	public static final int theNetworkGame = 10;
+	public static final int theNetworkGame = 10, Login = 11, theLobby = 12, createJoinRoom = 13;
 	
 	public static final String  DefaultHelpString = "helpful text";
 	
@@ -213,13 +213,45 @@ public class GameStringsHelper {
 		+ "through server. the game is a bit different, because you can chat\n"
 		+ "with other players, and join different game rooms.\n"
 		+ "check the other Network Help assitence for more details\n",
+		
+		/* Login */
+		"\n" + "on the menu, choose network -> login. You can login as\n"
+		+ "guest or as registered client, if you have an acount. In order\n"
+		+ "to create you own acount, click on menu network -> add new user. \n"
+		+ "you can create your own uniqe user, with user name, password and.\n"
+		+ "nickname. This user will be yours to use, and all your game points\n"
+		+ "will be register under that user.\n"
+		+ "to login to new server, just enter the server's IP address. You can \n"
+		+ "run the server localy (127.0.0.1) or anywhere you want. We esteblished\n"
+		+ "a server on kite.cs.tau.ac.il and you can use it.\n",
+		
+		/* The Lobby */
+		"\n" + "the lobby is a room, just like any other room, with one major\n"
+		+ "difference - you can't create new game in the lobby.\n"
+		+ "the lobby contain many game rooms, each room has a creator (owner),\n"
+		+ "name and number of members. You can enter a room, wich represents a \n"
+		+ "game, and play against all the players that connected to that room.\n"
+		+ "you can see 3 buttons on the right: Create new room, join existing\n"
+		+ "and create new network game. Check out the rest of the help issues\n"
+		+ "for more detailes.\n",
+		
+		/* Creating or Joining room */
+		"\n" + "to create a new room, just click on the Create new room  \n"
+		+ "button. There, you will be asked to enter the room's name and the\n"
+		+ "number of players.\n"
+		+ "to join an existing game (meaning - room) just choose a game from\n"
+		+ "the room's table, and click on Join Existing Game button.\n"
+		+ "as mentioned before, a room is representing a game. you can chat with\n"
+		+ "other players in the room, wage a war on them, and defeate them on\n" 
+		+"battle field!\n",
 	};
 	
 	private static final String[] headerStrings =
 	{
 		"Getting Started", "Castle Window", "How to Move", "Battles and Battle Window",
 		"Army", "Resources", "Status Window", "New Game Window", "Game Score and Highscores",
-		"Heroes of Might and Magic (TAU Version)", "The Network Game"
+		"Heroes of Might and Magic (TAU Version)", "The Network Game", "Login", "The Lobby",
+		"Creating or Joining room"
 	};
 	
 	public static String getStringByIndex(int StringInd){

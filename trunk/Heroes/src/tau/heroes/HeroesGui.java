@@ -2315,7 +2315,7 @@ public class HeroesGui
 		helpShell.setLayout(gridLayout);
 		helpShell.setText("Heroes (TAU Ver.) - Network Assistance");
 		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
-		helpShell.setSize(330, 330);
+		helpShell.setSize(330, 230);
 
 		/* The Network Game */
 		Button button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
@@ -2329,7 +2329,45 @@ public class HeroesGui
 				helpShell.setEnabled(true);
 			}
 		});
+		
+		/* Login */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Login");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.setEnabled(false);
+				diplayHelpByHelpItem(GameStringsHelper.Login);
+				helpShell.setEnabled(true);
+			}
+		});
+		
+		/* The Lobby */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("The Lobby");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.setEnabled(false);
+				diplayHelpByHelpItem(GameStringsHelper.theLobby);
+				helpShell.setEnabled(true);
+			}
+		});
 
+		/* creating or joining room */
+		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
+		button.setText("Creating or Joining room");
+		button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				helpShell.setEnabled(false);
+				diplayHelpByHelpItem(GameStringsHelper.createJoinRoom);
+				helpShell.setEnabled(true);
+			}
+		});
 
 		/* Close */
 		button = new Button(helpShell, SWT.PUSH | SWT.CENTER);
