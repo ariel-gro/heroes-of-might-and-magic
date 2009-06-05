@@ -3,7 +3,6 @@ package tau.heroes.net;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -75,28 +74,29 @@ public class HeroesServerPeer extends NetworkPeer
 
 		room.asyncSendMessage(message);
 	}
-	private void handleGameStateMessage(GameStateMessage message) 
+
+	private void handleGameStateMessage(GameStateMessage message)
 	{
 		printDebug("game state message recieved");
 		room.handleGameStateMessage(message);
 	}
-	
+
 	private AsyncMessage handleNewGameRequest(NewGameMessage message)
 	{
 		GameController gc = new GameController(true);
 		Vector<Player> players = new Vector<Player>();
 		int i = 0;
 		PlayerColor[] colors = PlayerColor.values();
-		for(HeroesServerPeer peer : room.getMembers())
+		for (HeroesServerPeer peer : room.getMembers())
 		{
-			players.add(new Player(peer.userInfo.getNickname(),colors[i]));
+			players.add(new Player(peer.userInfo.getNickname(), colors[i]));
 			i++;
-		}		
+		}
 		gc.initNewGame(players);
-		//dispatch the message to all:
+		// dispatch the message to all:
 		room.startGame();
 		room.asyncSendMessage(new GameStateMessage(gc.getGameState()));
-		
+
 		return new OKMessage();
 
 	}
@@ -106,16 +106,13 @@ public class HeroesServerPeer extends NetworkPeer
 	{
 		if (message instanceof DisconnectMessage)
 			handleDisconnect(false);
-		else if (message instanceof ChatMessage) 
+		else if (message instanceof ChatMessage)
 			handleChatMessage(message);
 		else if (message instanceof GameStateMessage)
-			handleGameStateMessage((GameStateMessage)message);
-		else if (message instanceof NewGameMessage)
-			handleNewGameRequest((NewGameMessage)message);
+			handleGameStateMessage((GameStateMessage) message);
 		else
 			super.handleIncomingAsyncMessage(message);
 	}
-
 
 	@Override
 	protected AsyncMessage handleIncomingSyncMessage(SyncMessage message)
@@ -128,6 +125,12 @@ public class HeroesServerPeer extends NetworkPeer
 			return handleRoomListRequest((RoomListRequestMessage) message);
 		else if (message instanceof RoomMembersRequestMessage)
 			return handleRoomMembersRequest((RoomMembersRequestMessage) message);
+		else if (message instanceof NewGameMessage)
+			return handleNewGameRequest((NewGameMessage) message);
+		else if (message instanceof CreateRoomMessage)
+			return handleCreateRoomRequest((CreateRoomMessage) message);
+		else if (message instanceof JoinRoomMessage)
+			return handleJoinRoomRequest((JoinRoomMessage) message);
 		else
 			return super.handleIncomingSyncMessage(message);
 	}
@@ -207,16 +210,54 @@ public class HeroesServerPeer extends NetworkPeer
 			room = heroesServer.getRoom(message.getId());
 
 		if (room == null)
-			return new ErrorMessage("Room not found.");
+			return new RoomMembersResponseMessage(new Vector<UserInfo>());
 
 		return new RoomMembersResponseMessage(room.getUserInfos());
+	}
+
+	private AsyncMessage handleCreateRoomRequest(CreateRoomMessage message)
+	{
+		printDebug("Create room '" + message.getName() + "' requested");
+
+		if (!isLoggedIn)
+			return new ErrorMessage("You must be logged in.");
+
+		if (heroesServer.hasRoomName(message.getName()))
+			return new ErrorMessage("Room name is taken.");
+
+		Room room = new Room(message.getName(), heroesServer);
+		room.setCreator(this);
+		heroesServer.addRoom(room);
+		this.room.removeMember(this);
+		room.addMember(this);
+
+		printDebug("Create room '" + message.getName() + "' OK");
+		
+		return new OKMessage();
+	}
+	
+	private AsyncMessage handleJoinRoomRequest(JoinRoomMessage message)
+	{
+		printDebug("Join room requested");
+
+		if (!isLoggedIn)
+			return new ErrorMessage("You must be logged in.");
+
+		if (!message.getId().equals(room.getId()))
+		{
+			room.removeMember(this);
+			Room room = heroesServer.getRoom(message.getId());
+			if (room != null)
+				room.addMember(this);
+		}
+		
+		return new OKMessage();
 	}
 
 	private void printDebug(String msg)
 	{
 		System.out.println(serverPeerName + ": " + msg);
 	}
-
 
 	public String getName()
 	{

@@ -1,13 +1,10 @@
 package tau.heroes.net;
 
-import java.sql.Date;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
-
-import org.apache.derby.tools.sysinfo;
 
 import tau.heroes.Player;
 import tau.heroes.db.DataAccess;
@@ -63,6 +60,25 @@ public class Room
 		member.setRoom(null);
 		heroesServer.asyncSendMessage(new RoomUpdateMessage(
 			RoomUpdateMessage.RoomEventType.MemberRemoved, getRoomInfo(), member.getUserInfo()));
+		
+		if (!isGameStarted && member == creator)
+			closeRoom();
+		else if (isGameStarted && members.size() == 0)
+			closeRoom();
+	}
+
+	protected void closeRoom()
+	{
+		creator = null;
+		
+		while (members.size() > 0)
+		{
+			HeroesServerPeer member = members.get(0);
+			removeMember(member);
+			heroesServer.getLobby().addMember(member);
+		}
+		
+		heroesServer.removeRoom(this);
 	}
 
 	public HeroesServerPeer getCreator()

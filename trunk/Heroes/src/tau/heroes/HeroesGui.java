@@ -3436,8 +3436,7 @@ public class HeroesGui
 
 	private void handleIncomingChat(final ChatEvent e)
 	{
-		shell.getDisplay().syncExec(new Runnable() {
-			
+		shell.getDisplay().asyncExec(new Runnable() {
 			public void run()
 			{
 				displayMessage(shell, e.getChatMessage().getText());
@@ -3453,7 +3452,7 @@ public class HeroesGui
 
 	private void handleIncomingGameState(final GameStateEvent e)
 	{
-		shell.getDisplay().syncExec(new Runnable() {
+		shell.getDisplay().asyncExec(new Runnable() {
 			
 			public void run()
 			{

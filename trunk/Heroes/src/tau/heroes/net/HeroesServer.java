@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import tau.heroes.db.DataAccess;
 import tau.heroes.db.UserInfo;
+import tau.heroes.net.RoomUpdateMessage.RoomEventType;
 
 public class HeroesServer extends NetworkServer
 {
@@ -44,24 +45,37 @@ public class HeroesServer extends NetworkServer
 	{
 		rooms.put(room.getId(), room);
 		roomNames.add(room.getName());
+
+		RoomUpdateMessage message = new RoomUpdateMessage(RoomEventType.RoomOpened, room
+			.getRoomInfo(), null);
+		asyncSendMessage(message);
 	}
 
 	public void removeRoom(Room room)
 	{
 		rooms.remove(room.getId());
 		roomNames.remove(room.getName());
-	}
-	
+
+		RoomUpdateMessage message = new RoomUpdateMessage(RoomEventType.RoomClosed, room
+			.getRoomInfo(), null);
+		asyncSendMessage(message);
+}
+
 	public Room getRoom(UUID roomID)
 	{
 		return rooms.get(roomID);
+	}
+
+	public boolean hasRoomName(String name)
+	{
+		return roomNames.contains(name);
 	}
 
 	public Room getLobby()
 	{
 		return lobby;
 	}
-	
+
 	public void asyncSendMessage(AsyncMessage message)
 	{
 		for (HeroesServerPeer peer : peers)

@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public class NetworkPeer
 {
+	private static int SYNC_TIMEOUT = 3000;
+	
 	private Socket socket = null;
 	private Thread readThread;
 	private Map<UUID, WaitEntry> waitEntries;
@@ -194,7 +196,7 @@ public class NetworkPeer
 			synchronized (waitEntry.latch)
 			{
 				oos.writeObject(message);
-				waitEntry.latch.wait();
+				waitEntry.latch.wait(SYNC_TIMEOUT);
 				return waitEntry.reply;
 			}
 		}
