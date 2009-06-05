@@ -8,8 +8,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MenuAdapter;
-import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -20,8 +18,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -41,6 +37,7 @@ public class NetworkGUI
 	private Table roomsTable, roomsDetailsTable;
 	private GameController gameController;
 	private RoomUpdateListener roomUpdateListener;
+	private Label roomNameLabel;
 
 	public NetworkGUI(Composite statusComposite, GameController gameController)
 	{
@@ -74,6 +71,12 @@ public class NetworkGUI
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
 		firstLabel.setFont(IconCache.stockFonts[IconCache.titleFontIndex]);
 		firstLabel.setText("     NETWORK MENU");
+
+		roomNameLabel = new Label(networkComposite, SWT.CENTER | SWT.BORDER);
+		roomNameLabel.setFont(IconCache.stockFonts[IconCache.titleFontIndex]);
+		roomNameLabel.setText("Lobby");
+		roomNameLabel.setBackground(networkComposite.getBackground());
+		roomNameLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		createLabel("");
 		Button newRoomButton = new Button(networkComposite, SWT.CENTER);
@@ -202,7 +205,7 @@ public class NetworkGUI
 		roomsTable.setHeaderVisible(true);
 		roomsTable.setToolTipText("Double click to join room");
 		roomsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		
+
 		roomsTable.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event)
 			{
@@ -231,7 +234,7 @@ public class NetworkGUI
 				String.valueOf(roomInfo.getMemberCount()) });
 		ti.setData(roomInfo);
 	}
-	
+
 	private void displayRoomDetailsTable(List<RoomInfo> roomList)
 	{
 		roomsDetailsTable = new Table(networkComposite, SWT.BORDER | SWT.FULL_SELECTION);
@@ -247,25 +250,21 @@ public class NetworkGUI
 		roomsDetailsTable.setHeaderVisible(true);
 		roomsDetailsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomList.get(0).getId())
-			.getResult();
-
-		TableItem ti;
-
-		for (int i = 0; i < roomMembersList.size(); i++)
-		{
-			ti = new TableItem(roomsDetailsTable, SWT.CENTER);
-
-			UserInfo user = roomMembersList.get(i);
-			ti.setText(new String[] { user.getNickname(), user.getTotalScore() + "" });
-		}
+		updateRoomDetailsTable(roomList.get(0));
 	}
 
 	private void updateRoomDetailsTable(RoomInfo roomInfo)
 	{
-		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomInfo.getId())
-			.getResult();
+		NetworkResult<List<UserInfo>> result = gameController.getRoomsMemebrs(roomInfo.getId());
 
+		List<UserInfo> roomMembersList = result.getResult();
+
+		if (roomMembersList == null)
+		{
+			HeroesGui.displayError("Error getting members: " + result.getErrorMessage());
+			return;
+		}
+		
 		TableItem ti;
 
 		roomsDetailsTable.removeAll();
@@ -299,7 +298,10 @@ public class NetworkGUI
 						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
 							.getMemberCount()));
 					if (message.getMember().equals(gameController.getUserInfo()))
+					{
 						roomsTable.setSelection(index);
+						roomNameLabel.setText(message.getRoomInfo().getName());
+					}
 					if (roomsTable.getSelectionIndex() == index)
 						updateRoomDetailsTable(message.getRoomInfo());
 					break;
