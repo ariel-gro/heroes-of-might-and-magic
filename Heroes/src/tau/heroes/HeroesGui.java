@@ -3156,7 +3156,7 @@ public class HeroesGui
 		helpButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				showGameAssistanceMbox();
+				showNetworkAssistanceMbox();
 			}
 		});
 
@@ -3335,7 +3335,7 @@ public class HeroesGui
 		helpButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				showGameAssistanceMbox();
+				showNetworkAssistanceMbox();
 			}
 		});
 
