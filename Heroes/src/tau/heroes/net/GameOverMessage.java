@@ -1,8 +1,5 @@
 package tau.heroes.net;
 
-import java.util.List;
-import java.util.Vector;
-
 import tau.heroes.Player;
 
 public class GameOverMessage extends AsyncMessage {

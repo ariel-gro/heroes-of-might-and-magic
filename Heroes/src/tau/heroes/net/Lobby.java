@@ -23,4 +23,9 @@ public class Lobby extends Room
 		roomInfo.setOwner(dummyUser);
 		return roomInfo;
 	}
+	
+	@Override
+	protected void closeRoom()
+	{				
+	}
 }

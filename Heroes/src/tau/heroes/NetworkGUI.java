@@ -12,17 +12,14 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
@@ -40,7 +37,7 @@ public class NetworkGUI
 {
 	private Composite networkComposite;
 	private Color white;
-	private Display display;	
+	private Display display;
 	private Table roomsTable, roomsDetailsTable;
 	private GameController gameController;
 	private RoomUpdateListener roomUpdateListener;
@@ -88,7 +85,7 @@ public class NetworkGUI
 				handleNewRoomCommand();
 			}
 		});
-		
+
 		createLabel("");
 		createLabel("Existing Rooms :");
 		List<RoomInfo> roomList = getRoomsFromServer();
@@ -104,7 +101,7 @@ public class NetworkGUI
 		{
 			displayRoomDetailsTable(roomList);
 		}
-		
+
 		createLabel("");
 		Button newGameButton = new Button(networkComposite, SWT.CENTER);
 		newGameButton.setText("Create  New  Network Game ");
@@ -112,10 +109,13 @@ public class NetworkGUI
 		newGameButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				handleNewNetworkGame();
+				NetworkResult<Boolean> result = handleNewNetworkGame();
+
+				if (!result.getResult())
+					HeroesGui.displayError("Error starting new game: " + result.getErrorMessage());
 			}
 		});
-		
+
 		networkComposite.layout(true, true);
 
 		roomUpdateListener = new RoomUpdateListener() {
@@ -124,7 +124,7 @@ public class NetworkGUI
 				handleRoomUpdated(e);
 			}
 		};
-		
+
 		gameController.addRoomUpdateListener(roomUpdateListener);
 
 		networkComposite.addDisposeListener(new DisposeListener() {
@@ -136,28 +136,30 @@ public class NetworkGUI
 	}
 
 	private void handleNewRoomCommand()
-	{		
-		InputDialog createNewRoomID = new InputDialog(display.getActiveShell(), 
-			"Create New Room", "Enter Room Name: ", "", null);
-				
+	{
+		InputDialog createNewRoomID = new InputDialog(display.getActiveShell(), "Create New Room",
+			"Enter Room Name: ", "", null);
+
 		if (createNewRoomID.open() == Window.OK)
 		{
 			String roomName = createNewRoomID.getValue();
-			
+
 			if (roomName.isEmpty())
 			{
 				HeroesGui.displayError("You must enter a room name");
-				
+
 				return;
 			}
 			createNewRoom(roomName);
 		}
 	}
 
-	private void handleJoinRoomCommand()
+	private void handleJoinRoomCommand(RoomInfo roomInfo)
 	{
-		//String roomName = roomsCombo.getText();
-		//joinExistingRoom(roomName);
+		NetworkResult<Boolean> result = gameController.joinRoom(roomInfo.getId());
+
+		if (!result.getResult())
+			HeroesGui.displayError("Error joining room: " + result.getErrorMessage());
 	}
 
 	public List<RoomInfo> getRoomsFromServer()
@@ -166,18 +168,19 @@ public class NetworkGUI
 
 		if (result.getResult() == null)
 		{
-			HeroesGui.displayError("Error getting room list from server: " + result.getErrorMessage());
+			HeroesGui.displayError("Error getting room list from server: "
+				+ result.getErrorMessage());
 		}
 
 		return result.getResult();
 	}
 
 	public void createNewRoom(String roomName)
-	{		
-	}
-
-	public void joinExistingRoom(String roomName)
 	{
+		NetworkResult<Boolean> result = gameController.createRoom(roomName);
+
+		if (!result.getResult())
+			HeroesGui.displayError("Error creating room: " + result.getErrorMessage());
 	}
 
 	private void displayRoomsTable(List<RoomInfo> roomList)
@@ -197,66 +200,36 @@ public class NetworkGUI
 		col3.setResizable(true);
 		roomsTable.setSortColumn(col1);
 		roomsTable.setHeaderVisible(true);
-		roomsTable.setToolTipText("Right click to join group");
+		roomsTable.setToolTipText("Double click to join room");
 		roomsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		roomsTable.setMenu(createJoinRoomPopUpMenu());
-		roomsTable.addListener(SWT.Selection, new Listener() {
-		      public void handleEvent(Event event) {
-		    	  
-		    	  updateRoomDetailsTable((RoomInfo)event.item.getData());
-		      }
-		    });
+		
+		roomsTable.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent event)
+			{
+				updateRoomDetailsTable((RoomInfo) event.item.getData());
+			}
 
-		TableItem ti;
-		Font newFont = roomsTable.getFont(); // just an initialization for the
-		// compiler
+			public void widgetDefaultSelected(SelectionEvent event)
+			{
+				handleJoinRoomCommand((RoomInfo) event.item.getData());
+			}
+		});
 
 		for (int i = 0; i < roomList.size(); i++)
 		{
-			ti = new TableItem(roomsTable, SWT.CENTER);
-
-			RoomInfo room = roomList.get(i);
-			ti.setText(new String[] { room.getName(), room.getOwner().getNickname(), String.valueOf(room.getMemberCount()) });
-			ti.setData(room);
-			Font initialFont = ti.getFont();
-			FontData[] fontData = initialFont.getFontData();
-			for (int k = 0; k < fontData.length; k++)
-			{
-				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
-				fontData[k].setStyle(SWT.BOLD);
-			}
-			newFont = new Font(display, fontData);
-			ti.setFont(newFont);
+			RoomInfo roomInfo = roomList.get(i);
+			addRoomToTable(roomInfo);
 		}
-		
+
 		roomsTable.setSelection(0);
-
-		newFont.dispose();
 	}
-	
-	private Menu createJoinRoomPopUpMenu()
+
+	private void addRoomToTable(RoomInfo roomInfo)
 	{
-		Menu popUpMenu;
-
-		popUpMenu = new Menu(roomsTable);
-
-		popUpMenu.addMenuListener(new MenuAdapter() {
-			public void menuShown(MenuEvent e)
-			{
-			}
-		});
-
-		final MenuItem joinRoomItem = new MenuItem(popUpMenu, SWT.PUSH);
-		joinRoomItem.setText("Join Room");
-		joinRoomItem.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e)
-			{
-
-
-			}
-		});
-		
-		return popUpMenu;
+		TableItem ti = new TableItem(roomsTable, SWT.CENTER);
+		ti.setText(new String[] { roomInfo.getName(), roomInfo.getOwner().getNickname(),
+				String.valueOf(roomInfo.getMemberCount()) });
+		ti.setData(roomInfo);
 	}
 	
 	private void displayRoomDetailsTable(List<RoomInfo> roomList)
@@ -274,70 +247,47 @@ public class NetworkGUI
 		roomsDetailsTable.setHeaderVisible(true);
 		roomsDetailsTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomList.get(0).getId()).getResult();
-		
+		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomList.get(0).getId())
+			.getResult();
+
 		TableItem ti;
-		Font newFont = roomsTable.getFont(); // just an initialization for the compiler
 
 		for (int i = 0; i < roomMembersList.size(); i++)
 		{
 			ti = new TableItem(roomsDetailsTable, SWT.CENTER);
 
-			UserInfo user = roomMembersList.get(0);		
-			ti.setText(new String[] { user.getNickname(), user.getTotalScore()+"" });
-			Font initialFont = ti.getFont();
-			FontData[] fontData = initialFont.getFontData();
-			for (int k = 0; k < fontData.length; k++)
-			{
-				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
-				fontData[k].setStyle(SWT.BOLD);
-			}
-			newFont = new Font(display, fontData);
-			ti.setFont(newFont);
+			UserInfo user = roomMembersList.get(i);
+			ti.setText(new String[] { user.getNickname(), user.getTotalScore() + "" });
 		}
-
-		newFont.dispose();
 	}
-	
+
 	private void updateRoomDetailsTable(RoomInfo roomInfo)
 	{
-		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomInfo.getId()).getResult();
-		
+		List<UserInfo> roomMembersList = gameController.getRoomsMemebrs(roomInfo.getId())
+			.getResult();
+
 		TableItem ti;
-		Font newFont = roomsDetailsTable.getFont(); // just an initialization for the compiler
 
 		roomsDetailsTable.removeAll();
 		for (int i = 0; i < roomMembersList.size(); i++)
 		{
 			ti = new TableItem(roomsDetailsTable, SWT.CENTER);
 
-			UserInfo user = roomMembersList.get(0);		
-			ti.setText(new String[] { user.getNickname(), user.getTotalScore()+"" });
-			Font initialFont = ti.getFont();
-			FontData[] fontData = initialFont.getFontData();
-			for (int k = 0; k < fontData.length; k++)
-			{
-				fontData[k].setHeight(2 + initialFont.getFontData()[k].getHeight());
-				fontData[k].setStyle(SWT.BOLD);
-			}
-			newFont = new Font(display, fontData);
-			ti.setFont(newFont);
+			UserInfo user = roomMembersList.get(i);
+			ti.setText(new String[] { user.getNickname(), user.getTotalScore() + "" });
 		}
-
-		newFont.dispose();
 	}
 
-	private void handleNewNetworkGame() {
-		gameController.startNewNetworkGame();
-		
+	private NetworkResult<Boolean> handleNewNetworkGame()
+	{
+		return gameController.startNewNetworkGame();
 	}
-
 
 	private void handleRoomUpdated(RoomUpdateEvent e)
 	{
 		final RoomUpdateMessage message = e.getMessage();
 
-		display.syncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 			public void run()
 			{
 				int index;
@@ -346,20 +296,31 @@ public class NetworkGUI
 				case MemberAdded:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
 					if (index >= 0 && index < roomsTable.getItemCount())
-						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo().getMemberCount()));
-					if(roomsDetailsTable.getSelectionIndex() == index)
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
+							.getMemberCount()));
+					if (message.getMember().equals(gameController.getUserInfo()))
+						roomsTable.setSelection(index);
+					if (roomsTable.getSelectionIndex() == index)
 						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case MemberRemoved:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
 					if (index >= 0 && index < roomsTable.getItemCount())
-						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo().getMemberCount()));
-					if(roomsDetailsTable.getSelectionIndex() == index)
+						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
+							.getMemberCount()));
+					if (roomsTable.getSelectionIndex() == index)
 						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case RoomOpened:
+					addRoomToTable(message.getRoomInfo());
 					break;
 				case RoomClosed:
+					for (TableItem ti : roomsTable.getItems())
+						if (message.getRoomInfo().equals(ti.getData()))
+						{
+							ti.dispose();
+							break;
+						}
 					break;
 				}
 			}

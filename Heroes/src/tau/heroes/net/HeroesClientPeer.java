@@ -18,15 +18,15 @@ public class HeroesClientPeer extends NetworkPeer
 	private List<RoomUpdateListener> roomUpdateListeners;
 
 	private static HeroesClientPeer instance;
-	
+
 	public synchronized static HeroesClientPeer instance()
 	{
 		if (instance == null)
 			instance = new HeroesClientPeer();
-		
+
 		return instance;
 	}
-	
+
 	private HeroesClientPeer()
 	{
 		super();
@@ -154,9 +154,59 @@ public class HeroesClientPeer extends NetworkPeer
 		else
 			return new NetworkResult<List<UserInfo>>(null, "Unknown Reply");
 	}
-	public void startNewNetworkGame()
+
+	public NetworkResult<Boolean> startNewNetworkGame()
+	{		
+		NewGameMessage message = new NewGameMessage();
+
+		Message reply = syncSendMessage(message);
+
+		if (reply == null)
+			return new NetworkResult<Boolean>(false, "Network Error");
+		else if (reply instanceof OKMessage)
+		{
+			return new NetworkResult<Boolean>(true);
+		}
+		else if (reply instanceof ErrorMessage)
+			return new NetworkResult<Boolean>(false, ((ErrorMessage) reply).getText());
+		else
+			return new NetworkResult<Boolean>(false, "Unknown Reply");
+	}
+	
+	public NetworkResult<Boolean> createRoom(String name)
 	{
-		asyncSendMessage(new NewGameMessage()); 
+		CreateRoomMessage message = new CreateRoomMessage(name);
+
+		Message reply = syncSendMessage(message);
+
+		if (reply == null)
+			return new NetworkResult<Boolean>(false, "Network Error");
+		else if (reply instanceof OKMessage)
+		{
+			return new NetworkResult<Boolean>(true);
+		}
+		else if (reply instanceof ErrorMessage)
+			return new NetworkResult<Boolean>(false, ((ErrorMessage) reply).getText());
+		else
+			return new NetworkResult<Boolean>(false, "Unknown Reply");
+	}
+	
+	public NetworkResult<Boolean> joinRoom(UUID id)
+	{
+		JoinRoomMessage message = new JoinRoomMessage(id);
+
+		Message reply = syncSendMessage(message);
+
+		if (reply == null)
+			return new NetworkResult<Boolean>(false, "Network Error");
+		else if (reply instanceof OKMessage)
+		{
+			return new NetworkResult<Boolean>(true);
+		}
+		else if (reply instanceof ErrorMessage)
+			return new NetworkResult<Boolean>(false, ((ErrorMessage) reply).getText());
+		else
+			return new NetworkResult<Boolean>(false, "Unknown Reply");
 	}
 
 	@Override
@@ -211,7 +261,7 @@ public class HeroesClientPeer extends NetworkPeer
 	private void registerInternalListeners()
 	{
 		addRoomUpdateListener(new RoomUpdateListener() {
-			
+
 			public void roomUpdated(RoomUpdateEvent e)
 			{
 				RoomUpdateMessage message = e.getMessage();
@@ -238,8 +288,12 @@ public class HeroesClientPeer extends NetworkPeer
 						roomInfo = null;
 					break;
 				case RoomOpened:
+					if (roomsList != null)
+						roomsList.add(message.getRoomInfo());
 					break;
 				case RoomClosed:
+					if (roomsList != null)
+						roomsList.remove(message.getRoomInfo());
 					break;
 				}
 			}

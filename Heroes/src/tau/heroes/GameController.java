@@ -19,7 +19,6 @@ import tau.heroes.net.GameStateMessage;
 import tau.heroes.net.HeroesClientPeer;
 import tau.heroes.net.HeroesServer;
 import tau.heroes.net.NetworkResult;
-import tau.heroes.net.NewGameMessage;
 import tau.heroes.net.RoomInfo;
 import tau.heroes.net.RoomUpdateListener;
 
@@ -37,7 +36,7 @@ public class GameController
 		this.gameState = new GameState(isGUI);
 		serverProxy = HeroesClientPeer.instance();
 		networkIndex = LOACL_GAME_INDEX;
-		this.isNetwork = this.isNetworkGame();
+		isNetwork = this.isNetworkGame();
 	}
 
 	public void initNewGame(Vector<Player> players)
@@ -52,7 +51,7 @@ public class GameController
 	
 	public boolean isNetworkGame()
 	{
-		return (this.getNetworkIndex() != this.LOACL_GAME_INDEX);
+		return (this.getNetworkIndex() != LOACL_GAME_INDEX);
 	}
 
 	private void initBoard()
@@ -338,7 +337,7 @@ public class GameController
 	public void setNetworkIndex(int networkIndex)
 	{
 		this.networkIndex = networkIndex;
-		this.isNetwork = this.isNetworkGame();
+		isNetwork = this.isNetworkGame();
 	}
 
 	// Network controler
@@ -427,9 +426,16 @@ public class GameController
 	}
 
 	public NetworkResult<Boolean> startNewNetworkGame() {
-		 serverProxy.startNewNetworkGame();
-		 NetworkResult<Boolean> retVal = new NetworkResult<Boolean>(true,"OK");
-		 return retVal;
+		 return serverProxy.startNewNetworkGame();
 	}
 
+	public NetworkResult<Boolean> createRoom(String name)
+	{
+		return serverProxy.createRoom(name);
+	}
+	
+	public NetworkResult<Boolean> joinRoom(UUID id)
+	{
+		return serverProxy.joinRoom(id);
+	}
 }
