@@ -53,6 +53,8 @@ import org.eclipse.swt.widgets.Tracker;
 
 import tau.heroes.net.ChatEvent;
 import tau.heroes.net.ChatListener;
+import tau.heroes.net.GameOverEvent;
+import tau.heroes.net.GameOverListner;
 import tau.heroes.net.GameStateEvent;
 import tau.heroes.net.GameStateListener;
 import tau.heroes.net.NetworkResult;
@@ -137,7 +139,15 @@ public class HeroesGui
 				handleIncomingGameState(e);
 			}
 		});
-
+		this.gameController.addGameOverListener(new GameOverListner() {
+			
+			@Override
+			public void gameOverMessageArrived(GameOverEvent e) {
+				// TODO Auto-generated method stub
+				handleIncomingGameOver(e);
+			}
+		});
+		
 		IconCache.initResources(display);
 	}
 
@@ -2148,11 +2158,12 @@ public class HeroesGui
 
 		// Network -> Chat
 		MenuItem chatItem = new MenuItem(menu, SWT.NULL);
-		chatItem.setText("&Chat");
+		chatItem.setText("Show Network Status");
 		chatItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				chatWindow();
+				//chatWindow();
+				startNetworkGame("","");
 			}
 		});
 		
@@ -2653,6 +2664,7 @@ public class HeroesGui
 		if (this.gameController.isThereAWinner() != null)
 		{
 			endGame(this.gameController.isThereAWinner());
+			handleNetworkEndTurn();
 			return;
 		}
 		currentPlayerIndex = (currentPlayerIndex + 1)
@@ -2681,6 +2693,7 @@ public class HeroesGui
 			if (this.gameController.isThereAWinner() != null)
 			{
 				endGame(this.gameController.isThereAWinner());
+				handleNetworkEndTurn();
 				return;
 			}
 			currentPlayerIndex = (currentPlayerIndex + 1)
@@ -3452,6 +3465,7 @@ public class HeroesGui
 		createStatusWindow(false);
 		NetworkGUI networkGUI = new NetworkGUI(statusComposite, gameController);
 		networkGUI.init();
+
 	}
 	
 	private class ScrollMove implements MouseWheelListener
@@ -3496,6 +3510,8 @@ public class HeroesGui
 			{
 				GameState gs = e.getGameStateMessage().getGameState();
 				gameController.setGameState(gs);
+				//set index for each player according to it's name
+				//we must do it every time because index may change
 				int i=0;
 				for(Player p : gs.getPlayers())
 				{
@@ -3508,7 +3524,56 @@ public class HeroesGui
 					
 					i++;
 				}
+				if(gs.isWinner() != null)
+				{//then the game is over
+				//	displayMessage("game over - in the debug section. before startNetworkGame() is calles");
+					boardComposite.setEnabled(false);
+					statusComposite.setEnabled(true);
+					shell.setCursor(null);
+					startNetworkGame("","");
+					return;
+				}
 				handleUpdateGameState();
+			}
+		});
+	}
+	private void handleIncomingGameOver(final GameOverEvent e)
+	{
+		shell.getDisplay().syncExec(new Runnable() {
+			
+			public void run()
+			{
+				System.out.println("Game Over message is in 1");
+				Player winner =  e.getGameOverMessage().getWinner();
+				boolean bFound = false;
+				//check if I'm still in the game...
+				for(Player p : gameController.getGameState().getPlayers())
+				{
+					if(p.getName().equals(gameController.getUserInfo().getNickname()))
+					{
+						bFound = true;	
+					}	
+				}
+				System.out.println("Game Over message is in 2");
+				//if you are not in the game... you lost
+				if(!bFound)
+				{
+					System.out.println("Game Over message is in 2.1");
+					//here we should show the network window (instead of the game window).
+					startNetworkGame("","");
+					System.out.println("Game Over message is in 2.2");
+					return;
+				}
+				System.out.println("Game Over message is in 3");
+				//if you are the winner... then good for you
+				if(winner.getName().equals(gameController.getUserInfo().getNickname()))
+				{
+					System.out.println("Game Over message is in 3.1");
+					startNetworkGame("","");
+					System.out.println("Game Over message is in 3.2");
+					return;
+				}
+				System.out.println("Game Over message is in 4");
 			}
 		});
 	}

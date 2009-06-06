@@ -19,6 +19,7 @@ public class Room
 	private List<HeroesServerPeer> members;
 	private final HeroesServer heroesServer;
 	private boolean isGameStarted;
+	private boolean updateScore;
 	private GameHistory history; 
 
 	public Room(String name, HeroesServer heroesServer)
@@ -28,6 +29,7 @@ public class Room
 		this.members = Collections.synchronizedList(new LinkedList<HeroesServerPeer>());
 		this.heroesServer = heroesServer;
 		this.isGameStarted = false;
+		this.updateScore = true;
 		history = new GameHistory();
 	}
 
@@ -101,6 +103,8 @@ public class Room
 		for(HeroesServerPeer user: this.members)
 		{
 			opponents.add(user.getUserInfo().getNickname());
+			if(user.getUserInfo().isGuest())
+				updateScore = false;
 		}
 		history.setOpponentPlayersNames(opponents);	
 		
@@ -113,6 +117,11 @@ public class Room
 	public void handleGameStateMessage(GameStateMessage message) 
 	{
 		Player winner = message.getGameState().isWinner();
+		if(winner != null)
+		{
+			System.out.println("handleGameStateMessage with winner! this is the end of the game.");
+			this.asyncSendMessage(message);
+		}
 		List<HeroesServerPeer> roomUsers = this.getMembers();
 		Vector<Player> gamePlayes = message.getGameState().getPlayers();
 		if(gamePlayes.size() < roomUsers.size())
@@ -146,29 +155,35 @@ public class Room
 				}
 			}
 			//this will notify all the others that one of the players is gone!
-			handleGameOver(winner);
+			//handleGameOver(winner);
 		}
-		//The game is over we have a winner!
+		//The game is over and we have a winner!
 		if(winner != null)
 		{
+			
 			List<HeroesServerPeer> members = this.getMembers();
 			if(members.size() != 1)
 			{
 				System.out.println("handleGameStateMessage error! there is a winner and not only one user");
 			}
-			history.setGameScore(1);
+			if(updateScore)
+			{
+				history.setGameScore(1);
+				DataAccess.updateTotalScore(members.get(0).getUserInfo().getUserID());
+			}
 			DataAccess.insertGameHistory(members.get(0).getUserInfo().getUserID(), history);
-			DataAccess.updateTotalScore(members.get(0).getUserInfo().getUserID());
+			closeRoom();
 			return;	
 		}
+		//and always send the next game state to all the members.
 		this.asyncSendMessage(message);
 		
 	}
-	private void handleGameOver(Player winner)
-	{
-		GameOverMessage goMessage = new GameOverMessage(winner);	
-		this.asyncSendMessage(goMessage);
-	}
+//	private void handleGameOver(Player winner)
+//	{
+//		GameOverMessage goMessage = new GameOverMessage(winner);	
+//		this.asyncSendMessage(goMessage);
+//	}
 	public void asyncSendMessage(AsyncMessage message)
 	{
 		
