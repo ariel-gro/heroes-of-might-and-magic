@@ -392,8 +392,13 @@ public class Player implements Serializable
 			ret += this.getMineQuantity(ResourceType.values()[i].getTypeName());
 			ret += this.getCurrentTreasuryAmount(ResourceType.values()[i].getTypeName());
 		}
-
+		if(this.hero == null)
+			return ret;
+		
 		army = this.hero.getArmy();
+		if(army == null)
+			return ret;
+		
 		ret += army.getTotalNumberOfUnits();
 
 		for (int i = 0; i < this.castles.size() - 1; i++)
