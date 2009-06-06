@@ -14,6 +14,7 @@ import java.util.Vector;
 import tau.heroes.db.UserInfo;
 import tau.heroes.net.ChatListener;
 import tau.heroes.net.ChatMessage;
+import tau.heroes.net.GameOverListner;
 import tau.heroes.net.GameStateListener;
 import tau.heroes.net.GameStateMessage;
 import tau.heroes.net.HeroesClientPeer;
@@ -405,9 +406,26 @@ public class GameController
 		serverProxy.addRoomUpdateListener(listener);
 	}
 	
+	public void addGameOverListener(GameOverListner listener)
+	{
+		serverProxy.addGameOverListener(listener);
+	}
+	public void removeChatListener(ChatListener listener)
+	{
+		serverProxy.removeChatListener(listener);
+	}
+
+	public void removeGameStateListener(GameStateListener listener)
+	{
+		serverProxy.removeGameStateListener(listener);
+	}
 	public void removeRoomUpdateListener(RoomUpdateListener listener)
 	{
 		serverProxy.removeRoomUpdateListener(listener);
+	}
+	public void removeGameOverListener(GameOverListner listener)
+	{
+		serverProxy.removeGameOverListener(listener);
 	}
 	
 	public List<RoomInfo> roomsList()

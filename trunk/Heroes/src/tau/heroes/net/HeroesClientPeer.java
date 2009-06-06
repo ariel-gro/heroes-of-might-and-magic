@@ -16,6 +16,7 @@ public class HeroesClientPeer extends NetworkPeer
 	private List<ChatListener> chatListeners;
 	private List<GameStateListener> gameSateListeners;
 	private List<RoomUpdateListener> roomUpdateListeners;
+	private List<GameOverListner> gameOverListeners;
 
 	private static HeroesClientPeer instance;
 
@@ -34,7 +35,7 @@ public class HeroesClientPeer extends NetworkPeer
 		chatListeners = new LinkedList<ChatListener>();
 		gameSateListeners = new LinkedList<GameStateListener>();
 		roomUpdateListeners = new LinkedList<RoomUpdateListener>();
-
+		gameOverListeners = new LinkedList<GameOverListner>();
 		registerInternalListeners();
 	}
 
@@ -218,12 +219,20 @@ public class HeroesClientPeer extends NetworkPeer
 			handleIncomingGameStateMessage((GameStateMessage) message);
 		else if (message instanceof RoomUpdateMessage)
 			handleIncomingRoomUpdateMessage((RoomUpdateMessage) message);
+		else if(message instanceof GameOverMessage)
+			handleIncomingGameOverMessage((GameOverMessage) message);
 	}
 
 	private void handleIncomingChatMessage(ChatMessage message)
 	{
 		for (ChatListener listener : chatListeners)
 			listener.chatMessageArrived(new ChatEvent(message));
+	}
+	private void handleIncomingGameOverMessage(GameOverMessage message)
+	{
+		for (GameOverListner listener : gameOverListeners)
+			listener.gameOverMessageArrived(new GameOverEvent(message));
+		
 	}
 
 	private void handleIncomingGameStateMessage(GameStateMessage message)
@@ -242,11 +251,20 @@ public class HeroesClientPeer extends NetworkPeer
 	{
 		chatListeners.add(listener);
 	}
+	public void removeChatListener(ChatListener listener)
+	{
+		chatListeners.remove(listener);
+	}
 
 	public void addGameStateListener(GameStateListener listener)
 	{
 		gameSateListeners.add(listener);
 	}
+	public void removeGameStateListener(GameStateListener listener)
+	{
+		gameSateListeners.remove(listener);
+	}
+
 
 	public void addRoomUpdateListener(RoomUpdateListener listener)
 	{
@@ -298,5 +316,14 @@ public class HeroesClientPeer extends NetworkPeer
 				}
 			}
 		});
+	}
+
+	public void addGameOverListener(GameOverListner listener) 
+	{
+		this.gameOverListeners.add(listener);
+	}
+	public void removeGameOverListener(GameOverListner listener)
+	{
+		this.gameOverListeners.remove(listener);
 	}
 }

@@ -294,29 +294,31 @@ public class NetworkGUI
 				{
 				case MemberAdded:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
-					if (index >= 0 && index < roomsTable.getItemCount())
+					if (index >= 0 && roomsTable != null && index < roomsTable.getItemCount())
 						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
 							.getMemberCount()));
-					if (message.getMember().equals(gameController.getUserInfo()))
+					if (roomsTable != null && message.getMember().equals(gameController.getUserInfo()))
 					{
 						roomsTable.setSelection(index);
 						roomNameLabel.setText(message.getRoomInfo().getName());
 					}
-					if (roomsTable.getSelectionIndex() == index)
+					if ( roomsTable != null && roomsTable.getSelectionIndex() == index)
 						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case MemberRemoved:
 					index = gameController.roomsList().indexOf(message.getRoomInfo());
-					if (index >= 0 && index < roomsTable.getItemCount())
+					if (index >= 0 && roomsTable != null && index < roomsTable.getItemCount())
 						roomsTable.getItem(index).setText(2, String.valueOf(message.getRoomInfo()
 							.getMemberCount()));
-					if (roomsTable.getSelectionIndex() == index)
+					if (roomsTable != null && roomsTable.getSelectionIndex() == index)
 						updateRoomDetailsTable(message.getRoomInfo());
 					break;
 				case RoomOpened:
 					addRoomToTable(message.getRoomInfo());
 					break;
 				case RoomClosed:
+					if(roomsTable == null)
+						break;
 					for (TableItem ti : roomsTable.getItems())
 						if (message.getRoomInfo().equals(ti.getData()))
 						{
