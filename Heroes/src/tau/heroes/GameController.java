@@ -31,6 +31,9 @@ public class GameController
 
 	public static final int LOACL_GAME_INDEX = -1;
 	public static boolean isNetwork;
+	
+	public String[] chatsArray = new String[20];
+	public int chatCounter = 0;
 
 	public GameController(boolean isGUI)
 	{

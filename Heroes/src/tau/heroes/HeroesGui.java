@@ -115,8 +115,9 @@ public class HeroesGui
 
 	public ArmyView armyView;
 	
-	private String[] chatsArray = new String[20];
-	private int chatCounter = 0;
+	private NetworkGUI networkGUI;
+	
+	
 
 	public Display getDisplay()
 	{
@@ -946,22 +947,39 @@ public class HeroesGui
 			chatButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e)
 				{
+					String name = gameController.getUserInfo().getNickname();
 					String t = chatText.getText();
 					if (t != null)
 					{
-						gameController.sendChat(t);
+						gameController.sendChat(name + " : " + t);
 					}
 				}
 			});
 			
 			ScrolledComposite chatSc = new ScrolledComposite(statusComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+			chatSc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			
+			Composite chatComposite = new Composite(chatSc, SWT.FILL);
+			chatComposite = new Composite(chatSc, SWT.BORDER);
+			//chatComposite.setBackground(white);
+			GridData d1 = new GridData(GridData.FILL_BOTH);
+			chatComposite.setLayoutData(d1);
+
+			GridLayout tempLayout = new GridLayout(1, true);
+			chatComposite.setLayout(tempLayout);
+			chatSc.setExpandHorizontal(true);
+			chatSc.setExpandVertical(true);
+			Rectangle r = chatSc.getClientArea();
+			chatSc.setMinSize(chatComposite.computeSize(r.width, SWT.DEFAULT));
+
 			for (int i = 0; i<20; ++i)
 			{
-				if (chatsArray[i] != null)
+				if (gameController.chatsArray[i] != null)
 				{
-					createLabel(chatSc, chatsArray[i]);
+					createLabel(chatComposite, gameController.chatsArray[i]);
 				}
 			}
+			chatSc.setContent(chatComposite);
 			
 		}
 			
@@ -3529,7 +3547,7 @@ public class HeroesGui
 	private void startNetworkGame(String userName, String password)
 	{
 		createStatusWindow(false);
-		NetworkGUI networkGUI = new NetworkGUI(statusComposite, gameController);
+		networkGUI = new NetworkGUI(statusComposite, gameController);
 		networkGUI.init();
 
 	}
@@ -3557,9 +3575,18 @@ public class HeroesGui
 		shell.getDisplay().asyncExec(new Runnable() {
 			public void run()
 			{
-				chatsArray[chatCounter] = e.getChatMessage().getText();
-				chatCounter = ((chatCounter + 1) % 20);
-				displayMessage(shell, e.getChatMessage().getText());
+				gameController.chatsArray[gameController.chatCounter] = e.getChatMessage().getText();
+				gameController.chatCounter = ((gameController.chatCounter + 1) % 20);
+				if (gameController.isNetworkGame())
+				{
+					updateStatusWindow();
+				}	
+				else 
+				{
+					//networkGUI = new NetworkGUI(statusComposite, gameController);
+					//networkGUI.init();
+					displayMessage(shell, e.getChatMessage().getText());
+				}
 			}
 		});
 	}

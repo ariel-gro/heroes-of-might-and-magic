@@ -6,12 +6,14 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,6 +41,8 @@ public class NetworkGUI
 	private GameController gameController;
 	private RoomUpdateListener roomUpdateListener;
 	private Label roomNameLabel;
+	
+	
 
 	public NetworkGUI(Composite statusComposite, GameController gameController)
 	{
@@ -139,6 +143,32 @@ public class NetworkGUI
 				}
 			}
 		});
+		
+		
+		ScrolledComposite chatSc = new ScrolledComposite(networkComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		chatSc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		
+		Composite chatComposite = new Composite(chatSc, SWT.FILL);
+		chatComposite = new Composite(chatSc, SWT.BORDER);
+		//chatComposite.setBackground(white);
+		GridData d1 = new GridData(GridData.FILL_BOTH);
+		chatComposite.setLayoutData(d1);
+
+		GridLayout tempLayout = new GridLayout(1, true);
+		chatComposite.setLayout(tempLayout);
+		chatSc.setExpandHorizontal(true);
+		chatSc.setExpandVertical(true);
+		Rectangle r = chatSc.getClientArea();
+		chatSc.setMinSize(chatComposite.computeSize(r.width, SWT.DEFAULT));
+
+		for (int i = 0; i<20; ++i)
+		{
+			if (gameController.chatsArray[i] != null)
+			{
+				createLabel(chatComposite, gameController.chatsArray[i]);
+			}
+		}
+		chatSc.setContent(chatComposite);
 		
 		
 		
