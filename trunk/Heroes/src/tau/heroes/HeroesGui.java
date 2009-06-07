@@ -3460,7 +3460,8 @@ public class HeroesGui
 		if (gameController.isNetwork)
 		{
 			Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-			p.getHero().kill();
+			p.kill();
+			handleEndTurnCommand();
 		}
 		shell.close();
 	}

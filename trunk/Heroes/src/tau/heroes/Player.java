@@ -26,6 +26,7 @@ public class Player implements Serializable
 	private int computerLevel = 0; /** 0 = Human, 1 = Novice, 2 = Expert **/
 	private final PlayerColor playerColor;
 	private boolean autoFight = false;
+	private boolean was_killed =false;
 	
 	public Player(String name, PlayerColor playerColor)
 	{
@@ -287,10 +288,22 @@ public class Player implements Serializable
 			System.out.println(tempTypeName + " \t\t " + this.mines.get(tempTypeName));
 		}
 	}
+	
+	public void kill()
+	{
+		was_killed = true;
+	}
 
 	public boolean isAlive()
 	{
+		if (was_killed)
+		{
+			return false;
+		}
+		else
+		{
 		return (getHero() != null) || !this.castles.isEmpty();
+		}
 	}
 
 	public boolean move(int x, int y, Board board)
