@@ -43,6 +43,14 @@ public class GameController
 		isNetwork = this.isNetworkGame();
 	}
 
+	public boolean isLoggedIn()
+	{
+		if(serverProxy != null)
+			return serverProxy.isLoggedIn();
+		
+		return false;
+	}
+	
 	public void initNewGame(Vector<Player> players)
 	{
 		this.gameState.setPlayers(players);
