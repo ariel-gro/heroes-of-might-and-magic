@@ -1088,11 +1088,17 @@ public class HeroesGui
 		return menuBar;
 	}
 
-	public static void displayError(String msg)
+	public static void displayError(Shell shell,String msg)
 	{
-		MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_ERROR);
+		MessageBox box = new MessageBox(shell, SWT.ICON_ERROR);
 		box.setMessage(msg);
 		box.open();
+		
+	}
+	public static void displayError(String msg)
+	{
+
+		displayError(Display.getCurrent().getActiveShell(), msg);
 	}
 
 	public static void displayMessage(String msg)
@@ -1529,7 +1535,7 @@ public class HeroesGui
 
 		if (gameController.getGameState().getBoard() == null)
 		{
-			displayMessage("The file you opened doesn't contain a valid Heroes saved game.\n"
+			displayMessage(shell,"The file you opened doesn't contain a valid Heroes saved game.\n"
 				+ "Please try again with a different file");
 			return false;
 		}
@@ -3554,7 +3560,7 @@ public class HeroesGui
 		shell.close();
 	}
 
-	private void startNetworkGame(String userName, String password)
+	public void startNetworkGame(String userName, String password)
 	{
 		createStatusWindow(false);
 		networkGUI = new NetworkGUI(statusComposite, gameController);
