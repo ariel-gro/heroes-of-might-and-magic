@@ -106,6 +106,8 @@ public class HeroesGui
 	private ScrolledComposite sc1;
 
 	private ScrolledComposite sc2;
+	
+	MenuItem showNetworkStatItem;
 
 	Cursor cursor;;
 
@@ -145,7 +147,6 @@ public class HeroesGui
 		});
 		this.gameController.addGameOverListener(new GameOverListner() {
 			
-			@Override
 			public void gameOverMessageArrived(GameOverEvent e) {
 				// TODO Auto-generated method stub
 				handleIncomingGameOver(e);
@@ -2238,15 +2239,15 @@ public class HeroesGui
 				addNewUserToServerWindow();
 			}
 		});
+		
 
-		// Network -> Chat
-		MenuItem chatItem = new MenuItem(menu, SWT.NULL);
-		chatItem.setText("Show Network Status");
-		chatItem.addSelectionListener(new SelectionAdapter() {
+		showNetworkStatItem = new MenuItem(menu, SWT.NULL);
+		showNetworkStatItem.setText("Show Network Status");
+		showNetworkStatItem.setEnabled(false);
+		showNetworkStatItem.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e)
 			{
-				//chatWindow();
-				startNetworkGame("","");
+				startNetworkGame("", "");
 			}
 		});
 		
@@ -2754,8 +2755,9 @@ public class HeroesGui
 			% this.gameController.getGameState().getNumberOfPlayers();
 		this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 		p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-		createBoardWindow(true);
-		updateStatusWindow();
+		
+		//createBoardWindow(true);
+		//updateStatusWindow();
 
 		// Here is the computer move.
 		while (p.isComputer())
@@ -2783,9 +2785,14 @@ public class HeroesGui
 				% this.gameController.getGameState().getNumberOfPlayers();
 			this.gameController.getGameState().setWhosTurn(currentPlayerIndex);
 			p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+		}
+		
+		if(gameController.isNetworkGame() == false)
+		{
 			createBoardWindow(true);
 			updateStatusWindow();
 		}
+		
 		handleNetworkEndTurn();
 	}
 
@@ -2830,11 +2837,13 @@ public class HeroesGui
 				displayError("Invallid Input. Outside of board - Try again");
 			return false;
 		}
-		else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex)
-			.move(newX, newY, this.gameController.getGameState().getBoard()))
+		else if (gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).move(newX, newY, this.gameController.getGameState().getBoard()))
 		{
-			createBoardWindow(true);
-			updateStatusWindow();
+			if(gameController.getGameState().getPlayers().elementAt(currentPlayerIndex).isComputer()== false)
+			{
+				createBoardWindow(true);
+				updateStatusWindow();
+			}
 			return true;
 		}
 		else
@@ -3217,6 +3226,7 @@ public class HeroesGui
 					startNetworkGame(userName, passWord);
 					shell.dispose();
 					statusComposite.layout(true, true);
+					showNetworkStatItem.setEnabled(true);
 				}
 				else
 				{
