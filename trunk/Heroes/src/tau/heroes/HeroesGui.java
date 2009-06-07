@@ -276,7 +276,7 @@ public class HeroesGui
 			int choice = box.open();
 			if (choice == SWT.CANCEL)
 			{
-				if (gameController.isNetwork)
+				if (GameController.isNetwork)
 				{
 					Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 					p.kill();
@@ -287,7 +287,7 @@ public class HeroesGui
 			else if (choice == SWT.YES)
 			{
 				if (!save())
-					if (gameController.isNetwork)
+					if (GameController.isNetwork)
 					{
 						Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 						p.kill();
@@ -298,7 +298,7 @@ public class HeroesGui
 		}
 		
 		
-		if (gameController.isNetwork)
+		if (GameController.isNetwork)
 		{
 			Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 			p.kill();
