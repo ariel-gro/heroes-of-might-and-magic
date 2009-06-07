@@ -94,7 +94,9 @@ public class HeroesServerPeer extends NetworkPeer
 		}
 		gc.initNewGame(players);
 		// dispatch the message to all:
-		room.startGame();
+		boolean bStarted = room.startGame();
+		if(!bStarted)
+			return new ErrorMessage("You can't start a new game in this room");
 		room.asyncSendMessage(new GameStateMessage(gc.getGameState()));
 
 		return new OKMessage();
