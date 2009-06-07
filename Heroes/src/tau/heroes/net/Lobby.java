@@ -28,4 +28,9 @@ public class Lobby extends Room
 	protected void closeRoom()
 	{				
 	}
+	@Override
+	public boolean startGame()
+	{
+		return false;
+	}
 }
