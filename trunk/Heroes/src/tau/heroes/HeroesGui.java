@@ -892,6 +892,7 @@ public class HeroesGui
 
 	public void updateStatusWindow()
 	{
+		
 		Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
 
 		statusComposite.setBackground(white);
@@ -903,6 +904,10 @@ public class HeroesGui
 			children[i].dispose();
 		}
 
+		
+		
+		
+		
 		CLabel firstLabel = new CLabel(statusComposite, SWT.CENTER);
 		firstLabel.setBackground(white);
 		firstLabel.setImage(IconCache.stockImages[IconCache.appIcon]);
@@ -922,6 +927,32 @@ public class HeroesGui
 				handleEndTurnCommand();
 			}
 		});
+		
+		
+		if (gameController.isNetworkGame())
+		{
+
+			createLabel(statusComposite, "");
+			createLabel(statusComposite, "Enter your Chat Message : ");
+			final Text chatText = new Text(statusComposite, SWT.BORDER);
+			chatText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			Button chatButton = new Button(statusComposite, SWT.CENTER);
+			chatButton.setText("Send Chat Message");
+			chatButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			chatButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e)
+				{
+					String t = chatText.getText();
+					if (t != null)
+					{
+						gameController.sendChat(t);
+					}
+				}
+			});
+		}
+		
+		
+		
 
 		createLabel(statusComposite, "");
 
