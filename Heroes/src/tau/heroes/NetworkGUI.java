@@ -190,6 +190,8 @@ public class NetworkGUI
 				gameController.removeRoomUpdateListener(roomUpdateListener);
 			}
 		});
+		
+		networkComposite.getParent().layout();
 	}
 
 	private void handleNewRoomCommand()
@@ -201,7 +203,7 @@ public class NetworkGUI
 		{
 			String roomName = createNewRoomID.getValue();
 
-			if (roomName.isEmpty())
+			if (roomName.trim().length()==0)
 			{
 				HeroesGui.displayError("You must enter a room name");
 
