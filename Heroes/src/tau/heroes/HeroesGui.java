@@ -271,14 +271,36 @@ public class HeroesGui
 			int choice = box.open();
 			if (choice == SWT.CANCEL)
 			{
+				if (gameController.isNetwork)
+				{
+					Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+					p.kill();
+					handleEndTurnCommand();
+				}
 				return false;
 			}
 			else if (choice == SWT.YES)
 			{
 				if (!save())
+					if (gameController.isNetwork)
+					{
+						Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+						p.kill();
+						handleEndTurnCommand();
+					}
 					return false;
 			}
 		}
+		
+		
+		if (gameController.isNetwork)
+		{
+			Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+			p.kill();
+			handleEndTurnCommand();
+		}
+		
+		
 
 		IconCache.freeResources();
 
@@ -290,6 +312,7 @@ public class HeroesGui
 		if (gameController != null)
 			gameController.Disconnect();
 
+		
 		return true;
 	}
 
@@ -3457,12 +3480,7 @@ public class HeroesGui
 
 	public void Exit()
 	{
-		if (gameController.isNetwork)
-		{
-			Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
-			p.kill();
-			handleEndTurnCommand();
-		}
+		
 		shell.close();
 	}
 
