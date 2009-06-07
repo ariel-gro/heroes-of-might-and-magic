@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -35,6 +36,7 @@ import tau.heroes.net.RoomUpdateMessage;
 public class NetworkGUI
 {
 	private Composite networkComposite;
+	private Shell shell;
 	private Color white;
 	private Display display;
 	private Table roomsTable, roomsDetailsTable;
@@ -49,6 +51,7 @@ public class NetworkGUI
 		this.networkComposite = new Composite(statusComposite, SWT.NONE);
 		this.gameController = gameController;
 		display = networkComposite.getDisplay();
+		shell = statusComposite.getShell();
 
 		white = display.getSystemColor(SWT.COLOR_WHITE);
 
@@ -120,7 +123,7 @@ public class NetworkGUI
 				NetworkResult<Boolean> result = handleNewNetworkGame();
 
 				if (!result.getResult())
-					HeroesGui.displayError("Error starting new game: " + result.getErrorMessage());
+					HeroesGui.displayError(shell,"Error starting new game: " + result.getErrorMessage());
 			}
 		});
 		
@@ -205,7 +208,7 @@ public class NetworkGUI
 
 			if (roomName.trim().length()==0)
 			{
-				HeroesGui.displayError("You must enter a room name");
+				HeroesGui.displayError(shell,"You must enter a room name");
 
 				return;
 			}
@@ -217,7 +220,7 @@ public class NetworkGUI
 	{
 		if (roomInfo.getMemberCount() == 4)
 		{
-			HeroesGui.displayError("The room selected is full, please choose another with less than 4 players");
+			HeroesGui.displayError(shell,"The room selected is full, please choose another with less than 4 players");
 			
 			return;
 		}
@@ -225,7 +228,7 @@ public class NetworkGUI
 		NetworkResult<Boolean> result = gameController.joinRoom(roomInfo.getId());
 
 		if (!result.getResult())
-			HeroesGui.displayError("Error joining room: " + result.getErrorMessage());
+			HeroesGui.displayError(shell,"Error joining room: " + result.getErrorMessage());
 	}
 
 	public List<RoomInfo> getRoomsFromServer()
@@ -234,7 +237,7 @@ public class NetworkGUI
 
 		if (result.getResult() == null)
 		{
-			HeroesGui.displayError("Error getting room list from server: "
+			HeroesGui.displayError(shell,"Error getting room list from server: "
 				+ result.getErrorMessage());
 		}
 
@@ -246,7 +249,7 @@ public class NetworkGUI
 		NetworkResult<Boolean> result = gameController.createRoom(roomName);
 
 		if (!result.getResult())
-			HeroesGui.displayError("Error creating room: " + result.getErrorMessage());
+			HeroesGui.displayError(shell,"Error creating room: " + result.getErrorMessage());
 	}
 
 	private void displayRoomsTable(List<RoomInfo> roomList)
@@ -324,7 +327,7 @@ public class NetworkGUI
 
 		if (roomMembersList == null)
 		{
-			HeroesGui.displayError("Error getting members: " + result.getErrorMessage());
+			HeroesGui.displayError(shell,"Error getting members: " + result.getErrorMessage());
 			return;
 		}
 		
