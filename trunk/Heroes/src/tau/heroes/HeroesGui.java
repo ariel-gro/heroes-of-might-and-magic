@@ -3457,6 +3457,11 @@ public class HeroesGui
 
 	public void Exit()
 	{
+		if (gameController.isNetwork)
+		{
+			Player p = gameController.getGameState().getPlayers().elementAt(currentPlayerIndex);
+			p.getHero().kill();
+		}
 		shell.close();
 	}
 
