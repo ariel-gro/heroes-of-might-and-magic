@@ -114,6 +114,9 @@ public class HeroesGui
 	public ResourcesView resourcesView;
 
 	public ArmyView armyView;
+	
+	private String[] chatsArray = new String[20];
+	private int chatCounter = 0;
 
 	public Display getDisplay()
 	{
@@ -929,9 +932,10 @@ public class HeroesGui
 		});
 		
 		
+		
+		
 		if (gameController.isNetworkGame())
 		{
-
 			createLabel(statusComposite, "");
 			createLabel(statusComposite, "Enter your Chat Message : ");
 			final Text chatText = new Text(statusComposite, SWT.BORDER);
@@ -949,11 +953,18 @@ public class HeroesGui
 					}
 				}
 			});
+			
+			ScrolledComposite chatSc = new ScrolledComposite(statusComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+			for (int i = 0; i<20; ++i)
+			{
+				if (chatsArray[i] != null)
+				{
+					createLabel(chatSc, chatsArray[i]);
+				}
+			}
+			
 		}
-		
-		
-		
-
+			
 		createLabel(statusComposite, "");
 
 		if (p.getHero() == null)
@@ -3546,6 +3557,8 @@ public class HeroesGui
 		shell.getDisplay().asyncExec(new Runnable() {
 			public void run()
 			{
+				chatsArray[chatCounter] = e.getChatMessage().getText();
+				chatCounter = ((chatCounter + 1) % 20);
 				displayMessage(shell, e.getChatMessage().getText());
 			}
 		});
