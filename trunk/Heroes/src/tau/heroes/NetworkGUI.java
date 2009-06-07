@@ -215,6 +215,13 @@ public class NetworkGUI
 
 	private void handleJoinRoomCommand(RoomInfo roomInfo)
 	{
+		if (roomInfo.getMemberCount() == 4)
+		{
+			HeroesGui.displayError("The room selected is full, please choose another with less than 4 players");
+			
+			return;
+		}
+		
 		NetworkResult<Boolean> result = gameController.joinRoom(roomInfo.getId());
 
 		if (!result.getResult())
