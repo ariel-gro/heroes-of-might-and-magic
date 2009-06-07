@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import tau.heroes.db.UserInfo;
 import tau.heroes.net.NetworkResult;
@@ -118,6 +119,29 @@ public class NetworkGUI
 					HeroesGui.displayError("Error starting new game: " + result.getErrorMessage());
 			}
 		});
+		
+		
+		
+		createLabel(networkComposite, "");
+		createLabel(networkComposite, "Enter your Chat Message : ");
+		final Text chatText = new Text(networkComposite, SWT.BORDER);
+		chatText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		Button chatButton = new Button(networkComposite, SWT.CENTER);
+		chatButton.setText("Send Chat Message");
+		chatButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		chatButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e)
+			{
+				String t = chatText.getText();
+				if (t != null)
+				{
+					gameController.sendChat(t);
+				}
+			}
+		});
+		
+		
+		
 
 		networkComposite.layout(true, true);
 
@@ -329,6 +353,14 @@ public class NetworkGUI
 				}
 			}
 		});
+	}
+	
+	private Label createLabel(Composite composite, String text)
+	{
+		Label tempLabel = new Label(composite, SWT.NONE);
+		tempLabel.setText(text);
+		tempLabel.setBackground(white);
+		return tempLabel;
 	}
 
 }
