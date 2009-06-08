@@ -3399,9 +3399,21 @@ public class HeroesGui
 					// Validate return value!
 					if (res.getResult() != true)
 					{
-						displayError(res.getErrorMessage());
+						displayError("Register Failed: " + res.getErrorMessage());
+					
 						return;
 					}
+					
+					displayMessage("Registration succeeded");
+					
+					res  = gameController.Login(ip, userName, passWord, false);
+					if (res.getResult() != true)
+					{
+						displayError("Login Failed: " + res.getErrorMessage());
+					
+						return;
+					}
+						
 					startNetworkGame(userName, passWord);
 					shell.dispose();
 				}
