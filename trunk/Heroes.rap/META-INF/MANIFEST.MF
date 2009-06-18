@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rap Plug-in
-Bundle-SymbolicName: Heroes.rap; singleton:=true
+Bundle-SymbolicName: Heroes.rap;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: heroes.rap.Activator
 Require-Bundle: org.eclipse.rap.ui

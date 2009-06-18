@@ -62,7 +62,7 @@ public class BaseLabelRowView extends Composite
 
 		label.setText(text);
 		label.setToolTipText(tooltip);
-//		image = IconCache.getResizedImage(getDisplay(), image, imageWidth, imageHeight, imageStyle);
+		image = IconCache.getResizedImage(getDisplay(), image, imageWidth, imageHeight, imageStyle);
 		label.setBackground(image);
 		images[index] = image;
 	}

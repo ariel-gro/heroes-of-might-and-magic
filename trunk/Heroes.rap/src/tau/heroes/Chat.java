@@ -25,7 +25,7 @@ public class Chat
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		Display display = shell.getDisplay();
 		
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		shell.setText("Chat Messsage");
 		Label label = new Label(shell, SWT.FILL);
 		label.setText(msg.getText());

@@ -28,13 +28,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class IconCache
 {
 	// Stock images
-	public static final int appIcon = 0, grassIcon = 1, blueHeroIcon = 2, castleIcon = 3,
+	public static final int appIcon = 0, appIconSmall = 61, grassIcon = 1, blueHeroIcon = 2, castleIcon = 3,
 		goldMineIcon = 4, stoneIcon = 5, woodIcon = 6, blueInCastleIcon = 7,
 		blueInGoldMineIcon = 8, blueInStoneIcon = 9, blueInWoodIcon = 10, blackIcon = 11,
 		highscoreIcon = 12, heroesStartScreenIcon = 24, treasureGold = 25, treasureWood = 26,
 		treasureStone = 27, dungeonIcon = 28, rampartIcon = 29, towerIcon = 30,
 		blueInDungeonIcon = 31, blueInRampartIcon = 32, blueInTowerIcon = 33,
-		fireIcon = 58, rockIcon = 59, treeStumpIcon = 60;
+		fireIcon = 58, rockIcon = 59, treeStumpIcon = 60,
+		battleGrassIconSmall = 62;
 	
 	public static final int redHeroIcon = 34, blackHeroIcon = 35, purpleHeroIcon = 36,
 				redInCastleIcon = 37, blackInCastleIcon = 38, purpleInCastleIcon = 39,
@@ -51,8 +52,8 @@ public class IconCache
 		dwarfFaceRightIcon = 18, dwarfFaceLeftIcon = 19, archerFaceRightIcon = 20,
 		archerFaceLeftIcon = 21, fireDragonFaceRightIcon = 22, fireDragonFaceLeftIcon = 23;
 
-	public static final int goblinFactoryIcon = 14, soldierFactoryIcon = 16, dwarfFactoryIcon = 18,
-		archerFactoryIcon = 20, fireDragonFactoryIcon = 22;
+	public static final int goblinFactoryIcon = 63, soldierFactoryIcon = 64, dwarfFactoryIcon = 65,
+		archerFactoryIcon = 66, fireDragonFactoryIcon = 67;
 
 	public static final int cursorAttackLeft = 2, cursorAttackRight = 3, cursorNo = 4;
 
@@ -87,7 +88,11 @@ public class IconCache
 			"/icons/red_knight_in_Wood.png", "/icons/black_knight_in_Wood.png",
 			"/icons/purple_knight_in_Wood.png",
 			
-			"/icons/fire.png", "/icons/rock.png", "/icons/tree_stump.png"
+			"/icons/fire.png", "/icons/rock.png", "/icons/tree_stump.png",
+			"/icons/Heroes-icon_16x16.png", "/icons/battle_grass50.jpg", 
+			"/icons/battle_goblin50.jpg", "/icons/battle_soldier50.jpg" ,
+			"/icons/battle_dwarf50.jpg", "/icons/battle_archer50.jpg",
+			"/icons/battle_fire_dragon50.jpg"
 			};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
@@ -263,7 +268,7 @@ public class IconCache
 	 *            - New image style.
 	 * @return - Resized image
 	 */
-/*	public static Image getResizedImage(Display display, Image originalImage, int newWidth,
+	public static Image getResizedImage(Display display, Image originalImage, int newWidth,
 		int newHeight, int style)
 	{
 		ResizedImageDescriptor rid = new ResizedImageDescriptor(originalImage, newWidth, newHeight,
@@ -271,16 +276,15 @@ public class IconCache
 
 		if (!resizedImages.containsKey(rid))
 		{
-			Image resizedImage = new Image(display, originalImage.getImageData()
-				.scaledTo(newWidth, newHeight));
-			if (style != SWT.NONE)
-				resizedImage = new Image(display, resizedImage, style);
+			Image resizedImage = stockImages[battleGrassIconSmall];
+//			if (style != SWT.NONE)
+//				resizedImage = new Image(display, resizedImage, style);
 			resizedImages.put(rid, resizedImage);
 		}
 
 		return resizedImages.get(rid);
 	}
-*/
+
 	public static Image getCreatureImage(Class<? extends Creature> creatureClass)
 	{
 		if (creatureClass == null)
@@ -338,7 +342,7 @@ public class IconCache
 	public static Image getCreatureFactoryImage(Class<? extends CreatureFactory> factoryClass)
 	{
 		if (factoryClass == null)
-			return stockImages[battleGrassIcon];
+			return stockImages[battleGrassIconSmall];
 		else if (factoryClass.equals(GoblinFactory.class))
 			return stockImages[goblinFactoryIcon];
 		else if (factoryClass.equals(SoldierFactory.class))
@@ -350,7 +354,7 @@ public class IconCache
 		else if (factoryClass.equals(FireDragonFactory.class))
 			return stockImages[fireDragonFactoryIcon];
 		else
-			return stockImages[battleGrassIcon];
+			return stockImages[battleGrassIconSmall];
 	}
 
 	private static class FontDescriptor
