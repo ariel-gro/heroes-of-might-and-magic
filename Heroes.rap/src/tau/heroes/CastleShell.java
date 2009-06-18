@@ -48,7 +48,7 @@ public class CastleShell extends Shell
 	public CastleShell(HeroesGui heroesGui, Shell parent, int style)
 	{
 		super(parent, style);
-		this.setImage(IconCache.stockImages[IconCache.appIcon]);
+		this.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		this.heroesGui = heroesGui;
 
 		setSize(635, 400);

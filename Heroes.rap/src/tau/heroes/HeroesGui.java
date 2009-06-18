@@ -152,7 +152,7 @@ public class HeroesGui
 	{
 		shell = new Shell(display/* , SWT.APPLICATION_MODAL */);
 		shell.setLayout(new FillLayout());
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		shell.setText("Heroes of Might and Magic");
 		shell.setMaximized(true);
 		black = display.getSystemColor(SWT.COLOR_BLACK);
@@ -660,7 +660,7 @@ public class HeroesGui
 	private void displayStartWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 
 		GridLayout layout1 = new GridLayout(4, true);
 		layout1.marginWidth = layout1.marginHeight = 10;
@@ -1038,7 +1038,7 @@ public class HeroesGui
 		shell1.setLayout(new GridLayout());
 		shell1.setSize(330, 225);
 		shell1.setText("New Game Menu");
-		shell1.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell1.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 
 		Composite form = new Composite(shell1, SWT.FILL);
 		form.setLayout(new GridLayout(4, false));
@@ -1705,7 +1705,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1742,7 +1742,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -1801,7 +1801,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1846,7 +1846,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -1934,7 +1934,7 @@ public class HeroesGui
 					buildPricesShell.setSize(200, 200);
 					buildPricesShell.setText("Build Prices");
 					buildPricesShell.setLocation(450, 450);
-					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					buildPricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(buildPricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(buildPricesShell.getClientArea());
@@ -1971,7 +1971,7 @@ public class HeroesGui
 					makePricesShell.setSize(200, 200);
 					makePricesShell.setText("Unit Prices");
 					makePricesShell.setLocation(450, 450);
-					makePricesShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+					makePricesShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 					Label pricesLable = new Label(makePricesShell, SWT.NULL);
 					pricesLable.setBackground(Graphics.getColor(255, 255, 255));
 					pricesLable.setBounds(makePricesShell.getClientArea());
@@ -2215,7 +2215,7 @@ public class HeroesGui
 		gridLayout.marginHeight = gridLayout.marginWidth = 25;
 		helpShell.setLayout(gridLayout);
 		helpShell.setText("Heroes (TAU Ver.) - Gameplay Assistance");
-		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		helpShell.setSize(330, 330);
 
 		/* Getting Started */
@@ -2360,7 +2360,7 @@ public class HeroesGui
 		gridLayout.marginHeight = gridLayout.marginWidth = 25;
 		helpShell.setLayout(gridLayout);
 		helpShell.setText("Heroes (TAU Ver.) - Network Assistance");
-		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		helpShell.setSize(330, 230);
 
 		/* The Network Game */
@@ -2449,7 +2449,7 @@ public class HeroesGui
 
 		final Shell helpShell = new Shell(Display.getCurrent().getActiveShell());
 		helpShell.setText(header);
-		helpShell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		helpShell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		helpShell.setLayout(new GridLayout(1, true));
 		helpShell.setLocation(150, 150);
 
@@ -3039,7 +3039,7 @@ public class HeroesGui
 	public void lgoinToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Login to Server");
@@ -3229,7 +3229,7 @@ public class HeroesGui
 	public void addNewUserToServerWindow()
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 
 		GridLayout layout1 = new GridLayout(4, true);
 		shell.setText("Add New User to Server");
@@ -3462,7 +3462,7 @@ public class HeroesGui
 	{
 		final Shell shell = new Shell(Display.getCurrent().getActiveShell());
 		shell.setSize(300, 160);
-		shell.setImage(IconCache.stockImages[IconCache.appIcon]);
+		shell.setImage(IconCache.stockImages[IconCache.appIconSmall]);
 		shell.setText("Chat");
 		shell.setLayout(new GridLayout());
 
