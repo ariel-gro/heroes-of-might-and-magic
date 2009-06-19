@@ -1,5 +1,7 @@
 package tau.heroes;
 
+import heroes.rap.Configuration;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -193,6 +195,23 @@ public class GameController
 
 	public boolean saveGame(String fileName)
 	{
+		String text = fileName;
+		String saveDir = Configuration.saveDir;
+		String saveName = saveDir + File.separator + text + ".data";
+        File file = new File(saveName);
+        new File(saveDir).mkdir();
+             try {
+                     FileOutputStream fos = new FileOutputStream(file);
+                     ObjectOutputStream oos =  new ObjectOutputStream(fos);
+                     oos.writeObject(getGameState());
+                     oos.close();
+             } catch (FileNotFoundException e) {
+                     return false;
+             } catch (IOException e) {
+                     return false;
+             }
+             return true;
+		/**
 		try
 		{
 			File saveFile = new File(fileName);
@@ -213,6 +232,7 @@ public class GameController
 			System.out.println("Illegal file name ! \nPlease give another name");
 		}
 		return false;
+		*/
 	}
 
 	public boolean loadGame(String fileName)

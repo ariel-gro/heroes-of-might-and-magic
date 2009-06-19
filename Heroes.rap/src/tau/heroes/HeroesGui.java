@@ -5,6 +5,13 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.rwt.graphics.Graphics;
@@ -55,6 +62,7 @@ import tau.heroes.net.GameOverListner;
 import tau.heroes.net.GameStateEvent;
 import tau.heroes.net.GameStateListener;
 import tau.heroes.net.NetworkResult;
+import heroes.rap.*;
 
 public class HeroesGui
 {
@@ -1456,52 +1464,35 @@ public class HeroesGui
 
 	public boolean save()
 	{
+		file = "saved123";
 		if (file == null)
 			return saveAs();
 
 		shell.setCursor(Graphics.getCursor(SWT.CURSOR_WAIT));
 
 		gameController.saveGame(file);
-		this.gameController.saveGame(file);
-		displayMessage("Game successfully saved to: " + file);
+		//displayMessage("Game successfully saved to: " + file);
+		
+		GuiMessages.displayFeedbackMsg("Save Game", "Game successfully saved", Display.getCurrent().getActiveShell());
 
 		shell.setCursor(null);
 
 		return true;
 	}
 
+	
 	public boolean saveAs()
 	{
+		//file = "saved123";
+		
+		file = GuiMessages.displayInputDialog("Save Games As", "Enter saved game file name", Display.getCurrent().getActiveShell());
+		
 
-/*		FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
-		saveDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
-		saveDialog
-			.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
+		
+		return gameController.saveGame(file);
 
-		saveDialog.open();
-		String name = saveDialog.getFileName();
-
-		if (name.equals(""))
-			return false;
-
-		if (name.indexOf(".sav") != name.length() - 4)
-		{
-			name += ".sav";
-		}
-
-		String file = saveDialog.getFilterPath() + "\\" + name;
-		if (new File(file).exists())
-		{
-			MessageBox box = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			box.setText("Overite Existing File");
-			box.setMessage("File " + name + " " + "Already exists, would you like to overwrite?");
-			if (box.open() != SWT.YES)
-			{
-				return false;
-			}
-		}
-		this.file = file;
-*/		return save();
+		
+		
 	}
 
 	/**
