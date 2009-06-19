@@ -1,6 +1,8 @@
 package tau.heroes;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -710,7 +712,7 @@ public class HeroesGui
 				if (newGame.getSelection())
 					startNewGame();
 				else if (loadGame.getSelection())
-					openFileDlg();
+					loadGame();
 
 				shell.dispose();
 			}
@@ -1403,34 +1405,7 @@ public class HeroesGui
 		return players;
 	}
 
-	public void openFileDlg()
-	{
-
-/*		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
-
-		fileDialog.setFilterExtensions(new String[] { "*.sav;", "*.*" });
-		fileDialog
-			.setFilterNames(new String[] { "Saved Games" + " (*.sav)", "All Files" + " (*.*)" });
-		String name = fileDialog.open();
-
-		if (name == null)
-			return;
-		if (!name.endsWith(".sav"))
-		{
-			displayMessage("Not a valid Heroes *.sav file.\nTry again or start a new game");
-			return;
-		}
-		File file = new File(name);
-		if (!file.exists())
-		{
-			displayError("File " + file.getName() + " " + "Does not exist");
-			return;
-		}
-
-		this.gameController.loadGame(name);
-		handleUpdateGameState();
-*/
-	}
+	
 
 	private boolean handleUpdateGameState()
 	{
@@ -1462,6 +1437,28 @@ public class HeroesGui
 		return true;
 	}
 
+	
+	 public String[] getSavedGames()
+	 {
+         Set<String> savedGames = null;
+         File file = new File(Configuration.saveDir);
+         if(!file.exists()){
+                 return null;
+         } else {
+                 savedGames = new HashSet<String>();
+                 for(File saveFile : file.listFiles()){
+                         if((!saveFile.isHidden()) && (!saveFile.isDirectory())){
+                                 StringBuffer sb = new StringBuffer(saveFile.getName());
+                                 String saveName = sb.substring(0, saveFile.getName().lastIndexOf('.')).trim();
+                                 if(!saveName.equals(""))
+                                         savedGames.add(saveName);
+                         }
+                 }
+         }
+         return savedGames.toArray(new String[savedGames.size()]);
+	 }
+	
+	
 	public boolean save()
 	{
 		if (file == null)
@@ -1485,6 +1482,75 @@ public class HeroesGui
 		
 		return gameController.saveGame(file);	
 	}
+	
+	
+	
+	public void loadGame()
+	{
+		final Combo fileNameCombo;
+		final Shell shell1 = new Shell(Display.getCurrent().getActiveShell());
+		shell1.setLayout(new GridLayout());
+		shell1.setSize(330, 225);
+		shell1.setText("Load  Game");
+		shell1.setImage(IconCache.stockImages[IconCache.appIconSmall]);
+
+		Composite form = new Composite(shell1, SWT.FILL);
+		form.setLayout(new GridLayout(1, false));
+
+		final Label label1 = new Label(form, SWT.NONE);
+		label1.setText("Choose file to load from");
+		fileNameCombo = new Combo(form, SWT.NONE);
+		fileNameCombo.setText(getSavedGames()[0]);
+		for(String str : getSavedGames())
+		{
+			fileNameCombo.add(str);
+		}
+		
+		Composite form2 = new Composite(shell1, SWT.FILL);
+		form2.setLayout(new GridLayout(2, false));
+		Button okButton = new Button(form2, SWT.NONE);
+		okButton.setText("          OK          ");
+		okButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e)
+			{
+				String fileName = fileNameCombo.getText();
+				String saveDir = Configuration.saveDir;
+				String saveName = saveDir + File.separator + fileName + ".data";
+				gameController.loadGame(saveName);
+				handleUpdateGameState();
+				shell1.dispose();
+				shell.setEnabled(true);
+				}});	
+
+		
+
+		Button cancelButton = new Button(form2, SWT.NONE | SWT.RIGHT);
+		cancelButton.setText("       Cancel       ");
+		cancelButton.addSelectionListener(new SelectionAdapter() 
+		{
+			public void widgetSelected(final SelectionEvent e)
+				{
+					shell1.dispose();
+					shell.setEnabled(true);
+				}
+			});
+
+			shell1.open();
+			shell.setEnabled(false);
+			while (!shell1.isDisposed())
+			{
+				if (!display.readAndDispatch())
+				{
+					display.sleep();
+				}
+			}
+	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Creates all the items located in the File submenu and associate all the
@@ -1584,7 +1650,7 @@ public class HeroesGui
 						save();
 					}
 				}
-				openFileDlg();
+				loadGame();
 				saveSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 				saveAsSubItem.setEnabled(gameController.getGameState().getBoard() != null);
 			}
