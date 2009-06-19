@@ -211,28 +211,6 @@ public class GameController
                      return false;
              }
              return true;
-		/**
-		try
-		{
-			File saveFile = new File(fileName);
-			saveFile.createNewFile();
-			FileOutputStream fileOut = new FileOutputStream(saveFile);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(this.gameState);
-			out.close();
-			fileOut.close();
-			return true;
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println("Not enough disk space ! \nCant save the game");
-		}
-		catch (IOException e)
-		{
-			System.out.println("Illegal file name ! \nPlease give another name");
-		}
-		return false;
-		*/
 	}
 
 	public boolean loadGame(String fileName)
