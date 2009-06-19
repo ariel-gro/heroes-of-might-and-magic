@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import tau.heroes.db.UserInfo;
 import tau.heroes.net.ChatListener;
 import tau.heroes.net.ChatMessage;
@@ -195,9 +198,10 @@ public class GameController
 
 	public boolean saveGame(String fileName)
 	{
+		Shell shell =  Display.getCurrent().getActiveShell();
 		String text = fileName;
 		String saveDir = Configuration.saveDir;
-		String saveName = saveDir + File.separator + text + ".data";
+		String saveName = saveDir + File.separator + text + ".sav";
         File file = new File(saveName);
         new File(saveDir).mkdir();
              try {
@@ -206,8 +210,10 @@ public class GameController
                      oos.writeObject(getGameState());
                      oos.close();
              } catch (FileNotFoundException e) {
+            	 GuiMessages.displayErrorMsg("File not found", "File not found", shell);
                      return false;
              } catch (IOException e) {
+            	 GuiMessages.displayErrorMsg("IO Error", "System error", shell);
                      return false;
              }
              return true;
@@ -215,6 +221,8 @@ public class GameController
 
 	public boolean loadGame(String fileName)
 	{
+		Shell shell =  Display.getCurrent().getActiveShell();
+		
 		try
 		{
 			FileInputStream fileIn = new FileInputStream(fileName);
@@ -226,14 +234,17 @@ public class GameController
 		}
 		catch (FileNotFoundException e)
 		{
+			GuiMessages.displayErrorMsg("File not found", "Cant find requested file", shell);
 			System.out.println("Can't find the requested file !");
 		}
 		catch (IOException e)
 		{
+			GuiMessages.displayErrorMsg("File error", "Cant open the requested file", shell);
 			System.out.println("Cant open the requested file ! \nPlease give another name");
 		}
 		catch (ClassNotFoundException e)
 		{
+			GuiMessages.displayErrorMsg("File not found", "Cant find requested file", shell);
 			System.out.println("Can't find the requested file !");
 		}
 
