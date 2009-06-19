@@ -1478,7 +1478,15 @@ public class HeroesGui
 	
 	public boolean saveAs()
 	{
-		file = GuiMessages.displayInputDialog("Save Games As", "Enter saved game file name", Display.getCurrent().getActiveShell());
+		Shell myShell =  Display.getCurrent().getActiveShell();
+		
+		while (file == null || file == "")
+		{
+			if ((file = GuiMessages.displayInputDialog("Save Games As", "Enter saved game file name", myShell)) == "")
+			{
+				GuiMessages.displayErrorMsg("No file name given", "Please enter file name", myShell);
+			}
+		}
 		
 		return gameController.saveGame(file);	
 	}
