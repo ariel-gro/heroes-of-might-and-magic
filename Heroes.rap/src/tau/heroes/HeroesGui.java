@@ -1464,15 +1464,13 @@ public class HeroesGui
 
 	public boolean save()
 	{
-		file = "saved123";
 		if (file == null)
 			return saveAs();
 
 		shell.setCursor(Graphics.getCursor(SWT.CURSOR_WAIT));
 
 		gameController.saveGame(file);
-		//displayMessage("Game successfully saved to: " + file);
-		
+				
 		GuiMessages.displayFeedbackMsg("Save Game", "Game successfully saved", Display.getCurrent().getActiveShell());
 
 		shell.setCursor(null);
@@ -1483,16 +1481,9 @@ public class HeroesGui
 	
 	public boolean saveAs()
 	{
-		//file = "saved123";
-		
 		file = GuiMessages.displayInputDialog("Save Games As", "Enter saved game file name", Display.getCurrent().getActiveShell());
 		
-
-		
-		return gameController.saveGame(file);
-
-		
-		
+		return gameController.saveGame(file);	
 	}
 
 	/**
