@@ -224,7 +224,7 @@ public class GameController
 		Shell shell =  Display.getCurrent().getActiveShell();
 		
 		try
-		{
+		{	        
 			FileInputStream fileIn = new FileInputStream(fileName);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			this.gameState = (GameState) in.readObject();

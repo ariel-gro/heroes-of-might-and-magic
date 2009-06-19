@@ -1505,11 +1505,20 @@ public class HeroesGui
 		Composite form = new Composite(shell1, SWT.FILL);
 		form.setLayout(new GridLayout(1, false));
 
+		//String saveDir = Configuration.saveDir;
+        //new File(saveDir).mkdir();
+		
+		
 		final Label label1 = new Label(form, SWT.NONE);
 		label1.setText("Choose file to load from");
 		fileNameCombo = new Combo(form, SWT.NONE);
-		fileNameCombo.setText(getSavedGames()[0]);
-		for(String str : getSavedGames())
+		String[] gamesArray = getSavedGames();
+		if (gamesArray == null)
+		{
+			GuiMessages.displayErrorMsg("No saved games library", "You do not have saved games library on your disk", Display.getCurrent().getActiveShell());
+		}
+		fileNameCombo.setText(gamesArray[0]);
+		for(String str : gamesArray)
 		{
 			fileNameCombo.add(str);
 		}
@@ -1524,7 +1533,7 @@ public class HeroesGui
 			{
 				String fileName = fileNameCombo.getText();
 				String saveDir = Configuration.saveDir;
-				String saveName = saveDir + File.separator + fileName + ".data";
+				String saveName = saveDir + File.separator + fileName + ".sav";
 				gameController.loadGame(saveName);
 				handleUpdateGameState();
 				shell1.dispose();
