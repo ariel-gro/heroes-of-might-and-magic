@@ -176,7 +176,6 @@ public class IconCache
 	private static Image registerImage( final String imageName ) {
 	    String id = "Heroes.rap";
 	    String folder = "src";
-	   System.out.println(imageName);
 	    ImageDescriptor descriptor = AbstractUIPlugin.imageDescriptorFromPlugin( id, folder + imageName );
 	    return descriptor.createImage();
 	  }
