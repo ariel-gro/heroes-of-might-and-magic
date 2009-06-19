@@ -91,8 +91,8 @@ public class IconCache
 			"/icons/fire.png", "/icons/rock.png", "/icons/tree_stump.png",
 			"/icons/Heroes-icon_16x16.png", "/icons/battle_grass50.jpg", 
 			"/icons/battle_goblin50.jpg", "/icons/battle_soldier50.jpg" ,
-			"/icons/battle_dwarf50.jpg", "/icons/battle_archer50.jpg",
-			"/icons/battle_fire_dragon50.jpg"
+			"/icons/battle_dwarf50.png", "/icons/battle_dwarf50.png",
+			"/icons/battle_fire_dragon50.png"
 			};
 	public static final String[] stockCursorLocations = { "/icons/attack_left.gif",
 			"/icons/attack_right.gif", };
@@ -176,6 +176,7 @@ public class IconCache
 	private static Image registerImage( final String imageName ) {
 	    String id = "Heroes.rap";
 	    String folder = "src";
+	   System.out.println(imageName);
 	    ImageDescriptor descriptor = AbstractUIPlugin.imageDescriptorFromPlugin( id, folder + imageName );
 	    return descriptor.createImage();
 	  }
